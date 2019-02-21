@@ -9,7 +9,7 @@
                 ></code>
                 below
             </p>
-            <el-button>el-button</el-button>
+            <el-button v-if="inlist in list">el-button</el-button>
         </div>
     </div>
 </template>
@@ -18,11 +18,17 @@
 
 export default {
     name: 'app',
+    data(){
+        return{
+            inlist:'122',
+            list:['1','2','3']
+        }
+    },
     components: {
     },
     created () {
         this.$http.get('/test').then(res => {
-			console.log(res);
+            console.log(res);
         })
     }
 }
