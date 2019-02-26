@@ -3,10 +3,9 @@
 const Controller = require('egg').Controller;
 
 class HomeController extends Controller {
-  async index() {
+  async login() {
     const { ctx } = this;
-    const list = await this.ctx.model.models.znew.findAll();
-    ctx.body = list;
+    ctx.body = 'hi, egg';
   }
 }
 

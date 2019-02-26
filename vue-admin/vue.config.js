@@ -6,6 +6,17 @@ function resolve(dir) {
 }
 // console.log(resolve('src/icons/svg/'));
 module.exports = {
+    devServer: {
+        proxy: {
+            '/api': {
+                target: 'http://localhost:7001',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/api': ''
+                }
+            }
+        }
+    },
     chainWebpack: config => {
 
         const svgRule = config.module.rule('svg')
@@ -39,5 +50,6 @@ module.exports = {
                 limit: 10000,
                 name: utils.assetsPath('img/[name].[hash:7].[ext]')
             })
-    }
+    },
+
 }
