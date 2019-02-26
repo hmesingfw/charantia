@@ -4,44 +4,40 @@ const utils = require('./src/utils/webpack-utils')
 function resolve(dir) {
     return path.join(__dirname, dir)
 }
-console.log(resolve('src/icons/svg/'));
+// console.log(resolve('src/icons/svg/'));
 module.exports = {
     chainWebpack: config => {
+
+        const svgRule = config.module.rule('svg')
+        // 清除已有的所有 loader。
+        // 如果你不这样做，接下来的 loader 会附加在该规则现有的 loader 之后。
+        svgRule.uses.clear()
+
+        // 添加要替换的 loader
+        svgRule
+            .test(/\.(svg)(\?.*)?$/)
+            .exclude.add(resolve('src/icons/svg')).end()
+            .use('vue-svg-loader')
+            .loader('vue-svg-loader')
+
         config.module
-            .rule('svg-sprite-loader')
+            .rule('svg-sprite')
             .test(/\.svg$/)
             .include.add(resolve('src/icons')).end()
-            .use('svg-sprite-loader')
+            .use('svg-sprite')
             .loader('svg-sprite-loader')
             .options({
                 symbolId: 'icon-[name]'
             })
         config.module
-            .rule('url-loader')
+            .rule('url')
             .test(/\.(png|jpe?g|gif|svg)(\?.*)?$/)
             .exclude.add(resolve('src/icons/svg')).end()
-            .use('url-loader')
+            .use('url')
             .loader('url-loader')
             .options({
                 limit: 10000,
                 name: utils.assetsPath('img/[name].[hash:7].[ext]')
             })
-
-        // {
-        //     test: /\.svg$/,
-        //     loader: 'svg-sprite-loader',
-        //     include: [resolve('src/icons')],
-        //     options: {
-        //         symbolId: 'icon-[name]'
-        //     }
-        // }, {
-        //     test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        //     loader: 'url-loader',
-        //     exclude: [resolve('src/icons')],
-        //     options: {
-        //         limit: 10000,
-        //         name: utils.assetsPath('img/[name].[hash:7].[ext]')
-        //     }
-        // },
     }
 }

@@ -1,13 +1,6 @@
 <template>
     <div class="login-container">
-        <el-form
-            ref="loginForm"
-            :model="loginForm"
-            :rules="loginRules"
-            class="login-form"
-            auto-complete="on"
-            label-position="left"
-        >
+        <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
             <div class="title-container">
                 <h3 class="title">{{ $t('login.title') }}</h3>
                 <lang-select class="set-language"/>
@@ -17,13 +10,7 @@
                 <span class="svg-container">
                     <svg-icon icon-class="user"/>
                 </span>
-                <el-input
-                    v-model="loginForm.username"
-                    :placeholder="$t('login.username')"
-                    name="username"
-                    type="text"
-                    auto-complete="on"
-                />
+                <el-input v-model="loginForm.username" :placeholder="$t('login.username')" name="username" type="text" auto-complete="on"/>
             </el-form-item>
 
             <el-form-item prop="password">
@@ -71,8 +58,6 @@
         <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog">
             {{ $t('login.thirdpartyTips') }}
             <br>
-            <br>
-            <br>
             <social-sign/>
         </el-dialog>
     </div>
@@ -119,6 +104,7 @@ export default {
     watch: {
         $route: {
             handler: function (route) {
+                console.log(route);
                 this.redirect = route.query && route.query.redirect
             },
             immediate: true
@@ -144,34 +130,17 @@ export default {
                     this.loading = true
                     this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
                         this.loading = false
+                        console.log(this.redirect)
                         this.$router.push({ path: this.redirect || '/' })
                     }).catch(() => {
                         this.loading = false
                     })
                 } else {
-                    // console.log('error submit!!')
                     return false
                 }
             })
         },
-        afterQRScan () {
-            // const hash = window.location.hash.slice(1)
-            // const hashObj = getQueryObject(hash)
-            // const originUrl = window.location.origin
-            // history.replaceState({}, '', originUrl)
-            // const codeMap = {
-            //   wechat: 'code',
-            //   tencent: 'code'
-            // }
-            // const codeName = hashObj[codeMap[this.auth_type]]
-            // if (!codeName) {
-            //   alert('第三方登录失败')
-            // } else {
-            //   this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-            //     this.$router.push({ path: '/' })
-            //   })
-            // }
-        }
+        afterQRScan () { }
     }
 }
 </script>
@@ -229,6 +198,7 @@ export default {
 @light_gray: #eee;
 
 .login-container {
+    position: absolute;
     min-height: 100%;
     width: 100%;
     background-color: @bg;
