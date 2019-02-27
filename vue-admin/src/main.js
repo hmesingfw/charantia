@@ -7,6 +7,7 @@ import i18n from './lang'
 import './plugins/element.js'
 import './icons/index.js'
 
+import './config/axios-config'
 Vue.config.productionTip = false
 Vue.prototype.$http = axios;
 

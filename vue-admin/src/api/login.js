@@ -6,9 +6,7 @@ export function loginByUsername(username, password) {
     username,
     password
   }
-  axios.get('/api/login/login').then(res => {
-    console.log(res)
-  })
+  // ?username=admin&password=1111'
 
   return request({
     url: '/login/login',
