@@ -1,6 +1,10 @@
 <template>
     <div>
+        
         <sidebar></sidebar>
+        <div>
+
+        </div>
     </div>
 </template>
 
@@ -13,3 +17,7 @@ export default {
     }
 }
 </script>
+
+<style lang="less" scoped>
+
+</style>

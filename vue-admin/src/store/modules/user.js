@@ -28,8 +28,7 @@ const user = {
                     resolve()
                 }).catch(error => {
                     reject(error)
-                })
-                
+                })                
             })
         },
     }

@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs');
 
 const privateKey = fs.readFileSync('./config/private.key');
+const pulicKey = fs.readFileSync('./config/public.key');
 
 class HomeController extends Controller {
   async login() {
@@ -30,10 +31,29 @@ class HomeController extends Controller {
     // 输出签发的 Token
     // console.log(tokenRS256);
 
-
     ctx.body = {
       data: 'hi, login',
       token: tokenRS256,
+    };
+  }
+
+  async user() {
+    const { ctx } = this;
+
+    // const header = ctx.header;
+    const token = ctx.get('token');
+    console.log(token);
+
+    // 验证 Token
+    jwt.verify(token, pulicKey, (error, decoded) => {
+      if (error) {
+        console.log(error.message);
+        // return false;
+      }
+      console.log(decoded);
+    });
+    ctx.body = {
+      data: 'heiij',
     };
   }
 }
