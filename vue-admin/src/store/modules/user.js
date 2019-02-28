@@ -1,5 +1,5 @@
-import { getToken, setToken, removeToken} from '@/utils/auth'
 import axios from 'axios'
+import { setToken } from '@/utils/local-storage-auto'
 
 const user = {
     state:{
@@ -21,10 +21,9 @@ const user = {
                 axios.get('/api/login/login', {
                     params: userInfo
                 }).then(response => {
-
-                    console.log(response);
                     const data = response.data
                     commit('SET_TOKEN', data.token)
+
                     setToken(response.data.token)
                     resolve()
                 }).catch(error => {
