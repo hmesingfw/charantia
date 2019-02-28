@@ -6,9 +6,8 @@
 export default {
     name: 'Dashboard',
     created () {
-        this.$http({ url: '/api/identity', headers: { 'token': window.localStorage.getItem('token') } }).then(res => {
-            console.log(res)
-        })
+        // this.$http({ url: '/api/identity', headers: { 'token': window.localStorage.getItem('token') } }).then(res => {
+        // })
     }
 }
 </script>
