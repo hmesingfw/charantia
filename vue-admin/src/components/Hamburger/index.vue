@@ -14,7 +14,7 @@ export default {
     name: 'Hamburger',
     props: {
         isActive: {
-            type: Boolean,
+            type: [Boolean, String],
             default: false
         },
         toggleClick: {

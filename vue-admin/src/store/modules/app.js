@@ -3,7 +3,7 @@ import Cookies from 'js-cookie'
 const app = {
     state: {
         sidebar: {
-            opened: localStorage.getItem('sidebarStatus') || true,
+            opened: localStorage.getItem('sidebarStatus') == 'true' ? true : false,
             withoutAnimation: false
         },
         device: 'desktop',
@@ -18,6 +18,7 @@ const app = {
         },
         TOGGLE_SIDEBAR: (state) => {
             state.sidebar.opened = !state.sidebar.opened;
+            localStorage.setItem('sidebarStatus', state.sidebar.opened);
         }
     },
     actions: {

@@ -26,5 +26,6 @@ export default {
     transition: margin-left 0.28s;
     margin-left: 180px;
     position: relative;
+
 }
 </style>
