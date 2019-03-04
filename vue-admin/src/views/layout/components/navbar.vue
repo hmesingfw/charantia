@@ -1,39 +1,39 @@
 <template>
     <div>
-        <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
-            <el-radio-button :label="false">展开</el-radio-button>
-            <el-radio-button :label="true">收起</el-radio-button>
-        </el-radio-group>
-
-        <hamburger :is-active="sidebar.opened" class="hamburger-container"/>
+        <hamburger
+            :is-active="sidebar.opened"
+            :toggle-click="toggleSideBar"
+            class="hamburger-container"
+        />
     </div>
 </template>
 
 <script>
 // :toggle-click="toggleSideBar"
 import hamburger from '@/components/Hamburger/index.vue'
+import { mapState } from 'vuex'
 export default {
 
     name: 'navbar',
     data () {
         return {
             isCollapse: true,
-            sidebar: {
-                opened: true
-            }
+            // sidebar: {
+            //     opened: true
+            // }
         };
     },
     components: {
         hamburger
     },
+    computed: mapState({
+        sidebar: state => state.app.sidebar
+    }),
     methods: {
-        handleOpen (key, keyPath) {
-            console.log(key, keyPath);
+        toggleSideBar () {
+            this.$store.dispatch('toggleSideBar')
         },
-        handleClose (key, keyPath) {
-            console.log(key, keyPath);
-        }
-    }
+    },
 }
 </script>
 <style lang="less" scoped>
