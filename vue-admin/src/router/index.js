@@ -17,6 +17,10 @@ export default new Router({
 		component: layout
 	}, {
 		path: '',
-		component: () => import('@/views/dashboard/index')
+		component: layout,
+		children: [{
+			path: 'dashboard',
+			component: () => import('@/views/dashboard/index')
+		}]
 	}]
 })

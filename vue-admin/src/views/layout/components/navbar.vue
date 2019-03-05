@@ -16,15 +16,17 @@
             </el-breadcrumb>
         </div>
         <div class="right">
-            <lang-select class="set-language"/>
+            <screen-full></screen-full>
+            <lang-select class="set-language"></lang-select>
         </div>
     </div>
 </template>
 
 <script>
 // :toggle-click="toggleSideBar"
-import hamburger from '@/components/Hamburger/index.vue'
+import Hamburger from '@/components/Hamburger/index.vue'
 import LangSelect from '@/components/LangSelect'
+import ScreenFull from '@/components/ScreenFull'
 
 import { mapState } from 'vuex'
 export default {
@@ -36,8 +38,9 @@ export default {
         };
     },
     components: {
-        hamburger,
-        LangSelect
+        Hamburger,
+        LangSelect,
+        ScreenFull
     },
     computed: mapState({
         sidebar: state => state.app.sidebar
@@ -49,13 +52,14 @@ export default {
     },
 }
 </script>
-<style lang="less" scoped>
+<style lang="less" >
 .navbar {
-    height: 46px;
+    height: 42px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #e6e6e6;
+    font-size: 12px;
     .left {
         display: flex;
         justify-content: space-between;
@@ -73,10 +77,18 @@ export default {
         align-items: center;
 
         .set-language {
-            top: 3px;
             font-size: 24px;
             cursor: pointer;
         }
+    }
+    .svg-icon {
+        height: 28px !important;
+    }
+
+    /**  element */
+
+    .el-breadcrumb {
+        font-size: 12px;
     }
 }
 </style>

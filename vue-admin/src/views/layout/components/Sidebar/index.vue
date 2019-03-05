@@ -5,6 +5,9 @@
             class="el-menu-vertical-demo menu"
             :collapse="sidebar.opened"
             :collapse-transition="false"
+            background-color="#304156"
+            text-color="#bfcbd9"
+            active-text-color="#40a0ff"
         >
             <el-submenu index="1">
                 <template slot="title">
@@ -87,8 +90,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.sidebar {
-    width: 180px;
+.sidebar { 
     height: 100%;
     position: fixed;
     font-size: 0px;
@@ -101,7 +103,7 @@ export default {
     .menu {
         overflow: auto;
         height: 100%;
-        width: 196px;
+        width: 197px;
         overflow-x: hidden;
         border-right: 1px solid #e6e6e6;
     }

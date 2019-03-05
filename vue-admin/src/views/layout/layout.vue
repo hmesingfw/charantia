@@ -1,8 +1,10 @@
 <template>
-    <div>
+    <div v-bind:class="[sidebar.opened?'layout-shrink':'layout-extend']">
         <sidebar></sidebar>
         <div class="main-container">
             <navbar></navbar>
+            <tabs></tabs>
+            <app-main></app-main>
         </div>
     </div>
 </template>
@@ -10,11 +12,22 @@
 <script>
 import Sidebar from './components/Sidebar/index.vue';
 import navbar from './components/navbar.vue'
+import tabs from './components/tabs.vue'
+import appMain from './components/main.vue'
+import { mapState } from 'vuex'
 export default {
     name: 'layout',
     components: {
         Sidebar,
-        navbar
+        navbar,
+        tabs,
+        appMain
+    },
+    computed: mapState({
+        sidebar: state => state.app.sidebar
+    }),
+    methods: {
+
     }
 }
 </script>
@@ -26,6 +39,42 @@ export default {
     transition: margin-left 0.28s;
     margin-left: 180px;
     position: relative;
-
 }
 </style>
+
+
+<style lang="less">
+// 左侧菜单栏样式
+.layout-extend {
+    .sidebar {
+        width: 180px;
+        .menu {
+            width: 197px;
+        }
+    }
+    .main-container {
+        margin-left: 180px;
+    }
+}
+.layout-shrink {
+    .sidebar {
+        width: 36px;
+        .menu {
+            width: 53px;
+        }
+        .el-submenu__title {
+            padding-left: 5px !important;
+        }
+        .el-menu-item {
+            padding-left: 5px !important;
+        }
+        .el-tooltip {
+            padding-left: 7px !important;
+        }
+    }
+    .main-container {
+        margin-left: 36px;
+    }
+}
+</style>
+

@@ -31,17 +31,11 @@ export default {
     cursor: pointer;
     width: 30px;
     height: 30px;
-    /* transform: rotate(90deg); */
-    /* transition: 0.38s; */
-    /* transform-origin: 50% 50%; */
-
+    
     .image {
         width: 100%;
         height: 100%;
     }
 }
 
-/* .hamburger.is-active {
-    transform: rotate(0deg);
-} */
 </style>
