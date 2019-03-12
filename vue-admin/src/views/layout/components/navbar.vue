@@ -16,8 +16,8 @@
             </el-breadcrumb>
         </div>
         <div class="right">
-            <screen-full></screen-full>
-            <lang-select class="set-language"></lang-select>
+            <screen-full class="margin"></screen-full>
+            <lang-select class="margin set-language"></lang-select>
         </div>
     </div>
 </template>
@@ -76,9 +76,13 @@ export default {
         justify-content: space-between;
         align-items: center;
 
+        .margin {
+            margin-right: 10px;
+        }
         .set-language {
             font-size: 24px;
             cursor: pointer;
+            margin-right: 20px;
         }
     }
     .svg-icon {
