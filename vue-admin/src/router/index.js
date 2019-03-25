@@ -14,6 +14,14 @@ export const routerMap = [{
 }, {
 	path: '',
 	component: layout,
+	meta: {
+		title: 'dashboard',
+		icon: 'dashboard',
+		noCache: true // 非缓存  缓存等下
+	}
+}, {
+	path: '/dashboard',
+	component: layout,
 	children: [{
 		path: 'dashboard',
 		component: () => import('@/views/dashboard/index'),
@@ -23,7 +31,12 @@ export const routerMap = [{
 			icon: 'dashboard',
 			noCache: true // 非缓存  缓存等下
 		}
-	}]
+	}],
+	meta: {
+		title: 'dashboard',
+		icon: 'dashboard',
+		noCache: true // 非缓存  缓存等下
+	}
 }]
 
 

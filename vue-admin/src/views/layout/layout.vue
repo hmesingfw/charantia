@@ -1,6 +1,6 @@
 <template>
     <div v-bind:class="[sidebar.opened?'layout-shrink':'layout-extend']">
-        <sidebar></sidebar>
+        <sidebar class="sidebar-container"></sidebar>
         <div class="main-container">
             <navbar></navbar>
             <tabs></tabs>
@@ -48,13 +48,8 @@ export default {
 .layout-extend {
     .sidebar {
         width: 180px;
-        .menu {
-            width: 197px;
-        }
     }
-    .main-container {
-        margin-left: 180px;
-    }
+     
 }
 .layout-shrink {
     .sidebar {
@@ -75,6 +70,22 @@ export default {
     .main-container {
         margin-left: 36px;
     }
+    .el-menu--collapse {
+        width: 32px;
+    }
+}
+
+.sidebar-container {
+    transition: width 0.28s;
+    width: 180px;
+    height: 100%;
+    position: fixed;
+    font-size: 0px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1001;
+    overflow: hidden;
 }
 </style>
 

@@ -1,20 +1,17 @@
 <template>
     <div class="sidebar">
-        <el-menu
-            default-active="1-4-1"
-            class="el-menu-vertical-demo menu"
-            :collapse="sidebar.opened"
-            :collapse-transition="false"
-            background-color="#304156"
-            text-color="#bfcbd9"
-            active-text-color="#40a0ff"
-        >
+        <el-scrollbar wrap-class="scrollbar-wrapper">
+            <!-- <el-menu
+                default-active="1-4-1"
+                class="el-menu-vertical-demo menu"
+                :collapse="sidebar.opened"
+                :collapse-transition="false"
+                background-color="#304156"
+                text-color="#bfcbd9"
+                active-text-color="#40a0ff"
+            ></el-menu>-->
             <sidebar-item v-for="route in routers" :key="route.path" :item="route"></sidebar-item>
-            <el-menu-item index="2">
-                <i class="el-icon-menu"></i>
-                <span slot="title">导航二</span>
-            </el-menu-item>
-        </el-menu>
+        </el-scrollbar>
     </div>
 </template>
 
@@ -43,24 +40,28 @@ export default {
 
 <style lang="less">
 .sidebar {
-    height: 100%;
-    position: fixed;
-    font-size: 0px;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1001;
-    overflow: hidden;
-
     .el-submenu__title {
         width: 180px;
     }
     .menu {
+        width: 100%;
         overflow: auto;
         height: 100%;
-        width: 197px;
+        margin-right: -17px;
         overflow-x: hidden;
-        border-right: 1px solid #e6e6e6;
+    }
+    .el-menu {
+        border-right: none;
+    }
+    .el-menu-item-group__title {
+        padding: 0;
+    }
+    .el-scrollbar {
+        height: 100%;
+        border-right: solid 1px #e6e6e6;
+    }
+    .scrollbar-wrapper {
+        overflow-x: hidden !important;
     }
 }
 </style>
