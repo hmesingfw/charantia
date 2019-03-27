@@ -1,48 +1,28 @@
 <template>
-    <!-- <div v-if="!item.hidden">
-        <template if="!item.children || item.children.length==0">
-            <i class="el-icon-location"></i>
-            
-        </template>
+    <div v-if="!item.hidden">
+        <item v-if="hasOneShowingChild(item.children)" :data="item.meta" :index="item.path"></item>
 
-        <el-submenu :index="item.name || item.path">
+        <el-submenu v-if="item.children.length>1" :index="item.path">
             <template slot="title">
                 <i class="el-icon-location"></i>
-                <span slot="title">{{ item.meta.title }}</span>
+                <span>{{ item.meta.title }}</span>
             </template>
 
-            <el-menu-item-group v-if="item.children">
-                <item v-for="child in item.children" :key="child.path" :data="child.meta"></item>
-            </el-menu-item-group>
-             
-        </el-submenu>
-    </div>-->
-    <el-menu
-        default-active="2"
-        class="el-menu-vertical-demo"
-        active-text-color="#ffd04b"
-        :collapse-transition="false"
-        :collapse="sidebar.opened"
-    >
-        <el-submenu index="1">
-            <template slot="title">
-                <i class="el-icon-location"></i>
-                <span>导航一</span>
+            <template v-for="child in item.children">
+                <item
+                    :key="child.name || child.path"
+                    :data="child.meta"
+                    :index="child.path || child.name"
+                ></item>
+
+                <sidebar-item v-for="route in child.children" :key="route.path" :item="route"></sidebar-item>
             </template>
-            <el-menu-item-group>
-                <el-menu-item index="1-1">选项1</el-menu-item>
-                <el-menu-item index="1-2">选项2</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group>
-                <el-menu-item index="1-3">选项3</el-menu-item>
-            </el-menu-item-group>
-            <el-submenu index="1-4">
+            <!-- <el-submenu index="1-4">
                 <template slot="title">选项4</template>
                 <el-menu-item index="1-4-1">选项1</el-menu-item>
-            </el-submenu>
+            </el-submenu>-->
         </el-submenu>
-        
-    </el-menu>
+    </div>
 </template>
 
 <script>
@@ -53,15 +33,28 @@ export default {
     components: {
         item
     },
-    created () {
-        // console.log(this.item);
-    },
     props: {
         item: [Object]
     },
     computed: mapState({
         sidebar: state => state.app.sidebar,            // 控制开关伸缩 
-    })
+    }),
+    created () {
+        console.log(this.item);
+    },
+    methods: {
+        hasOneShowingChild (children) {
+
+            if (children && children.length === 1) {
+                if (children[0].hidden) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+            return false
+        },
+    }
 
 }
 </script>

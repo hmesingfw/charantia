@@ -1,16 +1,15 @@
 <template>
     <div class="sidebar">
         <el-scrollbar wrap-class="scrollbar-wrapper">
-            <!-- <el-menu
-                default-active="1-4-1"
-                class="el-menu-vertical-demo menu"
-                :collapse="sidebar.opened"
+            <el-menu
+                default-active="2"
+                class="el-menu-vertical-demo"
+                active-text-color="#ffd04b"
                 :collapse-transition="false"
-                background-color="#304156"
-                text-color="#bfcbd9"
-                active-text-color="#40a0ff"
-            ></el-menu>-->
-            <sidebar-item v-for="route in routers" :key="route.path" :item="route"></sidebar-item>
+                :collapse="sidebar.opened"
+            >
+                <sidebar-item v-for="route in routers" :key="route.path" :item="route"></sidebar-item>
+            </el-menu>
         </el-scrollbar>
     </div>
 </template>
@@ -27,10 +26,7 @@ export default {
         return {
         };
     },
-    methods: {},
-    created () {
-        console.log(this.routers);
-    },
+    methods: {}, 
     computed: mapState({
         sidebar: state => state.app.sidebar,            // 控制开关伸缩
         routers: state => state.routers.routers.options.routes

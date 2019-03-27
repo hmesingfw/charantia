@@ -14,8 +14,13 @@ export const routerMap = [{
 }, {
 	path: '',
 	component: layout,
+	children: [{
+		path: 'dashboard',
+		component: () => import('@/views/dashboard/index'),
+		name: 'Dashboard',
+	}],
 	meta: {
-		title: 'dashboard',
+		title: '111111',
 		icon: 'dashboard',
 		noCache: true // 非缓存  缓存等下
 	}
@@ -23,17 +28,27 @@ export const routerMap = [{
 	path: '/dashboard',
 	component: layout,
 	children: [{
-		path: 'dashboard',
+		path: '1',
 		component: () => import('@/views/dashboard/index'),
 		name: 'Dashboard',
 		meta: {
-			title: 'dashboard',
+			title: '333333',
+			icon: 'dashboard',
+			noCache: true // 非缓存  缓存等下
+		},
+		
+	}, {
+		path: '4',
+		component: () => import('@/views/dashboard/index'),
+		name: '/Dashboard',
+		meta: {
+			title: '44444',
 			icon: 'dashboard',
 			noCache: true // 非缓存  缓存等下
 		}
 	}],
 	meta: {
-		title: 'dashboard',
+		title: '22222',
 		icon: 'dashboard',
 		noCache: true // 非缓存  缓存等下
 	}

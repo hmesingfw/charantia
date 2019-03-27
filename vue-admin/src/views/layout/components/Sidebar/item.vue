@@ -1,16 +1,17 @@
 <template>
-    <el-menu-item index="1-3">{{ data.title }}</el-menu-item>
+    <el-menu-item :index="index">
+        <i class="el-icon-location"></i>
+        {{ data.title || data.name }}
+    </el-menu-item>
 </template>
 
 <script>
 export default {
     name: 'item',
     props: {
-        data: [Object]
+        data: [Object],
+        index: [String]
     },
-    created () {
-        console.log(this.data);
-    }
 }
 </script>
 
