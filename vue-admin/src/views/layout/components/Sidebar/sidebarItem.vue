@@ -1,27 +1,18 @@
 <template>
-    <div v-if="!item.hidden">
-        <item v-if="hasOneShowingChild(item.children)" :data="item.meta" :index="item.path"></item>
-
-        <el-submenu v-if="item.children.length>1" :index="item.path">
+    <div v-if="!item.hidden">   
+        <!-- 加载多个标题，判断是否存在子标题 -->
+        <el-submenu v-if="item.children && item.children.length>1" :index="item.path">
             <template slot="title">
-                <i class="el-icon-location"></i>
+                <i :class="item.meta.icon"></i>
                 <span>{{ item.meta.title }}</span>
             </template>
 
             <template v-for="child in item.children">
-                <item
-                    :key="child.name || child.path"
-                    :data="child.meta"
-                    :index="child.path || child.name"
-                ></item>
-
-                <sidebar-item v-for="route in child.children" :key="route.path" :item="route"></sidebar-item>
+                <sidebar-item :key="child.path" :item="child"></sidebar-item>
             </template>
-            <!-- <el-submenu index="1-4">
-                <template slot="title">选项4</template>
-                <el-menu-item index="1-4-1">选项1</el-menu-item>
-            </el-submenu>-->
         </el-submenu>
+        <!-- 加载一项，只加载一个标题 -->
+        <item v-else :data="item.meta" :index="item.path"></item>
     </div>
 </template>
 
@@ -39,22 +30,7 @@ export default {
     computed: mapState({
         sidebar: state => state.app.sidebar,            // 控制开关伸缩 
     }),
-    created () {
-        console.log(this.item);
-    },
-    methods: {
-        hasOneShowingChild (children) {
 
-            if (children && children.length === 1) {
-                if (children[0].hidden) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-            return false
-        },
-    }
 
 }
 </script>

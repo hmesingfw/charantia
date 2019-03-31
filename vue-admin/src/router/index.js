@@ -20,36 +20,56 @@ export const routerMap = [{
 		name: 'Dashboard',
 	}],
 	meta: {
-		title: '111111',
-		icon: 'dashboard',
+		title: 'index',
+		icon: 'el-icon-document',
 		noCache: true // 非缓存  缓存等下
 	}
 }, {
 	path: '/dashboard',
 	component: layout,
 	children: [{
-		path: '1',
+		path: 'wangwi',
 		component: () => import('@/views/dashboard/index'),
-		name: 'Dashboard',
+		name: 'Dashboard_r',
 		meta: {
-			title: '333333',
-			icon: 'dashboard',
+			title: 'wangwi',
+			icon: 'el-icon-document',
 			noCache: true // 非缓存  缓存等下
 		},
-		
+
 	}, {
-		path: '4',
+		path: 'wangwu',
 		component: () => import('@/views/dashboard/index'),
-		name: '/Dashboard',
+		name: 'Dashboard_us',
 		meta: {
-			title: '44444',
-			icon: 'dashboard',
+			title: 'wangwu',
+			icon: 'el-icon-document',
 			noCache: true // 非缓存  缓存等下
-		}
+		},
+		children: [{
+			path: 'zhang',
+			component: () => import('@/views/dashboard/index'),
+			name: 'zhang',
+			meta: {
+				title: 'zhang',
+				icon: 'el-icon-document',
+				noCache: true // 非缓存  缓存等下
+			},
+
+		}, {
+			path: 'liosti',
+			component: () => import('@/views/dashboard/index'),
+			name: '/liosti',
+			meta: {
+				title: 'liosti',
+				icon: 'el-icon-document',
+				noCache: true // 非缓存  缓存等下
+			}
+		}],
 	}],
 	meta: {
-		title: '22222',
-		icon: 'dashboard',
+		title: 'title',
+		icon: 'el-icon-document',
 		noCache: true // 非缓存  缓存等下
 	}
 }]
