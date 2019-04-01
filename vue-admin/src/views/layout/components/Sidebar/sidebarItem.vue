@@ -1,10 +1,10 @@
 <template>
-    <div v-if="!item.hidden">   
+    <div v-if="!item.hidden">
         <!-- 加载多个标题，判断是否存在子标题 -->
         <el-submenu v-if="item.children && item.children.length>1" :index="item.path">
             <template slot="title">
                 <i :class="item.meta.icon"></i>
-                <span>{{ item.meta.title }}</span>
+                <span>{{ generateTitle(item.path) }}</span>
             </template>
 
             <template v-for="child in item.children">
@@ -12,13 +12,14 @@
             </template>
         </el-submenu>
         <!-- 加载一项，只加载一个标题 -->
-        <item v-else :data="item.meta" :index="item.path"></item>
+        <item v-else :data="item" :index="item.path"></item>
     </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import item from './item'
+import { generateTitle } from '@/utils/lang'
 export default {
     name: 'sidebarItem',
     components: {
@@ -29,8 +30,10 @@ export default {
     },
     computed: mapState({
         sidebar: state => state.app.sidebar,            // 控制开关伸缩 
-    }),
-
+    }), 
+    methods: {
+        generateTitle
+    }
 
 }
 </script>

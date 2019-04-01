@@ -6,7 +6,7 @@
                 class="el-menu-vertical-demo"
                 active-text-color="#ffd04b"
                 :collapse-transition="false"
-                :collapse="sidebar.opened"
+                :collapse="sidebar.opened"               
             >
                 <sidebar-item v-for="route in routers" :key="route.path" :item="route"></sidebar-item>
             </el-menu>
