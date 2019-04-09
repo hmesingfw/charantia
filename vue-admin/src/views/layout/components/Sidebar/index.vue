@@ -8,7 +8,7 @@
                 :collapse-transition="false"
                 :collapse="sidebar.opened"               
             >
-                <sidebar-item v-for="route in routers" :key="route.path" :item="route"></sidebar-item>
+                <sidebar-item v-for="route in routers" :key="route.path" :item="route" :base-path="route.path"></sidebar-item>
             </el-menu>
         </el-scrollbar>
     </div>

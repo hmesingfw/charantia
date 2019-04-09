@@ -8,11 +8,11 @@
             </template>
 
             <template v-for="child in item.children">
-                <sidebar-item :key="child.path" :item="child"></sidebar-item>
+                <sidebar-item :key="child.path" :item="child" :base-path="resolvePath(child.path)"></sidebar-item>
             </template>
         </el-submenu>
         <!-- 加载一项，只加载一个标题 -->
-        <item v-else :data="item" :index="item.path"></item>
+        <item v-else :data="item" :index="item.path" :base-path="basePath"></item>
     </div>
 </template>
 
@@ -20,19 +20,24 @@
 import { mapState } from 'vuex'
 import item from './item'
 import { generateTitle } from '@/utils/lang'
+import path from 'path'
 export default {
     name: 'sidebarItem',
     components: {
         item
     },
     props: {
-        item: [Object]
+        item: [Object],
+        basePath: [String]
     },
     computed: mapState({
         sidebar: state => state.app.sidebar,            // 控制开关伸缩 
-    }), 
+    }),
     methods: {
-        generateTitle
+        generateTitle,
+        resolvePath (routePath) {
+            return path.resolve(this.basePath, routePath)
+        }
     }
 
 }

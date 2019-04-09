@@ -12,16 +12,19 @@ export default {
     name: 'item',
     props: {
         data: [Object],
-        index: [String]
+        index: [String],
+        basePath: [String]
     },
     methods: {
         generateTitle,
-        clickLink (routePath, e) {
-            
+        clickLink (data, e) {
+
+            this.$router.push({ path: this.basePath });
+            this.$store.dispatch('PushRouterToTabs', { path: this.basePath, item: { path: data.path, name: data.name } })
             return false;
-            if (!this.isExternalLink(routePath)) {
+            if (!this.isExternalLink(data)) {
                 e.preventDefault()
-                const path = this.resolvePath(routePath)
+                const path = this.resolvePath(data)
                 this.$router.push(path)
             }
         },
