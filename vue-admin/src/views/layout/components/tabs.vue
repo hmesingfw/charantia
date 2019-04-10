@@ -7,6 +7,8 @@
                 closable
                 :type="tag.type"
                 size="small"
+                @click="handleClick(tag)"
+                @close="handleClose(tag)"
             >{{generateTitle(tag.item.path)}}</el-tag>
         </div>
     </el-scrollbar>
@@ -22,16 +24,21 @@ export default {
         };
     },
     methods: {
-        generateTitle
+        generateTitle,
+        handleClose (tag) {
+            // 删除tag 标签路径
+            this.$store.dispatch('DelRouterToTags', tag)
+        },
+        handleClick (tag) {
+
+        }
     },
     computed: mapState({
         tags: state => state.routers.tags
     }),
 
     watch: {
-        tags (val) {
-            console.log(val);
-        }
+        tags (val) { }
     }
 }
 </script>

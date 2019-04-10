@@ -18,9 +18,10 @@ export default {
     methods: {
         generateTitle,
         clickLink (data, e) {
-
+            // 跳转路由
             this.$router.push({ path: this.basePath });
-            this.$store.dispatch('PushRouterToTabs', { path: this.basePath, item: { path: data.path, name: data.name } })
+            // 添加tags 路径
+            this.$store.dispatch('AddRouterToTags', { path: this.basePath, item: { path: data.path, name: data.name } });
             return false;
             if (!this.isExternalLink(data)) {
                 e.preventDefault()

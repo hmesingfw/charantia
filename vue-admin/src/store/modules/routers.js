@@ -6,16 +6,42 @@ const routers = {
         tags: [], // tabs 列表
     },
     mutations: {
-        PUSH_TABS: (state, arr) => {
-            state.tags.push(arr);
+        FLASH_TABS: (state, arr) => {
+            state.tags = arr;
         }
     },
     actions: {
-        PushRouterToTabs({
-            commit
+        AddRouterToTags({
+            commit,
+            state
+        }, data) {
+            let status = true;
+            let arr = state.tags.map(obj => {
+                if (obj.path == data.path) {
+                    obj.type = 'success'
+                    status = false;
+                } else {
+                    obj.type = 'info'
+                }
+                return obj;
+            });
+
+
+            if (status) {
+                data.type = 'success'
+                arr.push(data)
+            }
+            commit('FLASH_TABS', arr);
+        },
+        DelRouterToTags({
+            commit,
+            state
         }, data) { 
-            data.type = 'success'
-            commit('PUSH_TABS', data);
+            let arr = state.tags.filter(obj => {               
+                    return obj.path != data.path;
+                 
+            }); 
+            commit('FLASH_TABS', arr);
         }
     },
 
