@@ -6,18 +6,19 @@
                 :toggle-click="toggleSideBar"
                 class="hamburger-container"
             />
-            <el-breadcrumb separator="/" class="breadcrumb">
-                <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-                <el-breadcrumb-item>
-                    <a href="/">活动管理</a>
-                </el-breadcrumb-item>
-                <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-                <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+            <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
+                <el-breadcrumb-item :to="{ path: '/' }" v-if="isLoading">首页</el-breadcrumb-item>
+
+                <el-breadcrumb-item
+                    v-for="item in paths"
+                    :key="item.path"
+                >{{ generateTitle(item.name || item.path) }}</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="right">
             <screen-full class="margin"></screen-full>
-            <lang-select class="margin set-language"></lang-select>
+            <lang-select class="margin font-24"></lang-select>
+            <personal class="margin margin-24"></personal>
         </div>
     </div>
 </template>
@@ -27,6 +28,8 @@
 import Hamburger from '@/components/Hamburger/index.vue'
 import LangSelect from '@/components/LangSelect'
 import ScreenFull from '@/components/ScreenFull'
+import Personal from '@/components/Personal'
+import { generateTitle } from '@/utils/lang'
 
 import { mapState } from 'vuex'
 export default {
@@ -34,22 +37,36 @@ export default {
     name: 'navbar',
     data () {
         return {
-            isCollapse: true,
+            paths: [],
+            isLoading: true, // 是否加载首页
         };
     },
     components: {
         Hamburger,
         LangSelect,
-        ScreenFull
+        ScreenFull,
+        Personal
     },
     computed: mapState({
         sidebar: state => state.app.sidebar
     }),
     methods: {
+        generateTitle,
         toggleSideBar () {
             this.$store.dispatch('toggleSideBar')
         },
+
     },
+    watch: {
+        $route (val) {
+            this.paths = val.matched;
+            if (val.matched.length == 1 && val.matched[0].path == '/index') {  
+                this.isLoading = false;
+            } else {
+                this.isLoading = true;
+            }
+        }
+    }
 }
 </script>
 <style lang="less" >
@@ -78,10 +95,12 @@ export default {
 
         .margin {
             margin-right: 10px;
-        }
-        .set-language {
-            font-size: 24px;
             cursor: pointer;
+        }
+        .font-24{
+            font-size: 24px; 
+        }
+        .margin-24 {                      
             margin-right: 20px;
         }
     }

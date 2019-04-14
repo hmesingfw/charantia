@@ -4,7 +4,7 @@
             <el-menu
                 default-active="2"
                 class="el-menu-vertical-demo"
-                active-text-color="#ffd04b"
+                active-text-color="#409EFF"
                 :collapse-transition="false"
                 :collapse="sidebar.opened"               
             >

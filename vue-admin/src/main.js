@@ -6,6 +6,7 @@ import axios from 'axios'
 import i18n from './lang'
 import './plugins/element.js'
 import './icons/index.js'
+import './directive/index'
 
 import './config/axios-config'
 Vue.config.productionTip = false

@@ -9,7 +9,9 @@
                 size="small"
                 @click="handleClick(tag)"
                 @close="handleClose(tag)"
-            >{{generateTitle(tag.item.path)}}</el-tag>
+            >
+                <span class="title">{{generateTitle(tag.item.path)}}</span>
+            </el-tag>
         </div>
     </el-scrollbar>
 </template>
@@ -30,16 +32,15 @@ export default {
             this.$store.dispatch('DelRouterToTags', tag)
         },
         handleClick (tag) {
-
+            // 跳转路由
+            this.$router.push({ path: tag.path });
+            // 添加tags 路径
+            this.$store.dispatch('AddRouterToTags', tag);
         }
     },
     computed: mapState({
         tags: state => state.routers.tags
-    }),
-
-    watch: {
-        tags (val) { }
-    }
+    })
 }
 </script>
 <style lang="less" scoped>
@@ -53,6 +54,9 @@ export default {
 
     .el-tag {
         margin-left: 10px;
+    }
+    .title {
+        cursor: pointer;
     }
 }
 
