@@ -1,5 +1,5 @@
 <template>
-    <el-dropdown trigger="click" v-size>
+    <el-dropdown trigger="click" >
         <img src="http://iph.href.lu/24x24?text=h" class="img">
 
         <el-dropdown-menu slot="dropdown">

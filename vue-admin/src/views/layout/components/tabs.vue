@@ -6,7 +6,6 @@
                 :key="index"
                 closable
                 :type="tag.type"
-                size="small"
                 @click="handleClick(tag)"
                 @close="handleClose(tag)"
             >

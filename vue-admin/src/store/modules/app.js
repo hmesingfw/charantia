@@ -1,5 +1,3 @@
-import Cookies from 'js-cookie'
-
 const app = {
     state: {
         sidebar: {
@@ -8,7 +6,7 @@ const app = {
         },
         device: 'desktop',
         language: localStorage.getItem('language') || 'zh',
-        size: Cookies.get('size') || 'medium'
+        size: localStorage.getItem('size') || 'small'
     },
     mutations: {
         SET_LANGUAGE: (state, language) => {
@@ -19,6 +17,10 @@ const app = {
         TOGGLE_SIDEBAR: (state) => {
             state.sidebar.opened = !state.sidebar.opened;
             localStorage.setItem('sidebarStatus', state.sidebar.opened);
+        },
+        SET_SIZE: (state, size) => {
+            state.size = size
+            localStorage.setItem('size', size)
         }
     },
     actions: {
@@ -32,6 +34,11 @@ const app = {
             commit
         }) {
             commit('TOGGLE_SIDEBAR')
+        },
+        setSize({
+            commit
+        }, size) {
+            commit('SET_SIZE', size)
         }
     }
 }

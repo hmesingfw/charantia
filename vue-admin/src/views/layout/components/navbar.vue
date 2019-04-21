@@ -16,7 +16,8 @@
             </el-breadcrumb>
         </div>
         <div class="right">
-            <screen-full class="margin"></screen-full>
+            <screen-full class="margin"></screen-full> 
+            <size-select class="margin"></size-select>
             <lang-select class="margin font-24"></lang-select>
             <personal class="margin margin-24"></personal>
         </div>
@@ -25,6 +26,7 @@
 
 <script>
 // :toggle-click="toggleSideBar"
+import SizeSelect from '@/components/SizeSelect'
 import Hamburger from '@/components/Hamburger/index.vue'
 import LangSelect from '@/components/LangSelect'
 import ScreenFull from '@/components/ScreenFull'
@@ -45,7 +47,8 @@ export default {
         Hamburger,
         LangSelect,
         ScreenFull,
-        Personal
+        Personal,
+        SizeSelect
     },
     computed: mapState({
         sidebar: state => state.app.sidebar
@@ -60,7 +63,7 @@ export default {
     watch: {
         $route (val) {
             this.paths = val.matched;
-            if (val.matched.length == 1 && val.matched[0].path == '/index') {  
+            if (val.matched.length == 1 && val.matched[0].path == '/index') {
                 this.isLoading = false;
             } else {
                 this.isLoading = true;
@@ -97,10 +100,10 @@ export default {
             margin-right: 10px;
             cursor: pointer;
         }
-        .font-24{
-            font-size: 24px; 
+        .font-24 {
+            font-size: 24px;
         }
-        .margin-24 {                      
+        .margin-24 {
             margin-right: 20px;
         }
     }
