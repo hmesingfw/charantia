@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- import static CSS -->  
+</head>
+ 
+<body>
+	<div id="app">
+		
+		<input type="text" v-model="value" name="">
+		<div>{{value}}</div>
+
+	</div>
+</body>
+<script src="./static/js/vue.2.6.js"></script>
+<script type="text/javascript">
+	new Vue({
+		el:'#app',
+		data(){
+			return {
+				value:""
+			}
+		}
+	})	
+</script>
+</html>

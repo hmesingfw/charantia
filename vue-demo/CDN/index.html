@@ -37,11 +37,11 @@
             <el-button type="primary" size="small" plain @click="handleQuery">查询</el-button>
             <el-button type="primary" size="small" plain @click="handleAdd">新增</el-button>
             <el-button type="primary" size="small" plain @click="handleUpdate">修改</el-button>
-            <el-button type="primary" size="small" plain>删除</el-button>
+            <el-button type="primary" size="small" plain @click="handleDelete">删除</el-button>
         </el-row>
 
         <el-table ref="singleTable" :data="tableData" highlight-current-row @current-change="tableRowClick"
-            @cell-dblclick="handleDbClick" style="width: 100%">
+            @cell-dblclick="handleDbClick" style="width: 100%" @selection-change="handleSelectionChange" >
             <el-table-column type="selection" width="55">
             </el-table-column>
             <el-table-column property="id" label="编号" width="120">
@@ -80,6 +80,8 @@
 <script src="./static/js/mock.js"></script>
 <!-- import component -->
 <script src="./js/component.js"></script>
+<script src="./js/data.js"></script>
+
 <script>
     new Vue({
         el: '#app',
@@ -94,6 +96,7 @@
                 }, // 表单查询条件
                 tableData: [], // 表格展示数据
                 tempClickRow: {}, //记录单击时，点击表格的数据
+                multipleSelection:{},   
                 currentPage: 1, // 分页，页码
                 dialogVisible: false, // 弹出框状态
                 form: {
@@ -145,6 +148,9 @@
                 this.form = this.tempClickRow;
                 this.dialogVisible = true;
             },
+            handleDelete(){
+                console.log(this.multipleSelection)
+            },
             // 双击表格时，打开编辑页面
             handleDbClick(val) {
                 this.form = val;
@@ -153,6 +159,9 @@
             // 单击表格时，将数据记录到临时变量中
             tableRowClick(val) {
                 this.tempClickRow = val;
+            },
+            handleSelectionChange(val){
+                this.multipleSelection = val;
             },
             setCurrent(row) {
                 this.$refs.singleTable.setCurrentRow(row);
@@ -168,26 +177,14 @@
                 console.log('当前页: ', val);
             },
             // 获取数据
-            getTableData() {
-                var Random = Mock.Random;
-                var data = Mock.mock({
-                    'tableData|10': [{
-                        'id|+1': Random.natural(10000, 99999),
-                        'name|1': '@FIRST', //随便名字
-                        'sex|1': ['1', '2'],
-                        'hobby|1': ['篮球', '足球', '乒乓球', '羽毛球', '冰球'],
-                        'address|1': ['上海市普陀区金沙江路 1518', '上海市普陀区金沙江路 1519', '上海市普陀区金沙江路 1520',
-                            '上海市普陀区金沙江路 1521'
-                        ], //随机一个
-                    }]
-                })
-
-                this.tableData = data.tableData;
+            getTableData() {                 
+                // ajax()
+                this.tableData = getDataList().tableData;
             }
         },
+        // 创建后加载
         created() {
             this.getTableData();
-
         }
 
     })
