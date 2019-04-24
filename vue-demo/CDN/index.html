@@ -41,7 +41,7 @@
         </el-row>
 
         <el-table ref="singleTable" :data="tableData" highlight-current-row @current-change="tableRowClick"
-            @cell-dblclick="handleDbClick" style="width: 100%" @selection-change="handleSelectionChange" >
+            @cell-dblclick="handleDbClick" style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55">
             </el-table-column>
             <el-table-column property="id" label="编号" width="120">
@@ -68,7 +68,7 @@
             </el-pagination>
         </div>
 
-        <kt-form title="新增" :form="form" :rules="rulesForm" :dialog="dialogVisible" @close="dialogVisible = false">
+        <kt-form title="新增" :form="form" :rules="rulesForm" :dialog="dialogVisible" @close="func">
         </kt-form>
     </div>
 </body>
@@ -96,7 +96,7 @@
                 }, // 表单查询条件
                 tableData: [], // 表格展示数据
                 tempClickRow: {}, //记录单击时，点击表格的数据
-                multipleSelection:{},   
+                multipleSelection: {},
                 currentPage: 1, // 分页，页码
                 dialogVisible: false, // 弹出框状态
                 form: {
@@ -129,7 +129,7 @@
         },
         methods: {
             // 点击查询
-            handleQuery(){
+            handleQuery() {
                 console.log(this.formLabelAlign);
             },
             // 点击新增按钮
@@ -148,7 +148,7 @@
                 this.form = this.tempClickRow;
                 this.dialogVisible = true;
             },
-            handleDelete(){
+            handleDelete() {
                 console.log(this.multipleSelection)
             },
             // 双击表格时，打开编辑页面
@@ -160,7 +160,7 @@
             tableRowClick(val) {
                 this.tempClickRow = val;
             },
-            handleSelectionChange(val){
+            handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
             setCurrent(row) {
@@ -177,9 +177,12 @@
                 console.log('当前页: ', val);
             },
             // 获取数据
-            getTableData() {                 
+            getTableData() {
                 // ajax()
                 this.tableData = getDataList().tableData;
+            },
+            func (bloen) {
+                this.dialogVisible = bloen
             }
         },
         // 创建后加载

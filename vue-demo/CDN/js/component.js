@@ -39,7 +39,7 @@ Vue.component('kt-form', {
     },
     methods: {
         handleClose() {
-            this.$emit('close');
+            this.$emit('close', true);
         },
         resetForm(formName) {
             this.$refs[formName].resetFields();
@@ -76,3 +76,5 @@ function deepClone(obj) {
     }
     return objClone;
 }
+
+
