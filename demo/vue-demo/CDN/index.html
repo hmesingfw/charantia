@@ -2,6 +2,7 @@
 <html>
 
 <head>
+	<!-- 第一步  引入静态文体 -->
     <meta charset="UTF-8">
     <!-- import static CSS -->
     <link rel="stylesheet" href="./static/css/init.css">
@@ -16,7 +17,9 @@
 </style>
 
 <body>
+    <!-- 第四步，编写模版 -->
     <div id="app" v-cloak>
+        <!-- 第六步，添加查询条件-form表单 -->
         <el-form label-position="right" label-width="100px" :model="formLabelAlign" :inline="true" size="small"
             class="form-query">
             <el-form-item label="姓名：">
@@ -32,14 +35,14 @@
                 <el-input v-model="formLabelAlign.address"></el-input>
             </el-form-item>
         </el-form>
-
+        <!-- 第七步，添加botton操作 -->
         <el-row class="nav-botton">
             <el-button type="primary" size="small" plain @click="handleQuery">查询</el-button>
             <el-button type="primary" size="small" plain @click="handleAdd">新增</el-button>
             <el-button type="primary" size="small" plain @click="handleUpdate">修改</el-button>
             <el-button type="primary" size="small" plain @click="handleDelete">删除</el-button>
         </el-row>
-
+        <!-- 第八步，添加table列表，展示数据信息 -->
         <el-table ref="singleTable" :data="tableData" highlight-current-row @current-change="tableRowClick"
             @cell-dblclick="handleDbClick" style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55">
@@ -54,13 +57,13 @@
                 </template>
 
             </el-table-column>
-
             <el-table-column property="hobby" label="爱好" width="140">
             </el-table-column>
             <el-table-column property="address" label="地址">
             </el-table-column>
         </el-table>
 
+        <!-- 第九步，添加分布栏 -->
         <div class="block nav-page">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                 :current-page="currentPage" :page-sizes="[100, 200, 300, 400]" :page-size="100"
@@ -68,10 +71,11 @@
             </el-pagination>
         </div>
 
-        <kt-form title="新增" :form="form" :rules="rulesForm" :dialog="dialogVisible" @close="func">
+        <kt-form title="新增" :form="form" :rules="rulesForm" :dialog="dialogVisible" @close="funcClose">
         </kt-form>
     </div>
 </body>
+<!-- 第二步  引入静态文体 -->
 <!-- import Vue before Element -->
 <script src="./static/js/vue.2.6.js"></script>
 <!-- import JavaScript -->
@@ -83,10 +87,13 @@
 <script src="./js/data.js"></script>
 
 <script>
+	// 第三步 new Vue
     new Vue({
         el: '#app',
         data: function () {
+            // 第五步，添加变量
             return {
+                // 第六步，为模版中的form表单组件，添加Data数据
                 formLabelAlign: {
                     id: '',
                     name: '',
@@ -94,9 +101,12 @@
                     hobby: '',
                     address: ''
                 }, // 表单查询条件
+
+                // 第八步，为模版中的table组件列表，添加data数据
                 tableData: [], // 表格展示数据
                 tempClickRow: {}, //记录单击时，点击表格的数据
                 multipleSelection: {},
+                // 第九步，为模版中分页组件中，添加data数据
                 currentPage: 1, // 分页，页码
                 dialogVisible: false, // 弹出框状态
                 form: {
@@ -105,7 +115,7 @@
                     sex: '',
                     hobby: '',
                     address: ''
-                }, //添加或者
+                }, //添加或者修改时，使用的表单数据信息
                 rulesForm: {
                     id: [{
                         required: true,
@@ -127,6 +137,7 @@
                 }, // 数据验证
             }
         },
+        // 第五步，添加方法
         methods: {
             // 点击查询
             handleQuery() {
@@ -181,11 +192,12 @@
                 // ajax()
                 this.tableData = getDataList().tableData;
             },
-            func (bloen) {
+            // 关闭自定义的
+            funcClose (bloen) {
                 this.dialogVisible = bloen
             }
         },
-        // 创建后加载
+        // 页面创建完成后加载
         created() {
             this.getTableData();
         }

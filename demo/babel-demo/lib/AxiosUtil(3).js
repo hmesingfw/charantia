@@ -1,0 +1,164 @@
+"use strict";
+
+/**设置请求超时时间(单位：毫秒)*/
+axios.defaults.timeout = 30000;
+/**respone拦截器*/
+
+axios.interceptors.response.use(function (response) {
+  var code = response.status;
+  response.message = AxiosUtil.codeJson[code + ''] || AxiosUtil.otherErrorMsg;
+  return response;
+}, function (error) {
+  var code = error.response.status;
+
+  if (code == 401) {
+    setTimeout(function () {
+      window.parent.location.href = '/web-catt-admin/app/login/login.html';
+    }, 1000);
+  }
+
+  return Promise.reject(error);
+});
+/***
+ * Axios相关工具类
+ */
+
+var AxiosUtil = {
+  //code与对应返回消息设置
+  codeJson: {
+    '200': '请求成功',
+    '400': '错误请求',
+    '401': '未授权，请重新登录',
+    '403': '拒绝访问',
+    '404': '请求错误,未找到该资源',
+    '405': '请求方法未允许',
+    '408': '请求超时',
+    '500': '服务器端出错',
+    '501': '网络未实现',
+    '502': '网络错误',
+    '503': '服务不可用',
+    '504': '网络超时',
+    '505': 'http版本不支持该请求'
+  },
+
+  /**默认参数**/
+  ajaxDefaultValue: {
+    showLoading: true,
+    //默认值不能改成post
+    method: 'get',
+    url: '',
+    data: {},
+    success: function success(data) {}
+  },
+  //其他异常消息设置
+  otherErrorMsg: '内部程序异常',
+
+  /**
+   * axios封装:
+   * 	method : 请求方式,默认get
+   * 	url: 请求接口地址
+   * 	data:返回参数
+   * showLoading:是否显示等待条
+   * success: 请求成功后回调函数
+   * error:错误处理
+   */
+  ajax: function ajax(options) {
+    var _this = this;
+
+    var mergeOptions = Object.assign({}, this.ajaxDefaultValue, options);
+
+    if (mergeOptions.showLoading) {
+      KT.Wait.show();
+    }
+
+    ;
+    return axios(mergeOptions).then(function (resp) {
+      if (mergeOptions.showLoading) {
+        KT.Wait.hide();
+      }
+
+      ;
+      var data = resp.data;
+      var code = data.code || resp.status;
+      var message = data.message || resp.message;
+
+      if (code != 200) {
+        KT.alert(message);
+        return;
+      }
+
+      mergeOptions.success && mergeOptions.success.call(_this, data, resp.code, resp.message);
+    }).catch(function (error) {
+      if (mergeOptions.showLoading) {
+        KT.Wait.hide();
+      }
+
+      ;
+
+      if (mergeOptions.error) {
+        mergeOptions.error.call(_this, error);
+      } else if (error.stack && error.message) {
+        KT.alert(error.message);
+        throw new Error(error.stack);
+      } else if (error.response && error.response.status) {
+        //状态码
+        var status = error.response.status;
+        var errorMsg = error.response.error || _this.codeJson[status + ''] || _this.otherErrorMsg;
+        KT.alert(errorMsg);
+        throw new Error(error);
+      }
+    });
+  },
+
+  /**
+   * 获取权限,默认获取所有
+   * config:
+   * 	data:{ RightType:权限类型,1：菜单 2：按钮 默认全部; ParentId:父节点ID，不传时返回所有权限}
+   * 	success:请求成功回调函数
+   * @param config
+   * @returns
+   */
+  getRight: function getRight(config) {
+    config.url = config.url || '/service-zhwg-index/index/menu';
+    config.method = config.method || 'post';
+    config.showLoading = config.showLoading || false;
+    this.ajax(config);
+  }
+};
+/**
+ * Vue自定义指定-权限控制
+ * permissionList: 从服务接口取权限数据, [rightNo1,rightNo2...]
+ * html有v-has-permission="'{rightNo1}'" 才会执行获取权限请求
+ */
+
+Vue.directive('has-permission', {
+  bind: function bind(el, binding, vnode) {
+    //获取按钮权限,并转换成permissionList
+    var config = {
+      data: {
+        "RightType": "2"
+      },
+      success: function success(data) {
+        var permissionList = [];
+        steamroller(data.data, permissionList);
+
+        if (!permissionList.includes(binding.value)) {
+          vnode.context.$nextTick(function () {
+            el.parentNode.removeChild(el);
+          });
+        }
+      }
+    };
+    AxiosUtil.getRight(config);
+    /**
+     * 闭包处理权限数据,将rightNo取出来单独存入数组中
+     */
+
+    function steamroller(arr, rightNoArr) {
+      return arr.forEach(function (item) {
+        item.sRightNo && rightNoArr.push(item.sRightNo);
+        Array.isArray(item.children) && steamroller(item.children, rightNoArr);
+      });
+    }
+  }
+});

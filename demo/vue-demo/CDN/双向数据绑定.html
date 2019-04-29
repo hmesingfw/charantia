@@ -8,16 +8,19 @@
  
 <body>
 	<div id="app">
-		
+		<!-- 第三步，编写模版 -->
 		<input type="text" v-model="value" name="">
 		<div>{{value}}</div>
 
 	</div>
 </body>
+<!-- 第一步 -->
 <script src="./static/js/vue.2.6.js"></script>
+<!-- 第二步 -->
 <script type="text/javascript">
+	// 实例Vue对象
 	new Vue({
-		el:'#app',
+		el:'#app',	// 渲染dom的位置
 		data(){
 			return {
 				value:""

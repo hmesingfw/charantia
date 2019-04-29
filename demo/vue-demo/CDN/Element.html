@@ -3,7 +3,7 @@
 
 <head>
 	<title></title>
-	<!-- 引入样式 -->
+	<!-- 第一步，引入样式 -->
 	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 	<!-- 引入组件库 -->
 
@@ -11,6 +11,7 @@
 
 <body>
 	<div id="app">
+		<!-- 第四步，编写模版 -->
 		<el-button @click="visible = true">Button</el-button>
 		<el-dialog :visible.sync="visible" title="Hello world">
 			<p>Try Element</p>
@@ -38,19 +39,23 @@
 		</div>
 	</div>
 </body>
+<!-- 第二步 引入 vue.js element.js文件 -->
 <script src="./static/js/vue.2.6.js"></script>
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script type="text/javascript">
+	// 第三步，new Vue
 	new Vue({
 		el: '#app',
 		data: function () {
+			// 第五步，添加模版中的数据
 			return {
 				visible: false,
 				radio: '1',
 				currentPage4: 4
 			}
 		},
+		// 第五步，实现模版中的方法
 		methods: {
 			handleSizeChange(val) {
 				console.log(`每页 ${val} 条`);
