@@ -13,6 +13,7 @@
 <script>
 export default {
     name: 'SizeSelect',
+    inject: ['reload'],
     data () {
         return {
         }
@@ -47,8 +48,8 @@ export default {
             //         this.$store.dispatch('addVisitedViews', i)
             //     }
             // })
-
-            const { path } = this.$route
+            this.reload();
+            const { path } = this.$route;
 
             this.$router.replace({
                 path: path

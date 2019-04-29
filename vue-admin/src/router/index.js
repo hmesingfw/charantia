@@ -23,18 +23,18 @@ export const routerMap = [{
 		noCache: true // 非缓存  缓存等下
 	}
 }, {
-	path: '/dashboard',
+	path: '/sys',
 	component: layout,
 	children: [{
-		path: 'demo1',
-		component: () => import('@/views/dashboard/index'),
-		name: 'demo1',
+		path: 'menus',
+		component: () => import('@/views/menus/index'),
+		name: 'menus',
 		meta: {
 			icon: 'el-icon-document',
 			noCache: true // 非缓存  缓存等下
 		},
 
-	},{
+	}, {
 		path: 'demo2',
 		component: () => import('@/views/dashboard/index'),
 		name: 'demo2',

@@ -1,8 +1,8 @@
 export default {
     route: {
         '/index': 'index',
-        '/dashboard': 'dashboard',
-        'demo1':'demo1',
+        '/sys': 'system',
+        'menus':'menus',
         'demo2':'demo2',
     }
 }
