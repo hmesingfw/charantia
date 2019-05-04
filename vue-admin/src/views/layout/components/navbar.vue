@@ -17,9 +17,9 @@
         </div>
         <div class="right">
             <screen-full class="margin"></screen-full> 
-            <size-select class="margin"></size-select>
+            <size-select class="margin font-24"></size-select>
             <lang-select class="margin font-24"></lang-select>
-            <personal class="margin margin-24"></personal>
+            <personal class="margin margin-24 font-24"></personal>
         </div>
     </div>
 </template>
@@ -40,7 +40,7 @@ export default {
     data () {
         return {
             paths: [],
-            isLoading: true, // 是否加载首页
+            isLoading: true, // 是否显示多个首页
         };
     },
     components: {
@@ -63,6 +63,7 @@ export default {
     watch: {
         $route (val) {
             this.paths = val.matched;
+            // 是否显示多个首页
             if (val.matched.length == 1 && val.matched[0].path == '/index') {
                 this.isLoading = false;
             } else {

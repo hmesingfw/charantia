@@ -1,6 +1,8 @@
 {
   "extends": "eslint-config-egg",
   "rules": {
-    "linebreak-style": [0, "error", "windows"]
+    "linebreak-style": [0, "error", "windows"],
+    "indent": ["off", 4],
+    "comma-dangle": ["off"]
   }
 }
