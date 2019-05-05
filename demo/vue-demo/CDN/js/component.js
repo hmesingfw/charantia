@@ -1,4 +1,6 @@
+// 第一步 实现Vue.component() 方法         Vue.component('name', options)      name 组件名  options 选项
 Vue.component('kt-form', {
+    // 第二步，编写 template模版
     template: `
         <el-dialog :title="title" :visible.sync="dialog" width="60%" :before-close="handleClose">
 
@@ -28,29 +30,45 @@ Vue.component('kt-form', {
             </el-form>
         </el-dialog>
     `,
+    // 第二步，编写组件参数，与template中的数据绑定
     props: {
         title: [String],
         dialog: [Boolean, String],
         form: [Object],
         rules: [Object],
     },
-    data: function () {
-        return {}
-    },
+    // 第三步，编写组件方法，
     methods: {
+        /** 关闭弹框 */
         handleClose() {
             this.$emit('close', true);
         },
+        /**
+         * 重置表单数据
+         * formName 表单中ref值
+         */
         resetForm(formName) {
             this.$refs[formName].resetFields();
         },
-        submitForm() {
-            console.log(this.form);
-            this.$emit('close');
-            this.$message({
-                type: 'success',
-                message: '操作成功'
-            })
+        /**
+         * 保存表单数据
+         * formName 表单中ref值
+         */
+        submitForm(formName) {
+            /** 数据验证方法 */
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    this.$emit('close', true); 
+                    this.$message({
+                        type: 'success',
+                        message: '操作成功'
+                    })
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+
+            });
         }
     }
 
@@ -76,5 +94,3 @@ function deepClone(obj) {
     }
     return objClone;
 }
-
-
