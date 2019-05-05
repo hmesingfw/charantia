@@ -48,6 +48,7 @@ module.exports = app => {
 			allowNull: true
 		}
 	}, {
+		timestamps: false,
 		freezeTableName: true,
 		tableName: 'sys_menu'
 	});

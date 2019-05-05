@@ -10,7 +10,7 @@ class MenusController extends Controller {
             service,
         } = this;
               
-        ctx.body = await service.Menu.findAll();
+        ctx.body = await service.sys.menu.findAll();
 
     }
 }

@@ -9,10 +9,14 @@ class MenuService extends Service {
     }
 
     async findAll() {
-        console.log('12314515');
-        const menu = await this.ctx.model.Sys.Menu.query('select * fromsys_menu');
+        const query = {
+            id: 1
+        };
+        const menu = await this.ctx.model.Sys.Menu.find(query);
+        console.log(menu);
         return menu;
     }
 }
 
 module.exports = MenuService;
+
