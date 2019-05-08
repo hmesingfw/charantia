@@ -9,12 +9,12 @@ module.exports = app => {
 
 	const Menu = app.model.define('sys_menu', {
 		id: {
-			type: DataTypes.STRING(64),
+			type: DataTypes.STRING(32),
 			allowNull: false,
 			primaryKey: true,
 		},
 		parentid: {
-			type: DataTypes.STRING(64),
+			type: DataTypes.STRING(32),
 			allowNull: true,
 			defaultValue: '0'
 		},
@@ -48,9 +48,9 @@ module.exports = app => {
 			allowNull: true
 		}
 	}, {
-		timestamps: false,
-		freezeTableName: true,
-		tableName: 'sys_menu'
+		timestamps: false,		// 禁止时间戳
+		freezeTableName: true,	// 禁用修改表名
+		tableName: 'sys_menu',	// 数据库表名 ;
 	});
 
 	return Menu;

@@ -3,16 +3,16 @@ const utils = require('./src/utils/webpack-utils')
 
 function resolve(dir) {
     return path.join(__dirname, dir)
-}
-// console.log(resolve('src/icons/svg/'));
+} 
+
 module.exports = {
     devServer: {
         proxy: {
-            '/api': {
+            '/egg': {
                 target: 'http://localhost:7001',
                 changeOrigin: true,
                 pathRewrite: {
-                    '^/api': ''
+                    '^/egg': ''
                 }
             }
         }

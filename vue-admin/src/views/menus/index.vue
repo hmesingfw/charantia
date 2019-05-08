@@ -124,7 +124,11 @@ export default {
             console.log(data);
         },
         onSubmit () {
-            console.log('submit!');
+            this.$http.get(`/egg/addMenus`).then(res => {
+                console.log(res);
+            }).catch(err => {
+                console.log(err);
+            })
         }
 
     }

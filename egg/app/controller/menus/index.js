@@ -9,10 +9,18 @@ class MenusController extends Controller {
             ctx,
             service,
         } = this;
-              
-        ctx.body = await service.sys.menu.findAll();
 
+        ctx.body = await service.sys.menu.findAll();
     }
+
+    async addMenus() {
+        const {
+            ctx,
+            service
+        } = this;
+        ctx.body = await service.sys.menu.addMenus();
+    }
+
 }
 
 module.exports = MenusController;
