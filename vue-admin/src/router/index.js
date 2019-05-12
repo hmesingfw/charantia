@@ -20,7 +20,6 @@ export const routerMap = [{
 	}],
 	meta: {
 		icon: 'el-icon-document',
-		noCache: true // 非缓存  缓存等下
 	}
 }, {
 	path: '/sys',
@@ -31,7 +30,6 @@ export const routerMap = [{
 		name: 'menus',
 		meta: {
 			icon: 'el-icon-document',
-			noCache: true // 非缓存  缓存等下
 		},
 
 	}, {
@@ -40,13 +38,11 @@ export const routerMap = [{
 		name: 'demo2',
 		meta: {
 			icon: 'el-icon-document',
-			noCache: true // 非缓存  缓存等下
 		},
 
 	}],
 	meta: {
 		icon: 'el-icon-document',
-		noCache: true // 非缓存  缓存等下
 	}
 }]
 

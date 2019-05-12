@@ -11,20 +11,19 @@ class MenuService extends Service {
     }
 
     async findAll() {
-        const query = {
-            id: 1
-        };
-        const menu = await this.ctx.model.Sys.Menu.find(query);
+        const menu = await this.ctx.model.Sys.Menu.findAll();
         return menu;
     }
 
     async addMenus() {
+        const form = this.ctx.request.body;
         const body = await this.ctx.model.Sys.Menu.create({
             id: sysutils.UUID(),
-            title: '第一个插入'
+            ...form
         });
         return body;
     }
 }
 
 module.exports = MenuService;
+
