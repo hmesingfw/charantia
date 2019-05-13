@@ -12,7 +12,9 @@ class MenuService extends Service {
 
     async findAll() {
         const menu = await this.ctx.model.Sys.Menu.findAll();
-        return menu;
+        let reArr = [];
+        sysutils.getTree(menu, 0, reArr);
+        return reArr;
     }
 
     async addMenus() {
@@ -26,4 +28,3 @@ class MenuService extends Service {
 }
 
 module.exports = MenuService;
-

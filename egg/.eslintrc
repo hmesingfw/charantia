@@ -3,6 +3,8 @@
   "rules": {
     "linebreak-style": [0, "error", "windows"],
     "indent": ["off", 4],
-    "comma-dangle": ["off"]
+    "comma-dangle": ["off"],
+    "prefer-const": [0],
+    "eqeqeq": [0]
   }
 }
