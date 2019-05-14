@@ -9,8 +9,12 @@
 <body>
 	<div id="app">
 		<!-- 第三步，编写模版 -->
+
 		<input type="text" v-model="value" name="">
-		<div>{{value}}</div>
+		<div v-bind:id="id">{{value}}</div>
+
+		<li v-for="item in list">{{ item.id }}</li>
+		<div v-if="bol">v-if</div>
 
 	</div>
 </body>
@@ -23,6 +27,9 @@
 		el:'#app',	// 渲染dom的位置
 		data(){
 			return {
+				list:[{id:'1'},{id:'2'}],
+				bol:false,
+				id:'divid',
 				value:""
 			}
 		}

@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>赛题1样版</title>
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+<script type="text/javascript" src="js/jquery-1.7.1.js" ></script>
+<script type="text/javascript" src="js/public.js" ></script>
+<script type="text/javascript" src="js/data.js" ></script>
+<script type="text/javascript" src="js/pengjiewen1.js" ></script>
+<!--原生表单加样式-->
+<script type="text/javascript" src="js/jquery.jqtransform.js" ></script>
+</head>
+
+<body style="padding:50px;">
+<div style="height:640px;display:block;">
+<div class="selectDiv">
+	<h1>单选：</h1>
+    <div id="rads" class="formStyle selectOrder">
+    	<p>
+        	 <input type="radio"  name="question" value="oui" checked >选项1
+        </p>
+        <p>
+        	<input type="radio"  name="question" value="non" > 选项2
+        </p>
+        <p>
+        	<input type="radio"  name="question" value="non" > 选项3
+        </p>
+    </div>
+    <button class="blueBtn">初始化</button><button class="blueBtn">获取选中值</button><button class="blueBtn">设置选中选项2</button>
+</div>
+<div class="selectDiv">
+	<h1>多选：</h1>
+    <div id="chks" class="formStyle selectOrder">
+    	<p>
+        	 <input type="checkbox" name="chbox">选项1
+        </p>
+        <p>
+        	<input type="checkbox" name="chbox">选项2
+        </p>
+        <p>
+        	<input type="checkbox" name="chbox">选项3
+        </p>
+    </div>
+    <button class="blueBtn">初始化</button><button class="blueBtn">获取选中值</button><button class="blueBtn">设置选中1,2</button>
+</div>
+<div class="selectDiv">
+	<h1>下拉选择：</h1>
+	<div class="multipleChoice">
+      <div class="multipleInput"></div>
+      <div class="inputClear"></div>
+      <a class="multipleA"></a>
+      <div class="multipleXiala">
+        <div class="resultDiv">
+          <ul class="result formStyle">
+            <li><input type="checkbox" name="chbox"><span>全选</span></li>
+            <li><input type="checkbox" name="chbox"><span>选项1</span></li>
+            <li><input type="checkbox" name="chbox"><span>选项2</span></li>
+            <li><input type="checkbox" name="chbox"><span>选项3</span></li>
+            <li><input type="checkbox" name="chbox"><span>选项4</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <button class="blueBtn">初始化</button><button class="blueBtn">获取选中值</button><button class="blueBtn">设置选中1,2</button>
+</div>
+<div class="selectDiv">
+	<h1>文本框：</h1>
+    <input class="deInput"/>
+    <button class="blueBtn">初始化</button><button class="blueBtn">只读</button><button class="blueBtn">激活</button>
+</div>
+<div class="selectDiv">
+	<h1>列表：</h1>
+	<div class="btnDiv">
+        <button class="blueBtn">初始化</button><button class="blueBtn">获取选中值</button><button class="blueBtn" style="width:120px;">设置选中2,3</button>
+        </div>
+    <table class="attachTable">
+        <thead>
+        <tr>
+          <th><div class="formStyle"><input type="checkbox" name="chbox"></div></th>
+          <th width="20%" nowrap="nowrap">姓名</th>
+          <th width="20%" nowrap="nowrap">职位</th>
+          <th width="20%" nowrap="nowrap">入职日期</th>
+          <th width="20%" nowrap="nowrap">工龄</th>
+          <th width="20%" nowrap="nowrap">性别</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td><div class="formStyle"><input type="checkbox" name="chbox"></div></td>
+          <td>张三</td>
+          <td>java程序员</td>
+          <td>2011-6-1</td>
+          <td>25</td>
+          <td>男</td>
+        </tr>
+        <tr>
+          <td><div class="formStyle"><input type="checkbox" name="chbox"></div></td>
+          <td>张三</td>
+          <td>java程序员</td>
+          <td>2011-6-1</td>
+          <td>25</td>
+          <td>男</td>
+        </tr>
+        <tr>
+          <td><div class="formStyle"><input type="checkbox" name="chbox"></div></td>
+          <td>张三</td>
+          <td>java程序员</td>
+          <td>2011-6-1</td>
+          <td>25</td>
+          <td>男</td>
+        </tr>
+        <tr>
+          <td><div class="formStyle"><input type="checkbox" name="chbox"></div></td>
+          <td>张三</td>
+          <td>java程序员</td>
+          <td>2011-6-1</td>
+          <td>25</td>
+          <td>男</td>
+        </tr>
+        </tbody>
+        </table>
+
+</div>
+</div>
+
+
+<div style="display:block;">
+<pre style="line-height:25px;width:500px,overflow:auto;">
+考试说明:
+
+目的：
+	让各位对自己界面开发基础技术有所认知，对不足之处进行提高.
+	考试内容也是实际开发中常碰到的内容，通过本次练习后希望后续开发能提升开发经验与效率。
+
+考前注意事项：
+	1、考试时间4:30-8:00,在此时间内做完题目并且完全正确的奖励200元购物卡，一个功能点没做完扣绩效5分。
+	2、注意考场纪律，可以上网或查资料，但不允许相互交流、抄袭、发送答案。
+	3、考试内容提交：
+	   在/js目录里写一个以自己名字拼音命名的js文件，如:gaotao.js，《控件.html》里把引用的XXX.js改成自己的js。
+	   所有逻辑都写在自已的这个js里，考试完仅提交这个js，阅卷者在本机引入这个js，以不能正常操作的功能点进行扣分。
+	4、几位负责人交叉检查，高涛检查剑飞的人，剑飞检查谢雄标的人，谢雄标检查高涛的人。
+	   也就是说各考员将考试结果js文件邮件发到3位负责人。
+	   3位负责人把检查扣分说明与扣分结果发给高涛（不需再发代码），由高涛最终统一上报与发放成绩。
+	   3位负责人也可看看代码是否易读，精练，最终会挑选或重构出一份标准答案，作为此此考题的标准答案。
+        5、考试功能正确第一，代码易读易懂第二，开发速度第三，所以请检查好再交卷。
+
+考题要求：
+	1，以data.js里的基础数据为准。
+	2，“初始化”即按data.js里数据呈现出来，举例单选这里，就是要显示成 ◎紧急   ◎重要   ◎普通。
+	    文本框的“初始化”是反把textData变量值赋进去。
+	3，“获取选中值”，把得到的选中值与文本alter出来就好, 列表则弹出id与姓名就好。
+	4，“设置选中X”,按值设置，该单选的单选，该勾选的勾选， 针对“下拉选择”这个，不仅要下拉项里选中，文本框里也要显示选中的文本。
+	5，只读与激活，不是禁用与启用。
+	6，下拉选择框里有把“X”，是要实现清空功能。
+	   下拉选择 下拉项里有个“全选”，这个功能要实现，勾上全选，反之全不选
+	   下拉选择 获取选中值时，不需要“全选”这个选项的值。
+	   下拉选项中，只要有一个未被选中，“全选”就需要去掉被勾选状态。
+	7，列表表头上的复选框，也是要做“全选”功能的。
+	8, 以引入了jquery, 可用jquery实现，也可写原生js实现。
+	9，可参考：http://172.168.27.133:8080/SSH3/demo/javascript/demo.html  -- 这里是用jquery写的一些样例
+</pre>
+</div>
+</body>
+</html>

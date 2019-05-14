@@ -13,30 +13,15 @@
 	<div id="app">
 		<!-- 第四步，编写模版 -->
 		<el-button @click="visible = true">Button</el-button>
-		<el-dialog :visible.sync="visible" title="Hello world">
-			<p>Try Element</p>
-		</el-dialog>
+		<el-input v-model="input" placeholder="请输入内容"></el-input>
 
-		<el-button>默认按钮</el-button>
-		<el-button type="primary">主要按钮</el-button>
-		<el-button type="success">成功按钮</el-button>
-		<el-button type="info">信息按钮</el-button>
-		<el-button type="warning">警告按钮</el-button>
-		<el-button type="danger">危险按钮</el-button>
+		<el-select v-model="value" placeholder="请选择">
+		    <el-option v-for="item in options"  :key="item.value" :label="item.label" :value="item.value">
+		    </el-option>
+		</el-select>
 
 
-
-		<el-radio v-model="radio" label="1">备选项</el-radio>
-		<el-radio v-model="radio" label="2">备选项</el-radio>
-
-
-		<div>
-
-			<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage4"
-				:page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper"
-				:total="400">
-			</el-pagination>
-		</div>
+		<my-component-name v-bind:values="value" :options="options" :changes="optionChage" v-on:callback="callbackPa"></my-component-name>
 	</div>
 </body>
 <!-- 第二步 引入 vue.js element.js文件 -->
@@ -44,15 +29,62 @@
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script type="text/javascript">
+	Vue.component('my-component-name', { 
+		template:`
+			<div>
+				<el-select v-model="values" placeholder="请选择" v-on:change="changes">
+				    <el-option
+				      v-for="item in options"
+				      :key="item.value"
+				      :label="item.label"
+				      :value="item.value">
+				    </el-option>
+				</el-select>
+				<el-button v-on:click="ButtonClick">点击事件</el-button>
+			</div>
+		`,
+		props:{
+			values:[String],
+			options:[Array],
+			changes:[Function]
+		},
+		data:function(){
+			return {
+				visible:false,				
+			}
+		},
+		methods:{
+			ButtonClick(){
+				this.$emit('callback', 'click button')
+			}
+		}
+	})
+
 	// 第三步，new Vue
 	new Vue({
 		el: '#app',
 		data: function () {
 			// 第五步，添加模版中的数据
 			return {
-				visible: false,
-				radio: '1',
-				currentPage4: 4
+				visible: false,			
+				input: '',
+				options: [{
+		          value: '选项1',
+		          label: '黄金糕'
+		        }, {
+		          value: '选项2',
+		          label: '双皮奶'
+		        }, {
+		          value: '选项3',
+		          label: '蚵仔煎'
+		        }, {
+		          value: '选项4',
+		          label: '龙须面'
+		        }, {
+		          value: '选项5',
+		          label: '北京烤鸭'
+		        }],
+		        value: ''	 
 			}
 		},
 		// 第五步，实现模版中的方法
@@ -62,7 +94,13 @@
 			},
 			handleCurrentChange(val) {
 				console.log(`当前页: ${val}`);
-			}
+			},
+			optionChage(val){
+				console.log(val)
+			},
+			callbackPa(val){
+				console.log(val)
+			},
 		},
 	})
 </script>

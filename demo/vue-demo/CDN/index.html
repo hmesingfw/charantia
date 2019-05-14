@@ -22,19 +22,29 @@
         <!-- 第四步，编写查询表单的呈现与数据绑定 -呈现  -->
         <el-form label-position="right" label-width="100px" :model="formLabelAlign" :inline="true" size="small"
             class="form-query">
+            <el-form-item label="ID：">
+            	<el-input v-model="formLabelAlign.id"></el-input>
+            </el-form-item>
+
             <el-form-item label="姓名：">
                 <el-input v-model="formLabelAlign.name"></el-input>
             </el-form-item>
+
             <el-form-item label="性别：">
                 <el-select v-model="formLabelAlign.sex" placeholder="请选择性别">
                     <el-option label="男" value="1"></el-option>
                     <el-option label="女" value="2"></el-option>
                 </el-select>
             </el-form-item>
+
             <el-form-item label="地址：">
                 <el-input v-model="formLabelAlign.address"></el-input>
             </el-form-item>
         </el-form>
+
+
+
+
         <!-- 第五步，【查询】方法功能实现   -呈现 -->
         <el-row class="nav-botton">
             <el-button type="primary" size="small" plain @click="handleQuery">查询</el-button>
@@ -42,13 +52,17 @@
             <el-button type="primary" size="small" plain @click="handleUpdate">修改</el-button>
             <el-button type="primary" size="small" plain @click="handleDelete">删除</el-button>
         </el-row>
+
+
         <!-- 第六步，表格呈现与数据绑定 -呈现  -->
         <el-table ref="singleTable" :data="tableData" highlight-current-row @current-change="tableRowClick"
             @cell-dblclick="handleDbClick" style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55">
             </el-table-column>
+
             <el-table-column property="id" label="编号" width="120">
             </el-table-column>
+
             <el-table-column property="name" label="姓名" width="120">
             </el-table-column>
             <el-table-column property="sex" label="性别" width="120">
@@ -144,7 +158,10 @@
         methods: {
             /** 点击查询按钮 */
             handleQuery() {
+
                 console.log(this.formLabelAlign);
+                this.getTableData();
+                // axios.pot
             },
             /** 点击新增按钮 */
             handleAdd() {
@@ -198,7 +215,7 @@
             },
             /** 关闭    自定义的弹框*/
             funcClose (bloen) {
-                this.dialogVisible = bloen
+                this.dialogVisible = false
             }
         },
         // 页面创建完成后加载
