@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<!-- 第一步  引入静态文体 -->
+    <!-- 第一步  引入静态文体 -->
     <meta charset="UTF-8">
     <!-- import static CSS -->
     <link rel="stylesheet" href="./static/css/init.css">
@@ -14,48 +14,55 @@
     [v-cloak] {
         display: none
     }
+
+    .el-dialog__header {
+        padding: 20px 20px 0px;
+        text-align: center;
+    }
+
+    .el-dialog__title {
+        color: #409EFF;
+        font-size: 18px;
+    }
 </style>
 
 <body>
     <!-- 第三步，编写模版 -->
     <div id="app" v-cloak>
         <!-- 第四步，编写查询表单的呈现与数据绑定 -呈现  -->
-        <el-form label-position="right" label-width="100px" :model="formLabelAlign" :inline="true" size="small"
-            class="form-query">
-            <el-form-item label="ID：">
-            	<el-input v-model="formLabelAlign.id"></el-input>
-            </el-form-item>
-
-            <el-form-item label="姓名：">
-                <el-input v-model="formLabelAlign.name"></el-input>
-            </el-form-item>
-
-            <el-form-item label="性别：">
-                <el-select v-model="formLabelAlign.sex" placeholder="请选择性别">
-                    <el-option label="男" value="1"></el-option>
-                    <el-option label="女" value="2"></el-option>
-                </el-select>
-            </el-form-item>
-
-            <el-form-item label="地址：">
-                <el-input v-model="formLabelAlign.address"></el-input>
-            </el-form-item>
+        <el-form label-position="right" label-width="100px" :model="formLabelAlign" size="small" class="form-query">
+            <el-row>
+                <el-col :span="8">
+                    <el-form-item label="编号：">
+                        <el-input v-model="formLabelAlign.id" placeholder="请输入内容" clearable></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                    <el-form-item label="姓名：">
+                        <el-input v-model="formLabelAlign.name" placeholder="请输入内容" clearable></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                    <el-form-item label="性别：">
+                        <el-select v-model="formLabelAlign.sex" placeholder="请选择性别" style="width:100%">
+                            <el-option label="男" value="1"></el-option>
+                            <el-option label="女" value="2"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+            </el-row>
         </el-form>
-
-
-
-
         <!-- 第五步，【查询】方法功能实现   -呈现 -->
         <el-row class="nav-botton">
-            <el-button type="primary" size="small" plain @click="handleQuery">查询</el-button>
-            <el-button type="primary" size="small" plain @click="handleAdd">新增</el-button>
-            <el-button type="primary" size="small" plain @click="handleUpdate">修改</el-button>
-            <el-button type="primary" size="small" plain @click="handleDelete">删除</el-button>
+            <el-button type="primary" size="mini" @click="handleQuery" icon="el-icon-search">查询</el-button>
+            <el-button type="primary" size="mini" @click="handleAdd" icon="el-icon-edit">新增</el-button>
+            <el-button type="primary" size="mini" @click="handleUpdate" icon="el-icon-edit-outline">修改</el-button>
+            <el-button type="primary" size="mini" @click="handleDelete" icon="el-icon-delete">删除</el-button>
         </el-row>
 
 
         <!-- 第六步，表格呈现与数据绑定 -呈现  -->
-        <el-table ref="singleTable" :data="tableData" highlight-current-row @current-change="tableRowClick"
+        <el-table ref="singleTable" :data="tableData" highlight-current-row @current-change="tableRowClick" height="460"
             @cell-dblclick="handleDbClick" style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55">
             </el-table-column>
@@ -69,9 +76,10 @@
                 <template slot-scope="scope">
                     {{ scope.row.sex == '1' ? '男' : '女'}}
                 </template>
-
             </el-table-column>
             <el-table-column property="hobby" label="爱好" width="140">
+            </el-table-column>
+            <el-table-column property="datetime" label="生日">
             </el-table-column>
             <el-table-column property="address" label="地址">
             </el-table-column>
@@ -80,8 +88,8 @@
         <!-- 第七步，分页操作 -呈现 -->
         <div class="block nav-page">
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                :current-page="currentPage" :page-sizes="[100, 200, 300, 400]" :page-size="100"
-                layout="prev, pager, next, jumper" :total="400">
+                :current-page="currentPage" :page-sizes="[25, 50, 100]" :page-size="25"
+                layout="prev, pager, next, total, sizes, jumper" :total="400">
             </el-pagination>
         </div>
 
@@ -102,7 +110,7 @@
 <script src="./js/data.js"></script>
 
 <script>
-	// 第二步 new Vue
+    // 第二步 new Vue
     new Vue({
         el: '#app',
         // 第三步，编写data，绑定数据
@@ -173,15 +181,42 @@
                     address: ''
                 }
                 this.dialogVisible = true;
+                this.$message({
+                    type: 'success',
+                    message: '保存成功！'
+                })
             },
             /** 点击修改按钮 */
             handleUpdate() {
                 this.form = this.tempClickRow;
                 this.dialogVisible = true;
+                this.$message({
+                    type: 'success',
+                    message: '保存成功！'
+                })
             },
             /** 点击删除按钮 */
             handleDelete() {
-                console.log(this.multipleSelection)
+                this.$confirm('此操作将永久删除信息，是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.tableData.forEach((item, i) => {
+                        for (let index = 0; index < this.multipleSelection.length; index++) {
+                            const element = this.multipleSelection[index];
+                            if (item.id == element.id) {
+                                this.tableData.splice(i, 1);
+                            }
+
+                        }
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             },
             /** 双击表格时，打开编辑页面    */
             handleDbClick(val) {
@@ -202,7 +237,7 @@
             handleSizeChange(val) {
                 console.log('每页1', val);
                 this.getTableData();
-            }, 
+            },
             /** 切换翻页 */
             handleCurrentChange(val) {
                 this.getTableData();
@@ -214,7 +249,7 @@
                 this.tableData = getDataList().tableData;
             },
             /** 关闭    自定义的弹框*/
-            funcClose (bloen) {
+            funcClose(bloen) {
                 this.dialogVisible = false
             }
         },
