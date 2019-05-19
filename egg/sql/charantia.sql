@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2019-05-08 23:40:43
+Date: 2019-05-19 22:56:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -23,10 +23,14 @@ CREATE TABLE `sys_menu` (
   `id` varchar(32) NOT NULL,
   `parentid` varchar(32) DEFAULT '0',
   `path` varchar(255) DEFAULT '' COMMENT '菜单路径',
-  `title` varchar(64) DEFAULT NULL COMMENT '标题',
+  `title_zh` varchar(128) DEFAULT NULL COMMENT '标题',
+  `title_en` varchar(128) DEFAULT NULL,
+  `component` varchar(255) DEFAULT NULL COMMENT '组件路径',
+  `status` varchar(10) DEFAULT NULL,
   `sort` int(13) DEFAULT NULL COMMENT '权重',
-  `meta` text,
+  `icon` varchar(255) DEFAULT NULL,
   `user` varchar(64) DEFAULT NULL COMMENT '用户',
+  `created_at` datetime DEFAULT NULL,
   `updatetime` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -35,9 +39,10 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('15573299117691557329911769155732', '0', '', '第一个插入', null, null, null, null, null);
-INSERT INTO `sys_menu` VALUES ('2', '0', '', '第一个插入', null, null, null, null, null);
-INSERT INTO `sys_menu` VALUES ('4671989668632', '0', '', '第一个插入', null, null, null, null, null);
+INSERT INTO `sys_menu` VALUES ('15576700139391557670013939155760', '0', 'path', '测试', 'test', null, '1', '1', null, null, '2019-05-12 14:06:53', '2019-05-12 14:06:53', null);
+INSERT INTO `sys_menu` VALUES ('15576700139391557670013939155761', '15576700139391557670013939155760', 'path', '测试', 'test', null, '1', '1', null, null, '2019-05-12 14:06:53', '2019-05-12 14:06:53', null);
+INSERT INTO `sys_menu` VALUES ('15576700139391557670013939155767', '15576700139391557670013939155760', 'path', '测试', 'test', null, '1', '1', null, null, '2019-05-12 14:06:53', '2019-05-12 14:06:53', null);
+INSERT INTO `sys_menu` VALUES ('15576700139391557670013939155768', '15576700139391557670013939155760', 'path', '测试', 'test', null, '1', '1', null, null, '2019-05-12 14:06:53', '2019-05-12 14:06:53', null);
 
 -- ----------------------------
 -- Table structure for sys_office
