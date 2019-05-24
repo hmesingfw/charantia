@@ -2,13 +2,13 @@
 Vue.component('kt-form', {
     // 第二步，编写 template模版
     template: `
-        <el-dialog :title="title" :visible.sync="dialog" width="60%" :before-close="handleClose">
+        <el-dialog :title="title" :visible.sync="dialog" width="50%" :before-close="handleClose">
 
             <el-form :model="form" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" size="small">
                 <el-form-item label="编号" prop="id" width="50%">
                     <el-input v-model="form.id"></el-input>
                 </el-form-item>
-                <el-form-item label="姓名" prop="name" width="50%">
+                <el-form-item label="姓名" prop="name" width="50%" placeholder="请输入内容">
                     <el-input v-model="form.name"></el-input>
                 </el-form-item>
                 <el-form-item label="性别" prop="sex" width="50%">      
@@ -17,15 +17,24 @@ Vue.component('kt-form', {
                         <el-option label="女" value="2"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="爱好" prop="hobby" width="50%">
-                    <el-input v-model="form.hobby"></el-input>
+                <el-form-item label="爱好" prop="hobby" width="50%"> 
+                    <el-radio-group v-model="form.hobby">
+                        <el-radio label="篮球">篮球</el-radio>
+                        <el-radio label="足球">足球</el-radio>
+                        <el-radio label="乒乓球">乒乓球</el-radio>
+                        <el-radio label="羽毛球">羽毛球</el-radio>
+                        <el-radio label="冰球">冰球</el-radio>
+                    </el-radio-group>
                 </el-form-item>
+                <el-form-item label="生日" prop="hobby" width="50%"> 
+                    <el-date-picker v-model="form.datetime" type="date" placeholder="选择日期"></el-date-picker>
+                </el-form-item>    
                 <el-form-item label="地址" prop="address" width="50%">
-                    <el-input v-model="form.address"></el-input>
+                    <el-input v-model="form.address" type="textarea" placeholder="请输入内容"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-                    <el-button @click="resetForm('ruleForm')">重置</el-button>
+                    <el-button @click="handleClose">取消</el-button>
                 </el-form-item>
             </el-form>
         </el-dialog>
@@ -58,7 +67,7 @@ Vue.component('kt-form', {
             /** 数据验证方法 */
             this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    this.$emit('close', true); 
+                    this.$emit('close', true);
                     this.$message({
                         type: 'success',
                         message: '操作成功'

@@ -1,7 +1,7 @@
 function getDataList(){
     var Random = Mock.Random;
     var data = Mock.mock({
-        'tableData|8': [{
+        'tableData|25': [{
             'id|+1': Random.natural(10000, 99999),
             'name|1': '@FIRST', //随便名字
             'sex|1': ['1', '2'],
@@ -9,6 +9,7 @@ function getDataList(){
             'address|1': ['上海市普陀区金沙江路 1518', '上海市普陀区金沙江路 1519', '上海市普陀区金沙江路 1520',
                 '上海市普陀区金沙江路 1521'
             ], //随机一个
+            'datetime|1': '@DATETIME("yyyy-MM-dd")',
         }]
     })
 
