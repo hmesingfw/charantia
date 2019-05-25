@@ -1,7 +1,24 @@
 <template>
     <el-row>
         <el-col :span="10">
-            <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+            <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
+
+            <el-tree
+                :data="data"
+                node-key="id"
+                ref="treeRef"
+                :props="defaultProps"
+                :filter-node-method="filterNode"
+                default-expand-all
+            >
+                <span class="custom-tree-node" slot-scope="{ node, data }">
+                    <span v-if="language == 'zh'" class="title">{{ data.titelZh }}</span>
+                    <span v-if="language == 'en'" class="title">{{ data.titelEn }}</span>
+                    <span>
+                        <el-button type="text" size="mini" @click.stop="openForm">Append</el-button>
+                    </span>
+                </span>
+            </el-tree>
         </el-col>
         <el-col :span="14">
             <transition name="el-fade-in">
@@ -58,27 +75,20 @@
 <script>
 export default {
     name: 'menus',
+    computed: {
+        language () {
+            return this.$store.getters.language;
+        }
+    },
     data () {
         return {
             show: true,
-            data: [{
-                label: '一级 1',
-                children: [{
-                    label: '二级 1-1',
-                    children: [{
-                        label: '三级 1-1-1'
-                    }]
-                }]
-            }],
+            filterText: '', // 树形结构过滤条件
+            data: [],       // 树形结构数据
             defaultProps: {
                 children: 'children',
-                label: 'label'
             },
             form: {
-                title: {
-                    zh: '',
-                    en: ''
-                },
                 status: '1',
                 sort: 1,
                 meta: {
@@ -96,13 +106,15 @@ export default {
     },
     created () {
         this.$http.get(`/egg/getMenus`).then(res => {
+            this.data = res.data;
             console.log(res);
         }).catch(err => {
 
         })
     },
     methods: {
-        handleNodeClick (data) {
+        openForm () {
+            console.log('openform');
         },
         onSubmit () {
             this.$refs.ruleForm.validate((valid) => {
@@ -116,9 +128,36 @@ export default {
                     return false;
                 }
             });
+        },
+        filterNode (value, data) {
+            if (!value) return true;
+            if (this.language == 'zh') {
+                return data.titelZh.indexOf(value) !== -1;
+            } else if (this.language == 'en') {
+                return data.titelEn.indexOf(value) !== -1;
+            }
+            return true;
         }
 
-    }
+    },
+    watch: {
+        filterText (val) {
+            this.$refs.treeRef.filter(val);
+        }
+    },
 }
 </script>
+
+<style lang="less" scoped>
+.custom-tree-node {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .title {
+        line-height: 28px;
+    }
+}
+</style>
 

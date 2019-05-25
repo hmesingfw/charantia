@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 127.0.0.1  密码 woxihuanni
+Source Server         : 127.0.0.1 chensheng
 Source Server Version : 50712
 Source Host           : localhost:3306
 Source Database       : charantia
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2019-05-19 22:56:11
+Date: 2019-05-25 17:32:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -39,10 +39,10 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('15576700139391557670013939155760', '0', 'path', '测试', 'test', null, '1', '1', null, null, '2019-05-12 14:06:53', '2019-05-12 14:06:53', null);
-INSERT INTO `sys_menu` VALUES ('15576700139391557670013939155761', '15576700139391557670013939155760', 'path', '测试', 'test', null, '1', '1', null, null, '2019-05-12 14:06:53', '2019-05-12 14:06:53', null);
-INSERT INTO `sys_menu` VALUES ('15576700139391557670013939155767', '15576700139391557670013939155760', 'path', '测试', 'test', null, '1', '1', null, null, '2019-05-12 14:06:53', '2019-05-12 14:06:53', null);
-INSERT INTO `sys_menu` VALUES ('15576700139391557670013939155768', '15576700139391557670013939155760', 'path', '测试', 'test', null, '1', '1', null, null, '2019-05-12 14:06:53', '2019-05-12 14:06:53', null);
+INSERT INTO `sys_menu` VALUES ('15576700139391557670013939155760', '0', 'path', '系统', 'system', null, '1', '2', null, null, '2019-05-12 14:06:53', '2019-05-12 14:06:53', null);
+INSERT INTO `sys_menu` VALUES ('15576700139391557670013939155761', '0', 'path', '首页', 'index', null, '1', '999', null, null, '2019-05-12 14:06:53', '2019-05-12 14:06:53', null);
+INSERT INTO `sys_menu` VALUES ('15576700139391557670013939155767', '15576700139391557670013939155760', 'path', '菜单', 'menus', null, '1', '2', null, null, '2019-05-12 14:06:53', '2019-05-12 14:06:53', null);
+INSERT INTO `sys_menu` VALUES ('15576700139391557670013939155768', '15576700139391557670013939155760', 'path', '测试', 'demo2', null, '1', '2', null, null, '2019-05-12 14:06:53', '2019-05-12 14:06:53', null);
 
 -- ----------------------------
 -- Table structure for sys_office

@@ -11,7 +11,12 @@ class MenuService extends Service {
     }
 
     async findAll() {
-        const menu = await this.ctx.model.Sys.Menu.findAll();
+
+        const menu = await this.ctx.model.Sys.Menu.findAll({
+            order: [
+                [ 'sort', 'DESC' ]
+            ],
+        });
         let reArr = [];
         reArr = sysutils.getTree(menu, 0);
         return reArr;
