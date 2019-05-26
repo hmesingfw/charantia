@@ -5,6 +5,7 @@
     "indent": ["off", 4],
     "comma-dangle": ["off"],
     "prefer-const": [0],
-    "eqeqeq": [0]
+    "eqeqeq": [0],
+    "no-regex-spaces": [0]
   }
 }

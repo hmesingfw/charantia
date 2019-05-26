@@ -15,7 +15,8 @@
                     <span v-if="language == 'zh'" class="title">{{ data.titelZh }}</span>
                     <span v-if="language == 'en'" class="title">{{ data.titelEn }}</span>
                     <span>
-                        <el-button type="text" size="mini" @click.stop="openForm">Append</el-button>
+                        <el-button type="text" size="mini" @click.stop="deleteForm(data)">delete</el-button>
+                        <el-button type="text" size="mini" @click.stop="openForm(data)">Append</el-button>
                     </span>
                 </span>
             </el-tree>
@@ -24,10 +25,10 @@
             <transition name="el-fade-in">
                 <el-form
                     ref="ruleForm"
+                    v-loading="loading"
                     :model="form"
                     :rules="rules"
                     label-width="100px"
-                    v-show="show"
                 >
                     <el-row>
                         <el-col :span="12">
@@ -61,10 +62,10 @@
                         <el-input v-model="form.component" placeholder="跳转组件"></el-input>
                     </el-form-item>
                     <el-form-item label="图标：">
-                        <el-input v-model="form.meta.icon" placeholder="跳转组件"></el-input>
+                        <el-input v-model="form.icon" placeholder="跳转组件"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit">立即创建</el-button>
+                        <el-button type="primary" @click="onSubmit">保存数据</el-button>
                         <el-button>取消</el-button>
                     </el-form-item>
                 </el-form>
@@ -76,13 +77,14 @@
 export default {
     name: 'menus',
     computed: {
+        /** 获取语言缓存值 */
         language () {
             return this.$store.getters.language;
         }
     },
     data () {
         return {
-            show: true,
+            loading: false,
             filterText: '', // 树形结构过滤条件
             data: [],       // 树形结构数据
             defaultProps: {
@@ -91,9 +93,7 @@ export default {
             form: {
                 status: '1',
                 sort: 1,
-                meta: {
-                    icon: ''
-                }
+                icon: ''
             },
             rules: {
                 titelZh: [{ required: true, message: '请输入菜单中文名称！', trigger: 'blur' }],
@@ -105,30 +105,61 @@ export default {
         };
     },
     created () {
-        this.$http.get(`/egg/getMenus`).then(res => {
-            this.data = res.data;
-            console.log(res);
-        }).catch(err => {
-
-        })
+        this.getMeuns();
     },
     methods: {
-        openForm () {
-            console.log('openform');
+        getMeuns () {
+            this.$http.get(`/egg/getMenus`).then(res => {
+                this.data = res.data;
+                console.log(res);
+            }).catch(err => {
+
+            })
+        },
+        /** 打开form 表单信息 */
+        openForm (data) {
+            this.loading = true;
+            this.form = data;
+            setTimeout(() => {
+                this.loading = false;
+            }, 100);
+        },
+        /** 删除表单数据 */
+        deleteForm (data) {
+            this.$http.post(`/egg/delMenus`, { id: data.id }).then(res => {
+                console.log(res);
+            }).catch(err => {
+                this.$message(err)
+            })
         },
         onSubmit () {
             this.$refs.ruleForm.validate((valid) => {
                 if (valid) {
+                    delete this.form.createdAt;
+                    delete this.form.updatetime;
+
+                    this.loading = true;
                     this.$http.post(`/egg/addMenus`, this.form).then(res => {
-                        console.log(res);
+                        this.loading = false;
+                        if (res.data == '1') {
+                            this.$message({
+                                'type': 'success',
+                                'message': '保存成功'
+                            })
+                            this.getMeuns();
+                        } else {
+                            this.$message('操作失败');
+                        }
                     }).catch(err => {
-                        console.log(err);
+                        this.loading = false;
+                        this.$message(err)
                     })
                 } else {
                     return false;
                 }
             });
         },
+        /** 过滤参数 */
         filterNode (value, data) {
             if (!value) return true;
             if (this.language == 'zh') {
@@ -141,6 +172,7 @@ export default {
 
     },
     watch: {
+        /** 过滤参数 */
         filterText (val) {
             this.$refs.treeRef.filter(val);
         }

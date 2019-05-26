@@ -24,11 +24,40 @@ class MenuService extends Service {
 
     async addMenus() {
         const form = this.ctx.request.body;
-        const body = await this.ctx.model.Sys.Menu.create({
-            id: sysutils.UUID(),
-            ...form
-        });
+        let body;
+        if (form.id) {
+            body = await this.ctx.model.Sys.Menu.update({
+                ...form
+            }, {
+                where: {
+                    id: form.id
+                }
+            });
+            if (body.length > 1) {
+                body = '1';
+            }
+        } else {
+            body = await this.ctx.model.Sys.Menu.create({
+                id: sysutils.UUID(),
+                ...form
+            });
+            if (body) {
+                body = '1';
+            }
+        }
         return body;
+    }
+
+    async delMenus() {
+        const id = this.ctx.request.body.id;
+        await this.ctx.model.Sys.Menu.destroy({
+            where: {
+                id: {
+                    eq: id
+                }
+            }
+        });
+
     }
 }
 

@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 127.0.0.1 chensheng
+Source Server         : 127.0.0.1  密码 woxihuanni
 Source Server Version : 50712
 Source Host           : localhost:3306
 Source Database       : charantia
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2019-05-25 17:32:59
+Date: 2019-05-26 21:46:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -41,8 +41,13 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 INSERT INTO `sys_menu` VALUES ('15576700139391557670013939155760', '0', 'path', '系统', 'system', null, '1', '2', null, null, '2019-05-12 14:06:53', '2019-05-12 14:06:53', null);
 INSERT INTO `sys_menu` VALUES ('15576700139391557670013939155761', '0', 'path', '首页', 'index', null, '1', '999', null, null, '2019-05-12 14:06:53', '2019-05-12 14:06:53', null);
-INSERT INTO `sys_menu` VALUES ('15576700139391557670013939155767', '15576700139391557670013939155760', 'path', '菜单', 'menus', null, '1', '2', null, null, '2019-05-12 14:06:53', '2019-05-12 14:06:53', null);
-INSERT INTO `sys_menu` VALUES ('15576700139391557670013939155768', '15576700139391557670013939155760', 'path', '测试', 'demo2', null, '1', '2', null, null, '2019-05-12 14:06:53', '2019-05-12 14:06:53', null);
+INSERT INTO `sys_menu` VALUES ('15576700139391557670013939155767', '15576700139391557670013939155760', 'path', '菜单', 'menus', null, '1', '2', null, null, '2019-05-12 14:06:53', '2019-05-26 13:19:25', null);
+INSERT INTO `sys_menu` VALUES ('15576700139391557670013939155768', '15576700139391557670013939155760', 'path', '测试', 'demo2', null, '1', '3', null, null, '2019-05-12 14:06:53', '2019-05-26 13:02:13', null);
+INSERT INTO `sys_menu` VALUES ('15588758182411558875818241155887', '0', 'path', '测试', 'test', null, '1', '1', '', null, '2019-05-26 13:03:38', '2019-05-26 13:03:38', null);
+INSERT INTO `sys_menu` VALUES ('15588761119961558876111996155887', '0', 'path', '测试', 'test', null, '1', '1', '', null, '2019-05-26 13:08:31', '2019-05-26 13:08:31', null);
+INSERT INTO `sys_menu` VALUES ('15588761514751558876151475155887', '0', 'path', '测试', 'test', null, '1', '1', '', null, '2019-05-26 13:09:11', '2019-05-26 13:09:11', null);
+INSERT INTO `sys_menu` VALUES ('15588762920741558876292074155887', '0', 'path', '测试', 'test', null, '1', '1', '', null, '2019-05-26 13:11:32', '2019-05-26 13:11:32', null);
+INSERT INTO `sys_menu` VALUES ('15588765620191558876562019155887', '0', 'path', '测试', 'test', null, '1', '1', '', null, '2019-05-26 13:16:02', '2019-05-26 13:16:02', null);
 
 -- ----------------------------
 -- Table structure for sys_office

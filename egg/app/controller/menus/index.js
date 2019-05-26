@@ -21,6 +21,14 @@ class MenusController extends Controller {
         ctx.body = await service.sys.menu.addMenus();
     }
 
+    async delMenus() {
+        const {
+            ctx,
+            service
+        } = this;
+        ctx.body = await service.sys.menu.delMenus();
+    }
+
 }
 
 module.exports = MenusController;

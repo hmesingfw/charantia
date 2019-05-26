@@ -17,5 +17,6 @@ module.exports = app => {
 	// 菜单设置
 	router.get('/getMenus', controller.menus.index.getMenus);
 	router.post('/addMenus', controller.menus.index.addMenus);
+	router.post('/delMenus', controller.menus.index.delMenus);
 
 };
