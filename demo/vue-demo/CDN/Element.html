@@ -12,27 +12,12 @@
 <body>
 	<div id="app">
 		<!-- 第四步，编写模版 -->
-		<el-button @click="visible = true">Button</el-button>
-		<el-dialog :visible.sync="visible" title="Hello world">
-			<p>Try Element</p>
-		</el-dialog>
-
-		<el-button>默认按钮</el-button>
-		<el-button type="primary" @click="tli">主要按钮</el-button>
-		<el-button type="success">成功按钮</el-button>
-		<el-button type="info">信息按钮</el-button>
-		<el-button type="warning">警告按钮</el-button>
-		<el-button type="danger">危险按钮</el-button>
-
-
-		<kz-radio radio="value"></kz-radio>
-
-		<el-radio v-model="radio" label="1">备选项</el-radio>
-		<el-radio v-model="radio" label="2">备选项</el-radio>
-
-
-		<div>
-
+			
+		<el-date-picker v-model="value1" type="date" start-placeholder="" placeholder="选择日期" :picker-options="pickerOptions"></el-date-picker>
+		<el-date-picker v-model="value2" type="date" start-placeholder="" placeholder="选择日期" :picker-options="pickerOptions2"></el-date-picker>
+		<!-- <kz-radio></kz-radio> -->
+ 
+		<div  v-show="false">
 			<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
 				:current-page="currentPage4" :page-sizes="[100, 200, 300, 400]" :page-size="100"
 				layout="total, sizes, prev, pager, next, jumper" :total="400">
@@ -59,11 +44,30 @@
 		el: '#app',
 		data: function () {
 			// 第五步，添加模版中的数据
+			var _this = this;
 			return {
 				visible: false,
 				radio: '1',
 				currentPage4: 4,
-				value: ""
+				value: "",
+				value1:'',
+				value2:'',
+				pickerOptions:{
+			        disabledDate(time) {
+			            // 在科学计数法中，为了使公式简便，可以用带“E”的格式表示。例如1.03乘10的8次方，可简写为“1.03e8”的形式
+			            // 一天是24*60*60*1000 = 86400000 = 8.64e7
+			            // return time.getTime() < Date.now()-8.64e7; 
+			        }
+				},
+				pickerOptions2:{
+
+			        disabledDate(time) {
+			            // 在科学计数法中，为了使公式简便，可以用带“E”的格式表示。例如1.03乘10的8次方，可简写为“1.03e8”的形式
+			            // 一天是24*60*60*1000 = 86400000 = 8.64e7
+			            console.log(time, _this.value1)
+			            return time.getTime() < _this.value1 || time.getTime() > Date.now();
+			        }
+				}
 			}
 		},
 		// 第五步，实现模版中的方法
@@ -82,6 +86,7 @@
 		          	}
 		        });
 			},
+			
 		},
 	})
 </script>

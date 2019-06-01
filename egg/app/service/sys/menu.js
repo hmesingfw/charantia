@@ -50,14 +50,12 @@ class MenuService extends Service {
 
     async delMenus() {
         const id = this.ctx.request.body.id;
-        await this.ctx.model.Sys.Menu.destroy({
+        const body = await this.ctx.model.Sys.Menu.destroy({
             where: {
-                id: {
-                    eq: id
-                }
+                id
             }
         });
-
+        return body;
     }
 }
 

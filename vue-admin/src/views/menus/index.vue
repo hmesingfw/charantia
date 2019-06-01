@@ -1,7 +1,7 @@
 <template>
     <el-row>
         <el-col :span="10">
-            <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
+            <el-input :placeholder="$t('views.treeInputPlace')" v-model="filterText"></el-input>
 
             <el-tree
                 :data="data"
@@ -32,41 +32,41 @@
                 >
                     <el-row>
                         <el-col :span="12">
-                            <el-form-item label="中文名称：" prop="titelZh">
-                                <el-input v-model="form.titelZh" placeholder="中文名称，暂时没有验证"></el-input>
+                            <el-form-item :label="$t('views.titleZh')" prop="titelZh">
+                                <el-input v-model="form.titelZh"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
-                            <el-form-item label="英文名称：" prop="titelEn">
-                                <el-input v-model="form.titelEn" placeholder="英文名称，暂时没有验证"></el-input>
+                            <el-form-item :label="$t('views.titleEn')" prop="titelEn">
+                                <el-input v-model="form.titelEn"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
-                    <el-form-item label="路径：" prop="path">
+                    <el-form-item :label="$t('views.path')" prop="path">
                         <el-input v-model="form.path"></el-input>
                     </el-form-item>
-                    <el-form-item label="状态：" prop="status">
+                    <el-form-item :label="$t('views.status')" prop="status">
                         <el-switch
                             v-model="form.status"
-                            active-text="启用"
-                            inactive-text="禁用"
+                            :active-text="$t('views.active')"
+                            :inactive-text="$t('views.inactive')"
                             active-value="1"
                             inactive-value="0"
                         ></el-switch>
                     </el-form-item>
-                    <el-form-item label="权重：" prop="sort">
-                        <el-input-number v-model="form.sort" :min="1" label="权重"></el-input-number>
+                    <el-form-item :label="$t('views.sort')" prop="sort">
+                        <el-input-number v-model="form.sort" :min="1"></el-input-number>
                     </el-form-item>
 
-                    <el-form-item label="组件路径：">
-                        <el-input v-model="form.component" placeholder="跳转组件"></el-input>
+                    <el-form-item :label="$t('views.component')">
+                        <el-input v-model="form.component"></el-input>
                     </el-form-item>
-                    <el-form-item label="图标：">
-                        <el-input v-model="form.icon" placeholder="跳转组件"></el-input>
+                    <el-form-item :label="$t('views.icon')">
+                        <el-input v-model="form.icon"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit">保存数据</el-button>
-                        <el-button>取消</el-button>
+                        <el-button type="primary" @click="onSubmit">{{ $t('basic.save') }}</el-button>
+                        <el-button>{{ $t('basic.cancel') }}</el-button>
                     </el-form-item>
                 </el-form>
             </transition>
@@ -126,11 +126,25 @@ export default {
         },
         /** 删除表单数据 */
         deleteForm (data) {
-            this.$http.post(`/egg/delMenus`, { id: data.id }).then(res => {
-                console.log(res);
-            }).catch(err => {
-                this.$message(err)
-            })
+            this.$confirm(this.$t('basic.comfirmDelete'), this.$t('basic.prompt'), {
+                confirmButtonText: this.$t('basic.define'),
+                cancelButtonText: this.$t('basic.cancel'),
+                type: 'warning'
+            }).then(() => {
+                this.$http.post(`/egg/delMenus`, { id: data.id }).then(res => {
+                    if (res.data == 1) {
+                        this.getMeuns();
+                        this.$message.success(this.$t('basic.delSuc'));
+                    } else {
+                        this.$message(this.$t('basic.delFail'));
+                    }
+                }).catch(err => {
+                    this.$message(err)
+                })
+            }).catch(() => {
+                this.$message(this.$t('basic.delCancel'));
+            });
+
         },
         onSubmit () {
             this.$refs.ruleForm.validate((valid) => {
@@ -142,13 +156,10 @@ export default {
                     this.$http.post(`/egg/addMenus`, this.form).then(res => {
                         this.loading = false;
                         if (res.data == '1') {
-                            this.$message({
-                                'type': 'success',
-                                'message': '保存成功'
-                            })
+                            this.$message.success(this.$t('basic.saveSuc'));
                             this.getMeuns();
                         } else {
-                            this.$message('操作失败');
+                            this.$message(this.$t('basic.saveFail'));
                         }
                     }).catch(err => {
                         this.loading = false;

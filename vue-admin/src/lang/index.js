@@ -4,21 +4,25 @@ import elementEnLocale from "element-ui/lib/locale/lang/en"; // element-ui lang
 import elementZhLocale from "element-ui/lib/locale/lang/zh-CN"; // element-ui lang 
 import enLocale from "./en/en";
 import zhLocale from "./zh/zh";
-import enRoute from './en/route'
-import zhRoute from './zh/route'
+import enRoute from './en/route';
+import zhRoute from './zh/route';
+import enBasic from './en/basic';
+import zhBasic from './zh/basic';
 
 Vue.use(VueI18n);
 
 const messages = {
   en: {
-    ...enLocale,
     ...elementEnLocale,
-    ...enRoute
+    ...enLocale,
+    ...enRoute,
+    ...enBasic,
   },
   zh: {
-    ...zhLocale,
     ...elementZhLocale,
-    ...zhRoute
+    ...zhLocale,
+    ...zhRoute,
+    ...zhBasic,
   },
 };
 
@@ -27,7 +31,9 @@ const i18n = new VueI18n({
   // options: en | zh | es
   locale: localStorage.getItem("language") || "zh",
   // set locale messages
-  messages
+  messages,
+  // Cannot translate the value of keypath
+  // silentTranslationWarn: true    
 });
 
 export default i18n;

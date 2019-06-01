@@ -7,7 +7,7 @@
                 class="hamburger-container"
             />
             <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
-                <el-breadcrumb-item :to="{ path: '/' }" v-if="isLoading">首页</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/' }" v-if="isLoading">{{ $t('basic.index') }}</el-breadcrumb-item>
 
                 <el-breadcrumb-item
                     v-for="item in paths"
@@ -16,7 +16,7 @@
             </el-breadcrumb>
         </div>
         <div class="right">
-            <screen-full class="margin"></screen-full> 
+            <screen-full class="margin"></screen-full>
             <size-select class="margin font-24"></size-select>
             <lang-select class="margin font-24"></lang-select>
             <personal class="margin margin-24 font-24"></personal>
