@@ -14,14 +14,17 @@ export default {
     },
     views: {
         treeInputPlace: 'Enter keywords to filter',
-        titleZh: 'zh-title：',
-        titleEn: 'en-title：',
-        path: 'path：',
-        status: 'status：',
+        titleZh: 'zh-title:',
+        titleEn: 'en-title:',
+        path: 'path:',
+        status: 'status:',
         active: 'active',
         inactive: 'inactive',
-        sort: 'sort：',
-        component: 'component',
-        icon: 'icon：'
+        show: 'show:',
+        showActive: 'show',
+        showInactive: 'hidden',
+        sort: 'sort:',
+        component: 'component:',
+        icon: 'icon:'
     }
 }

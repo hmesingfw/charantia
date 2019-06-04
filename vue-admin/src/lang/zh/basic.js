@@ -20,6 +20,9 @@ export default {
         status: '状态：',
         active: '启用',
         inactive: '禁用',
+        show: '显示：',
+        showActive: '显示',
+        showInactive: '隐藏',
         sort: '权重：',
         component: '组件路径：',
         icon: '图标：'

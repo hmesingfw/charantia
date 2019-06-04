@@ -27,7 +27,6 @@ export const routerMap = [{
 	children: [{
 		path: 'menus',
 		component: () => import('@/views/menus/index'),
-		name: 'menus',
 		meta: {
 			icon: 'el-icon-document',
 		},

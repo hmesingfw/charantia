@@ -54,6 +54,16 @@
                             inactive-value="0"
                         ></el-switch>
                     </el-form-item>
+
+                    <el-form-item :label="$t('views.show')" prop="status">
+                        <el-switch
+                            v-model="form.show"
+                            :active-text="$t('views.showActive')"
+                            :inactive-text="$t('views.showInactive')"
+                            active-value="1"
+                            inactive-value="0"
+                        ></el-switch>
+                    </el-form-item>
                     <el-form-item :label="$t('views.sort')" prop="sort">
                         <el-input-number v-model="form.sort" :min="1"></el-input-number>
                     </el-form-item>
@@ -93,13 +103,14 @@ export default {
             form: {
                 status: '1',
                 sort: 1,
-                icon: ''
+                icon: '',
+                show: '1'
             },
             rules: {
                 titelZh: [{ required: true, message: '请输入菜单中文名称！', trigger: 'blur' }],
                 titelEn: [{ required: true, message: '请输入菜单英文名称！', trigger: 'blur' }],
                 path: [{ required: true, message: '请输入路径！', trigger: 'blur' }],
-                status: [{ required: true, message: '请选择状态', }],
+                status: [{ required: true, message: '请选择', }],
                 sort: [{ required: true, message: '请输入输入权重' }],
             }
         };

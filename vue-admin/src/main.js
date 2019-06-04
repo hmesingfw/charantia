@@ -9,6 +9,8 @@ import './icons/index.js'
 import './directive/index'
 
 import './config/axios-config'
+
+import './utils/router-menus'
 Vue.config.productionTip = false
 Vue.prototype.$http = axios;
 

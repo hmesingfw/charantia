@@ -37,6 +37,10 @@ module.exports = app => {
 			type: DataTypes.STRING(10),
 			allowNull: true
 		},
+		show: {
+			type: DataTypes.STRING(1),
+			allowNull: true
+		},
 		component: {
 			type: DataTypes.STRING(255),
 			allowNull: true
