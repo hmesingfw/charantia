@@ -1,6 +1,6 @@
 <template>
     <div v-bind:class="[sidebar.opened?'layout-shrink':'layout-extend']">
-        <sidebar class="sidebar-container"></sidebar>
+        <sidebar class="sidebar-container" v-if="flash"></sidebar>
         <div class="main-container">
             <navbar></navbar>
             <tabs></tabs>
@@ -23,12 +23,45 @@ export default {
         tabs,
         appMain
     },
-    computed: mapState({
-        sidebar: state => state.app.sidebar
-    }),
-    methods: {
-
+    // computed: mapState({
+    //     sidebar: state => state.app.sidebar,
+    //     flashNavMenu (state) {
+    //         console.log(state.routers.flashNavMenu);
+    //         // if (state.routers.flashNavMenu == true) {
+    //         //     console.log(state.routers.flashNavMenu, false);
+    //         //     this.reload();
+    //         //     // this.$store.dispatch('FlashNavMenu');
+    //         // }
+    //         return state.routers.flashNavMenu
+    //     }
+    // }),
+    computed: {
+        sidebar () { 
+            return this.$store.state.app.sidebar;
+        },
+        flashNavMenu () {
+            console.log(this.$store.state.routers.flashNavMenu);
+            // if (state.routers.flashNavMenu == true) {
+            //     console.log(state.routers.flashNavMenu, false);
+            //     this.reload();
+            //     // this.$store.dispatch('FlashNavMenu');
+            // }
+            return this.$store.state.routers.flashNavMenu
+        }
+    },
+    data () {
+        return {
+            flash: true,
+        }
+    },
+    method: {
+        reload () {
+            console.log('li');
+            this.flash = false
+            this.$nextTick(() => (this.flash = true))
+        }
     }
+
 }
 </script>
 
@@ -49,7 +82,6 @@ export default {
     .sidebar {
         width: 180px;
     }
-     
 }
 .layout-shrink {
     .sidebar {

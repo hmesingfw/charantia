@@ -28,7 +28,7 @@ module.exports = appInfo => {
     port: 3306,
     database: 'charantia',
     username: 'root',
-    password: 'chensheng',
+    password: 'woxihuanni',
   };
 
   return {

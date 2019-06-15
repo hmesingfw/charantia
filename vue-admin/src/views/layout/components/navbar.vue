@@ -4,7 +4,7 @@
             <hamburger
                 :is-active="sidebar.opened"
                 :toggle-click="toggleSideBar"
-                class="hamburger-container"
+                class="hamburger-container"                
             />
             <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
                 <el-breadcrumb-item :to="{ path: '/' }" v-if="isLoading">{{ $t('basic.index') }}</el-breadcrumb-item>
@@ -51,7 +51,7 @@ export default {
         SizeSelect
     },
     computed: mapState({
-        sidebar: state => state.app.sidebar
+        sidebar: state => state.app.sidebar,
     }),
     methods: {
         generateTitle,

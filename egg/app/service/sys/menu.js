@@ -9,7 +9,7 @@ class MenuService extends Service {
         const menu = await this.ctx.model.Sys.Menu.query('select * from user sys_menu');
         return menu;
     }
-
+    /** 查询菜单树 */
     async findAll() {
 
         const menu = await this.ctx.model.Sys.Menu.findAll({
@@ -22,6 +22,7 @@ class MenuService extends Service {
         return reArr;
     }
 
+    /** 添加或更新菜单 */
     async addMenus() {
         const form = this.ctx.request.body;
         let body;
@@ -48,6 +49,7 @@ class MenuService extends Service {
         return body;
     }
 
+    /** 删除菜单 */
     async delMenus() {
         const id = this.ctx.request.body.id;
         const body = await this.ctx.model.Sys.Menu.destroy({

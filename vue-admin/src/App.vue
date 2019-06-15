@@ -18,7 +18,6 @@ export default {
     },
     data () {
         return {
-            title: this.$t('login.title'),
             isRouterAlive: true,
         }
     },

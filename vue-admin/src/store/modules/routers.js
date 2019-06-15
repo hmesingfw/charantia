@@ -10,10 +10,16 @@ const routers = {
             path: '/index',
             type: ''
         }], // tabs 列表
+        flashNavMenu: false, //刷新菜单信息
     },
     mutations: {
         FLASH_TABS: (state, arr) => {
             state.tags = arr;
+        },
+        FLASH_NAVMENU: (state, status) => {
+            console.log(status);
+            state.flashNavMenu = status;
+            console.log(state.flashNavMenu);
         }
     },
     actions: {
@@ -48,6 +54,12 @@ const routers = {
 
             });
             commit('FLASH_TABS', arr);
+        },
+
+        FlashNavMenu({
+            commit,
+        }, status) {
+            commit('FLASH_NAVMENU', status);
         }
     },
 

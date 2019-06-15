@@ -122,9 +122,8 @@ export default {
         getMeuns () {
             this.$http.get(`/egg/getMenus`).then(res => {
                 this.data = res.data;
-                console.log(res);
             }).catch(err => {
-
+                console.log(err);
             })
         },
         /** 打开form 表单信息 */
