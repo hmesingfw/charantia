@@ -27,7 +27,7 @@ new Vue({
   created() {
     getRouter.then(routes => {
       this.$router.addRoutes(routes);
-      this.$store.dispatch('FlashNavMenu', true);
+      this.$store.dispatch('FlashNavMenu'); //刷新左侧展示路由
     })
   },
 }).$mount('#app')

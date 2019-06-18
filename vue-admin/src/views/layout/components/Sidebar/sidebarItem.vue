@@ -1,7 +1,8 @@
 <template>
-    <div v-if="!item.hidden">
+    <div v-if="item.hidden == 1">
         <!-- 加载多个标题，判断是否存在子标题 -->
         <el-submenu v-if="item.children && item.children.length>1" :index="item.path">
+            
             <template slot="title">
                 <i :class="item.meta.icon"></i>
                 <span>{{ generateTitle(item.path) }}</span>
@@ -17,7 +18,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import item from './item'
 import { generateTitle } from '@/utils/lang'
 import path from 'path'
@@ -28,11 +28,8 @@ export default {
     },
     props: {
         item: [Object],
-        basePath: [String]
-    },
-    computed: mapState({
-        sidebar: state => state.app.sidebar,            // 控制开关伸缩 
-    }),
+        basePath: [String], // 路由地址
+    },  
     methods: {
         generateTitle,
         resolvePath (routePath) {

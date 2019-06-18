@@ -6,9 +6,14 @@
                 class="el-menu-vertical-demo"
                 active-text-color="#409EFF"
                 :collapse-transition="false"
-                :collapse="sidebar.opened"               
+                :collapse="sidebar.opened"
             >
-                <sidebar-item v-for="route in routers" :key="route.path" :item="route" :base-path="route.path"></sidebar-item>
+                <sidebar-item
+                    v-for="route in routers"
+                    :key="route.path"
+                    :item="route"
+                    :base-path="route.path"
+                ></sidebar-item>
             </el-menu>
         </el-scrollbar>
     </div>
@@ -18,18 +23,18 @@
 
 import { mapState } from 'vuex'
 import sidebarItem from './sidebarItem'
+import {
+    getRouter
+} from "@/utils/route-menus";
 export default {
+    name: 'SidebarMenu',
     components: {
         sidebarItem
     },
-    data () {
-        return {
-        };
-    },
-    methods: {}, 
     computed: mapState({
-        sidebar: state => state.app.sidebar,            // 控制开关伸缩
-        routers: state => state.routers.routers.options.routes
+        sidebar: state => state.app.sidebar,// 控制开关伸缩
+        routers: state => state.routers.routers,    //  加载左侧展示路由
+
     })
 }
 </script>

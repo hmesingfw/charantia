@@ -7,12 +7,12 @@
                 class="hamburger-container"                
             />
             <el-breadcrumb separator-class="el-icon-arrow-right" class="breadcrumb">
-                <el-breadcrumb-item :to="{ path: '/' }" v-if="isLoading">{{ $t('basic.index') }}</el-breadcrumb-item>
+                <el-breadcrumb-item v-if="isLoading">{{ $t('basic.index') }}</el-breadcrumb-item>
 
                 <el-breadcrumb-item
                     v-for="item in paths"
                     :key="item.path"
-                >{{ generateTitle(item.name || item.path) }}</el-breadcrumb-item>
+                >{{ generateTitleSlash(item.path) }}</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="right">
@@ -31,7 +31,7 @@ import Hamburger from '@/components/Hamburger/index.vue'
 import LangSelect from '@/components/LangSelect'
 import ScreenFull from '@/components/ScreenFull'
 import Personal from '@/components/Personal'
-import { generateTitle } from '@/utils/lang'
+import { generateTitleSlash } from '@/utils/lang'
 
 import { mapState } from 'vuex'
 export default {
@@ -54,16 +54,16 @@ export default {
         sidebar: state => state.app.sidebar,
     }),
     methods: {
-        generateTitle,
+        generateTitleSlash,
         toggleSideBar () {
             this.$store.dispatch('toggleSideBar')
         },
 
     },
     watch: {
-        $route (val) {
+        $route (val) { 
             this.paths = val.matched;
-            // 是否显示多个首页
+            // 是否显示多个首页  过滤首页只显示一个
             if (val.matched.length == 1 && val.matched[0].path == '/index') {
                 this.isLoading = false;
             } else {

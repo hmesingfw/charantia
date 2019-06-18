@@ -1,6 +1,6 @@
 <template>
     <div v-bind:class="[sidebar.opened?'layout-shrink':'layout-extend']">
-        <sidebar class="sidebar-container" v-if="flash"></sidebar>
+        <sidebar-menu class="sidebar-container"></sidebar-menu>
         <div class="main-container">
             <navbar></navbar>
             <tabs></tabs>
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Sidebar from './components/Sidebar/index.vue';
+import SidebarMenu from '@/views/layout/components/Sidebar/index.vue';
 import navbar from './components/navbar.vue'
 import tabs from './components/tabs.vue'
 import appMain from './components/main.vue'
@@ -18,54 +18,20 @@ import { mapState } from 'vuex'
 export default {
     name: 'layout',
     components: {
-        Sidebar,
+        SidebarMenu,
         navbar,
         tabs,
         appMain
     },
-    // computed: mapState({
-    //     sidebar: state => state.app.sidebar,
-    //     flashNavMenu (state) {
-    //         console.log(state.routers.flashNavMenu);
-    //         // if (state.routers.flashNavMenu == true) {
-    //         //     console.log(state.routers.flashNavMenu, false);
-    //         //     this.reload();
-    //         //     // this.$store.dispatch('FlashNavMenu');
-    //         // }
-    //         return state.routers.flashNavMenu
-    //     }
-    // }),
     computed: {
-        sidebar () { 
+        sidebar () {
             return this.$store.state.app.sidebar;
-        },
-        flashNavMenu () {
-            console.log(this.$store.state.routers.flashNavMenu);
-            // if (state.routers.flashNavMenu == true) {
-            //     console.log(state.routers.flashNavMenu, false);
-            //     this.reload();
-            //     // this.$store.dispatch('FlashNavMenu');
-            // }
-            return this.$store.state.routers.flashNavMenu
         }
     },
-    data () {
-        return {
-            flash: true,
-        }
-    },
-    method: {
-        reload () {
-            console.log('li');
-            this.flash = false
-            this.$nextTick(() => (this.flash = true))
-        }
-    }
-
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .main-container {
     min-height: 100%;
     -webkit-transition: margin-left 0.28s;
@@ -73,10 +39,6 @@ export default {
     margin-left: 180px;
     position: relative;
 }
-</style>
-
-
-<style lang="less">
 // 左侧菜单栏样式
 .layout-extend {
     .sidebar {
@@ -112,7 +74,7 @@ export default {
     width: 180px;
     height: 100%;
     position: fixed;
-    font-size: 0px;
+    // font-size: 0px;
     top: 0;
     bottom: 0;
     left: 0;

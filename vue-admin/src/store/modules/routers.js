@@ -1,25 +1,26 @@
-import routerMap from '@/router';
+import {
+    getRouter
+} from "@/utils/route-menus";
 
 const routers = {
     state: {
-        routers: routerMap, //router 路由列表信息
+        routers: [], //router 路由列表信息
         tags: [{
             item: {
                 path: '/index'
             },
             path: '/index',
             type: ''
-        }], // tabs 列表
-        flashNavMenu: false, //刷新菜单信息
+        }], // tabs 列表 
     },
     mutations: {
         FLASH_TABS: (state, arr) => {
             state.tags = arr;
         },
-        FLASH_NAVMENU: (state, status) => {
-            console.log(status);
-            state.flashNavMenu = status;
-            console.log(state.flashNavMenu);
+        FLASH_NAVMENU: (state) => {
+            getRouter.then(routers => {
+                state.routers = routers;
+            })
         }
     },
     actions: {
@@ -55,11 +56,11 @@ const routers = {
             });
             commit('FLASH_TABS', arr);
         },
-
+        /** 刷新左侧展示路由 */
         FlashNavMenu({
             commit,
-        }, status) {
-            commit('FLASH_NAVMENU', status);
+        }, ) {
+            commit('FLASH_NAVMENU');
         }
     },
 
