@@ -25,6 +25,7 @@ function handleTreeRouter(routerList) {
 /** 从后端，获取路由信息 */
 export var getRouter = new Promise(function (resolve, rejects) {
     axios.get(`/egg/getMenus`).then(res => {
+        // console.log(res);
         resolve(handleTreeRouter(res.data));
     }).catch(err => {
         rejects(err);

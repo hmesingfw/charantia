@@ -14,7 +14,7 @@ import SidebarMenu from '@/views/layout/components/Sidebar/index.vue';
 import navbar from './components/navbar.vue'
 import tabs from './components/tabs.vue'
 import appMain from './components/main.vue'
-import { mapState } from 'vuex'
+
 export default {
     name: 'layout',
     components: {

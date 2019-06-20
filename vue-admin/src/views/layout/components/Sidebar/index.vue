@@ -23,9 +23,6 @@
 
 import { mapState } from 'vuex'
 import sidebarItem from './sidebarItem'
-import {
-    getRouter
-} from "@/utils/route-menus";
 export default {
     name: 'SidebarMenu',
     components: {

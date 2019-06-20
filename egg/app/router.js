@@ -19,4 +19,8 @@ module.exports = app => {
 	router.post('/addMenus', controller.menus.index.addMenus);
 	router.post('/delMenus', controller.menus.index.delMenus);
 
+
+	// 获取数据库信息
+	router.get('/getAllTableName', controller.sys.table.table.getAllTableName);
+	router.get('/getTableFiled', controller.sys.table.table.getTableFiled);
 };

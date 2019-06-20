@@ -1,7 +1,7 @@
 <template>
     <div v-if="item.hidden == 1">
         <!-- 加载多个标题，判断是否存在子标题 -->
-        <el-submenu v-if="item.children && item.children.length>1" :index="item.path">
+        <el-submenu v-if="item.children && item.children.length>0" :index="item.path">
             
             <template slot="title">
                 <i :class="item.meta.icon"></i>
