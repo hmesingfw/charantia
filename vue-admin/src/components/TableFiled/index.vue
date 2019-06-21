@@ -1,5 +1,5 @@
 <template>
-    <el-form ref="form" :rules="form.rules" :model="form">
+    <el-form ref="form" :rules="form.rules" :model="form" v-loading="loading">
         <el-table :data="form.tableData" style="width: 100%" :height="tableHeight">
             <el-table-column fixed prop="Field" label="字段名" width="150"></el-table-column>
             <el-table-column fixed prop="FieldType" label="字段类型" width="150"></el-table-column>
@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { getHeight } from "@/utils/sys";
 export default {
     props: {
         tableName: [String]
@@ -19,6 +20,7 @@ export default {
     },
     data () {
         return {
+            loading: false,
             tableHeight: '250px',
             form: {
                 rules: {
@@ -30,8 +32,9 @@ export default {
     },
     methods: {
         init () {
+            this.loading = true;
             this.$http(`/egg/getTableFiled?tableName=${this.tableName}`).then(res => {
-                console.log(res);
+                // console.log(res);
                 let list = res.data.map(item => {
                     // 过滤字段类型
                     let type = item.Type.indexOf('(') != -1 ? item.Type.substring(0, item.Type.indexOf('(')) : item.Type;
@@ -43,16 +46,18 @@ export default {
                         FieldLength: length,
                     }
                 })
-                console.log(list);
                 this.$set(this.form, 'tableData', list);
+                this.loading = false;
+
             }).catch(err => {
+                this.loading = false;
                 this.$message(err);
             })
         },
         /** 设置表格高度，好适应屏幕 */
         setHeight () {
             // 200 为当面页面偏差
-            this.tableHeight = document.documentElement.clientHeight - 200 + 'px';
+            this.tableHeight = getHeight(200);
         }
     }
 }

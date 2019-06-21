@@ -33,9 +33,12 @@ export default {
     },
     methods: {
         getTableName (val) {
-            this.selectTableName = val;
-            this.activeName = 'tableFiled';
-            this.selectStatus = true;
+            this.selectStatus = false;
+            this.$nextTick(() => {
+                this.selectTableName = val;
+                this.activeName = 'tableFiled';
+                this.selectStatus = true;
+            })
         }
     }
 }

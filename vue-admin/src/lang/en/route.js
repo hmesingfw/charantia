@@ -3,6 +3,7 @@ export default {
         '/index': 'index',
         '/sys': 'system',
         'menus':'menus',
-        'demo2':'demo2',
+        'producer':'producer',
+        'enum':'enum',
     }
 }

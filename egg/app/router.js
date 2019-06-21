@@ -9,7 +9,6 @@ module.exports = app => {
 		router,
 		controller,
 	} = app;
-	router.get('/', controller.home.index);
 	// 登录验证
 	router.get('/login/login', controller.login.index.login);
 	router.get('/identity', controller.login.index.user);
@@ -23,4 +22,9 @@ module.exports = app => {
 	// 获取数据库信息
 	router.get('/getAllTableName', controller.sys.table.table.getAllTableName);
 	router.get('/getTableFiled', controller.sys.table.table.getTableFiled);
+
+	// 枚举管理
+	router.post('/getAllEnum', controller.sys.enum.index.getAllEnum);
+	router.post('/addEnum', controller.sys.enum.index.addEnum);
+	router.post('/delEnum', controller.sys.enum.index.delEnum);
 };
