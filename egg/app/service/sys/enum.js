@@ -7,21 +7,51 @@ const sysutils = new SysUtils();
 class EnumService extends Service {
     /**
      * 查询枚举数据
-     * @param {*} condition 查询条件
      */
-    async getAllEnum(condition) {
-        console.log(condition);
+    async getAllEnum() {
         const body = {
             data: await this.ctx.model.Sys.Enum.findAll({
-                // where: condition.query,
-                offset: (condition.currentPage - 1) * condition.pageSize,
-                limit: condition.currentPage * condition.pageSize,
                 order: [
-                    [ 'updated_at', 'ASC' ],
                     [ 'type', 'DESC' ],
                 ],
             }),
-            totle: await this.ctx.model.Sys.Enum.count(),
+        };
+        return body;
+    }
+
+    /**
+     * 查询枚举数据
+     * @param {*} condition 查询条件
+     */
+    async getEnum(condition) {
+        let where = {};
+        // 过滤空值
+        if (condition.query.labelZh) {
+            where.labelZh = sysutils.ProcessQueryValues(condition.query.labelZh);
+        }
+
+        if (condition.query.labelEn) {
+            where.labelEn = sysutils.ProcessQueryValues(condition.query.labelEn);
+        }
+
+        if (condition.query.type) {
+            where.type = condition.query.type;
+        }
+
+        const body = {
+            data: await this.ctx.model.Sys.Enum.findAll({
+                where: where,
+                offset: (condition.currentPage - 1) * condition.pageSize,
+                limit: condition.pageSize,
+                order: [
+                    [ 'type', 'DESC' ],
+                ],
+            }),
+            total: await this.ctx.model.Sys.Enum.count(),
+            typeList: await this.ctx.model.Sys.Enum.findAll({
+                attributes: [ 'type' ],
+                group: 'type'
+            })
         };
         return body;
     }
@@ -31,7 +61,6 @@ class EnumService extends Service {
      * @param {*} form 表单信息
      */
     async addEnum(form) {
-        // const form = this.ctx.request.body;
         let body;
         if (form.id) {
             body = await this.ctx.model.Sys.Enum.update({

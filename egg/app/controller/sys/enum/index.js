@@ -11,8 +11,16 @@ class EnumController extends Controller {
             service,
         } = this;
         let condition = ctx.request.body;
-        console.log(condition);
         ctx.body = await service.sys.enum.getAllEnum(condition);
+    }
+
+    async getEnum() {
+        const {
+            ctx,
+            service,
+        } = this;
+        let condition = ctx.request.body;
+        ctx.body = await service.sys.enum.getEnum(condition);
     }
 
     async addEnum() {

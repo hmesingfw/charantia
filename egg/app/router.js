@@ -25,6 +25,11 @@ module.exports = app => {
 
 	// 枚举管理
 	router.post('/getAllEnum', controller.sys.enum.index.getAllEnum);
+	router.post('/getEnum', controller.sys.enum.index.getEnum);
 	router.post('/addEnum', controller.sys.enum.index.addEnum);
 	router.post('/delEnum', controller.sys.enum.index.delEnum);
+
+
+	// 生成模版
+	router.get('/generate/index', controller.sys.generate.index.index);
 };

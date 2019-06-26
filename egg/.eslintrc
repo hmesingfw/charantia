@@ -6,6 +6,7 @@
     "comma-dangle": ["off"],
     "prefer-const": [0],
     "eqeqeq": [0],
-    "no-regex-spaces": [0]
+    "no-regex-spaces": [0],
+    "object-shorthand": [0],
   }
 }

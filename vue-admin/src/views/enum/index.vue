@@ -7,21 +7,26 @@
                 </span>
 
                 <el-form :model="query" label-width="80px" :inline="true">
-                    <el-form-item label="活动名称">
+                    <el-form-item label="中文名称">
                         <el-input v-model="query.labelZh"></el-input>
                     </el-form-item>
-                    <el-form-item label="活动名称">
+                    <el-form-item label="英文名称">
                         <el-input v-model="query.labelEn"></el-input>
                     </el-form-item>
-                    <el-form-item label="活动区域">
-                        <el-select v-model="query.type" placeholder="请选择活动区域">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
+                    <el-form-item label="枚举类型">
+                        <el-select v-model="query.type" placeholder="请选择">
+                            <el-option
+                                v-for="item in selectOptions"
+                                :key="item.id"
+                                :label="item.type"
+                                :value="item.type"
+                            ></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" icon="el-icon-search">查询</el-button>
-                        <el-button type="primary" icon="el-icon-search" @click="addEnum">增加</el-button>
+                        <el-button type="primary" icon="el-icon-search" @click="queryEnum">查询</el-button>
+                        <el-button type="primary" icon="el-icon-edit" @click="addEnum">增加</el-button>
+                        <el-button type="primary" icon="el-icon-refresh" @click="flashEnum">刷新缓存</el-button>
                     </el-form-item>
                 </el-form>
 
@@ -42,7 +47,7 @@
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="currentPage"
-                    :page-sizes="[5, 30, 60]"
+                    :page-sizes="[15, 32, 64]"
                     :page-size="pageSize"
                     :total="total"
                     layout="total, sizes, prev, pager, next, jumper"
@@ -81,6 +86,7 @@ export default {
         return {
             dialogVisible: false,
 
+            selectOptions: [],   // 类型选项
             query: {
                 labelZh: '',
                 labelEn: '',
@@ -88,9 +94,8 @@ export default {
             },      // 查询表单
             tableData: [],
 
-
             currentPage: 1,
-            pageSize: 5,
+            pageSize: 16,
             total: 1,
 
             form: {},             // 表单
@@ -117,9 +122,11 @@ export default {
     methods: {
         /** 分页 */
         handleSizeChange (val) {
+            this.pageSize = val;
             this.queryEnum();
         },
         handleCurrentChange (val) {
+            this.currentPage = val;
             this.queryEnum();
         },
 
@@ -134,11 +141,12 @@ export default {
                 currentPage: this.currentPage,
                 pageSize: this.pageSize,
             }
-            console.log(condition);
-            this.$http.post(`/egg/getAllEnum`, condition).then(res => {
-                console.log(res);
+            this.$http.post(`/egg/getEnum`, condition).then(res => {
                 this.tableData = res.data.data;
                 this.total = res.data.total;
+                this.selectOptions = res.data.typeList;
+            }).catch(err => {
+                this.$message(err);
             })
         },
 
@@ -157,9 +165,9 @@ export default {
             this.$refs.form.validate((valid) => {
                 if (valid) {
                     this.$http.post(`/egg/addEnum`, this.form).then(res => {
-                        console.log(res);
                         if (res.data == '1') {
                             this.$message.success(this.$t('basic.saveSuc'))
+                            this.queryEnum();
                         } else {
                             this.$message(this.$t('basic.saveFail'));
                         }
@@ -176,7 +184,8 @@ export default {
         /** 编辑枚举 */
         editEnum (row) {
             this.dialogVisible = true;
-            this.form = row;
+            this.form = {...row};
+            
         },
         /** 删除枚举 */
         delEnum (row) {
@@ -203,6 +212,11 @@ export default {
         setHeight () {
             this.tableHeight = getHeight(290);
         },
+
+        /** 刷新枚举缓存 */
+        flashEnum () {
+            this.$store.dispatch('flashEnumList');
+        }
 
     }
 }

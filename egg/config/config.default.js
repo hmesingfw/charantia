@@ -31,6 +31,13 @@ module.exports = appInfo => {
     password: 'woxihuanni',
   };
 
+  config.view = {
+    defaultViewEngine: 'ejs',
+    mapping: {
+      '.ejs': 'ejs',
+    }
+  };
+
   return {
     ...config,
     ...userConfig,

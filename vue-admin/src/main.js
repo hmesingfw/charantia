@@ -24,6 +24,9 @@ new Vue({
   store,
   i18n,
   render: h => h(App),
+  beforeCreate() {
+    this.$store.dispatch('flashEnumList'); //刷新枚举数据
+  },
   created() {
     getRouter.then(routes => {
       this.$router.addRoutes(routes);

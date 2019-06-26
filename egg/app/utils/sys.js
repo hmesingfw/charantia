@@ -12,6 +12,12 @@ class SysUtils {
         return time.substring(0, 32);
     }
 
+    /**
+     * 获取树形结构
+     * @param {List} arrayList 数据
+     * @param {String} id 匹配值
+     * @return {List} 返回数组
+     */
     getTree(arrayList, id) {
         let obj = [];
         if (arrayList && arrayList.length > 0) {
@@ -41,6 +47,19 @@ class SysUtils {
             }
         }
         return obj;
+    }
+    /**
+     * 处理查询值
+     * @param {*} val 值
+     * @return {*} 处理后的值
+     */
+    ProcessQueryValues(val) {
+        if (!val) {
+            return '';
+        }
+        return {
+            $like: '%' + val + '%'
+        };
     }
 }
 
