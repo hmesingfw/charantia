@@ -4,8 +4,6 @@ import elementEnLocale from "element-ui/lib/locale/lang/en"; // element-ui lang
 import elementZhLocale from "element-ui/lib/locale/lang/zh-CN"; // element-ui lang 
 import enLocale from "./en/en";
 import zhLocale from "./zh/zh";
-import enRoute from './en/route';
-import zhRoute from './zh/route';
 import enBasic from './en/basic';
 import zhBasic from './zh/basic';
 
@@ -15,13 +13,11 @@ const messages = {
   en: {
     ...elementEnLocale,
     ...enLocale,
-    ...enRoute,
     ...enBasic,
   },
   zh: {
     ...elementZhLocale,
     ...zhLocale,
-    ...zhRoute,
     ...zhBasic,
   },
 };

@@ -19,6 +19,11 @@ import {
   getRouter
 } from "./utils/route-menus";
 
+import {
+  initLang
+} from "./utils/lang";
+
+
 new Vue({
   router,
   store,
@@ -28,9 +33,13 @@ new Vue({
     this.$store.dispatch('flashEnumList'); //刷新枚举数据
   },
   created() {
+    this.initLang();
     getRouter.then(routes => {
       this.$router.addRoutes(routes);
       this.$store.dispatch('FlashNavMenu'); //刷新左侧展示路由
     })
   },
+  methods: {
+    initLang
+  }
 }).$mount('#app')

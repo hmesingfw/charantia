@@ -14,22 +14,25 @@ module.exports = app => {
 	router.get('/identity', controller.login.index.user);
 
 	// 菜单设置
-	router.get('/getMenus', controller.menus.index.getMenus);
-	router.post('/addMenus', controller.menus.index.addMenus);
-	router.post('/delMenus', controller.menus.index.delMenus);
+	router.get('/getMenus', controller.sys.menus.getMenus);
+	router.post('/addMenus', controller.sys.menus.addMenus);
+	router.post('/delMenus', controller.sys.menus.delMenus);
 
 
 	// 获取数据库信息
-	router.get('/getAllTableName', controller.sys.table.table.getAllTableName);
-	router.get('/getTableFiled', controller.sys.table.table.getTableFiled);
+	router.get('/getAllTableName', controller.sys.table.getAllTableName);
+	router.get('/getTableFiled', controller.sys.table.getTableFiled);
 
 	// 枚举管理
-	router.post('/getAllEnum', controller.sys.enum.index.getAllEnum);
-	router.post('/getEnum', controller.sys.enum.index.getEnum);
-	router.post('/addEnum', controller.sys.enum.index.addEnum);
-	router.post('/delEnum', controller.sys.enum.index.delEnum);
+	router.post('/getAllEnum', controller.sys.enum.getAllEnum);
+	router.post('/getEnum', controller.sys.enum.getEnum);
+	router.post('/addEnum', controller.sys.enum.addEnum);
+	router.post('/delEnum', controller.sys.enum.delEnum);
 
 
 	// 生成模版
-	router.get('/generate/index', controller.sys.generate.index.index);
+	router.get('/generate/index', controller.sys.generate.index);
+
+	// 样例
+	router.get('/sys/demo', controller.sys.demo.getAllDemo);
 };

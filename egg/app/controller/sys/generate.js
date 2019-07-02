@@ -17,7 +17,6 @@ class GenerateController extends Controller {
         // render a template, path relate to `app/view`
         // await ctx.render('/generate/single/index.ejs', data);
         ctx.body = await ctx.renderView('/generate/single/index.ejs', data);
-
     }
 }
 

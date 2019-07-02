@@ -11,14 +11,20 @@ class MenuService extends Service {
     }
     /** 查询菜单树 */
     async findAll() {
-
+        const type = this.ctx.request.query.type;
         const menu = await this.ctx.model.Sys.Menu.findAll({
             order: [
                 [ 'sort', 'DESC' ]
             ],
         });
         let reArr = [];
-        reArr = sysutils.getTree(menu, 0);
+
+        // 不使用树形结构
+        if (type == 'noTree') {
+            reArr = menu;
+        } else {
+            reArr = sysutils.getTree(menu, 0);
+        }
         return reArr;
     }
 

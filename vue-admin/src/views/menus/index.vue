@@ -1,105 +1,108 @@
 <template>
-    <div class="menus">
-        <!-- <el-row class="handle">
-            <el-button type="primary" @click="flashRoute">flash</el-button>
-        </el-row>-->
-        <el-row>
-            <el-col :span="10">
-                <el-input :placeholder="$t('views.treeInputPlace')" v-model="filterText"></el-input>
+    <el-tabs type="border-card">
+        <el-tab-pane label="菜单管理">
+            <el-row>
+                <el-col :span="10">
+                    <el-input :placeholder="$t('views.treeInputPlace')" v-model="filterText"></el-input>
 
-                <el-tree
-                    :data="data"
-                    node-key="id"
-                    ref="treeRef"
-                    :props="defaultProps"
-                    :filter-node-method="filterNode"
-                    default-expand-all
-                >
-                    <span class="custom-tree-node" slot-scope="{ node, data }">
-                        <span v-if="language == 'zh'" class="title">{{ data.titelZh }}</span>
-                        <span v-if="language == 'en'" class="title">{{ data.titelEn }}</span>
-                        <span>
-                            <el-button
-                                v-if="data.parentid"
-                                type="text"
-                                size="mini"
-                                @click.stop="deleteForm(data)"
-                            >delete</el-button>
-                            <el-button type="text" size="mini" @click.stop="addForm(data)">add</el-button>
-                            <el-button
-                                v-if="data.parentid"
-                                type="text"
-                                size="mini"
-                                @click.stop="openForm(data)"
-                            >Append</el-button>
-                        </span>
-                    </span>
-                </el-tree>
-            </el-col>
-            <el-col :span="14">
-                <transition name="el-fade-in">
-                    <el-form
-                        ref="ruleForm"
-                        v-loading="loading"
-                        :model="form"
-                        :rules="rules"
-                        label-width="100px"
+                    <el-tree
+                        :data="data"
+                        node-key="id"
+                        ref="treeRef"
+                        :props="defaultProps"
+                        :filter-node-method="filterNode"
+                        default-expand-all
                     >
-                        <el-row>
-                            <el-col :span="12">
-                                <el-form-item :label="$t('views.titleZh')" prop="titelZh">
-                                    <el-input v-model="form.titelZh"></el-input>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="12">
-                                <el-form-item :label="$t('views.titleEn')" prop="titelEn">
-                                    <el-input v-model="form.titelEn"></el-input>
-                                </el-form-item>
-                            </el-col>
-                        </el-row>
-                        <el-form-item :label="$t('views.path')" prop="path">
-                            <el-input v-model="form.path"></el-input>
-                        </el-form-item>
-                        <el-form-item :label="$t('views.status')" prop="status">
-                            <el-switch
-                                v-model="form.status"
-                                :active-text="$t('views.active')"
-                                :inactive-text="$t('views.inactive')"
-                                active-value="1"
-                                inactive-value="0"
-                            ></el-switch>
-                        </el-form-item>
+                        <span class="custom-tree-node" slot-scope="{ node, data }">
+                            <span v-if="language == 'zh'" class="title">{{ data.titelZh }}</span>
+                            <span v-if="language == 'en'" class="title">{{ data.titelEn }}</span>
+                            <span>
+                                <el-button
+                                    v-if="data.parentid"
+                                    type="text"
+                                    size="mini"
+                                    @click.stop="deleteForm(data)"
+                                >delete</el-button>
+                                <el-button type="text" size="mini" @click.stop="addForm(data)">add</el-button>
+                                <el-button
+                                    v-if="data.parentid"
+                                    type="text"
+                                    size="mini"
+                                    @click.stop="openForm(data)"
+                                >Append</el-button>
+                            </span>
+                        </span>
+                    </el-tree>
+                </el-col>
+                <el-col :span="14">
+                    <transition name="el-fade-in">
+                        <el-form
+                            ref="ruleForm"
+                            v-loading="loading"
+                            :model="form"
+                            :rules="rules"
+                            label-width="100px"
+                        >
+                            <el-row>
+                                <el-col :span="12">
+                                    <el-form-item :label="$t('views.titleZh')" prop="titelZh">
+                                        <el-input v-model="form.titelZh"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="12">
+                                    <el-form-item :label="$t('views.titleEn')" prop="titelEn">
+                                        <el-input v-model="form.titelEn"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                            <el-form-item :label="$t('views.path')" prop="path">
+                                <el-input v-model="form.path"></el-input>
+                            </el-form-item>
+                            <el-form-item :label="$t('views.status')" prop="status">
+                                <el-switch
+                                    v-model="form.status"
+                                    :active-text="$t('views.active')"
+                                    :inactive-text="$t('views.inactive')"
+                                    active-value="1"
+                                    inactive-value="0"
+                                ></el-switch>
+                            </el-form-item>
 
-                        <el-form-item :label="$t('views.show')" prop="status">
-                            <el-switch
-                                v-model="form.show"
-                                :active-text="$t('views.showActive')"
-                                :inactive-text="$t('views.showInactive')"
-                                active-value="1"
-                                inactive-value="0"
-                            ></el-switch>
-                        </el-form-item>
-                        <el-form-item :label="$t('views.sort')" prop="sort">
-                            <el-input-number v-model="form.sort" :min="1"></el-input-number>
-                        </el-form-item>
+                            <el-form-item :label="$t('views.show')" prop="status">
+                                <el-switch
+                                    v-model="form.show"
+                                    :active-text="$t('views.showActive')"
+                                    :inactive-text="$t('views.showInactive')"
+                                    active-value="1"
+                                    inactive-value="0"
+                                ></el-switch>
+                            </el-form-item>
+                            <el-form-item :label="$t('views.sort')" prop="sort">
+                                <el-input-number v-model="form.sort" :min="1"></el-input-number>
+                            </el-form-item>
 
-                        <el-form-item :label="$t('views.component')">
-                            <el-input v-model="form.component"></el-input>
-                        </el-form-item>
-                        <el-form-item :label="$t('views.icon')">
-                            <el-input v-model="form.icon"></el-input>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="onSubmit">{{ $t('basic.save') }}</el-button>
-                            <el-button>{{ $t('basic.cancel') }}</el-button>
-                        </el-form-item>
-                    </el-form>
-                </transition>
-            </el-col>
-        </el-row>
-    </div>
+                            <el-form-item :label="$t('views.component')">
+                                <el-input v-model="form.component"></el-input>
+                            </el-form-item>
+                            <el-form-item :label="$t('views.icon')">
+                                <el-input v-model="form.icon"></el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-button type="primary" @click="onSubmit">{{ $t('basic.save') }}</el-button>
+                                <el-button>{{ $t('basic.cancel') }}</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </transition>
+                </el-col>
+            </el-row>
+        </el-tab-pane>
+        <el-tab-pane label="刷新缓存">
+            <el-button @click="flashLang">刷新缓存</el-button>
+        </el-tab-pane>
+    </el-tabs>
 </template>
 <script>
+import { initLang } from "@/utils/lang";
 export default {
     name: 'menus',
     computed: {
@@ -135,6 +138,7 @@ export default {
         this.getMeuns();
     },
     methods: {
+        initLang,
         getMeuns () {
             this.$http.get(`/egg/getMenus`).then(res => {
                 // console.log(res.data);
@@ -230,6 +234,12 @@ export default {
         /** 刷新路由数据 */
         flashRoute () {
             this.$store.dispatch('FlashNavMenu'); //刷新左侧展示路由
+            this.$message.success('刷新成功')
+        },
+
+        /** 刷新菜单语言数据 */
+        flashLang () {
+            this.initLang();
             this.$message.success('刷新成功')
         },
     },
