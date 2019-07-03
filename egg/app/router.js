@@ -34,5 +34,7 @@ module.exports = app => {
 	router.get('/generate/index', controller.sys.generate.index);
 
 	// 样例
-	router.get('/sys/demo', controller.sys.demo.getAllDemo);
+	router.post('/sys/datas', controller.sys.demo.datas);
+	router.post('/sys/save', controller.sys.demo.save);
+	router.post('/sys/delete', controller.sys.demo.delete);
 };

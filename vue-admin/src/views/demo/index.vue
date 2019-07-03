@@ -1,24 +1,21 @@
 <template>
-    <el-tabs type="border-card">
-        <el-tab-pane>
+    <el-tabs type="border-card" v-model="activeName">
+        <el-tab-pane name="list">
             <span slot="label">
                 <i class="el-icon-date"></i> 列表
             </span>
 
             <el-form :model="query" label-width="80px" :inline="true">
-                <el-form-item label="中文名称">
-                    <el-input v-model="query.labelZh"></el-input>
+                <el-form-item label="姓名">
+                    <el-input v-model="query.name" placeholder="请输入"></el-input>
                 </el-form-item>
-                <el-form-item label="英文名称">
-                    <el-input v-model="query.labelEn"></el-input>
-                </el-form-item>
-                <el-form-item label="枚举类型">
-                    <el-select v-model="query.type" placeholder="请选择">
+                <el-form-item label="性别">
+                    <el-select v-model="query.sex" placeholder="请选择">
                         <el-option
-                            v-for="item in selectOptions"
+                            v-for="item in sexEnum"
                             :key="item.id"
-                            :label="item.type"
-                            :value="item.type"
+                            :label="item.labelZh"
+                            :value="item.value"
                         ></el-option>
                     </el-select>
                 </el-form-item>
@@ -29,10 +26,10 @@
             </el-form>
 
             <el-table :data="tableData" style="width: 100%" :height="tableHeight">
-                <el-table-column prop="type" label="枚举类型" width="180"></el-table-column>
-                <el-table-column prop="labelZh" label="枚举名称-中文"></el-table-column>
-                <el-table-column prop="labelEn" label="枚举名称-英文"></el-table-column>
-                <el-table-column prop="value" label="枚举值 "></el-table-column>
+                <el-table-column prop="name" label="姓名"></el-table-column>
+                <el-table-column prop="sex" label="性别"></el-table-column>
+                <el-table-column prop="adress" label="地址"></el-table-column>
+                <el-table-column prop="code" label="编码 "></el-table-column>
                 <el-table-column fixed="right" label="操作" width="100">
                     <template slot-scope="scope">
                         <el-button type="text" @click="editHandle(scope.row)">编辑</el-button>
@@ -52,28 +49,81 @@
                 class="pagination"
             ></el-pagination>
         </el-tab-pane>
-        <el-tab-pane label="编辑"></el-tab-pane>
+
+        <el-tab-pane label="编辑" name="edit">
+            <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+                <el-form-item label="姓名" prop="name">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="性别" prop="sex">
+                    <el-select v-model="form.sex" placeholder="请选择">
+                        <el-option
+                            v-for="item in sexEnum"
+                            :key="item.id"
+                            :label="item.labelZh"
+                            :value="item.value"
+                        ></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="地址" prop="adress">
+                    <el-input v-model="form.adress"></el-input>
+                </el-form-item>
+                <el-form-item label="编码" prop="code">
+                    <el-input v-model="form.code"></el-input>
+                </el-form-item>
+
+                <el-form-item>
+                    <el-button type="primary" @click="onSubmit">立即创建</el-button>
+                    <el-button @click="activeName = 'list'">取消</el-button>
+                </el-form-item>
+            </el-form>
+        </el-tab-pane>
     </el-tabs>
 </template>
 <script>
 import { getHeight } from "@/utils/sys";
+import { mapState } from "vuex";
 export default {
     data () {
         return {
-            query: {},
+            activeName: "list", // tabs 状态
+
+            query: {},      // 查询条件
             selectOptions: [],
-            tableData: [],
+            tableData: [],  // 表格数据
             tableHeight: '',
 
             /** 分页 */
             currentPage: 1,
             pageSize: 16,
             total: 1,
+
+            form: {},   // 表单
+            rules: {
+                name: [
+                    { required: true, message: '请输入', trigger: 'blur' },
+                ],
+            },   // 验证
+
+            sexEnum: [],
         }
     },
     created () {
         this.setHeight();
+        this.queryHandle();
+
+        console.log(this.enumList);
+
+        this.enumList.forEach(data => {
+            // 性别
+            if (data.type == 'sex') {
+                this.sexEnum.push(data);
+            }
+        });
     },
+    computed: mapState({
+        enumList: state => state.sys.enumList
+    }),
     methods: {
         getHeight,
         /** 分页 */
@@ -89,19 +139,73 @@ export default {
 
         /** 表单查询方法 */
         queryHandle () {
-
+            let condition = {
+                query: this.query,
+                currentPage: this.currentPage,
+                pageSize: this.pageSize,
+            }
+            this.$http.post(`/egg/sys/datas`, condition).then(res => {
+                this.tableData = res.data.data;
+                this.total = res.data.total;
+            }).catch(err => {
+                this.$message(err);
+            })
         },
         /** 增加表单 */
         addHandle () {
-
+            this.activeName = 'edit';
+            this.form = {
+                name: '',
+                sex: '1',
+                adress: '',
+                code: ''
+            }
         },
         /** 编辑表单 */
-        editHandle () {
-
+        editHandle (row) {
+            this.activeName = 'edit';
+            this.form = { ...row };
         },
         /** 删除表单 */
-        delHandle () {
-
+        delHandle (row) {
+            this.$confirm(this.$t('basic.comfirmDelete'), this.$t('basic.prompt'), {
+                confirmButtonText: this.$t('basic.define'),
+                cancelButtonText: this.$t('basic.cancel'),
+                type: 'warning'
+            }).then(() => {
+                this.$http.post(`/egg/sys/delete`, { id: row.id }).then(res => {
+                    if (res.data == 1) {
+                        this.queryHandle();
+                        this.$message.success(this.$t('basic.delSuc'));
+                    } else {
+                        this.$message(this.$t('basic.delFail'));
+                    }
+                }).catch(err => {
+                    this.$message(err)
+                })
+            }).catch(() => {
+                this.$message(this.$t('basic.delCancel'));
+            });
+        },
+        // 保存与修改
+        onSubmit () {
+            this.$refs.form.validate((valid) => {
+                if (valid) {
+                    this.$http.post(`/egg/sys/save`, this.form).then(res => {
+                        if (res.data == '1') {
+                            this.$message.success(this.$t('basic.saveSuc'))
+                            this.queryHandle();
+                            this.activeName = 'list';
+                        } else {
+                            this.$message(this.$t('basic.saveFail'));
+                        }
+                    }).catch(err => {
+                        this.$message(err);
+                    })
+                } else {
+                    return false;
+                }
+            });
         },
 
         /** 设置高度 */
