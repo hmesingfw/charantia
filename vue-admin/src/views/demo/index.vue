@@ -112,7 +112,6 @@ export default {
         this.setHeight();
         this.queryHandle();
 
-        console.log(this.enumList);
 
         this.enumList.forEach(data => {
             // 性别
