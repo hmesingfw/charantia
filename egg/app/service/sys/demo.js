@@ -12,12 +12,12 @@ class DemoService extends Service {
     async datas(condition) {
         let where = {};
         // 过滤空值
-        if (condition.query.labelZh) {
-            where.labelZh = sysutils.ProcessQueryValues(condition.query.labelZh);
+        if (condition.query.name) {
+            where.name = sysutils.ProcessQueryValues(condition.query.name);
         }
 
-        if (condition.query.labelEn) {
-            where.labelEn = sysutils.ProcessQueryValues(condition.query.labelEn);
+        if (condition.query.sex) {
+            where.sex = sysutils.ProcessQueryValues(condition.query.sex);
         }
 
         if (condition.query.type) {

@@ -5,7 +5,7 @@
                 <i class="el-icon-date"></i> 列表
             </span>
 
-            <el-form :model="query" label-width="80px" :inline="true">
+            <el-form :model="query" label-width="80px" :inline="true" @submit.native.prevent>
                 <el-form-item label="姓名">
                     <el-input v-model="query.name" placeholder="请输入"></el-input>
                 </el-form-item>
@@ -20,7 +20,12 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" icon="el-icon-search" @click="queryHandle">查询</el-button>
+                    <el-button
+                        type="primary"
+                        icon="el-icon-search"
+                        @click="queryHandle"
+                        native-type="submit"
+                    >查询</el-button>
                     <el-button type="primary" icon="el-icon-edit" @click="addHandle">增加</el-button>
                 </el-form-item>
             </el-form>
@@ -220,5 +225,14 @@ export default {
 .pagination {
     text-align: center;
     padding-top: 12px;
+}
+
+.el-form {
+    display: flex;
+    flex-wrap: wrap;
+
+    .el-form-item {
+        width: 50%;
+    }
 }
 </style>
