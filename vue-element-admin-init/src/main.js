@@ -9,6 +9,7 @@ import './icons/index.js'
 
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 
+import 'animate.css'
 import './styles/element-variables.scss'
 
 import '@/styles/index.scss' // global css

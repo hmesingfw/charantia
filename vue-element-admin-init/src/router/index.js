@@ -171,6 +171,20 @@ export const constantRoutes = [
         ]
     },
 
+    {
+        path: '/temp',
+        component: Layout,
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/temp/index'),
+                name: 'TempIndex',
+                meta: { title: '样例', icon: 'user' }
+            }
+        ]
+    },
+
+
     { path: '*', redirect: '/404', hidden: true }
 ]
 
