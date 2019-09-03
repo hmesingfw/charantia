@@ -1,0 +1,19 @@
+<html>
+
+<head>
+    <title>Socket.IO chat</title>
+</head>
+
+<body>
+
+</body>
+<script src="https://cdn.bootcss.com/socket.io/2.2.0/socket.io.js"></script>
+<script>
+    var socket = io();
+    socket.on('chat message', function (msg) {
+        console.log(msg);
+    });
+    socket.emit('chat message', 'hello');
+</script>
+
+</html>

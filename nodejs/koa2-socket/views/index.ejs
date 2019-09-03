@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link href="https://cdn.bootcss.com/element-ui/2.11.1/theme-chalk/index.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="app">
+
+        <p>EJS Welcome to <%= title %></p>
+        <el-row>
+            <el-col :span="12">
+                <el-input v-model="message"></el-input>
+            </el-col>
+            <el-col :span="12">
+                <el-button @click="handleSend">发送</el-button>
+            </el-col>
+        </el-row>
+
+        <el-alert v-for="(item, index) in messageList" :key="index" :title="item.message" type="success"></el-alert>
+    </div>
+
+
+</body>
+<script src="https://cdn.bootcss.com/socket.io/2.2.0/socket.io.js"></script>
+<script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+<script src="https://cdn.bootcss.com/element-ui/2.11.1/index.js"></script>
+<script>
+    var socket = io();
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                message: '',
+                messageList: []
+            }
+        },
+        created() {
+            let _this = this;
+            socket.on('message', function (msg) {
+
+                _this.messageList.unshift({ message: msg })
+            });
+        },
+        methods: {
+            handleSend() {
+                socket.emit('message', this.message);
+                this.message = '';
+            }
+        },
+
+    })
+</script>
+
+</html>
