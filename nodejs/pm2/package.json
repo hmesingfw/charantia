@@ -1,0 +1,14 @@
+{
+  "name": "pm2-charantia",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "http1": "node src/http1.js",
+    "http2": "node src/http2.js",
+    "pm2": "pm2 start pm2.config.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

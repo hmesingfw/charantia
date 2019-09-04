@@ -4,4 +4,4 @@ var server = http.createServer(function (req, res) {
     conut++;
     res.write('cishu' + conut);
     res.end();
-}).listen(8888)
+}).listen(process.env.HTTP2 || 3002)
