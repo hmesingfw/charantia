@@ -4,25 +4,17 @@ var charset = require('superagent-charset');
 
 const cheerio = require("cheerio");
 const app = new Koa();
-charset(superagent); 
+charset(superagent);
 
 app.use(async (ctx) => {
-    superagent.get('http://www.jlbank.com.cn/jlbank/index/cdkll/index.html').end(function (err, sres) {
+    let name = '湖南普亿特';
+    superagent.get(`https://www.creditchina.gov.cn/xinyongfuwu/tongyishehuixinyongdaimachaxunzhuanlan/shehuixinyongdaimachaxun/index.html?keyword=${name}`).end(function (err, sres) {
         if (err) {
             return next(err);
         }
-        console.log(sres);
         var $ = cheerio.load(sres.text);
-
-
-        // $('.topic_title').each(function (idx, element) {
-        //     var $element = $(element);
-        //     items.push({
-        //         title: $element.attr('title'),
-        //         url: $element.attr('href')
-        //     });
-        // })
-        // res.send(items);
+        // let content = $('#societyCodeCheck table tbody').html();
+        console.log($);
     })
 
     ctx.body = 'hello';

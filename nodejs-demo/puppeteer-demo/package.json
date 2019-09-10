@@ -9,6 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "koa": "^2.8.1",
+    "koa-router": "^7.4.0",
     "puppeteer": "^1.19.0"
   }
 }
