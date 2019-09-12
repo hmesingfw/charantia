@@ -15,6 +15,13 @@
     [v-cloak] {
         display: none;
     }
+
+    .pu-pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 4px 0 0;
+    }
 </style>
 
 <body>
@@ -22,9 +29,37 @@
         <el-tabs type="border-card" v-model="activeName">
             <el-tab-pane name="list">
                 <span slot="label"><i class="el-icon-date"></i>列表</span>
-                <% for(var i=0; i<index.length; i++) {%>
-                <li><%= index[i].id %></li>
-                <% } %>
+                <el-form :inline="true" :model="QueryParam" class="demo-form-inline" size="mini">
+                    <el-form-item label="表单名称">
+                        <el-input v-model="QueryParam.title" placeholder="表单名称"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button @click="tableQuery(1)" icon="el-icon-search"></el-button>
+                    </el-form-item>
+                </el-form>
+
+                <el-table :data="tableData" border style="width: 100%" size="mini">
+                    <el-table-column prop="title" label="表单名称" show-overflow-tooltip></el-table-column>
+                    <el-table-column prop="isCdn" label="是否CDN模式" show-overflow-tooltip>
+                        <template slot-scope="scope">{{scope.row.isCdn == '0' ? '是' : '否'}}</template>
+                    </el-table-column>
+                    <el-table-column prop="remarks" label="备注" show-overflow-tooltip></el-table-column>
+                    <el-table-column prop="createdAt" label="创建时间" show-overflow-tooltip></el-table-column>
+                    <el-table-column prop="updatedAt" label="更新时间" show-overflow-tooltip></el-table-column>
+                    <el-table-column fixed="right" label="操作">
+                        <template slot-scope="scope">
+                            <el-button type="text" size="small">查看</el-button>
+                            <el-button type="text" size="small">编辑</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <div class="pu-pagination">
+                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                        :current-page="pagination.page" :page-sizes="[1, 10, 20, 30, 50]" :page-size="pagination.size"
+                        layout="total, sizes, prev, pager, next, jumper" :total="pagination.totalCount" size="mini">
+                    </el-pagination>
+                </div>
+
             </el-tab-pane>
             <el-tab-pane name="create">
                 <span slot="label"><i class="el-icon-s-home"></i>创建</span>
@@ -39,13 +74,54 @@
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 <script>
     new Vue({
         el: '#app',
         data: function () {
             return {
-                activeName: 'list'
+                api: '/users',
+                activeName: 'list',
+                QueryParam: {},
+                tableData: [],
+                pagination: {
+                    page: 1,
+                    size: 10,
+                    totalCount: 0
+                },
             }
+        },
+        created() {
+            this.tableQuery();
+        },
+        methods: {
+            tableQuery(flag) {
+                if (flag == 1) this.pagination.page = 1;         // 查询时，让页面等于1
+                let param = {
+                    ...this.pagination,
+                    ...this.QueryParam,
+                };
+
+                let _this = this;
+                axios.post(this.api + '/list', param).then(function (res) {
+                    console.log(res);
+                    _this.tableData = res.data.data.list;
+                    _this.pagination = res.data.data.paging;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+            /* 改变每页大小 */
+            handleSizeChange(val) {
+                this.pagination.size = val;
+                this.tableQuery();
+            },
+            /* 改变当前页 */
+            handleCurrentChange(val) {
+                this.pagination.page = val;
+                this.tableQuery();
+            },
         }
     })
 </script>

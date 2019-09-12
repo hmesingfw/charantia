@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2019-09-10 17:41:05
+Date: 2019-09-12 13:45:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -48,4 +48,7 @@ CREATE TABLE `sys_main` (
 -- ----------------------------
 -- Records of sys_main
 -- ----------------------------
-INSERT INTO `sys_main` VALUES ('1', null, null, null, null, null, null, null);
+INSERT INTO `sys_main` VALUES ('1', '1', '测试1', '1', '1', '1', '2019-09-11 10:40:00', '2019-09-11 10:40:04');
+INSERT INTO `sys_main` VALUES ('2', '1', '测试2', '1', '1', '1', '2019-09-11 10:40:00', '2019-09-11 09:40:04');
+INSERT INTO `sys_main` VALUES ('3', '1', '测试3', '1', '1', '1', '2019-09-11 10:40:00', '2019-09-11 08:40:04');
+INSERT INTO `sys_main` VALUES ('4', '1', '测试4', '1', '1', '1', '2019-09-11 10:40:00', '2019-09-12 10:40:04');
