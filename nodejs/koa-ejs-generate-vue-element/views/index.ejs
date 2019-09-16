@@ -26,7 +26,7 @@
 
 <body>
     <div id="app" v-cloak>
-        <el-tabs type="border-card" v-model="activeName">
+        <el-tabs type="border-card" v-model="activeName" @tab-click="onChangeTab">
             <el-tab-pane name="list">
                 <span slot="label"><i class="el-icon-date"></i>列表</span>
                 <el-form :inline="true" :model="QueryParam" class="demo-form-inline" size="mini">
@@ -35,10 +35,14 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button @click="tableQuery(1)" icon="el-icon-search"></el-button>
+                        <el-button type="primary" @click="onAdd()" icon="el-icon-edit"></el-button>
+                        <el-button type="danger" @click="onMultipleSelectionDel()" icon="el-icon-delete"></el-button>
                     </el-form-item>
                 </el-form>
 
-                <el-table :data="tableData" border style="width: 100%" size="mini">
+                <el-table :data="tableData" border style="width: 100%" size="mini"
+                    @selection-change="handleSelectionChange">
+                    <el-table-column type="selection" width="42"></el-table-column>
                     <el-table-column prop="title" label="表单名称" show-overflow-tooltip></el-table-column>
                     <el-table-column prop="isCdn" label="是否CDN模式" show-overflow-tooltip>
                         <template slot-scope="scope">{{scope.row.isCdn == '0' ? '是' : '否'}}</template>
@@ -48,8 +52,8 @@
                     <el-table-column prop="updatedAt" label="更新时间" show-overflow-tooltip></el-table-column>
                     <el-table-column fixed="right" label="操作">
                         <template slot-scope="scope">
-                            <el-button type="text" size="small">查看</el-button>
-                            <el-button type="text" size="small">编辑</el-button>
+                            <el-button type="text" size="small" @click="onUpdate(scope.row)">编辑</el-button>
+                            <el-button type="text" size="small" @click="ondelete(scope.row)">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -59,10 +63,30 @@
                         layout="total, sizes, prev, pager, next, jumper" :total="pagination.totalCount" size="mini">
                     </el-pagination>
                 </div>
-
             </el-tab-pane>
-            <el-tab-pane name="create">
+            <el-tab-pane name="createform">
                 <span slot="label"><i class="el-icon-s-home"></i>创建</span>
+                <el-form ref="createform" :model="form" label-width="120px" size="small">
+                    <el-form-item label="名称">
+                        <el-input v-model="form.title" maxlength="64" show-word-limit></el-input>
+                    </el-form-item>
+                    <el-form-item label="路径">
+                        <el-input v-model="form.path" maxlength="255"></el-input>
+                    </el-form-item>
+                    <el-form-item label="是否CDN模式">
+                        <el-select v-model="form.isCdn" placeholder="请选择">
+                            <el-option label="是" value="0"></el-option>
+                            <el-option label="否" value="1"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="备注">
+                        <el-input type="textarea" v-model="form.remarks" maxlength="255" show-word-limit></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="onCreateFormSubmit">立即创建</el-button>
+                        <el-button>取消</el-button>
+                    </el-form-item>
+                </el-form>
             </el-tab-pane>
             <el-tab-pane name="edit">
                 <span slot="label"><i class="el-icon-edit"></i>详情</span>
@@ -82,6 +106,7 @@
         data: function () {
             return {
                 api: '/users',
+                /* list */
                 activeName: 'list',
                 QueryParam: {},
                 tableData: [],
@@ -90,12 +115,26 @@
                     size: 10,
                     totalCount: 0
                 },
+                multipleSelection: [],
+                /* create-form */
+                form: {}
             }
         },
         created() {
             this.tableQuery();
         },
         methods: {
+            /* 更改tab */
+            onChangeTab(tab, event) {
+                if (tab.name == 'list') {
+                    this.tableQuery();
+                } else if (tab.name == 'createform') {
+                    this.onAdd();
+                }
+            },
+            /* 
+            *   列表            
+            */
             tableQuery(flag) {
                 if (flag == 1) this.pagination.page = 1;         // 查询时，让页面等于1
                 let param = {
@@ -122,6 +161,65 @@
                 this.pagination.page = val;
                 this.tableQuery();
             },
+            /* 多选获取值 */
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
+
+            /* 
+            *   新增与修改
+            */
+            /* 新增 */
+            onAdd() {
+                this.activeName = 'createform';
+                this.form = {
+                    isCdn: '1'
+                }
+            },
+            /* 修改 */
+            onUpdate(row) {
+                this.activeName = 'createform';
+                this.form = {
+                    ...row
+                }
+            },
+            /* 保存表单 */
+            onCreateFormSubmit() {
+                console.log(this.form);
+                axios.post(this.api + '/edit', this.form).then(function (res) {
+                    console.log(res);
+                }).catch(function (error) {
+                    console.log(error);
+                })
+            },
+            /* 删除 */
+            ondelete(row) {
+                this.confirmDelete(row.id);
+            },
+            /* 多选删除 */
+            onMultipleSelectionDel() {
+                let idList = this.multipleSelection.map(function (item) {
+                    return item.id;
+                })
+                this.confirmDelete(idList);
+            },
+            /* 删除 */
+            confirmDelete(id) {
+                let _this = this;
+                this.$confirm("此操作将永久删除信息, 是否继续?", "提示", {
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    type: "error"
+                }).then(() => {
+                    axios.post(_this.api + '/delete', { id: id }).then(function (res) {
+                        _this.tableQuery();
+                        console.log(res);
+                    }).catch(function (err) {
+                        console.log(err);
+                    })
+                })
+            },
+
         }
     })
 </script>
