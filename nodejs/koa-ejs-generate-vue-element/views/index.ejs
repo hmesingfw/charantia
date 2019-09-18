@@ -16,6 +16,10 @@
         display: none;
     }
 
+    .width-500 {
+        width: 500px;
+    }
+
     .pu-pagination {
         display: flex;
         justify-content: center;
@@ -66,30 +70,32 @@
             </el-tab-pane>
             <el-tab-pane name="createform">
                 <span slot="label"><i class="el-icon-s-home"></i>创建</span>
-                <el-form ref="createform" :model="form" label-width="120px" size="small">
-                    <el-form-item label="名称">
-                        <el-input v-model="form.title" maxlength="64" show-word-limit></el-input>
+                <el-form ref="formCreateRef" :model="form" :rules="formRules" label-width="120px" size="small">
+                    <el-form-item label="名称" prop="title">
+                        <el-input v-model="form.title" maxlength="64" class="width-500" show-word-limit></el-input>
                     </el-form-item>
                     <el-form-item label="路径">
-                        <el-input v-model="form.path" maxlength="255"></el-input>
+                        <el-input v-model="form.path" maxlength="255" class="width-500" show-word-limit></el-input>
                     </el-form-item>
                     <el-form-item label="是否CDN模式">
-                        <el-select v-model="form.isCdn" placeholder="请选择">
+                        <el-select v-model="form.isCdn" placeholder="请选择" class="width-500">
                             <el-option label="是" value="0"></el-option>
                             <el-option label="否" value="1"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="备注">
-                        <el-input type="textarea" v-model="form.remarks" maxlength="255" show-word-limit></el-input>
+                        <el-input type="textarea" v-model="form.remarks" maxlength="255" class="width-500"
+                            show-word-limit></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="onCreateFormSubmit">立即创建</el-button>
-                        <el-button>取消</el-button>
+                        <el-button @click="activeName = 'list'">取消</el-button>
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
             <el-tab-pane name="edit">
                 <span slot="label"><i class="el-icon-edit"></i>详情</span>
+
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -105,7 +111,7 @@
         el: '#app',
         data: function () {
             return {
-                api: '/users',
+                api: '<%= api %>',
                 /* list */
                 activeName: 'list',
                 QueryParam: {},
@@ -117,11 +123,15 @@
                 },
                 multipleSelection: [],
                 /* create-form */
-                form: {}
+                form: {},
+                formRules: {
+                    title: [{ required: true, message: '请输入名称', trigger: 'blur' },]
+                },
             }
         },
         created() {
             this.tableQuery();
+            this.initPanel();
         },
         methods: {
             /* 更改tab */
@@ -143,8 +153,7 @@
                 };
 
                 let _this = this;
-                axios.post(this.api + '/list', param).then(function (res) {
-                    console.log(res);
+                axios.post(this.api + '/list', param).then(function (res) {                  
                     _this.tableData = res.data.data.list;
                     _this.pagination = res.data.data.paging;
                 }).catch(function (error) {
@@ -185,12 +194,25 @@
             },
             /* 保存表单 */
             onCreateFormSubmit() {
-                console.log(this.form);
-                axios.post(this.api + '/edit', this.form).then(function (res) {
-                    console.log(res);
-                }).catch(function (error) {
-                    console.log(error);
-                })
+                var _this = this;
+
+                this.$refs.formCreateRef.validate((valid) => {
+                    if (valid) {
+                        axios.post(this.api + '/edit', _this.form).then(function (res) {
+                            console.log(res);
+                            _this.$message.success('保存成功');
+                            _this.tableQuery();
+                            _this.activeName = 'list';
+                        }).catch(function (error) {
+                            _this.$message.error(error);
+                        })
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+
+
             },
             /* 删除 */
             ondelete(row) {
@@ -217,6 +239,16 @@
                     }).catch(function (err) {
                         console.log(err);
                     })
+                })
+            },
+
+
+            /* 
+            *       查询生成表单数据
+            **/
+            initPanel() {
+                axios.post(this.api + '/tableSchema').then(function (res) {
+                    console.log(res);
                 })
             },
 

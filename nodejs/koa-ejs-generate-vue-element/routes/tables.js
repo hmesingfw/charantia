@@ -3,12 +3,14 @@ const router = require('koa-router')();
 const db = require('../utils/sequelize');
 const Sequelize = db.sequelize();
 const sysMain = Sequelize.import('../model/sys_main');
+const sysBody = Sequelize.import('../model/sys_body')
 const Op = require('sequelize').Op;
-router.prefix('/users')
+
+router.prefix('/tables')
 
 
 router.get('/', async (ctx, next) => {
-    await ctx.render('index')
+    await ctx.render('index', { api: 'tables' })
 })
 /* 查询列表 */
 router.post('/list', async (ctx, next) => {
@@ -52,7 +54,10 @@ router.post('/edit', async (ctx, next) => {
         suc = await sysMain.update(form, { where: { id: form.id } })
     } else {
         /* 新增 */
-        form.id = uuidv1();
+        let bodyId = uuidv1();
+        await sysBody.create({ id: bodyId });
+        form.id = bodyId;
+        form.bodyId = bodyId;
         suc = await sysMain.create(form);
     }
 
@@ -65,11 +70,25 @@ router.post('/edit', async (ctx, next) => {
 router.post('/delete', async (ctx) => {
     let idArr = ctx.request.body.id;
     let suc = await sysMain.destroy({ where: { 'id': idArr } })
+    await sysBody.destroy({ where: { 'id': idArr } })
     console.log(suc);
     ctx.body = {
         code: 200,
         data: suc
     }
 })
+
+
+/* 查询数据表 */
+router.post('/tableSchema', async (ctx) => {
+    const body = await Sequelize.query('SELECT table_name FROM information_schema.tables WHERE table_schema="generate_table"', {
+        type: Sequelize.QueryTypes.SELECT
+    });
+    console.log(body);
+
+    ctx.body = { code: 200, data: body }
+
+})
+
 
 module.exports = router

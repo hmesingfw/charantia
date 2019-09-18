@@ -3,13 +3,13 @@ var moment = require('moment');
 module.exports = function (sequelize, DataTypes) {
     return sequelize.define('sys_main', {
         id: {
-            type: DataTypes.STRING(32),
+            type: DataTypes.STRING(36),
             allowNull: false,
             primaryKey: true
         },
         bodyId: {
             field: 'body_id',
-            type: DataTypes.STRING(64),
+            type: DataTypes.STRING(36),
             allowNull: true
         },
         title: {
@@ -34,7 +34,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.DATE,
             allowNull: true,
             get() {
-                return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
+                return this.getDataValue('createdAt') ? moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss') : '';
             }
         },
         updatedAt: {
@@ -42,7 +42,7 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.DATE,
             allowNull: true,
             get() {
-                return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
+                return this.getDataValue('updatedAt') ? moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss') : '';
             }
         }
     }, {

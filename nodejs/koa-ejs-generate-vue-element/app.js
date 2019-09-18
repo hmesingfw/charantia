@@ -6,7 +6,7 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 
-const users = require('./routes/users')
+const tables = require('./routes/tables')
 
 // error handler
 onerror(app)
@@ -32,7 +32,7 @@ app.use(async (ctx, next) => {
 })
 
 // routes
-app.use(users.routes(), users.allowedMethods())
+app.use(tables.routes(), tables.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
