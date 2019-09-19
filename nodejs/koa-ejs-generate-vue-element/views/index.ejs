@@ -43,7 +43,6 @@
                         <el-button type="danger" @click="onMultipleSelectionDel()" icon="el-icon-delete"></el-button>
                     </el-form-item>
                 </el-form>
-
                 <el-table :data="tableData" border style="width: 100%" size="mini"
                     @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="42"></el-table-column>
@@ -68,6 +67,8 @@
                     </el-pagination>
                 </div>
             </el-tab-pane>
+
+
             <el-tab-pane name="createform">
                 <span slot="label"><i class="el-icon-s-home"></i>创建</span>
                 <el-form ref="formCreateRef" :model="form" :rules="formRules" label-width="120px" size="small">
@@ -93,8 +94,32 @@
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
+
+
             <el-tab-pane name="edit">
                 <span slot="label"><i class="el-icon-edit"></i>详情</span>
+                <el-row>
+                    <el-col>
+                        <el-select v-model="selectTableName" placeholder="请选择" size="small">
+                            <el-option v-for="item in databaseTableList" :key="item.table_name" :label="item.table_name"
+                                :value="item.table_name">
+                            </el-option>
+                        </el-select>
+                        <el-button type="primary" size="small" @click="onQueryTableFields">生成表单</el-button>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col>
+                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">
+                            全选</el-checkbox>
+                        <div style="margin: 15px 0;"></div>
+                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+                            <el-checkbox v-for="item in handleGroup" :label="item.value" :key="item.value">
+                                {{item.label}}</el-checkbox>
+                        </el-checkbox-group>
+                    </el-col>
+                </el-row>
+
 
             </el-tab-pane>
         </el-tabs>
@@ -127,6 +152,16 @@
                 formRules: {
                     title: [{ required: true, message: '请输入名称', trigger: 'blur' },]
                 },
+
+                /* generate-form */
+                databaseTableList: [],  // 数据库表列表信息
+                selectTableName: '',    // 选中的表名
+                databaseFieldList: [],  // 数据库表字段信息
+
+                checkAll: false,
+                checkedCities: [],
+                handleGroup: [{ label: '上海', value: '1' }],
+                isIndeterminate: true
             }
         },
         created() {
@@ -140,6 +175,8 @@
                     this.tableQuery();
                 } else if (tab.name == 'createform') {
                     this.onAdd();
+                } else if (tab.name == 'createform') {
+                    this.initPanel();
                 }
             },
             /* 
@@ -153,7 +190,7 @@
                 };
 
                 let _this = this;
-                axios.post(this.api + '/list', param).then(function (res) {                  
+                axios.post(this.api + '/list', param).then(function (res) {
                     _this.tableData = res.data.data.list;
                     _this.pagination = res.data.data.paging;
                 }).catch(function (error) {
@@ -246,12 +283,36 @@
             /* 
             *       查询生成表单数据
             **/
+            /* 查询数据库中的表信息 */
             initPanel() {
+                var _this = this;
                 axios.post(this.api + '/tableSchema').then(function (res) {
-                    console.log(res);
+                    _this.databaseTableList = res.data.data;
+                })
+            },
+            /* 查询数据表中的字段信息 */
+            onQueryTableFields() {
+                if (!this.selectTableName) {
+                    this.$message.info('请选择数据库表名');
+                    return false;
+                }
+                var _this = this;
+                axios.post(this.api + '/queryTableFields', { tableName: this.selectTableName }).then(function (res) {
+                    _this.databaseFieldList = res.data.data;
                 })
             },
 
+            /* 操作功能点  全选*/
+            handleCheckAllChange(val) {
+                this.checkedCities = val ? this.handleGroup.map(function (item) { return item.value }) : [];
+                this.isIndeterminate = false;
+            },
+            /* 操作组更改 */
+            handleCheckedCitiesChange(value) {
+                let checkedCount = value.length;
+                this.checkAll = checkedCount === this.handleGroup.length;
+                this.isIndeterminate = checkedCount > 0 && checkedCount < this.handleGroup.length;
+            }
         }
     })
 </script>

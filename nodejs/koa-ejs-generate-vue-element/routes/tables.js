@@ -87,8 +87,15 @@ router.post('/tableSchema', async (ctx) => {
     console.log(body);
 
     ctx.body = { code: 200, data: body }
-
 })
 
+/* 查询数据表的字段信息 */
+router.post('/queryTableFields', async (ctx) => {
+    let tableName = ctx.request.body.tableName;
+    const body = await Sequelize.query('SHOW FULL COLUMNS FROM ' + tableName, {
+        type: 'SELECT'
+    });
+    ctx.body = { code: 200, data: body }
+})
 
 module.exports = router
