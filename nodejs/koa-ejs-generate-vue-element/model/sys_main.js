@@ -48,5 +48,6 @@ module.exports = function (sequelize, DataTypes) {
     }, {
         tableName: 'sys_main',
         // timestamps: true, // 禁止时间戳
+        
     });
 };

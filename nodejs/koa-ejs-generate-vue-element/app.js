@@ -7,13 +7,14 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 
 const tables = require('./routes/tables')
+const enums = require('./routes/enum')
 
 // error handler
 onerror(app)
 
 // middlewares
 app.use(bodyparser({
-  enableTypes:['json', 'form', 'text']
+  enableTypes: ['json', 'form', 'text']
 }))
 app.use(json())
 app.use(logger())
@@ -33,6 +34,7 @@ app.use(async (ctx, next) => {
 
 // routes
 app.use(tables.routes(), tables.allowedMethods())
+app.use(enums.routes(), enums.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {

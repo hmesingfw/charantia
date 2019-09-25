@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost  chensheng
+Source Server         : 127.0.0.1  密码 woxihuanni
 Source Server Version : 50712
-Source Host           : 127.0.0.1:3306
+Source Host           : localhost:3306
 Source Database       : generate_table
 
 Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2019-09-19 16:27:24
+Date: 2019-09-25 23:44:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,6 +29,24 @@ CREATE TABLE `sys_body` (
 -- Records of sys_body
 -- ----------------------------
 INSERT INTO `sys_body` VALUES ('48ceaf30-d9df-11e9-99e7-13b3ae4ad8f7', null);
+
+-- ----------------------------
+-- Table structure for sys_enum
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_enum`;
+CREATE TABLE `sys_enum` (
+  `id` varchar(36) NOT NULL,
+  `title` varchar(50) DEFAULT NULL COMMENT '标题',
+  `value` varchar(50) DEFAULT NULL COMMENT '值',
+  `group` varchar(50) DEFAULT NULL COMMENT '所属组',
+  `remarks` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='枚举管理';
+
+-- ----------------------------
+-- Records of sys_enum
+-- ----------------------------
+INSERT INTO `sys_enum` VALUES ('1', '1', '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for sys_main

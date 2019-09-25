@@ -10,7 +10,7 @@ router.prefix('/tables')
 
 
 router.get('/', async (ctx, next) => {
-    await ctx.render('index', { api: 'tables' })
+    await ctx.render('tables', { api: 'tables' })
 })
 /* 查询列表 */
 router.post('/list', async (ctx, next) => {

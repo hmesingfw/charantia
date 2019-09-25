@@ -43,8 +43,7 @@
                         <el-button type="danger" @click="onMultipleSelectionDel()" icon="el-icon-delete"></el-button>
                     </el-form-item>
                 </el-form>
-                <el-table :data="tableData" border style="width: 100%" size="mini"
-                    @selection-change="handleSelectionChange">
+                <el-table :data="tableData" border style="width: 100%" size="mini" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="42"></el-table-column>
                     <el-table-column prop="title" label="表单名称" show-overflow-tooltip></el-table-column>
                     <el-table-column prop="isCdn" label="是否CDN模式" show-overflow-tooltip>
@@ -61,8 +60,7 @@
                     </el-table-column>
                 </el-table>
                 <div class="pu-pagination">
-                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                        :current-page="pagination.page" :page-sizes="[1, 10, 20, 30, 50]" :page-size="pagination.size"
+                    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pagination.page" :page-sizes="[1, 10, 20, 30, 50]" :page-size="pagination.size"
                         layout="total, sizes, prev, pager, next, jumper" :total="pagination.totalCount" size="mini">
                     </el-pagination>
                 </div>
@@ -85,8 +83,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="备注">
-                        <el-input type="textarea" v-model="form.remarks" maxlength="255" class="width-500"
-                            show-word-limit></el-input>
+                        <el-input type="textarea" v-model="form.remarks" maxlength="255" class="width-500" show-word-limit></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="onCreateFormSubmit">立即创建</el-button>
@@ -101,8 +98,7 @@
                 <el-row>
                     <el-col>
                         <el-select v-model="selectTableName" placeholder="请选择" size="small">
-                            <el-option v-for="item in databaseTableList" :key="item.table_name" :label="item.table_name"
-                                :value="item.table_name">
+                            <el-option v-for="item in databaseTableList" :key="item.table_name" :label="item.table_name" :value="item.table_name">
                             </el-option>
                         </el-select>
                         <el-button type="primary" size="small" @click="onQueryTableFields">生成表单</el-button>
@@ -121,8 +117,17 @@
                 </el-row>
                 <el-row>
                     <el-col>
-                        <el-form ref="formDataRef">
-                            <el-table :data="tableData" style="width: 100%"></el-table>
+                        <el-form ref="formDataRef" :model="formTableData">
+                            <el-table :data="formTableData.databaseFieldList" style="width: 100%">
+                                <el-table-column type="index" label="序号" align="center" width="70"></el-table-column>
+                                <el-table-column prop="Field" label="字段" width="180"></el-table-column>
+                                <el-table-column prop="Comment" label="标题" width="180" show-overflow-tooltip></el-table-column>
+                                <el-table-column prop="Null" label="为空" width="180">
+                                    <el-checkbox v-model=""></el-checkbox>
+                                </el-table-column>
+                                
+
+                            </el-table>
                         </el-form>
                     </el-col>
                 </el-row>
@@ -157,18 +162,30 @@
                 /* create-form */
                 form: {},
                 formRules: {
-                    title: [{ required: true, message: '请输入名称', trigger: 'blur' },]
+                    title: [{
+                        required: true,
+                        message: '请输入名称',
+                        trigger: 'blur'
+                    }, ]
                 },
 
                 /* generate-form */
-                databaseTableList: [],  // 数据库表列表信息
-                selectTableName: '',    // 选中的表名
-                databaseFieldList: [],  // 数据库表字段信息
+                databaseTableList: [], // 数据库表列表信息
+                selectTableName: '', // 选中的表名 
 
                 checkAll: false,
                 checkedCities: [],
-                handleGroup: [{ label: '上海', value: '1' }],
-                isIndeterminate: true
+                handleGroup: [{
+                    label: '上海',
+                    value: '1'
+                }],
+                isIndeterminate: true,
+
+
+                formTableData: {
+                    databaseFieldList: [], // 数据库表字段信息
+                    rules: {},
+                }
             }
         },
         created() {
@@ -187,10 +204,10 @@
                 }
             },
             /* 
-            *   列表            
-            */
+             *   列表            
+             */
             tableQuery(flag) {
-                if (flag == 1) this.pagination.page = 1;         // 查询时，让页面等于1
+                if (flag == 1) this.pagination.page = 1; // 查询时，让页面等于1
                 let param = {
                     ...this.pagination,
                     ...this.QueryParam,
@@ -220,8 +237,8 @@
             },
 
             /* 
-            *   新增与修改
-            */
+             *   新增与修改
+             */
             /* 新增 */
             onAdd() {
                 this.activeName = 'createform';
@@ -277,7 +294,9 @@
                     cancelButtonText: "取消",
                     type: "error"
                 }).then(() => {
-                    axios.post(_this.api + '/delete', { id: id }).then(function (res) {
+                    axios.post(_this.api + '/delete', {
+                        id: id
+                    }).then(function (res) {
                         _this.tableQuery();
                         console.log(res);
                     }).catch(function (err) {
@@ -288,8 +307,8 @@
 
 
             /* 
-            *       查询生成表单数据
-            **/
+             *       查询生成表单数据
+             **/
             /* 查询数据库中的表信息 */
             initPanel() {
                 var _this = this;
@@ -304,14 +323,18 @@
                     return false;
                 }
                 var _this = this;
-                axios.post(this.api + '/queryTableFields', { tableName: this.selectTableName }).then(function (res) {
-                    _this.databaseFieldList = res.data.data;
+                axios.post(this.api + '/queryTableFields', {
+                    tableName: this.selectTableName
+                }).then(function (res) {
+                    _this.$set(_this.formTableData, 'databaseFieldList', res.data.data);
                 })
             },
 
             /* 操作功能点  全选*/
             handleCheckAllChange(val) {
-                this.checkedCities = val ? this.handleGroup.map(function (item) { return item.value }) : [];
+                this.checkedCities = val ? this.handleGroup.map(function (item) {
+                    return item.value
+                }) : [];
                 this.isIndeterminate = false;
             },
             /* 操作组更改 */
