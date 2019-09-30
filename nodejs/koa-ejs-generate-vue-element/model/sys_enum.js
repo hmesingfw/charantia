@@ -25,7 +25,7 @@ module.exports = function (sequelize, DataTypes) {
     }
   }, {
     tableName: 'sys_enum',
-    timestamps: true, // 禁止时间戳
+    timestamps: false, // 禁止时间戳  false 为禁止
 
   });
 };
