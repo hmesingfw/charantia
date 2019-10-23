@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2019-09-25 23:44:10
+Date: 2019-10-23 22:57:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -46,7 +46,10 @@ CREATE TABLE `sys_enum` (
 -- ----------------------------
 -- Records of sys_enum
 -- ----------------------------
-INSERT INTO `sys_enum` VALUES ('1', '1', '1', '1', '1');
+INSERT INTO `sys_enum` VALUES ('00c03980-ef5f-11e9-b7cd-6d62c79a0f67', '研发部', '2', 'department', null);
+INSERT INTO `sys_enum` VALUES ('1f2e4580-e391-11e9-8b23-cb1106f3da48', '男', '1', 'sex', null);
+INSERT INTO `sys_enum` VALUES ('88490280-e391-11e9-8b23-cb1106f3da48', '女', '0', 'sex', null);
+INSERT INTO `sys_enum` VALUES ('db8b1400-ef5e-11e9-b7cd-6d62c79a0f67', '开发部', '1', 'department', null);
 
 -- ----------------------------
 -- Table structure for sys_main

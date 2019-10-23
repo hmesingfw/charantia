@@ -1,36 +1,16 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="UTF-8">
-    <!-- import CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-</head>
+<%include include/head.ejs%>
 <style>
-    * {
-        padding: 0;
-        margin: 0;
-    }
-
-    [v-cloak] {
-        display: none;
-    }
-
-    .width-500 {
-        width: 500px;
-    }
-
-    .pu-pagination {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 4px 0 0;
+    .box-card {
+        margin: 10px 0;
     }
 </style>
 
 <body>
     <div id="app" v-cloak>
         <el-tabs type="border-card" v-model="activeName" @tab-click="onChangeTab">
+
             <el-tab-pane name="list">
                 <span slot="label"><i class="el-icon-date"></i>列表</span>
                 <el-form :inline="true" :model="QueryParam" class="demo-form-inline" size="mini">
@@ -101,49 +81,87 @@
                             <el-option v-for="item in databaseTableList" :key="item.table_name" :label="item.table_name" :value="item.table_name">
                             </el-option>
                         </el-select>
-                        <el-button type="primary" size="small" @click="onQueryTableFields">生成表单</el-button>
+                        <el-button type="primary" size="small" @click="onQueryTableFields">创建数据</el-button>
                     </el-col>
                 </el-row>
+                <el-card class="box-card">
+                    <el-row>
+                        <el-col>
+                            <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">
+                                全选</el-checkbox>
+                            <div style="margin: 15px 0;"></div>
+                            <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+                                <el-checkbox v-for="item in handleGroup" :label="item.value" :key="item.value">
+                                    {{item.label}}</el-checkbox>
+                            </el-checkbox-group>
+                        </el-col>
+                    </el-row>
+                </el-card>
                 <el-row>
                     <el-col>
-                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">
-                            全选</el-checkbox>
-                        <div style="margin: 15px 0;"></div>
-                        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                            <el-checkbox v-for="item in handleGroup" :label="item.value" :key="item.value">
-                                {{item.label}}</el-checkbox>
-                        </el-checkbox-group>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col>
-                        <el-form ref="formDataRef" :model="formTableData">
-                            <el-table :data="formTableData.databaseFieldList" style="width: 100%">
+                        <el-form ref="formDataRef" :model="formTableData" size="mini">
+                            <el-table border :data="formTableData.databaseFieldList" style="width: 100%">
                                 <el-table-column type="index" label="序号" align="center" width="70"></el-table-column>
-                                <el-table-column prop="Field" label="字段" width="180"></el-table-column>
-                                <el-table-column prop="Comment" label="标题" width="180" show-overflow-tooltip></el-table-column>
-                                <el-table-column prop="Null" label="为空" width="180">
-                                    <el-checkbox v-model=""></el-checkbox>
+                                <el-table-column prop="field" label="字段" width="180"></el-table-column>
+                                <el-table-column prop="comment" label="标题" width="180">
+                                    <template slot-scope="scope">
+                                        <el-input v-model="scope.row.comment" size="mini"></el-input>
+                                    </template>
                                 </el-table-column>
 
-
+                                <el-table-column label="可空" width="50">
+                                    <template slot-scope="scope">
+                                        <el-checkbox v-model="scope.row.isNull"></el-checkbox>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="查询" width="50">
+                                    <template slot-scope="scope">
+                                        <el-checkbox v-model="scope.row.isQuery"></el-checkbox>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="隐藏" width="50">
+                                    <template slot-scope="scope">
+                                        <el-checkbox v-model="scope.row.isHidden"></el-checkbox>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="只读" width="50">
+                                    <template slot-scope="scope">
+                                        <el-checkbox v-model="scope.row.isReadOnly"></el-checkbox>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="组件" width="180">
+                                    <template slot-scope="scope">
+                                        <el-select v-model="scope.row.componentName" size="mini">
+                                            <el-option v-for="item in componentsList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                                        </el-select>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="枚举KEY" width="180">
+                                    <template slot-scope="scope">
+                                        <el-input v-model="scope.row.componentKey" size="mini"></el-input>
+                                    </template>
+                                </el-table-column>
                             </el-table>
                         </el-form>
                     </el-col>
                 </el-row>
-
-
+                <div class="pu-pagination">
+                    <el-button type="primary" @click="onSaveTable">保存并生成数据</el-button>
+                </div>
             </el-tab-pane>
         </el-tabs>
     </div>
 </body>
-<!-- import Vue before Element -->
-<script src="https://unpkg.com/vue/dist/vue.js"></script>
-<!-- import JavaScript -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<%include include/js.ejs%>
 
 <script>
+    var components = [{
+        label: 'el-input',
+        value: 'el-input'
+    }, {
+        label: 'el-select',
+        value: 'el-select'
+    }, ]
     new Vue({
         el: '#app',
         data: function () {
@@ -185,13 +203,20 @@
                 formTableData: {
                     databaseFieldList: [], // 数据库表字段信息
                     rules: {},
-                }
+                },
+
+
+
+                /* 引入数据 */
+                componentsList: components,
             }
         },
         created() {
             this.tableQuery();
             this.initPanel();
+
         },
+        /* on 自己写   handle 使用element中的方法 */
         methods: {
             /* 更改tab */
             onChangeTab(tab, event) {
@@ -199,7 +224,7 @@
                     this.tableQuery();
                 } else if (tab.name == 'createform') {
                     this.onAdd();
-                } else if (tab.name == 'createform') {
+                } else if (tab.name == 'edit') {
                     this.initPanel();
                 }
             },
@@ -249,9 +274,7 @@
             /* 修改 */
             onUpdate(row) {
                 this.activeName = 'createform';
-                this.form = {
-                    ...row
-                }
+                this.form = row;
             },
             /* 保存表单 */
             onCreateFormSubmit() {
@@ -326,10 +349,42 @@
                 axios.post(this.api + '/queryTableFields', {
                     tableName: this.selectTableName
                 }).then(function (res) {
-                    _this.$set(_this.formTableData, 'databaseFieldList', res.data.data);
+                    _this.onMatchFiles(res.data.data);
                 })
             },
+            /* 跟据数据库的字段信息，匹配对应对应需要的数据 */
+            onMatchFiles(data) {
+                console.log(data, '-----');
+                let arr = data.map(function (item) {
+                    return {
+                        field: item.Field,
+                        comment: item.Comment,
+                        isNull: item.Null == 'YES' ? true : false,
+                        query: true,
+                        isQuery: false,
+                        isHidden: false,
+                        isHidden: false,
+                        componentName: '',
+                        componentKey: '',
+                    }
+                })
+                console.log(arr);
+                this.$set(this.formTableData, 'databaseFieldList', arr);
 
+            },
+
+            /* 保存数据并生成表单 */
+            onSaveTable() {
+                console.log(this.formTableData.databaseFieldList);
+            },
+
+
+
+
+
+
+
+            /* 基本不改 */
             /* 操作功能点  全选*/
             handleCheckAllChange(val) {
                 this.checkedCities = val ? this.handleGroup.map(function (item) {
@@ -342,7 +397,7 @@
                 let checkedCount = value.length;
                 this.checkAll = checkedCount === this.handleGroup.length;
                 this.isIndeterminate = checkedCount > 0 && checkedCount < this.handleGroup.length;
-            }
+            },
         }
     })
 </script>
