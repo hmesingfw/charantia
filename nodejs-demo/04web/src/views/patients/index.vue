@@ -147,19 +147,6 @@
             </el-form>
         </dialog-model>
 
-        <dialog-model v-model="dialogItemValue" title="看护项目" @submit="handleItemUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
-            <el-divider content-position="left">病人信息</el-divider>
-            <el-form label-position="right" label-width="100px" :model="form" :inline="true">
-                <el-form-item label="姓名：">{{form.name}}</el-form-item>
-                <el-form-item label="床号：">{{form.sickbedId}}</el-form-item>
-            </el-form>
-            <el-divider content-position="left">项目信息</el-divider>
-            <el-table :data="tableData" :height="tableHeight" style="width: 100%" header-row-class-name="table-header-color">
-                <el-table-column type="selection" width="42"></el-table-column>
-                <el-table-column prop="sickbedId" label="项目名称" show-overflow-tooltip></el-table-column>
-            </el-table>
-        </dialog-model>
-
         <dialog-model v-model="dialoginOutListValue" title="出入院历史信息" width="800" @submit="dialoginOutListValue = false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
             <el-divider content-position="left">病人信息</el-divider>
             <el-form label-position="right" label-width="100px" :model="inoutForm">
@@ -173,6 +160,30 @@
 
                 <el-table-column prop="inDate" label="入院时间" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="outDate" label="出院时间" show-overflow-tooltip></el-table-column>
+            </el-table>
+        </dialog-model>
+
+        <dialog-model ref="refItemDialog" v-model="dialogItemValue" title="看护项目" @submit="handleItemUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+            <el-divider content-position="left">病人信息</el-divider>
+            <el-form label-position="right" label-width="100px" :model="form" :inline="true">
+                <el-form-item label="姓名：">{{form.name}}</el-form-item>
+                <el-form-item label="年龄">{{form.age}}</el-form-item>
+            </el-form>
+            <el-divider content-position="left">项目信息</el-divider>
+
+            <!-- <div class="pu-pagination">
+                <el-transfer v-model="value" :data="tableData" :props="{key:'id', label:'name'}" :titles="['已有项目', '已选项目']"></el-transfer>
+            </div>-->
+            <el-table
+                :data="tableItemchild"
+                ref="multipleTableItem"
+                :height="tableHeightItem"
+                @selection-change="handleSelectionItemChange"
+                style="width: 100%"
+                header-row-class-name="table-header-color"
+            >
+                <el-table-column type="selection" width="42"></el-table-column>
+                <el-table-column prop="name" label="项目名称" show-overflow-tooltip></el-table-column>
             </el-table>
         </dialog-model>
     </div>
@@ -197,6 +208,7 @@ export default {
         return {
             actionTabs: 'list',
             tableHeight: GetHeight(260), // 列表高度       
+            tableHeightItem: GetHeight(280), // 列表高度       
             QueryParam: {},
             tableData: [],
 
@@ -227,7 +239,8 @@ export default {
             sickbedList: [],
             /* 看护项目 */
             dialogItemValue: false,
-
+            tableItemchild: [],                 // 列表
+            multipleSelectionItem: [],
 
             /* 出入院设置 */
             dialoginOutValue: false,            //   表单
@@ -281,6 +294,18 @@ export default {
             })
             this.$http.get(api.sys.sickbeds).then(res => {
                 this.sickbedList = res.data.data;
+            })
+            this.$http.get(api.sys.nurseItems).then(res => {
+                // 只要叶子节点
+                res.data.data.forEach(obj => {
+                    if (obj.children.length > 0) {
+                        obj.children.forEach(item => {
+                            this.tableItemchild.push(item);
+                        })
+                    } else {
+                        this.tableItemchild.push(obj);
+                    }
+                });
             })
         },
         /* 改变每页大小 */
@@ -364,8 +389,9 @@ export default {
                 console.log(row);
                 if (row.hospitalized.length > 0) {
                     this.form = {
-                        outDate: new Date(),
                         ...row.hospitalized[0],
+                        sickId: row.id,
+                        outDate: new Date(),
                     }
                 }
             }
@@ -402,12 +428,10 @@ export default {
             });
         },
 
-
         changeSickbed(data) {
             let sit = this.$refs.cascaderref.getCheckedNodes();
             if (sit.length > 0) {
-                this.$set(this.form, 'sickbedDesc', sit[0].label)
-                // console.log(data, sit[0].label);
+                this.$set(this.form, 'sickbedDesc', sit[0].label);
             }
         },
 
@@ -421,10 +445,48 @@ export default {
         handleOpenItem(row) {
             this.dialogItemValue = true;
             this.form = row;
+
+            this.$nextTick(() => {
+
+
+                this.$refs.multipleTableItem.clearSelection();
+                this.$http.get(api.sys.nursing, { params: { sickId: row.id } }).then(res => {
+
+                    res.data.data.forEach(item => {
+                        this.tableItemchild.forEach(child => {
+
+                            if (item.nurseId == child.id) {
+                                this.$refs.multipleTableItem.toggleRowSelection(child);
+                            }
+                        })
+                    })
+                }).catch(err => {
+                    ErrorLog(err)
+                });
+            })
+            // rows.forEach(row => {
+            //     this.$refs.multipleTableItem.toggleRowSelection(row);
+            // });
         },
         handleItemUpdate() {
-            this.dialogItemValue = false;
+            let list = this.multipleSelectionItem.map(item => ({
+                sickId: this.form.id,
+                nurseId: item.id
+            }))
+
+            this.$http.post(api.sys.patientItem, list).then(res => {
+                this.dialogItemValue = false;
+                this.$message.success(res.data.message);
+            }).catch(err => {
+                this.dialogItemValue = false;
+                ErrorLog(err)
+            });
         },
+        /* 为病人选择看护项目 */
+        handleSelectionItemChange(val) {
+            this.multipleSelectionItem = val;
+        },
+
 
 
 

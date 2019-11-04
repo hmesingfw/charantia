@@ -14,7 +14,6 @@
                             <el-option v-for="item in norms" :key="item.id" :label="item.name" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>-->
-
                     <el-form-item>
                         <el-button @click="fitler()" icon="el-icon-search"></el-button>
                         <el-button @click="handleEdit({parentId:0,isShow:1,autoHide:1,isTotal:1,index:1}, 'post')" icon="el-icon-edit"></el-button>
@@ -50,7 +49,7 @@
                         <template slot-scope="scope">
                             <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
                             <el-button size="mini" type="text" @click="handleDelete(scope.row)">删除</el-button>
-                            <el-button size="mini" type="text" @click="handleOpenItem(scope.row)">病人设置</el-button>
+                            <el-button size="mini" type="text" @click="handleOpenItem(scope.row)" v-if="!scope.row.children || scope.row.children.length==0 ">病人设置</el-button>
                             <el-button size="mini" type="text" @click="handleEdit(scope.row, 'post', 'child')" v-if="scope.row.parentId == 0">添加子项目</el-button>
                         </template>
                     </el-table-column>
@@ -96,37 +95,79 @@
             </el-form>
         </dialog-model>
 
-        <dialog-model v-model="dialogItemValue" title="病人信息" width="800" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+        <dialog-model v-model="dialogItemValue" title="病人信息" width="1100" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
             <el-divider content-position="left">项目信息</el-divider>
             <el-form label-position="right" label-width="100px" :model="form">
                 <el-form-item label="项目名称：">{{form.name}}</el-form-item>
             </el-form>
 
-            <el-divider content-position="left">病人信息</el-divider>
-            <el-table :data="tableDataPatients" :height="tablePatientsHeight" style="width: 100%" header-row-class-name="table-header-color">
-                <el-table-column type="selection" width="42"></el-table-column>
-                <el-table-column prop="name" label="姓名" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="doctorId" label="主治医生" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="nurseId" label="责任护士" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="sickbedId" label="床号" show-overflow-tooltip></el-table-column>
+            <el-row v-if="flashTable">
+                <el-col :span="16" class="i-item-select">
+                    <el-divider content-position="left">病人信息</el-divider>
+                    <el-form :inline="true" :model="QueryItemParam" class="demo-form-inline" size="mini">
+                        <el-form-item label="姓名">
+                            <el-input v-model="QueryItemParam.sickName" placeholder="请输入"></el-input>
+                        </el-form-item>
+                        <el-form-item label="主治医生">
+                            <el-input v-model="QueryItemParam.docName" placeholder="请输入"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button @click="patientsQuery(1)" icon="el-icon-search"></el-button>
+                        </el-form-item>
+                    </el-form>
+                    <el-table :data="tableDataPatients" :height="tablePatientsHeight" style="width: 100%" header-row-class-name="table-header-color">
+                        <el-table-column prop="name" label="姓名" width="100" show-overflow-tooltip></el-table-column>
+                        <el-table-column prop="sex" label="性别" width="60" show-overflow-tooltip>
+                            <template slot-scope="scope">{{ scope.row.sex == 1 ? '男' : '女'}}</template>
+                        </el-table-column>
+                        <el-table-column prop="age" label="年龄" width="60" show-overflow-tooltip></el-table-column>
+                        <el-table-column label="主治医生" width="100" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span v-if="scope.row.hospitalized.length>0">{{ scope.row.hospitalized[0].doctorName }}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="nurseId" label="责任护士" width="100" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span v-if="scope.row.hospitalized.length>0">{{ scope.row.hospitalized[0].nurseName }}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="sickbedId" label="床号" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span v-if="scope.row.hospitalized.length>0">{{ scope.row.hospitalized[0].sickbedDesc }}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="inDate" label="入院时间" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span v-if="scope.row.hospitalized.length>0">{{ scope.row.hospitalized[0].inDate }}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="操作" fixed="right">
+                            <template slot-scope="scope">
+                                <el-button size="mini" type="text" @click="handleItemPatients(scope.row, 'add', scope.$index)">关联</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-col>
 
-                <el-table-column prop="inDate" label="入院时间" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="outDate" label="出院时间" show-overflow-tooltip></el-table-column>
+                <el-col :span="8">
+                    <el-divider content-position="left">已关联病人信息</el-divider>
+                    <el-table :data="tableDataPatientsSelected" :height="tablePatientsHeight2" style="width: 100%" header-row-class-name="table-header-color">
+                        <el-table-column prop="name" label="姓名" width="100" show-overflow-tooltip></el-table-column>
 
-                <el-table-column prop="sex" label="性别" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="age" label="年龄" show-overflow-tooltip></el-table-column>
-            </el-table>
-            <div class="pu-pagination">
-                <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="pagination.page"
-                    :page-sizes="[10, 20, 30, 50]"
-                    :page-size="pagination.size"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="pagination.totalCount"
-                ></el-pagination>
-            </div>
+                        <el-table-column prop="age" label="年龄" width="60" show-overflow-tooltip></el-table-column>
+                        <el-table-column label="主治医生" width="100" show-overflow-tooltip>
+                            <template slot-scope="scope">
+                                <span v-if="scope.row.hospitalized.length>0">{{ scope.row.hospitalized[0].doctorName }}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="操作" fixed="right">
+                            <template slot-scope="scope">
+                                <el-button size="mini" type="text" @click="handleItemPatients(scope.row, 'esc', scope.$index)">取消关联</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-col>
+            </el-row>
         </dialog-model>
     </div>
 </template>
@@ -143,23 +184,19 @@ export default {
     data() {
         return {
             actionTabs: 'list',
-            tableHeight: GetHeight(260), // 列表高度       
-            tablePatientsHeight: GetHeight(300), // 列表高度       
+            tableHeight: GetHeight(240), // 列表高度       
+            tablePatientsHeight: GetHeight(326), // 列表高度       
+            tablePatientsHeight2: GetHeight(280), // 列表高度       
+            /* 主页列表信息 */
             QueryParam: {
                 name: ''
             },
             tableData: [],
-            tableDataPatients: [],       // 病人信息列表
             multipleSelection: [],      // 多选选中的值
-
-
-
-
+            /* 表单信息 */
             dialogValue: false,
             requestType: '',
             loadingButton: false,
-
-
             form: {},
             rules: {
                 name: [{ required: true, message: '请输入内容', trigger: 'blur' },],
@@ -167,19 +204,38 @@ export default {
             parenName: {},
             /* 病人信息 */
             dialogItemValue: false,
-            itemId: '',
+            itemId: '',         // 临时保存项目ID，用于选择病人的时候
             pagination: {
                 page: 1,
-                size: 10,
+                size: 100000,
                 totalCount: 0
             },
+            QueryItemParam: {},
+            allPatients: [],     // 所有的病人信息
+            tableDataPatients: [],       // 待选择病人信息列表
+            tableDataPatientsSelected: [],      // 已选择病人信息列表 
+            itemPatientsList: [],    // 项目中关联的病人信息列表
+            flashTable: true,
+
         };
     },
     created() {
         this.query();
+        this.init();
     },
     methods: {
         deleteRequestData,
+        init() {
+            /* 查询所有的病人信息 */
+            let param = {
+                ...this.pagination,
+            };
+            this.$http.get(api.sys.patients, { params: param }).then(res => {
+                this.allPatients = res.data.data.list;
+            }).catch(err => {
+                ErrorLog(err);
+            });
+        },
         /* 查询操作 */
         query(flag) {
             this.$http.get(api.sys.nurseItems).then(res => {
@@ -241,7 +297,6 @@ export default {
             let temp = this.filterTree(this.tableDataTemp, this.shopfilterNode, 'optionValues');
             this.tableData = temp;
         },
-
         filterTree(nodes, predicate, childKey = "children") {
             //predicate过滤条件函数
             if (!nodes || !nodes.length) return void 0;
@@ -266,7 +321,6 @@ export default {
 
 
 
-
         /* 多选获取值 */
         handleSelectionChange(val) {
             this.multipleSelection = val;
@@ -283,51 +337,92 @@ export default {
         },
 
 
-
-
-        /* 看护项目 */
+        /* 看护项目 关联病人*/
         handleOpenItem(row) {
             this.dialogItemValue = true;
             this.form = row;
             this.itemId = row.id;
-            this.patientsQuery();
 
             //  查询已分配的病人信息
-            this.$http.get(api.sys.nurses, { params: { nurseId: row.id } }).then(res => {
-                console.log(res);
+            this.$http.get(api.sys.nursing, { params: { nurseId: row.id } }).then(res => {
+                this.itemPatientsList = res.data.data;
+                this.patientsQuery();
             }).catch(err => {
                 ErrorLog(err);
             });
         },
         patientsQuery() {
+            let idList = this.itemPatientsList.map(item => item.sickId)
             let param = {
                 ...this.pagination,
+                ...this.QueryItemParam
             };
-            this.$http.get(api.sys.patients, { params: param }).then(res => {
-                let data = res.data.data;
-                this.tableDataPatients = data.list;
+            if (this.QueryItemParam.sickName || this.QueryItemParam.docName) {
+                //  带查询条件
+                this.$http.get(api.sys.patients, { params: param }).then(res => {
+                    this.tableDataPatients = [];
+                    res.data.data.list.forEach(item => {
+                        if (!idList.includes(item.id)) {
+                            // 待选择病人信息
+                            this.tableDataPatients.push(item);
+                        }
+                    });
+                }).catch(err => {
+                    ErrorLog(err);
+                });
+            } else {
+                /* 不带查询条件 */
+                this.tableDataPatients = [];
+                this.tableDataPatientsSelected = [];
 
-                this.pagination.size = data.pageSize;
-                this.pagination.totalCount = data.totalCount;
-            }).catch(err => {
-                ErrorLog(err);
-            });
+                this.allPatients.forEach(item => {
+                    if (idList.includes(item.id)) {
+                        // 已选择病人信息
+                        this.tableDataPatientsSelected.push(item);
+                    } else {
+                        // 待选择病人信息
+                        this.tableDataPatients.push(item);
+                    }
+                });
+            }
         },
-        handleSizeChange(val) {
-            this.pagination.size = val;
-            this.patientsQuery();
-        },
-        /* 改变当前页 */
-        handleCurrentChange(val) {
-            this.pagination.page = val;
-            this.patientsQuery();
-        },
+        /* 关闭弹出框 */
         handleItemUpdate() {
             this.dialogItemValue = false;
+        },
+        /* 关联与取消关联 */
+        handleItemPatients(row, type, index) {
+            console.log(index);
+            let param = {
+                nurseId: this.itemId,
+                sickId: row.id
+            }
+            if (type == 'add') {
+                this.$http.post(api.sys.nurse, param).then(res => {
+                    this.$message.success(res.data.message);
+                    /* 更改数据内容，先增后删 */
+                    this.tableDataPatientsSelected.push(row);
+                    this.tableDataPatients.splice(index, 1);
+                }).catch(err => {
+                    ErrorLog(err);
+                });
+            } else {
+                this.$http.delete(api.sys.nurse, { params: param }).then(res => {
+                    this.$message.success(res.data.message);
+                    /* 更改数据内容，先增后删 */
+                    this.tableDataPatients.push(row);
+                    this.tableDataPatientsSelected.splice(index, 1);
+                }).catch(err => {
+                    ErrorLog(err);
+                });
+            }
         },
     }
 };
 </script>
 
 <style lang="scss">
+.i-item-select {
+    padding-right: 10px;
+}
 </style>

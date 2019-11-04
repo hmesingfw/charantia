@@ -33,13 +33,13 @@ export default {
         nurseItems: baseURL + '/api/v1/nurseItems',       // 项目信息
         nurseItem: baseURL + '/api/v1/nurseItem',       //  项目信息
 
+        nursing: baseURL + '/api/v1/nursing',       //..根据病人查询所关联的项目  传sickId  反之传 nurseId
 
-        nurses: baseURL + '/api/v1/nurses',       //查询已分配的病人信息
         nurse: baseURL + '/api/v1/nurse',       //  项目病人信息
 
         patients: baseURL + '/api/v1/patients',       // 查询病人信息
         patient: baseURL + '/api/v1/patient',       // 
-
+        patientItem: baseURL + '/api/v1/nurse/item',   //病人添加多个看护项目
 
         sickbeds: baseURL + '/api/v1/sickbeds',       // 病床信息
         sickbed: baseURL + '/api/v1/sickbed',       // 病床信息
