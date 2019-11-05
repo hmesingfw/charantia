@@ -47,7 +47,15 @@ export default {
         checkIn: baseURL + '/api/v1/hospital/checkIn',    // 入院
         leave: baseURL + '/api/v1/hospital/leave',    // 出院
 
+    },
+    panel: {
+        dynamic: baseURL + '/api/v1/doctor/dynamic', //医生动态
+        sickbedcount: baseURL + '/api/v1/sickbed/count',    //  统计当日病床信息 总床位、已用床位、剩余床位
+        inoutcount: baseURL + '/api/v1/sick/inOut/count',   //统计当日入院人数、出院人数 入院总人数
 
+        majorProjectcount: baseURL + '/api/v1/majorProject/count',      //统计重点项目关联的病人数 、其他为非重点项目的总和
+
+        patientcount: baseURL + '/api/v1/nursing/patient/count',   // 统计所有护理项目中病人的数量
 
     },
     /* 平台登录  */

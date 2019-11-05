@@ -6,6 +6,9 @@ import axios from 'axios'
 import i18n from './lang'
 import './plugins/element.js'
 import './icons/index.js'
+import DataV from '@jiaminghi/data-view'
+
+Vue.use(DataV)
 
 import './token.js'
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets

@@ -473,6 +473,9 @@ export default {
                 sickId: this.form.id,
                 nurseId: item.id
             }))
+            if (list.length == 0) {
+                list.push({ sickId: this.form.id })
+            }
 
             this.$http.post(api.sys.patientItem, list).then(res => {
                 this.dialogItemValue = false;

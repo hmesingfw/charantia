@@ -9,6 +9,7 @@
     "new": "plop"
   },
   "dependencies": {
+    "@jiaminghi/data-view": "^2.4.7",
     "animate.css": "^3.7.2",
     "axios": "0.18.1",
     "babel-plugin-transform-remove-console": "^6.9.4",
