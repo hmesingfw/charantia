@@ -37,17 +37,14 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
-export const constantRoutes = [
-    {
+export const constantRoutes = [{
         path: '/redirect',
         component: Layout,
         hidden: true,
-        children: [
-            {
-                path: '/redirect/:path*',
-                component: () => import('@/views/redirect/index')
-            }
-        ]
+        children: [{
+            path: '/redirect/:path*',
+            component: () => import('@/views/redirect/index')
+        }]
     },
     {
         path: '/login',
@@ -73,65 +70,75 @@ export const constantRoutes = [
         path: '/',
         component: Layout,
         redirect: '/dashboard',
-        children: [
-            {
-                path: 'dashboard',
-                component: () => import('@/views/dashboard/index'),
-                name: 'Dashboard',
-                meta: { title: '首页', icon: 'dashboard', affix: true }
+        children: [{
+            path: 'dashboard',
+            component: () => import('@/views/dashboard/index'),
+            name: 'Dashboard',
+            meta: {
+                title: '首页',
+                icon: 'dashboard',
+                affix: true
             }
-        ]
+        }]
     },
     {
         path: '/documentation',
         component: Layout,
-        children: [
-            {
-                path: 'index',
-                component: () => import('@/views/documentation/index'),
-                name: 'Documentation',
-                meta: { title: '文档', icon: 'documentation', affix: true }
+        children: [{
+            path: 'index',
+            component: () => import('@/views/documentation/index'),
+            name: 'Documentation',
+            meta: {
+                title: '文档',
+                icon: 'documentation',
+                affix: true
             }
-        ]
+        }]
     },
     {
         path: '/guide',
         component: Layout,
         redirect: '/guide/index',
-        children: [
-            {
-                path: 'index',
-                component: () => import('@/views/guide/index'),
-                name: 'Guide',
-                meta: { title: '引导页', icon: 'guide', noCache: true }
+        children: [{
+            path: 'index',
+            component: () => import('@/views/guide/index'),
+            name: 'Guide',
+            meta: {
+                title: '引导页',
+                icon: 'guide',
+                noCache: true
             }
-        ]
+        }]
     },
     {
         path: '/icon',
         component: Layout,
-        children: [
-            {
-                path: 'index',
-                component: () => import('@/views/icons/index'),
-                name: 'Icons',
-                meta: { title: '图标', icon: 'icon', noCache: true }
+        children: [{
+            path: 'index',
+            component: () => import('@/views/icons/index'),
+            name: 'Icons',
+            meta: {
+                title: '图标',
+                icon: 'icon',
+                noCache: true
             }
-        ]
+        }]
     },
     {
         path: '/profile',
         component: Layout,
         redirect: '/profile/index',
         hidden: true,
-        children: [
-            {
-                path: 'index',
-                component: () => import('@/views/profile/index'),
-                name: 'Profile',
-                meta: { title: 'Profile', icon: 'user', noCache: true }
+        children: [{
+            path: 'index',
+            component: () => import('@/views/profile/index'),
+            name: 'Profile',
+            meta: {
+                title: 'Profile',
+                icon: 'user',
+                noCache: true
             }
-        ]
+        }]
     },
     {
         path: '/error',
@@ -142,18 +149,23 @@ export const constantRoutes = [
             title: '错误页面',
             icon: '404'
         },
-        children: [
-            {
+        children: [{
                 path: '401',
                 component: () => import('@/views/error-page/401'),
                 name: 'Page401',
-                meta: { title: '401', noCache: true }
+                meta: {
+                    title: '401',
+                    noCache: true
+                }
             },
             {
                 path: '404',
                 component: () => import('@/views/error-page/404'),
                 name: 'Page404',
-                meta: { title: '404', noCache: true }
+                meta: {
+                    title: '404',
+                    noCache: true
+                }
             }
         ]
     },
@@ -161,36 +173,57 @@ export const constantRoutes = [
     {
         path: '/error-log',
         component: Layout,
-        children: [
-            {
-                path: 'log',
-                component: () => import('@/views/error-log/index'),
-                name: 'ErrorLog',
-                meta: { title: '错误日志', icon: 'bug' }
+        children: [{
+            path: 'log',
+            component: () => import('@/views/error-log/index'),
+            name: 'ErrorLog',
+            meta: {
+                title: '错误日志',
+                icon: 'bug'
             }
-        ]
+        }]
     },
 
     {
         path: '/temp',
         component: Layout,
-        children: [
-            {
-                path: 'index',
-                component: () => import('@/views/temp/index'),
-                name: 'TempIndex',
-                meta: { title: '样例', icon: 'user' }
+        children: [{
+            path: 'index',
+            component: () => import('@/views/temp/index'),
+            name: 'TempIndex',
+            meta: {
+                title: '样例',
+                icon: 'user'
             }
-        ]
+        }]
+    },
+    {
+        path: '/ifrmae',
+        component: Layout,
+        children: [{
+            path: 'index',
+            component: () => import('@/views/iframe-view/index'),
+            name: 'TempIndexview',
+            meta: {
+                title: '样例2',
+                icon: 'user'
+            }
+        }]
     },
 
 
-    { path: '*', redirect: '/404', hidden: true }
+    {
+        path: '*',
+        redirect: '/404',
+        hidden: true
+    }
 ]
 
 const createRouter = () => new Router({
     // mode: 'history', // require service support
-    scrollBehavior: () => ({ y: 0 }),
+    scrollBehavior: () => ({
+        y: 0
+    }),
     routes: constantRoutes
 })
 
