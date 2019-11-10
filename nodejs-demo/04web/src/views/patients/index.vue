@@ -138,11 +138,19 @@
                 </el-form-item>
 
                 <el-form-item label="入院时间" prop="inDate">
-                    <el-date-picker v-model="form.inDate" :disabled="inoutType == 'out'" type="date" placeholder="选择日期时间" align="right" :picker-options="pickerOptions"></el-date-picker>
+                    <el-date-picker
+                        v-model="form.inDate"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        :disabled="inoutType == 'out'"
+                        type="date"
+                        placeholder="选择日期时间"
+                        align="right"
+                        :picker-options="pickerOptions"
+                    ></el-date-picker>
                 </el-form-item>
 
                 <el-form-item label="出院时间" prop="outDate" v-if="inoutType != 'in'">
-                    <el-date-picker v-model="form.outDate" type="date" placeholder="选择日期时间" align="right" :picker-options="pickerOptions"></el-date-picker>
+                    <el-date-picker v-model="form.outDate" value-format="yyyy-MM-dd HH:mm:ss" type="date" placeholder="选择日期时间" align="right" :picker-options="pickerOptions"></el-date-picker>
                 </el-form-item>
             </el-form>
         </dialog-model>
@@ -383,7 +391,6 @@ export default {
                 /* 幅值 */
                 this.form = {
                     sickId: row.id,
-                    inDate: new Date(),
                 }
             } else {
                 console.log(row);
@@ -391,7 +398,6 @@ export default {
                     this.form = {
                         ...row.hospitalized[0],
                         sickId: row.id,
-                        outDate: new Date(),
                     }
                 }
             }

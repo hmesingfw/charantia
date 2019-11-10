@@ -19,8 +19,14 @@ export default {
     },
     created() {
         this.init();
+        this.setInt();
     },
     methods: {
+        setInt() {
+            setInterval(() => {
+                this.init();
+            }, 60000);
+        },
         init() {
             var d = new Date();
             this.year = d.getFullYear();
@@ -49,7 +55,7 @@ export default {
                 case 6:
                     this.day = "星期六";
             }
-            this.hours = d.getHours() + 1;
+            this.hours = d.getHours();
             this.minutes = d.getMinutes() + 1;
 
 

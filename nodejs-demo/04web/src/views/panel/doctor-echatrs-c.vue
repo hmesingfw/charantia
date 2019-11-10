@@ -70,7 +70,7 @@ export default {
                 series: [{
                     name: '面积模式',
                     type: 'pie',
-                    radius: [0, 150],
+                    radius: [0, 120],
                     data: this.list,
                     insideLabel: {
                         show: true

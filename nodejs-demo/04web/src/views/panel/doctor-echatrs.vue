@@ -70,7 +70,8 @@ export default {
                 series: [{
                     name: '面积模式',
                     type: 'pie',
-                    radius: [30, 150], 
+                    radius: [80, 120],
+                    // roseType: 'area',
                     data: this.list,
                     insideLabel: {
                         show: true
@@ -79,16 +80,6 @@ export default {
                         show: true,
                         length: 15
                     },
-                    // data: [
-                    //     { value: 10, name: 'rose1' },
-                    //     { value: 5, name: 'rose2' },
-                    //     { value: 15, name: 'rose3' },
-                    //     { value: 25, name: 'rose4' },
-                    //     { value: 20, name: 'rose5' },
-                    //     { value: 35, name: 'rose6' },
-                    //     { value: 30, name: 'rose7' },
-                    //     { value: 40, name: 'rose8' }
-                    // ]
                 }]
             })
         }

@@ -10,7 +10,9 @@
                     </div>
                     <div class="i-between-body">
                         <div class="i-charts">
-                            <canvas-circle :percent="percentVal" id="lok1" v-if="flashCircle"></canvas-circle>
+                            <!-- <canvas-circle :percent="percentVal" id="lok1" v-if="flashCircle"></canvas-circle> -->
+                            <!-- <dv-active-ring-chart :config="tu1Confing" style="width:100%;height:300px" /> -->
+                            <canvas-radio :ovalue="sickbedcountVal.useTotal" :tvalue="sickbedcountVal.sickbedTotal" v-if="flashCircle" />
                         </div>
                         <div class="i-charts-title">
                             <div class="i-charts-title-c">
@@ -58,12 +60,25 @@
                     </div>
                     <el-row class="i-foot-body-220">
                         <el-col :span="12">
-                            <canvas-circle :percent="1" id="lok2"></canvas-circle>
-                            <div class="title">出院</div>
+                            <!-- <canvas-circle :percent="1" id="lok2"></canvas-circle> -->
+                            <!-- <dv-active-ring-chart :config="tu2Confing" style="width:100%;height:300px" /> -->
+
+                            <canvas-radio :ovalue="inoutVal.outTotal" :tvalue="inoutVal.sickTotal" v-if="flashCircle" height="240px" :marginTop="'-40px'" />
+                            <div class="title">
+                                <span>出院</span>
+                                <span class="i-font-size-20">{{ inoutVal.outTotal }}</span>
+                                <span>人</span>
+                            </div>
                         </el-col>
                         <el-col :span="12">
-                            <canvas-circle :percent="2" id="lok3"></canvas-circle>
-                            <div class="title">入院</div>
+                            <!-- <canvas-circle :percent="2" id="lok3"></canvas-circle> -->
+                            <!-- <dv-active-ring-chart :config="tu3Confing" style="width:100%;height:300px" /> -->
+                            <canvas-radio :ovalue="inoutVal.inTotal" :tvalue="inoutVal.sickTotal" v-if="flashCircle" height="240px" :marginTop="'-40px'" />
+                            <div class="title">
+                                <span>入院</span>
+                                <span class="i-font-size-20">{{ inoutVal.inTotal }}</span>
+                                <span>人</span>
+                            </div>
                         </el-col>
                     </el-row>
                     <div class="i-foot-body-coumt">
@@ -79,13 +94,13 @@
                         <span class="i-font-color">护理动态</span>
                     </div>
                     <div class="i-foot-body">
-                        <el-carousel :interval="10000" arrow="always" style="height:100%;">
+                        <el-carousel :interval="10000" arrow="never" indicator-position="none" style="height:100%;">
                             <el-carousel-item v-for="(item, index) in patientList" :key="index">
                                 <el-row class="i-table">
                                     <el-col :span="8" v-for="obj in item" :key="obj.id" class="i-table-b">
                                         <div class="i-table-c">
                                             <span>{{ obj.name }}</span>
-                                            <span>{{ obj.sickTotal }}</span>
+                                            <span class="i-font-size-20">{{ obj.sickTotal }}</span>
                                         </div>
                                     </el-col>
                                 </el-row>
@@ -104,13 +119,14 @@ require('echarts/theme/macarons') // echarts theme
 import panelTitle from './panel-title'
 import doctorEcharts from './doctor-echatrs'
 import doctorEchartsC from './doctor-echatrs-c'
+import canvasRadio from './canvas-radio'
 
 import canvasCircle from '@/components/CanvasCircle'
 import { GetHeight, deleteRequestData, DeepCopy, ErrorLog } from "@/utils/sys";
 import api from "@/config/api";
 export default {
     components: {
-        panelTitle, doctorEcharts, doctorEchartsC, canvasCircle
+        panelTitle, doctorEcharts, doctorEchartsC, canvasCircle, canvasRadio
     },
     data() {
         return {
@@ -167,8 +183,6 @@ export default {
             /* 统计当日病床信息 总床位、已用床位、剩余床位 */
             this.$http.get(api.panel.sickbedcount).then(res => {
                 this.sickbedcountVal = res.data.data;
-                let ic = (this.sickbedcountVal.useTotal / this.sickbedcountVal.sickbedTotal).toFixed(2);
-                this.percentVal = ic * 100;
 
                 this.flashCircle = false;
                 this.$nextTick(() => {
@@ -177,11 +191,14 @@ export default {
             })
             /* 统计当日入院人数、出院人数 入院总人数             */
             this.$http.get(api.panel.inoutcount).then(res => {
+                console.log(res.data.data, '----f');
                 this.inoutVal = res.data.data;
-                // this.flashCircle = false;
-                // this.$nextTick(() => {
-                //     this.flashCircle = true;
-                // })
+
+                this.flashCircle = false;
+                this.$nextTick(() => {
+                    this.flashCircle = true;
+                })
+
             })
 
             /* 统计所有护理项目中病人的数量             */
@@ -221,6 +238,11 @@ export default {
     .i-padding-2 {
         padding-left: 2%;
     }
+    .i-font-size-20 {
+        font-size: 20px;
+        color: #9bafd1;
+    }
+
     .i-between-body {
         height: 420px;
 
@@ -254,7 +276,8 @@ export default {
                 }
                 .right {
                     padding-right: 20px;
-
+                    font-size: 20px;
+                    font-weight: 600;
                     span:last-child {
                         font-size: 12px;
                     }
@@ -269,6 +292,8 @@ export default {
     }
     .i-font-color {
         color: #04ecf0;
+        font-size: 18px;
+        font-weight: 700;
     }
 
     .foot {
@@ -287,7 +312,7 @@ export default {
                 justify-content: center;
                 flex-direction: column;
                 .title {
-                    padding-top: 10px;
+                    margin-top: -24px;
                     color: #9bafd1;
                     font-size: 20px;
                 }

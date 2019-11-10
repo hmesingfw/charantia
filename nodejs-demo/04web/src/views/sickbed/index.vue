@@ -75,7 +75,7 @@ export default {
     data() {
         return {
             actionTabs: 'list',
-            tableHeight: GetHeight(260), // 列表高度       
+            tableHeight: GetHeight(240), // 列表高度       
             QueryParam: {},
             tableData: [],
             tableDataTemp: [],

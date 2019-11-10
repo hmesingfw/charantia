@@ -57,6 +57,10 @@ export default {
 
         patientcount: baseURL + '/api/v1/nursing/patient/count',   // 统计所有护理项目中病人的数量
 
+        precautions: baseURL + '/api/v1/precautions',   // 获取注意事项信息
+
+        nursinginfo: baseURL + '/api/v1/nursing/info',  //.. 
+
     },
     /* 平台登录  */
     user: {
