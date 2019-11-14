@@ -1,15 +1,25 @@
-const { app, BrowserWindow, Menu, electron } = require('electron')
+const { app, BrowserWindow, Menu, electron, ipcMain } = require('electron')
+const path = require('path')
+const fs = require("fs")
 function createWindow() {
     // 创建浏览器窗口
     let win = new BrowserWindow({
         width: 1920,
         height: 1080,
         fullscreen:true,				// true全屏
+        show:false,						// 先隐藏
         webPreferences: {
             nodeIntegration: true,				//是否集成Node，默认为false。
             // preload: path.join(__dirname, '/public/renderer.js'),   // 但预加载的 js 文件内仍可以使用 Nodejs 的 API
-        }
+        },
+       
     })
+    win.on('ready-to-show', function () {
+		win.show(); // 初始化后再显示
+		// win.webContents.send('main-url', 'http://192.168.31.135:8081');
+		// ipcMain.sender.send('main-url', 'http://192.168.31.135:8081')
+	})
+
     Menu.setApplicationMenu(null);          // 隐藏菜单栏
     // let win = new BrowserWindow({ show: false });       // 最大化
     // let win = new BrowserWindow({fullscreen: true});   // 全屏
@@ -24,9 +34,18 @@ function createWindow() {
 
     // win.close();
     // },3000)
+    var url = 'http://192.168.31.135:8080'
+    if (fs.existsSync(process.cwd() + '/config.txt')) {
+		url = fs.readFileSync(process.cwd() + '/config.txt');
+	}
+    
+	ipcMain.on('close', e => win.close());
+	ipcMain.on('asynchronous-message', (event, arg) => {
+  		console.log(arg)  // prints "ping"
+	 	// event.sender.send('asynchronous-reply', 'http://192.168.31.135:8081');				// 异步
+	 	event.returnValue = url;				// 同步
+	});	
 
-    const ipc = require('electron').ipcMain
-	ipc.on('close', e => win.close());
 }
 
 app.on('ready', createWindow)
