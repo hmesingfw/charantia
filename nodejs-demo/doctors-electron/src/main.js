@@ -38,12 +38,22 @@ function createWindow() {
     if (fs.existsSync(process.cwd() + '/config.txt')) {
 		url = fs.readFileSync(process.cwd() + '/config.txt');
 	}
+
+	var time = 1000 * 60 * 5;
+	if (fs.existsSync(process.cwd() + '/time.txt')) {
+		time = fs.readFileSync(process.cwd() + '/time.txt');
+	}
     
 	ipcMain.on('close', e => win.close());
 	ipcMain.on('asynchronous-message', (event, arg) => {
   		console.log(arg)  // prints "ping"
 	 	// event.sender.send('asynchronous-reply', 'http://192.168.31.135:8081');				// 异步
 	 	event.returnValue = url;				// 同步
+	});	
+	ipcMain.on('asynchronous-time', (event, arg) => {
+  		console.log(arg)  // prints "ping"
+	 	// event.sender.send('asynchronous-reply', 'http://192.168.31.135:8081');				// 异步
+	 	event.returnValue = time;				// 同步
 	});	
 
 }
