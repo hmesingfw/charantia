@@ -85,6 +85,7 @@ export const constantRoutes = [
     {
         path: '/documentation',
         component: Layout,
+        hidden: true,
         children: [
             {
                 path: 'index',
@@ -98,6 +99,7 @@ export const constantRoutes = [
         path: '/guide',
         component: Layout,
         redirect: '/guide/index',
+        hidden: true,
         children: [
             {
                 path: 'index',
@@ -110,6 +112,7 @@ export const constantRoutes = [
     {
         path: '/icon',
         component: Layout,
+        hidden: true,
         children: [
             {
                 path: 'index',
@@ -137,6 +140,7 @@ export const constantRoutes = [
         path: '/error',
         component: Layout,
         redirect: 'noRedirect',
+        hidden: true,
         name: 'ErrorPages',
         meta: {
             title: '错误页面',
@@ -157,29 +161,50 @@ export const constantRoutes = [
             }
         ]
     },
-
     {
         path: '/error-log',
         component: Layout,
+        hidden: true,
         children: [
             {
                 path: 'log',
                 component: () => import('@/views/error-log/index'),
                 name: 'ErrorLog',
-                meta: { title: '错误日志', icon: 'bug' }
+                meta: { title: '错误日志', icon: 'guide' }
             }
         ]
     },
 
     {
-        path: '/temp',
+        path: '/activity',
         component: Layout,
+        meta: { title: '活动管理', icon: 'guide' },
         children: [
             {
-                path: 'index',
-                component: () => import('@/views/temp/index'),
-                name: 'TempIndex',
-                meta: { title: '样例', icon: 'user' }
+                path: 'sort',
+                component: () => import('@/views/activity/sort/index'),
+                name: 'activitySort',
+                meta: { title: '活动类型', icon: 'guide' }
+            }, {
+                path: 'info',
+                component: () => import('@/views/activity/info/index'),
+                name: 'activityInfo',
+                meta: { title: '活动信息', icon: 'guide' }
+            },
+        ]
+    },
+
+
+    {
+        path: '/sys',
+        component: Layout,
+        meta: { title: '系统管理', icon: 'guide' },
+        children: [
+            {
+                path: 'router',
+                component: () => import('@/views/sys/sys-view/index'),
+                name: 'ErrorLog',
+                meta: { title: '系统管理', icon: 'guide' }
             }
         ]
     },
