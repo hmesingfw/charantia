@@ -1,0 +1,18 @@
+{
+    "development": {
+        "username": "root",
+        "password": "jeff1234",
+        "database": "test",
+        "host": "172.18.15.5",
+        "post": 3306,
+        "dialect": "mysql"
+    },
+    "test": {
+        "username": "root",
+        "password": null,
+        "post": 3306,
+        "database": "define-your-own-databse-for-unittest",
+        "host": "127.0.0.1",
+        "dialect": "mysql"
+    }
+}
