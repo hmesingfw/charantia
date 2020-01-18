@@ -6,22 +6,24 @@ module.exports = {
   plugin: 'autod-egg',
   test: [
     'test',
+    'benchmark',
   ],
   dep: [
     'egg',
-    'egg-sequelize',
     'egg-scripts',
   ],
   devdep: [
+    'egg-ci',
     'egg-bin',
+    'egg-mock',
     'autod',
+    'autod-egg',
     'eslint',
     'eslint-config-egg',
-    'autod-egg',
-    'factory-girl',
-    'sequelize-cli',
   ],
   exclude: [
     './test/fixtures',
+    './dist',
   ],
 };
+

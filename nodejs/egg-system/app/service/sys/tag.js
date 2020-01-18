@@ -7,7 +7,7 @@ class User extends Service {
         return this.ctx.model.User.findAndCountAll({
             offset,
             limit,
-            order: [[ 'created_at', 'desc' ], [ 'id', 'desc' ]],
+            order: [ 'update_at', 'desc' ],
         });
     }
 
