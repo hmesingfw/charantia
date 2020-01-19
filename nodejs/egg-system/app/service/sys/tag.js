@@ -2,12 +2,12 @@
 
 const Service = require('egg').Service;
 
-class User extends Service {
+class Tag extends Service {
     async list({ offset = 0, limit = 10 }) {
-        return this.ctx.model.User.findAndCountAll({
+        return this.ctx.model.Sys.Tag.findAndCountAll({
             offset,
             limit,
-            order: [ 'update_at', 'desc' ],
+            order: [['updated_at', 'DESC']],
         });
     }
 
@@ -40,4 +40,4 @@ class User extends Service {
     }
 }
 
-module.exports = User;
+module.exports = Tag;

@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : woxihuanni
+Source Server         : localhost woxihuanni
 Source Server Version : 50712
 Source Host           : localhost:3306
 Source Database       : charantia_sys
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2020-01-19 00:07:07
+Date: 2020-01-19 16:41:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,7 +27,7 @@ CREATE TABLE `sys_tag` (
   `sort` int(8) DEFAULT NULL COMMENT '排序',
   `details` varchar(255) DEFAULT NULL COMMENT '备注',
   `created_at` datetime DEFAULT NULL,
-  `update_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   `user_id` varchar(36) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统标签表';
@@ -35,3 +35,4 @@ CREATE TABLE `sys_tag` (
 -- ----------------------------
 -- Records of sys_tag
 -- ----------------------------
+INSERT INTO `sys_tag` VALUES ('1', '1', '1', '1', '1', '1', '2020-01-23 16:09:51', '2020-01-28 16:09:55', '1');

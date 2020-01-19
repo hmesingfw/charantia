@@ -3,7 +3,7 @@
 module.exports = app => {
     const { STRING, INTEGER, DATE } = app.Sequelize;
 
-    const Tag = app.model.define('tag', {
+    const Tag = app.model.define('sys_tag', {
         id: {
             type: INTEGER,
             primaryKey: true,
