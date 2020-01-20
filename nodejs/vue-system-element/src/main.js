@@ -8,6 +8,7 @@ import api from '@/config/api'
 import './plugins/element.js'
 import './plugins/import-component.js'              //  封装引用的全局组件
 import './icons/index.js'
+import './http.js'
 
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 

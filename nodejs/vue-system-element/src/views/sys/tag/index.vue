@@ -8,7 +8,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
-                    <el-button @click="handleEdit({sort:1,status:1}, 'post')" circle type="primary" icon="el-icon-plus"></el-button>
+                    <el-button @click="handleEdit({sort:1,status:'0'}, 'post')" circle type="primary" icon="el-icon-plus"></el-button>
                     <el-button @click="handleDelete({})" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
                 </el-form-item>
             </el-form>
@@ -25,11 +25,13 @@
         >
             <el-table-column type="selection" width="42"></el-table-column>
             <el-table-column prop="title" label="活动标题" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="sort" label="排序" show-overflow-tooltip></el-table-column>
-            <el-table-column label="状态" show-overflow-tooltip>
-                <template slot-scope="scope">{{ scope.row.status == 0 ? '启用' : '禁用'}}</template>
+            <el-table-column prop="color" label="颜色"></el-table-column>
+            <el-table-column prop="title" label="类型"></el-table-column>
+            <el-table-column prop="sort" label="排序"></el-table-column>
+            <el-table-column label="状态">
+                <template slot-scope="scope">{{ scope.row.status == '0' ? '启用' : '禁用'}}</template>
             </el-table-column>
-            <el-table-column prop="createTime" label="创建时间" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="updatedAt" label="更新时间" width="140"></el-table-column>
 
             <el-table-column label="操作" width="160" fixed="right">
                 <template slot-scope="scope">
@@ -53,17 +55,26 @@
 
         <dialog-alert v-model="dialogValue" title="信息录入" :type="requestType" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
             <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
-                <el-form-item label="活动标题" prop="title">
-                    <el-input v-model="form.title" maxlength="50"></el-input>
+                <el-form-item label="标题" prop="title">
+                    <el-input v-model="form.title" maxlength="32"></el-input>
+                </el-form-item>
+                <el-form-item label="类型" prop="type">
+                    <el-input v-model="form.type" maxlength="32"></el-input>
+                </el-form-item>
+                <el-form-item label="颜色" prop="color">
+                    <el-input v-model="form.color" maxlength="32"></el-input>
                 </el-form-item>
                 <el-form-item label="排序" prop="sort">
                     <el-input-number v-model="form.sort" :max="99" :min="1"></el-input-number>
                 </el-form-item>
+                <el-form-item label="备注" prop="details">
+                    <el-input v-model="form.details" maxlength="32"></el-input>
+                </el-form-item>
 
                 <el-form-item label="状态" prop="status">
                     <el-radio-group v-model="form.status">
-                        <el-radio :label="1">启用</el-radio>
-                        <el-radio :label="0">禁用</el-radio>
+                        <el-radio label="0">启用</el-radio>
+                        <el-radio label="1">禁用</el-radio>
                     </el-radio-group>
                 </el-form-item>
             </el-form>
@@ -129,11 +140,9 @@ export default {
             };
             this.tableLoading = true;
             this.$http.get(this.$api.sys.tag, { params: param }).then(res => {
-                let data = res.data.data;
-                this.tableData = data.records;
+                this.tableData = res.data.rows;
 
-                this.pagination.size = data.size;
-                this.totalCount = data.total;
+                this.totalCount = res.data.total;
                 this.tableLoading = false;
             }).catch(err => {
                 ErrorLog(err);
@@ -151,7 +160,7 @@ export default {
             this.$refs.ruleForm.validate(async valid => {
                 if (valid) {
                     this.loadingButton = true;
-                    let issucc = await this.reqData(this.apiUrl, this.form, this.requestType);
+                    let issucc = await this.reqData(this.$api.sys.tag + '/ofjlksdugwe195j', this.form, this.requestType);
                     if (issucc) {
                         this.loadingButton = false;
                         this.dialogValue = false;

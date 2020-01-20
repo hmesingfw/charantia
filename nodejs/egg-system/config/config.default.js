@@ -8,7 +8,11 @@ module.exports = appInfo => {
 
     // add your config here
     config.middleware = [];
-
+    config.security = {
+        csrf: {
+            headerName: 'x-csrf-token', // 通过 header 传递 CSRF token 的默认字段为 x-csrf-token
+        },
+    };
     // change to your own sequelize configurations
     config.sequelize = {
         username: 'root',

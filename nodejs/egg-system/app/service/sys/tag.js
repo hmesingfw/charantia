@@ -19,8 +19,8 @@ class Tag extends Service {
         return user;
     }
 
-    async create(user) {
-        return this.ctx.model.User.create(user);
+    async create(tag) {
+        return this.ctx.model.Sys.Tag.create(tag);
     }
 
     async update({ id, updates }) {
