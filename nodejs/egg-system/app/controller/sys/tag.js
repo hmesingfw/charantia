@@ -26,9 +26,13 @@ class TagController extends Controller {
     async update() {
         const ctx = this.ctx;
         const id = ctx.params.id;
-        console.log(id, ctx.request.body);
-        // ctx.body = await ctx.service.post.update({ id, user_id: ctx.request.body.user_id, updates });
-        ctx.body = 'sus';
+        const tag = await ctx.model.Sys.Tag.findByPk(id);
+        const body = ctx.request.body;
+        const message = await tag.update(body);
+        ctx.body = {
+            message,
+            code: 200,
+        };
     }
 }
 

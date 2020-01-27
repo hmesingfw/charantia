@@ -82,7 +82,7 @@
     </div>
 </template>
 <script>
-import { GetHeight, deleteRequestData, DeepCopy, ErrorLog, reqData } from '@/utils/sys';
+import { GetHeight, deleteRequestData, DeepCopy, ErrorLog } from '@/utils/sys';
 import { mapState } from 'vuex';
 
 export default {
@@ -120,7 +120,7 @@ export default {
         this.query();
     },
     methods: {
-        deleteRequestData, reqData,
+        deleteRequestData,
         /* 改变每页大小 */
         handleSizeChange(val) {
             this.pagination.size = val;
@@ -160,7 +160,7 @@ export default {
             this.$refs.ruleForm.validate(async valid => {
                 if (valid) {
                     this.loadingButton = true;
-                    let issucc = await this.reqData(this.$api.sys.tag + '/ofjlksdugwe195j', this.form, this.requestType);
+                    let issucc = await this.reqData(this.$api.sys.tag, this.form, this.requestType);
                     if (issucc) {
                         this.loadingButton = false;
                         this.dialogValue = false;
