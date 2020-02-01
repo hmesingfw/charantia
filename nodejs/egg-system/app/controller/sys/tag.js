@@ -6,8 +6,8 @@ class TagController extends Controller {
     async index() {
         const ctx = this.ctx;
         const query = {
-            limit: ctx.helper.parseInt(ctx.query.limit),
-            offset: ctx.helper.parseInt(ctx.query.offset),
+            limit: ctx.helper.parseInt(ctx.query.size) * ctx.helper.parseInt(ctx.query.page),
+            offset: ctx.helper.parseInt(ctx.query.size) * ctx.helper.parseInt(ctx.query.page - 1),
         };
         ctx.body = await ctx.service.sys.tag.list(query);
     }
@@ -26,13 +26,19 @@ class TagController extends Controller {
     async update() {
         const ctx = this.ctx;
         const id = ctx.params.id;
-        const tag = await ctx.model.Sys.Tag.findByPk(id);
         const body = ctx.request.body;
-        const message = await tag.update(body);
+        const message = await ctx.service.sys.tag.update({ id, body });
         ctx.body = {
             message,
             code: 200,
         };
+    }
+    async destroy() {
+        const ctx = this.ctx;
+        const id = ctx.params.id;
+
+        ctx.body = await ctx.service.sys.tag.del(id);
+        ctx.status = 200;
     }
 }
 

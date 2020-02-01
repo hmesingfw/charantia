@@ -9,7 +9,6 @@ import Layout from '@/layout'
 /* Router Modules */
 // import componentsRouter from './modules/components'
 // import chartsRouter from './modules/charts'
-// import nestedRouter from './modules/nested'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -80,20 +79,7 @@ export const constantRoutes = [{
             affix: true
         }
     }]
-},
-{
-    path: '/sys',
-    component: Layout,
-    children: [{
-        path: 'tag',
-        component: () => import('@/views/sys/tag/index'),
-        name: 'SysTag',
-        meta: { title: '标签管理', icon: 'guide', affix: true }
-    }]
-},
-
-
-{
+}, {
     path: '/icon',
     component: Layout,
     children: [{
@@ -106,7 +92,29 @@ export const constantRoutes = [{
             noCache: true
         }
     }]
+}, {
+    path: '/sys',
+    component: Layout,
+    children: [{
+        path: 'tag',
+        component: () => import('@/views/sys/tag/index'),
+        name: 'SysTag',
+        meta: { title: '标签管理', icon: 'guide', affix: true }
+    }]
+}, {
+    path: '/generate',
+    component: Layout,
+    children: [{
+        path: 'index',
+        component: () => import('@/views/generate/index'),
+        name: 'generate',
+        meta: { title: '表单管理', icon: 'guide', affix: true }
+    }]
 },
+
+
+
+
 {
     path: '/profile',
     component: Layout,
@@ -167,19 +175,7 @@ export const constantRoutes = [{
     }]
 },
 
-{
-    path: '/temp',
-    component: Layout,
-    children: [{
-        path: 'index',
-        component: () => import('@/views/temp/index'),
-        name: 'TempIndex',
-        meta: {
-            title: '样例',
-            icon: 'user'
-        }
-    }]
-},
+
 {
     path: '/ifrmae',
     component: Layout,

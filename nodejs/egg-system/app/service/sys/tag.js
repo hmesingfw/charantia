@@ -24,20 +24,32 @@ class Tag extends Service {
     }
 
     async update({ id, updates }) {
-        const user = await this.ctx.model.User.findByPk(id);
+        const user = await this.ctx.model.Sys.Tag.findByPk(id);
         if (!user) {
             this.ctx.throw(404, 'user not found');
         }
         return user.update(updates);
     }
 
-    async del(id) {
-        const user = await this.ctx.model.User.findByPk(id);
-        if (!user) {
-            this.ctx.throw(404, 'user not found');
+    async del(ids) {
+        const body = {
+            suc: 0,
+            err: 0,
+        };
+        let idArr = [];
+        ids.split(',').length > 0 ? idArr = ids.split(',') : idArr.push(ids);
+        for (let i = 0; i < idArr.length; i++) {
+            const tag = await this.ctx.model.Sys.Tag.findByPk(idArr[i]);
+            if (!tag) {
+                body.err += 1;
+            } else {
+                body.suc += 1;
+                tag.destroy();
+            }
         }
-        return user.destroy();
+        return body;
     }
+
 }
 
 module.exports = Tag;

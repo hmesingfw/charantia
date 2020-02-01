@@ -1,4 +1,3 @@
-import api from '@/config/api';
 import axios from 'axios';
 import { Message } from 'element-ui';
 
@@ -6,24 +5,9 @@ export function GetHeight(offset) {
     return document.documentElement.clientHeight - offset + 'px';
 }
 
-
-/** 数据深拷贝 */
-export function DeepCopy(obj) {
-    var result = Array.isArray(obj) ? [] : {};
-    for (var key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            if (typeof obj[key] === 'object' && obj[key] !== null) {
-                result[key] = DeepCopy(obj[key]);   //递归复制
-            } else {
-                result[key] = obj[key];
-            }
-        }
-    }
-    return result;
-}
-
 /* 异常错误提示 */
 export function ErrorLog(err) {
+    // eslint-disable-next-line no-console
     console.log(err);
 }
 
@@ -158,29 +142,7 @@ export function reqChangeStatus(url, form, reqType,
 }
 
 
-/* 发送删除请求给后台 */
-export function deleteRequestData(url, id, { message = '此操作将永久删除信息, 是否继续?', isAlert = true } = {}) {
-    return new Promise((resolve) => {
-        this.$confirm(message, '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'error'
-        }).then(() => {
-            this.$http.delete(url, { data: id }).then(res => {
-                if (res.data.code == 200) {
-                    isAlert && this.$message.success(res.data.message);
-                    resolve(true);
-                } else {
-                    isAlert && this.$message.info(res.data.message);
-                    resolve(false);
-                }
-            }).catch(err => {
-                resolve(false);
-                ErrorLog(err);
-            });
-        });
-    });
-}
+
 /* 字符串截取 */
 export function subst(str, num) {
     if (str && str.length > num) {

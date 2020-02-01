@@ -1,3 +1,19 @@
 .padding-8 {
     padding: 8px;
 }
+.margin-8 {
+    margin: 8px;
+}
+
+
+
+/* 分页组件居中 */
+.pu-pagination{
+    display: flex;
+    justify-content: center;
+}
+
+/* 表格表头颜色 */
+.el-table .table-header-color th {
+  background: #efefef;
+}
