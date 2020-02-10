@@ -1,6 +1,6 @@
 <template>
-    <el-tabs type="border-card" class="margin-8">
-        <el-tab-pane>
+    <el-tabs type="border-card" class="margin-8" v-model="tabsActiveName">
+        <el-tab-pane name="list">
             <span slot="label">
                 <i class="el-icon-date"></i> 我的表单
             </span>
@@ -56,20 +56,29 @@
                 </div>
             </div>
         </el-tab-pane>
-        <el-tab-pane>
+        <el-tab-pane name="tableList">
             <span slot="label">
                 <i class="el-icon-date"></i> 数据库
             </span>
             <el-form :model="tableForm">
                 <el-form-item label="表">
-                    <el-select v-model="tableForm.title" filterable placeholder="请选择">
+                    <el-select v-model="tableForm.title" filterable placeholder="请选择" @change="generateField">
                         <el-option v-for="item in tableNameList" :key="item.table_name" :value="item.table_name">{{item.table_comment ? item.table_name + ' : ' +item.table_comment: item.table_name}}</el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
         </el-tab-pane>
-        <el-tab-pane label="角色管理">角色管理</el-tab-pane>
-        <el-tab-pane label="定时任务补偿">定时任务补偿</el-tab-pane>
+        <el-tab-pane label="生成" name="fielsList">
+            <el-form :model="fieldList" class="demo-form-inline">
+                <el-table :data="fieldList.data" style="width: 100%" v-loading="fieldLoading">
+                    <el-table-column prop="date" label="字段" width="180">
+                        <template slot-scope="scope">
+                            <el-input v-model="scope.row.Field"></el-input>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-form>
+        </el-tab-pane>
     </el-tabs>
 </template>
 <script>
@@ -98,10 +107,16 @@ export default {
             },
             totalCount: 0,      // 总共多少条
 
-
+            /*  */
+            tabsActiveName: 'list',
             /* 数据库 */
             tableForm: {},
             tableNameList: [],  // 已有数据表
+            fieldList: {
+                rules: {},
+                data: [],
+            },
+            fieldLoading: false,
         };
     },
     created() {
@@ -113,6 +128,7 @@ export default {
             this.$http.get(this.$api.generate.tableName).then(res => {
                 this.tableNameList = res.data.rows;
             })
+
         },
         /* 查询操作 */
         query(flag) {
@@ -132,6 +148,17 @@ export default {
         },
         /* 编辑 */
         handleEdit() { },
+
+        generateField(tableName) {
+            this.fieldLoading = true;
+            this.$http.get(`${this.$api.generate.tableField}?name=${tableName}`).then(res => {
+                this.fieldList.data = res.data.rows;
+                this.tabsActiveName = 'fielsList';
+                this.fieldLoading = false;
+            }).catch(() => {
+                this.fieldLoading = false;
+            })
+        },
 
     }
 };

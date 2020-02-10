@@ -11,6 +11,15 @@ class TableNameController extends Controller {
             rows: list,
         };
     }
+
+    async getTableField() {
+        const ctx = this.ctx;
+        const tableName = ctx.query.name;
+        const list = await ctx.service.generate.tableName.getTableFiled(tableName);
+        ctx.body = {
+            rows: list,
+        };
+    }
 }
 
 module.exports = TableNameController;

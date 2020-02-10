@@ -2,10 +2,10 @@
 
 const Service = require('egg').Service;
 
-class Tag extends Service {
+class Enum extends Service {
     async list({ offset = 0, limit = 10, where = {} }) {
         where = { ...where, ...this.ctx.helper.whereParams };
-        return this.ctx.model.Sys.Tag.findAndCountAll({
+        return this.ctx.model.Sys.Enum.findAndCountAll({
             where,
             offset,
             limit,
@@ -13,12 +13,12 @@ class Tag extends Service {
         });
     }
 
-    async create(tag) {
-        return this.ctx.model.Sys.Tag.create(tag);
+    async create(Enum) {
+        return this.ctx.model.Sys.Enum.create(Enum);
     }
 
     async update({ id, updates }) {
-        const user = await this.ctx.model.Sys.Tag.findByPk(id);
+        const user = await this.ctx.model.Sys.Enum.findByPk(id);
         if (!user) {
             this.ctx.throw(404, 'user not found');
         }
@@ -34,12 +34,12 @@ class Tag extends Service {
         ids.split(',').length > 0 ? idArr = ids.split(',') : idArr.push(ids);
         for (let i = 0; i < idArr.length; i++) {
             const obj = { id: idArr[i], isDel: '1' };
-            const tag = await this.ctx.model.Sys.Tag.findByPk(idArr[i]);
-            if (!tag) {
+            const en = await this.ctx.model.Sys.Enum.findByPk(idArr[i]);
+            if (!en) {
                 body.err += 1;
             } else {
                 body.suc += 1;
-                tag.update(obj);
+                en.update(obj);
             }
         }
         return body;
@@ -47,4 +47,4 @@ class Tag extends Service {
 
 }
 
-module.exports = Tag;
+module.exports = Enum;

@@ -95,11 +95,17 @@ export const constantRoutes = [{
 }, {
     path: '/sys',
     component: Layout,
+    meta: { title: '系统管理', icon: 'guide' },
     children: [{
         path: 'tag',
         component: () => import('@/views/sys/tag/index'),
         name: 'SysTag',
         meta: { title: '标签管理', icon: 'guide', affix: true }
+    }, {
+        path: 'enum',
+        component: () => import('@/views/sys/enum/index'),
+        name: 'SysEnum',
+        meta: { title: '枚举管理', icon: 'guide', affix: true }
     }]
 }, {
     path: '/generate',

@@ -7,4 +7,8 @@ module.exports = {
         if (!string) return string;
         return parseInt(string) || 0;
     },
+    /* 查询默认条件 */
+    whereParams: {
+        isDel: '0',
+    },
 };

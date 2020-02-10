@@ -1,18 +1,20 @@
 'use strict';
 const moment = require('moment');
 module.exports = app => {
-    const { STRING, INTEGER, DATE } = app.Sequelize;
+    const { STRING, DATE } = app.Sequelize;
 
-    const Tag = app.model.define('sys_tag', {
+    const Enum = app.model.define('sys_enum', {
         id: {
             type: STRING(36),
             primaryKey: true,
             autoIncrement: true,
         },
-        title: STRING(32),
-        type: STRING(255),
-        color: STRING(255),
-        sort: INTEGER(8),
+        title: STRING(50),
+        value: STRING(50),
+        parentId: {
+            type: STRING(36),
+            field: 'parent_id',
+        },
         status: STRING(1),
         details: STRING(255),
         userId: {
@@ -37,13 +39,12 @@ module.exports = app => {
             type: STRING(1),
             field: 'is_del',
         },
-
     }, {
         // timestamps: true, // 如果需要sequelize帮你维护createdAt,updatedAt和deletedAt必须先启用timestamps功能
         freezeTableName: true, // 禁用修改表名
-        tableName: 'sys_tag', // 数据库表名 ;
+        tableName: 'sys_enum', // 数据库表名 ;
     });
 
 
-    return Tag;
+    return Enum;
 };

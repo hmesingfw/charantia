@@ -6,7 +6,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
-                <el-button @click="handleEdit({sort:1,status:'0'}, 'post')" circle type="primary" icon="el-icon-plus"></el-button>
+                <el-button @click="handleEdit({sort:1,status:'0',parentId:'0'}, 'post')" circle type="primary" icon="el-icon-plus"></el-button>
                 <el-button @click="handleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
             </el-form-item>
         </el-form>
@@ -22,9 +22,8 @@
         >
             <el-table-column type="selection" width="42"></el-table-column>
             <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="color" label="颜色"></el-table-column>
-            <el-table-column prop="type" label="类型"></el-table-column>
-            <el-table-column prop="sort" label="排序"></el-table-column>
+            <el-table-column prop="value" label="值" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="details" label="备注" show-overflow-tooltip F></el-table-column>
             <el-table-column label="状态">
                 <template slot-scope="scope">{{ scope.row.status == '0' ? '启用' : '禁用'}}</template>
             </el-table-column>
@@ -55,17 +54,11 @@
                 <el-form-item label="标题" prop="title">
                     <el-input v-model="form.title" maxlength="32"></el-input>
                 </el-form-item>
-                <el-form-item label="类型" prop="type">
-                    <el-input v-model="form.type" maxlength="32"></el-input>
-                </el-form-item>
-                <el-form-item label="颜色" prop="color">
-                    <el-input v-model="form.color" maxlength="32"></el-input>
-                </el-form-item>
-                <el-form-item label="排序" prop="sort">
-                    <el-input-number v-model="form.sort" :max="99" :min="1"></el-input-number>
+                <el-form-item label="值" prop="type">
+                    <el-input v-model="form.value" maxlength="32"></el-input>
                 </el-form-item>
                 <el-form-item label="备注" prop="details">
-                    <el-input v-model="form.details" maxlength="32"></el-input>
+                    <el-input type="textarea" :rows="2" v-model="form.details" maxlength="255"></el-input>
                 </el-form-item>
 
                 <el-form-item label="状态" prop="status">
@@ -89,7 +82,7 @@ export default {
     },
     data() {
         return {
-            apiUrl: this.$api.sys.tag,          // 请求路很
+            apiUrl: this.$api.sys.enum,          // 请求路很
             rules: {
                 title: [{ required: true, message: '请输入内容', trigger: 'blur' },],
             },
