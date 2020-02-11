@@ -73,7 +73,7 @@
                 <el-table :data="fieldList.data" style="width: 100%" v-loading="fieldLoading">
                     <el-table-column prop="date" label="字段" width="180">
                         <template slot-scope="scope">
-                            <el-input v-model="scope.row.Field"></el-input>
+                            <el-input v-model="scope.row.field"></el-input>
                         </template>
                     </el-table-column>
                 </el-table>

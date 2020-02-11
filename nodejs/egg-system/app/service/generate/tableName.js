@@ -13,17 +13,16 @@ class TableName extends Service {
     async getTableFiled(tableName) {
         const body = this.app.model.query('SHOW FULL COLUMNS FROM ' + tableName, {
             type: this.app.Sequelize.QueryTypes.SELECT,
-            mapToModel: true,
             fieldMap: {
-                field: 'Field',
-                type: 'Type',
-                collation: 'Collation',
-                null: 'Null',
-                key: 'Key',
-                default: 'Default',
-                extra: 'Extra',
-                privileges: 'Privileges',
-                comment: 'Privileges',
+                Field: 'field',
+                Type: 'type',
+                Collation: 'collation',
+                Null: 'null',
+                Key: 'key',
+                Default: 'default',
+                Extra: 'extra',
+                Privileges: 'privileges',
+                Comment: 'comment',
             },
         });
         return body;
