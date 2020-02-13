@@ -31,6 +31,7 @@
 
             <el-table-column label="操作" width="160" fixed="right">
                 <template slot-scope="scope">
+                    <el-button size="mini" type="text" v-if="scope.row.parentId == '0'" @click="handleEdit({sort:1,status:'0',parentId:scope.row.id} , 'post')">添加值</el-button>
                     <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
                     <el-button size="mini" type="text" @click="handleDelete(apiUrl, scope.row, query)">删除</el-button>
                 </template>
@@ -49,7 +50,7 @@
             ></el-pagination>
         </div>
 
-        <dialog-alert v-model="dialogValue" title="信息录入" :type="requestType" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+        <dialog-alert v-model="dialogValue" title="枚举值" :type="requestType" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
             <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
                 <el-form-item label="标题" prop="title">
                     <el-input v-model="form.title" maxlength="32"></el-input>

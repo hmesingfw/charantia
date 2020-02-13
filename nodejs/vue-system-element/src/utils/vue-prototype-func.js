@@ -11,7 +11,7 @@ Vue.prototype.reqData = function (url, form, reqType, { idKey = 'id' } = {}) {
 
         this.$http[reqType](`${url}${put}`, form).then(res => {
             if (res.data.code == 200) {
-                this.$message.success(res.data.message);
+                this.$message.success(res.data.msg);
                 resolve(true);
             } else {
                 resolve(false);

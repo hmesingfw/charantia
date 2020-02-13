@@ -5,6 +5,7 @@ const Service = require('egg').Service;
 class Enum extends Service {
     async list({ offset = 0, limit = 10, where = {} }) {
         where = { ...where, ...this.ctx.helper.whereParams };
+
         return this.ctx.model.Sys.Enum.findAndCountAll({
             where,
             offset,
@@ -13,16 +14,47 @@ class Enum extends Service {
         });
     }
 
+    async getTree(where) {
+        where = { ...where, ...this.ctx.helper.whereParams };
+        let rootNeeds = await this.ctx.model.Sys.Enum.findAll({
+            where,
+        });
+        rootNeeds = await this.getChildNeeds(rootNeeds);
+        return rootNeeds;
+    }
+
+    async getChildNeeds(rootNeeds) {
+        const expendPromise = [];
+        rootNeeds.forEach(item => {
+            expendPromise.push(this.ctx.model.Sys.Enum.findAll({
+                where: {
+                    ...this.ctx.helper.whereParams,
+                    parentId: item.id,
+                },
+            }));
+        });
+        const child = await Promise.all(expendPromise);
+        for (let [idx, item] of child.entries()) {
+
+            if (item.length > 0) {
+                item = await this.getChildNeeds(item);
+            }
+            rootNeeds[idx].child = item;
+        }
+        return rootNeeds;
+    }
+
+
     async create(Enum) {
         return this.ctx.model.Sys.Enum.create(Enum);
     }
 
-    async update({ id, updates }) {
-        const user = await this.ctx.model.Sys.Enum.findByPk(id);
-        if (!user) {
+    async update(id, updates) {
+        const item = await this.ctx.model.Sys.Enum.findByPk(id);
+        if (!item) {
             this.ctx.throw(404, 'user not found');
         }
-        return user.update(updates);
+        return item.update(updates);
     }
 
     async del(ids) {
