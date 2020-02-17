@@ -24,23 +24,34 @@ class Enum extends Service {
     }
 
     async getChildNeeds(rootNeeds) {
-        const expendPromise = [];
-        rootNeeds.forEach(item => {
-            expendPromise.push(this.ctx.model.Sys.Enum.findAll({
+        for (let i = 0; i < rootNeeds.length; i++) {
+            const item = rootNeeds[i];
+
+            rootNeeds[i].children = await this.ctx.model.Sys.Enum.findAll({
                 where: {
                     ...this.ctx.helper.whereParams,
                     parentId: item.id,
                 },
-            }));
-        });
-        const child = await Promise.all(expendPromise);
-        for (let [idx, item] of child.entries()) {
-
-            if (item.length > 0) {
-                item = await this.getChildNeeds(item);
-            }
-            rootNeeds[idx].child = item;
+            });
         }
+
+        // const expendPromise = [];
+        // rootNeeds.forEach(item => {
+        //     expendPromise.push(this.ctx.model.Sys.Enum.findAll({
+        //         where: {
+        //             ...this.ctx.helper.whereParams,
+        //             parentId: item.id,
+        //         },
+        //     }));
+        // });
+        // const child = await Promise.all(expendPromise);
+        // for (let [idx, item] of child.entries()) {
+
+        //     if (item.length > 0) {
+        //         item = await this.getChildNeeds(item);
+        //     }
+        //     rootNeeds[idx].children = [{ id: 1 }];
+        // }
         return rootNeeds;
     }
 

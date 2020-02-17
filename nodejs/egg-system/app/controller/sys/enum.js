@@ -5,13 +5,14 @@ const Controller = require('egg').Controller;
 class EnumController extends Controller {
     async index() {
         const ctx = this.ctx;
-        const query = {
-
-            limit: ctx.helper.parseInt(ctx.query.size) * ctx.helper.parseInt(ctx.query.page),
-            offset: ctx.helper.parseInt(ctx.query.size) * ctx.helper.parseInt(ctx.query.page - 1),
-        };
+        // const query = {
+        //     limit: ctx.helper.parseInt(ctx.query.size) * ctx.helper.parseInt(ctx.query.page),
+        //     offset: ctx.helper.parseInt(ctx.query.size) * ctx.helper.parseInt(ctx.query.page - 1),
+        // };
         // ctx.body = await ctx.service.sys.enum.list(query);
-        ctx.body = await ctx.service.sys.enum.getTree({ parentId: '0' });
+        ctx.body = {
+            rows: await ctx.service.sys.enum.getTree({ parentId: '0', ...this.ctx.helper.whereParams }),
+        };
     }
 
     async create() {
