@@ -16,42 +16,30 @@ class Enum extends Service {
 
     async getTree(where) {
         where = { ...where, ...this.ctx.helper.whereParams };
-        let rootNeeds = await this.ctx.model.Sys.Enum.findAll({
+        const rootNeeds = await this.ctx.model.Sys.Enum.findAll({
             where,
         });
-        rootNeeds = await this.getChildNeeds(rootNeeds);
-        return rootNeeds;
+        return await this.getChildNeeds(rootNeeds);
     }
-
+    /* 树形结构 */
     async getChildNeeds(rootNeeds) {
-        for (let i = 0; i < rootNeeds.length; i++) {
-            const item = rootNeeds[i];
-
-            rootNeeds[i].children = await this.ctx.model.Sys.Enum.findAll({
+        const expendPromise = [];
+        rootNeeds.forEach(item => {
+            expendPromise.push(this.ctx.model.Sys.Enum.findAll({
                 where: {
                     ...this.ctx.helper.whereParams,
                     parentId: item.id,
                 },
-            });
+            }));
+        });
+        const child = await Promise.all(expendPromise);
+        for (let [idx, item] of child.entries()) {
+
+            if (item.length > 0) {
+                item = await this.getChildNeeds(item);
+            }
+            rootNeeds[idx].setDataValue('children', item); // $$$ 在查询出来后的对象中赋值，需要使setDataValue方法
         }
-
-        // const expendPromise = [];
-        // rootNeeds.forEach(item => {
-        //     expendPromise.push(this.ctx.model.Sys.Enum.findAll({
-        //         where: {
-        //             ...this.ctx.helper.whereParams,
-        //             parentId: item.id,
-        //         },
-        //     }));
-        // });
-        // const child = await Promise.all(expendPromise);
-        // for (let [idx, item] of child.entries()) {
-
-        //     if (item.length > 0) {
-        //         item = await this.getChildNeeds(item);
-        //     }
-        //     rootNeeds[idx].children = [{ id: 1 }];
-        // }
         return rootNeeds;
     }
 

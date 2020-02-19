@@ -18,6 +18,8 @@
             v-loading="tableLoading"
             style="width: 100%"
             :stripe="true"
+            row-key="id"
+            :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
             header-row-class-name="table-header-color"
         >
             <el-table-column type="selection" width="42"></el-table-column>
@@ -31,9 +33,9 @@
 
             <el-table-column label="操作" width="160" fixed="right">
                 <template slot-scope="scope">
-                    <el-button size="mini" type="text" v-if="scope.row.parentId == '0'" @click="handleEdit({sort:1,status:'0',parentId:scope.row.id} , 'post')">添加值</el-button>
                     <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
                     <el-button size="mini" type="text" @click="handleDelete(apiUrl, scope.row, query)">删除</el-button>
+                    <el-button size="mini" type="text" v-if="scope.row.parentId == '0'" @click="handleEdit({sort:1,status:'0',parentId:scope.row.id} , 'post')">添加值</el-button>
                 </template>
             </el-table-column>
         </el-table>

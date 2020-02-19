@@ -10,6 +10,7 @@ class EnumController extends Controller {
         //     offset: ctx.helper.parseInt(ctx.query.size) * ctx.helper.parseInt(ctx.query.page - 1),
         // };
         // ctx.body = await ctx.service.sys.enum.list(query);
+
         ctx.body = {
             rows: await ctx.service.sys.enum.getTree({ parentId: '0', ...this.ctx.helper.whereParams }),
         };
