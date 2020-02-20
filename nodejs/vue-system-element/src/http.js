@@ -23,7 +23,7 @@ axios.interceptors.request.use(function (config) {
 
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
-    console.log(response);
+    // console.log(response);
     // 对响应数据做点什么
     let code = response.data.code;
     if (code == 1001 || code == 1002 || code == 1004 || code == 403 || code == 401) {

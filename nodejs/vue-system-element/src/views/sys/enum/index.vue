@@ -40,18 +40,6 @@
             </el-table-column>
         </el-table>
 
-        <div class="pu-pagination">
-            <el-pagination
-                @size-change="val => {pagination.size = val; query()}"
-                @current-change="val => {pagination.page = val; query()}"
-                :current-page="pagination.page"
-                :page-sizes="[10, 20, 30, 50]"
-                :page-size="pagination.size"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="totalCount"
-            ></el-pagination>
-        </div>
-
         <dialog-alert v-model="dialogValue" title="枚举值" :type="requestType" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
             <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
                 <el-form-item label="标题" prop="title">
@@ -97,11 +85,6 @@ export default {
             tableLoading: false,
             multipleSelection: [],      // 多选选中的值
 
-            pagination: {
-                page: 1,
-                size: localStorage.getItem('pageSize') || 10,
-            },
-            totalCount: 0,      // 总共多少条
             /* 表单 */
             dialogValue: false,
             requestType: '',            // 请求类型
@@ -123,7 +106,6 @@ export default {
             this.tableLoading = true;
             this.$http.get(this.apiUrl, { params: param }).then(res => {
                 this.tableData = res.data.rows;
-                this.totalCount = res.data.count;
                 this.tableLoading = false;
             }).catch(() => {
                 this.tableLoading = false;

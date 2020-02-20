@@ -71,9 +71,23 @@
         <el-tab-pane label="生成" name="fielsList">
             <el-form :model="fieldList" class="demo-form-inline">
                 <el-table :data="fieldList.data" style="width: 100%" v-loading="fieldLoading">
-                    <el-table-column prop="date" label="字段" width="180">
+                    <el-table-column prop="field" label="字段" width="180">
                         <template slot-scope="scope">
                             <el-input v-model="scope.row.field"></el-input>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="component" label="组件" width="180">
+                        <template slot-scope="scope">
+                            <el-select v-model="scope.row.component">
+                                <el-option v-for="item in components" :key="item.id" :label="item.title" :value="item.value"></el-option>
+                            </el-select>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="key" label="主键" width="180">
+                        <template slot-scope="scope">
+                            <el-select v-model="scope.row.component">
+                                <el-option v-for="item in components" :key="item.id" :label="item.title" :value="item.value"></el-option>
+                            </el-select>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -88,6 +102,7 @@ import { mapState } from 'vuex';
 export default {
     computed: {
         ...mapState({
+            components: state => state.enumList.enumList.components
         })
     },
     data() {
