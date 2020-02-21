@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : woxihuanni
+Source Server         : localhost woxihuanni
 Source Server Version : 50712
 Source Host           : localhost:3306
 Source Database       : charantia_sys
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2020-02-11 22:48:52
+Date: 2020-02-21 16:54:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,6 +25,7 @@ CREATE TABLE `sys_enum` (
   `value` varchar(50) NOT NULL COMMENT '枚举值',
   `parent_id` varchar(36) NOT NULL,
   `status` varchar(1) DEFAULT NULL COMMENT '0 启用 1禁用',
+  `sort` int(11) DEFAULT NULL COMMENT '排序  数值大排前',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `user_id` varchar(36) DEFAULT NULL,
@@ -36,11 +37,11 @@ CREATE TABLE `sys_enum` (
 -- ----------------------------
 -- Records of sys_enum
 -- ----------------------------
-INSERT INTO `sys_enum` VALUES ('5728b922-076b-42ac-8a77-772ec9adccad', '组件', 'components', '0', '0', '2020-02-11 14:48:19', '2020-02-11 14:48:19', null, '组件枚举', '0');
-INSERT INTO `sys_enum` VALUES ('7c0f8034-55ee-475f-8ae7-f2e58adae81e', '3', '4', '0', '0', '2020-02-04 03:18:06', '2020-02-11 14:47:42', null, '5', '1');
-INSERT INTO `sys_enum` VALUES ('81be368e-2077-47be-b3ed-8b18072a9ab7', '1', '2', '0', '0', '2020-02-04 03:41:27', '2020-02-04 07:39:13', null, '3', '1');
-INSERT INTO `sys_enum` VALUES ('8bc6e8ee-7214-400e-b5ba-f0e0ec70f550', '1', 'w', '0', '0', '2020-02-04 03:17:34', '2020-02-11 14:47:42', null, '3', '1');
-INSERT INTO `sys_enum` VALUES ('aaa3051a-21a9-4faa-b3b9-dd6e7325ed1e', '2', '3', '0', '0', '2020-02-04 03:17:54', '2020-02-11 14:47:42', null, '4', '1');
+INSERT INTO `sys_enum` VALUES ('4229c981-6dc4-4d9a-be5e-c61072555089', '选择框', 'el-select', '5728b922-076b-42ac-8a77-772ec9adccad', '0', '9', '2020-02-17 06:57:33', '2020-02-21 03:15:05', null, '选择框', '0');
+INSERT INTO `sys_enum` VALUES ('5728b922-076b-42ac-8a77-772ec9adccad', '组件', 'components', '0', '0', '1', '2020-02-11 14:48:19', '2020-02-21 03:00:01', null, '组件枚举', '0');
+INSERT INTO `sys_enum` VALUES ('65e16d0e-4736-40f8-a6b9-41ce19768fe3', '计数器', 'el-input-number', '5728b922-076b-42ac-8a77-772ec9adccad', '0', '1', '2020-02-21 03:15:39', '2020-02-21 03:15:39', null, '计数器', '0');
+INSERT INTO `sys_enum` VALUES ('b98b5a69-ff48-411c-9a3b-eed78906fdfb', '输入框', 'el-input', '5728b922-076b-42ac-8a77-772ec9adccad', '0', '10', '2020-02-13 06:33:22', '2020-02-21 03:00:15', null, '输入框', '0');
+INSERT INTO `sys_enum` VALUES ('e3f818e7-fbe3-444d-8215-0791ab7bd457', '日期时间选择器', 'el-date-picker', '5728b922-076b-42ac-8a77-772ec9adccad', '0', '1', '2020-02-21 03:05:58', '2020-02-21 03:06:22', null, '日期时间选择器', '0');
 
 -- ----------------------------
 -- Table structure for sys_tag

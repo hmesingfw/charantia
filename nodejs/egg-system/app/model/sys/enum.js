@@ -16,6 +16,7 @@ module.exports = app => {
             field: 'parent_id',
         },
         status: STRING(1),
+        sort: STRING(11),
         details: STRING(255),
         userId: {
             type: STRING(36),

@@ -76,6 +76,11 @@
                             <el-input v-model="scope.row.field"></el-input>
                         </template>
                     </el-table-column>
+                    <el-table-column prop="comment" label="说明" width="180">
+                        <template slot-scope="scope">
+                            <el-input v-model="scope.row.comment"></el-input>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="component" label="组件" width="180">
                         <template slot-scope="scope">
                             <el-select v-model="scope.row.component">
@@ -83,11 +88,45 @@
                             </el-select>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="key" label="主键" width="180">
+                    <el-table-column prop="key" label="主键" width="50" align="center">
                         <template slot-scope="scope">
-                            <el-select v-model="scope.row.component">
-                                <el-option v-for="item in components" :key="item.id" :label="item.title" :value="item.value"></el-option>
-                            </el-select>
+                            <el-checkbox v-model="scope.row.key"></el-checkbox>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="key" label="隐藏" width="50" align="center">
+                        <template slot-scope="scope">
+                            <el-checkbox v-model="scope.row.isHidden"></el-checkbox>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="key" label="必填" width="50" align="center">
+                        <template slot-scope="scope">
+                            <el-checkbox v-model="scope.row.isNull"></el-checkbox>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="key" label="查询" width="50" align="center">
+                        <template slot-scope="scope">
+                            <el-checkbox v-model="scope.row.isQuery"></el-checkbox>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="key" label="列表" width="50" align="center">
+                        <template slot-scope="scope">
+                            <el-checkbox v-model="scope.row.isTable"></el-checkbox>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="key" label="排序" width="50" align="center">
+                        <template slot-scope="scope">
+                            <el-checkbox v-model="scope.row.isSort"></el-checkbox>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column prop="matchType" label="匹配方式" width="180">
+                        <template slot-scope="scope">
+                            <el-input v-model="scope.row.matchType"></el-input>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="enumType" label="字典类型" width="180">
+                        <template slot-scope="scope">
+                            <el-input v-model="scope.row.enumType"></el-input>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -163,15 +202,46 @@ export default {
         },
         /* 编辑 */
         handleEdit() { },
-
+        /* 字段列表 */
         generateField(tableName) {
             this.fieldLoading = true;
             this.$http.get(`${this.$api.generate.tableField}?name=${tableName}`).then(res => {
-                this.fieldList.data = res.data.rows;
+                this.fieldList.data = this.analyseField(res.data.rows);
                 this.tabsActiveName = 'fielsList';
                 this.fieldLoading = false;
             }).catch(() => {
                 this.fieldLoading = false;
+            })
+        },
+        /* 分析字段信息 */
+        analyseField(fieldList) {
+            return fieldList.map(item => {
+                let type = item.type.match(/^[^(]*/);           //  匹配类型
+                let maxlength = item.type.match(/\d+/);               //  匹配数字
+
+                let component = type == 'datetime' ? 'el-date-picker' : '';
+
+                let isHidden = item.field == 'created_at' || item.field == 'updated_at' || item.field == 'is_del' || item.key == 'PRI' ? true : false;  // 是否隐藏
+                let isNull = item.key == 'PRI' || item.isNull == 'NO' ? true : false;  //   true 必填   false 非必填
+                let isQuery = item.field == 'is_del' ? true : false;                // 查询
+                let isSort = item.field == 'updated_at' || type == 'int' ? true : false;                 // 排序
+                let isTable = item.field == 'created_at' || item.field == 'updated_at' || item.field == 'is_del' || item.key == 'PRI' ? false : true;                 // 列表
+                return {
+                    field: item.field,
+                    comment: item.comment,
+                    key: item.key || item.key == 'PRI' ? true : false,
+                    component: component,
+                    type: type,
+                    maxlength: maxlength,
+
+                    isHidden: isHidden,
+                    isNull: isNull,
+                    isQuery: isQuery,
+                    isSort: isSort,
+                    isTable: isTable,
+                    enumType: '',
+                    matchType: '',
+                }
             })
         },
 

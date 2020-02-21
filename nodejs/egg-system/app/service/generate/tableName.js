@@ -17,7 +17,7 @@ class TableName extends Service {
                 Field: 'field',
                 Type: 'type',
                 Collation: 'collation',
-                Null: 'null',
+                Null: 'isNull',
                 Key: 'key',
                 Default: 'default',
                 Extra: 'extra',

@@ -25,6 +25,7 @@
             <el-table-column type="selection" width="42"></el-table-column>
             <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
             <el-table-column prop="value" label="值" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="sort" label="排序" show-overflow-tooltip></el-table-column>
             <el-table-column prop="details" label="备注" show-overflow-tooltip F></el-table-column>
             <el-table-column label="状态">
                 <template slot-scope="scope">{{ scope.row.status == '0' ? '启用' : '禁用'}}</template>
@@ -45,8 +46,11 @@
                 <el-form-item label="标题" prop="title">
                     <el-input v-model="form.title" maxlength="32"></el-input>
                 </el-form-item>
-                <el-form-item label="值" prop="type">
+                <el-form-item label="值" prop="value">
                     <el-input v-model="form.value" maxlength="32"></el-input>
+                </el-form-item>
+                <el-form-item label="排序" prop="sort">
+                    <el-input-number v-model="form.sort" :min="1" :max="100000"></el-input-number>
                 </el-form-item>
                 <el-form-item label="备注" prop="details">
                     <el-input type="textarea" :rows="2" v-model="form.details" maxlength="255"></el-input>
@@ -76,6 +80,7 @@ export default {
             apiUrl: this.$api.sys.enum,          // 请求路很
             rules: {
                 title: [{ required: true, message: '请输入内容', trigger: 'blur' },],
+                value: [{ required: true, message: '请输入内容', trigger: 'blur' },],
             },
 
             /* 基本不变------------ */

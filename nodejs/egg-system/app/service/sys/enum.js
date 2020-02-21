@@ -3,21 +3,11 @@
 const Service = require('egg').Service;
 
 class Enum extends Service {
-    async list({ offset = 0, limit = 10, where = {} }) {
-        where = { ...where, ...this.ctx.helper.whereParams };
-
-        return this.ctx.model.Sys.Enum.findAndCountAll({
-            where,
-            offset,
-            limit,
-            order: [['updated_at', 'DESC']],
-        });
-    }
-
     async getTree(where) {
         where = { ...where, ...this.ctx.helper.whereParams };
         const rootNeeds = await this.ctx.model.Sys.Enum.findAll({
             where,
+            order: [['sort', 'DESC'], ['updated_at', 'DESC']],
         });
         return await this.getChildNeeds(rootNeeds);
     }
@@ -30,6 +20,7 @@ class Enum extends Service {
                     ...this.ctx.helper.whereParams,
                     parentId: item.id,
                 },
+                order: [['sort', 'DESC'], ['updated_at', 'DESC']],
             }));
         });
         const child = await Promise.all(expendPromise);
