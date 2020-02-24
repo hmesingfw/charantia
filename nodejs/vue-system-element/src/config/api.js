@@ -7,6 +7,7 @@ export default {
         enum: baseURL + '/v1/enum',           // 系统枚举
     },
     generate: {
+        index: baseURL + '/v1/generate',                        // 代码生成表
         tableName: baseURL + '/v1/generate/getTableName',       // 
         tableField: baseURL + '/v1/generate/getTableField',       // 跟据表名获取字段信息
     }

@@ -2,7 +2,7 @@
 
 const Service = require('egg').Service;
 
-class TableName extends Service {
+class TableUtils extends Service {
     async getAllTableName() {
         const body = this.app.model.query('SELECT table_name,table_comment,table_rows,create_time,update_time FROM information_schema.tables WHERE table_schema="charantia_sys"', {
             type: 'SELECT',
@@ -29,4 +29,4 @@ class TableName extends Service {
     }
 }
 
-module.exports = TableName;
+module.exports = TableUtils;

@@ -132,6 +132,8 @@ export default {
                         this.loadingButton = false;
                         this.dialogValue = false;
                         this.query();
+
+                        this.$store.dispatch('enumList/getEnum');
                     } else {
                         this.loadingButton = false;
                     }

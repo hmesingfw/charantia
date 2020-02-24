@@ -114,7 +114,13 @@ export const constantRoutes = [{
         path: 'index',
         component: () => import('@/views/generate/index'),
         name: 'generate',
-        meta: { title: '表单管理', icon: 'guide', affix: true }
+        meta: { title: '生成管理', icon: 'guide', affix: true }
+    }, {
+        path: 'table-detail',
+        hidden: true,
+        component: () => import('@/views/generate/table-detail'),
+        name: 'tableDetail',
+        meta: { title: '基本配置', icon: 'guide', affix: true }
     }]
 },
 
