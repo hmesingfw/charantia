@@ -9,7 +9,7 @@ module.exports = app => {
 
     /* 生成单表 */
     router.resources('table', baseURL + '/v1/generate', controller.generate.table);
-    router.get(baseURL + '/v1/generate/getTableName', controller.generate.table.getAllTableName); // 获取表名
-    router.get(baseURL + '/v1/generate/getTableField', controller.generate.table.getTableField); // 获取字段数据
+    router.get(baseURL + '/v1/generate-utils/getTableName', controller.generate.tableUtils.getAllTableName); // 获取表名
+    router.get(baseURL + '/v1/generate-utils/getTableField', controller.generate.tableUtils.getTableField); // 获取字段数据
 
 };

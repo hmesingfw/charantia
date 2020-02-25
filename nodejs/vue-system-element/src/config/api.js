@@ -8,7 +8,7 @@ export default {
     },
     generate: {
         index: baseURL + '/v1/generate',                        // 代码生成表
-        tableName: baseURL + '/v1/generate/getTableName',       // 
-        tableField: baseURL + '/v1/generate/getTableField',       // 跟据表名获取字段信息
+        tableName: baseURL + '/v1/generate-utils/getTableName',       // 
+        tableField: baseURL + '/v1/generate-utils/getTableField',       // 跟据表名获取字段信息
     }
 };

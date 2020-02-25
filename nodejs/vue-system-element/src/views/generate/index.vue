@@ -21,7 +21,7 @@
             header-row-class-name="table-header-color"
         >
             <el-table-column type="selection" width="42"></el-table-column>
-            <el-table-column prop="title" label="表名" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="tableName" label="表名" show-overflow-tooltip></el-table-column>
             <el-table-column prop="comment" label="表说明" show-overflow-tooltip></el-table-column>
             <el-table-column prop="author" label="作者" show-overflow-tooltip></el-table-column>
 
@@ -89,7 +89,6 @@ export default {
             };
             this.tableLoading = true;
             this.$http.get(this.apiUrl, { params: param }).then(res => {
-                console.log(res.data);
                 this.tableData = res.data.rows;
                 this.totalCount = res.data.count;
                 this.tableLoading = false;
@@ -101,6 +100,8 @@ export default {
         handleEdit(row, type) {
             if (type == 'post') {
                 this.$router.push({ path: '/generate/table-detail' })
+            } else {
+                this.$router.push({ path: '/generate/table-detail', query: { id: row.id } })
             }
         },
     }

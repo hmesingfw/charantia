@@ -12,5 +12,13 @@ class Table extends Service {
             order: [['updated_at', 'DESC']],
         });
     }
+
+    async create(table) {
+        return this.ctx.model.Generate.Table.create(table);
+    }
+
+    async show(id) {
+        return this.ctx.model.Generate.Table.findByPk(id);
+    }
 }
 module.exports = Table;

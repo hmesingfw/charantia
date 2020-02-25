@@ -6,7 +6,7 @@
             </span>
             <el-form :model="tableForm" label-width="140px" :rules="rules" ref="tableRef">
                 <el-form-item label="表名" prop="tableName">
-                    <el-select v-model="tableForm.tableName" filterable placeholder="请选择">
+                    <el-select v-model="tableForm.tableName" filterable placeholder="请选择" :disabled="id!=''">
                         <el-option v-for="item in tableNameList" :key="item.table_name" :value="item.table_name">{{item.table_comment ? item.table_name + ' : ' +item.table_comment: item.table_name}}</el-option>
                     </el-select>
                 </el-form-item>
@@ -28,7 +28,7 @@
             </el-form>
         </el-tab-pane>
         <el-tab-pane label="字段信息" name="fielsList">
-            <el-form :model="fieldList" class="demo-form-inline">
+            <el-form :model="fieldList" class="demo-form-inline" ref="fieldListref" :rules="fieldList.rules">
                 <el-table :data="fieldList.data" style="width: 100%" v-loading="fieldLoading" :height="fieldTableHeight">
                     <el-table-column prop="field" label="字段" width="100" show-overflow-tooltip>
                         <template slot-scope="scope">{{ scope.row.field }}</template>
@@ -99,7 +99,7 @@
                     </el-table-column>
                 </el-table>
                 <div class="pu-pagination" style="margin-top:20px">
-                    <el-button type="primary" @click="handleSave">保存并生成代码</el-button>
+                    <el-button type="primary" @click="handleSave" v-loading="loadingButton">保存并生成代码</el-button>
                 </div>
             </el-form>
         </el-tab-pane>
@@ -117,7 +117,8 @@ export default {
     },
     data() {
         return {
-            apiUrl: this.$api.sys.tag,          // 请求路很     
+            id: '',
+            apiUrl: this.$api.generate.index,          // 请求路很     
             rules: {
                 tableName: [{ required: true, message: '请选择表名', trigger: 'blur' },],
             },
@@ -132,6 +133,7 @@ export default {
                 data: [],
             },
             fieldLoading: false,
+            loadingButton: false,
 
 
             /* 匹配方式 */
@@ -140,12 +142,23 @@ export default {
     },
     created() {
         this.init();
+        this.id = this.$route.query.id;
+        if (this.id) this.query();
     },
     methods: {
         init() {
             this.$http.get(this.$api.generate.tableName).then(res => {
                 this.tableNameList = res.data.rows;
             })
+        },
+        /* 查询代码生成表数据 */
+        query() {
+            this.$http.get(`${this.$api.generate.index}/${this.id}`).then(res => {
+
+                let data = res.data.data;
+                this.tableForm = data;
+                this.fieldList.data = eval('(' + data.fieldList + ')');
+            });
         },
         /* 字段列表 */
         generateField() {
@@ -204,7 +217,21 @@ export default {
 
 
         handleSave() {
-            console.log(this.fieldList);
+            let form = {
+                ...this.tableForm,
+                fieldList: JSON.stringify(this.fieldList.data),
+            }
+            this.$refs.fieldListref.validate(async valid => {
+                if (valid) {
+                    this.loadingButton = true;
+                    let issucc = await this.reqData(this.apiUrl, form, 'post');
+                    if (issucc) {
+                        this.query();
+                        this.$store.dispatch('enumList/getEnum');
+                    }
+                    this.loadingButton = false;
+                }
+            });
         },
 
     }

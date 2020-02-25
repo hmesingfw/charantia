@@ -1,5 +1,5 @@
 'use strict';
-
+const uuidv4 = require('uuid/v4');
 const Controller = require('egg').Controller;
 
 class TableController extends Controller {
@@ -13,21 +13,24 @@ class TableController extends Controller {
         ctx.body = list;
     }
 
-    async getAllTableName() {
+    async create() {
         const ctx = this.ctx;
-        const list = await ctx.service.generate.tableUtils.getAllTableName();
+        const body = ctx.request.body;
+        body.id = uuidv4();
+        const message = await ctx.service.generate.table.create(body);
         ctx.body = {
-            count: list.length,
-            rows: list,
+            message,
+            code: 200,
         };
     }
 
-    async getTableField() {
+    async show() {
         const ctx = this.ctx;
-        const tableName = ctx.query.name;
-        const list = await ctx.service.generate.tableUtils.getTableFiled(tableName);
+        const id = ctx.params.id;
+        const info = await ctx.service.generate.table.show(id);
         ctx.body = {
-            rows: list,
+            data: info,
+            code: 200,
         };
     }
 }
