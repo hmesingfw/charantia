@@ -33,6 +33,25 @@ class TableController extends Controller {
             code: 200,
         };
     }
+
+    async update() {
+        const ctx = this.ctx;
+        const id = ctx.params.id;
+        const body = ctx.request.body;
+        const message = await ctx.service.generate.table.update(id, body);
+        ctx.body = {
+            message,
+            code: 200,
+        };
+    }
+
+    async destroy() {
+        const ctx = this.ctx;
+        const id = ctx.params.id;
+
+        ctx.body = await ctx.service.generate.table.del(id);
+        ctx.status = 200;
+    }
 }
 
 module.exports = TableController;

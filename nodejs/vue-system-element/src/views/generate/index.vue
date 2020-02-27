@@ -6,7 +6,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
-                <el-button @click="handleEdit({sort:1,status:'0'}, 'post')" circle type="primary" icon="el-icon-plus"></el-button>
+                <el-button @click="tableName = '';dialogVisible = true;" circle type="primary" icon="el-icon-plus"></el-button>
                 <el-button @click="handleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
             </el-form-item>
         </el-form>
@@ -46,6 +46,20 @@
                 :total="totalCount"
             ></el-pagination>
         </div>
+
+        <el-dialog title="提示" :visible.sync="dialogVisible" width="40%">
+            <el-form ref="ruleForm" :model="form" :rules="rules" label-width="120px" class="demo-ruleForm">
+                <el-form-item label="表名" prop="tableName">
+                    <el-select v-model="form.tableName" filterable placeholder="请选择">
+                        <el-option v-for="item in tableNameList" :key="item.table_name" :value="item.table_name">{{item.table_comment ? item.table_name + ' : ' +item.table_comment: item.table_name}}</el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handleSaveNew()">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -62,7 +76,7 @@ export default {
         return {
             apiUrl: this.$api.generate.index,          // 请求路很
             rules: {
-                title: [{ required: true, message: '请输入内容', trigger: 'blur' },],
+                tableName: [{ required: true, message: '请选择表名', trigger: 'blur' },],
             },
             tableHeight: GetHeight(200), // 列表高度         
             QueryParam: {},             //  搜索条件
@@ -74,12 +88,24 @@ export default {
                 size: localStorage.getItem('pageSize') || 10,
             },
             totalCount: 0,      // 总共多少条
+
+
+            dialogVisible: false,   // 弹出框
+            form: {},
+            tableNameList: [],      // 已有数据表
+
         };
     },
     created() {
+        this.init();
         this.query();
     },
     methods: {
+        init() {
+            this.$http.get(this.$api.generate.tableName).then(res => {
+                this.tableNameList = res.data.rows;
+            })
+        },
         /* 查询操作 */
         query(flag) {
             if (flag == 1) this.pagination.page = 1;         // 查询时，让页面等于1
@@ -96,10 +122,18 @@ export default {
                 this.tableLoading = false;
             });
         },
+        handleSaveNew() {
+            this.$refs.ruleForm.validate((vali) => {
+                if (vali) {
+                    this.dialogVisible = false;
+                    this.handleEdit({}, 'post');
+                }
+            })
+        },
         /* 编辑 */
         handleEdit(row, type) {
             if (type == 'post') {
-                this.$router.push({ path: '/generate/table-detail' })
+                this.$router.push({ path: '/generate/table-detail', query: { name: this.form.tableName } })
             } else {
                 this.$router.push({ path: '/generate/table-detail', query: { id: row.id } })
             }

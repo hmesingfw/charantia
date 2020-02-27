@@ -36,13 +36,7 @@ Vue.prototype.deleteRequestData = function (url, id, { message = '此操作将�
         }).then(() => {
             let ids = id.join(',');
             this.$http.delete(`${url}/${ids}`).then(res => {
-                if (res.data.code == 200) {
-                    this.$message.success(res.data.message);
-                    resolve(true);
-                } else {
-                    this.$message.info(res.data.message);
-                    resolve(false);
-                }
+                resolve(res);
             }).catch(() => {
                 resolve(false);
             });
@@ -64,6 +58,10 @@ Vue.prototype.handleDelete = async function (url, row, func) {
         ids.push(row.id);
     }
     let message = await this.deleteRequestData(url, ids);
+    console.log(message);
+    if (message === false) {
+        return
+    }
     message.err > 0 ? this.$message.error(`删除失败条数：${message.err}`) : this.$message.success(`删除成功`);
     func();
 };

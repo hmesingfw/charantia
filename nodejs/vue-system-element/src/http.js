@@ -38,14 +38,12 @@ axios.interceptors.response.use(function (response) {
     }
 
     return response;
-}, function (error) {
-    console.log('----response error', error);
+}, function () {
     // 对响应错误做点什么
     Message({
         message: '服务器异常，请联系管理人员',
         type: 'error'
     });
-    return Promise.reject(error);
 });
 
 

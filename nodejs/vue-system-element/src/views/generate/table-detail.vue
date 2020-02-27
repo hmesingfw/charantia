@@ -5,11 +5,7 @@
                 <i class="el-icon-date"></i> 基本信息
             </span>
             <el-form :model="tableForm" label-width="140px" :rules="rules" ref="tableRef">
-                <el-form-item label="表名" prop="tableName">
-                    <el-select v-model="tableForm.tableName" filterable placeholder="请选择" :disabled="id!=''">
-                        <el-option v-for="item in tableNameList" :key="item.table_name" :value="item.table_name">{{item.table_comment ? item.table_name + ' : ' +item.table_comment: item.table_name}}</el-option>
-                    </el-select>
-                </el-form-item>
+                <el-form-item label="表名" prop="tableName">{{ tableForm.tableName }}</el-form-item>
                 <el-form-item label="实体名称">
                     <el-input v-model="tableForm.tableClass" maxlength="128"></el-input>
                 </el-form-item>
@@ -23,7 +19,7 @@
                     <el-input v-model="tableForm.details" maxlength="255"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="generateField">下一步</el-button>
+                    <el-button type="primary" @click="tabsActiveName = 'fielsList'">字段列表</el-button>
                 </el-form-item>
             </el-form>
         </el-tab-pane>
@@ -119,6 +115,7 @@ export default {
         return {
             id: '',
             apiUrl: this.$api.generate.index,          // 请求路很     
+            requestType: 'post',                       // 请求类型
             rules: {
                 tableName: [{ required: true, message: '请选择表名', trigger: 'blur' },],
             },
@@ -143,7 +140,15 @@ export default {
     created() {
         this.init();
         this.id = this.$route.query.id;
-        if (this.id) this.query();
+        let tableName = this.$route.query.name;
+        if (this.id) {
+            this.query();
+            this.requestType = 'put';
+        } else if (tableName) {
+            this.$set(this.tableForm, 'tableName', tableName);
+            this.generateField();
+        }
+
     },
     methods: {
         init() {
@@ -162,17 +167,11 @@ export default {
         },
         /* 字段列表 */
         generateField() {
-            this.$refs.tableRef.validate((valid) => {
-                if (valid) {
-                    this.tabsActiveName = 'fielsList';
-                    this.fieldLoading = true;
-                    this.$http.get(`${this.$api.generate.tableField}?name=${this.tableForm.tableName}`).then(res => {
-                        this.fieldList.data = this.analyseField(res.data.rows);
-                        this.fieldLoading = false;
-                    }).catch(() => {
-                        this.fieldLoading = false;
-                    })
-                }
+            this.$http.get(`${this.$api.generate.tableField}?name=${this.tableForm.tableName}`).then(res => {
+                this.fieldList.data = this.analyseField(res.data.rows);
+                this.fieldLoading = false;
+            }).catch(() => {
+                this.fieldLoading = false;
             })
         },
         /* 分析字段信息 */
@@ -215,7 +214,6 @@ export default {
             });
         },
 
-
         handleSave() {
             let form = {
                 ...this.tableForm,
@@ -224,7 +222,7 @@ export default {
             this.$refs.fieldListref.validate(async valid => {
                 if (valid) {
                     this.loadingButton = true;
-                    let issucc = await this.reqData(this.apiUrl, form, 'post');
+                    let issucc = await this.reqData(this.apiUrl, form, this.requestType);
                     if (issucc) {
                         this.query();
                         this.$store.dispatch('enumList/getEnum');

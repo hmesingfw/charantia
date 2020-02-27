@@ -31,7 +31,6 @@ export default {
     },
     name: 'Detail',
     data() {
-        let _this = this;
         return {
             divHeight: GetHeight(400), // 列表高度
         };
