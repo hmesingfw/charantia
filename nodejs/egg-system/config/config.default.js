@@ -23,6 +23,10 @@ module.exports = appInfo => {
         dialect: 'mysql',
     };
 
+    config.view = {
+        mapping: { '.ejs': 'ejs' },
+    };
+
 
     return config;
 };
