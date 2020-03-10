@@ -20,6 +20,16 @@ class TableUtilsController extends Controller {
             rows: list,
         };
     }
+
+    async testGen() {
+        const ctx = this.ctx;
+        console.log('------------------------------------------');
+        const body = await ctx.renderView('generate/index.ejs', { data: 'hello' });
+        console.log(body);
+        ctx.body = {
+            message: 'success',
+        };
+    }
 }
 
 module.exports = TableUtilsController;
