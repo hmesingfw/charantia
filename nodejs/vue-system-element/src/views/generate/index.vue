@@ -29,6 +29,7 @@
 
             <el-table-column label="操作" width="160" fixed="right">
                 <template slot-scope="scope">
+                    <el-button size="mini" type="text" @click="handlePage(scope.row)">生成</el-button>
                     <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
                     <el-button size="mini" type="text" @click="handleDelete(apiUrl, scope.row, query)">删除</el-button>
                 </template>
@@ -137,6 +138,12 @@ export default {
             } else {
                 this.$router.push({ path: '/generate/table-detail', query: { id: row.id } })
             }
+        },
+        /* 生成页面 */
+        handlePage(row) {
+            this.$http.get(this.$api.generate.tableGenerate, { params: { id: row.id } }).then(res => {
+                console.log(res);
+            })
         },
     }
 };

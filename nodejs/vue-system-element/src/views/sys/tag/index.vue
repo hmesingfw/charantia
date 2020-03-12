@@ -1,9 +1,18 @@
 <template>
-    <div class="padding-8">
-        <el-form :inline="true" :model="QueryParam">
+    <div>
+        <el-form :inline="true" :model="QueryParam" class="header-query-form">
             <el-form-item label="标题">
                 <el-input v-model="QueryParam.title" placeholder="请输入"></el-input>
             </el-form-item>
+            <el-form-item label="状态">
+                <el-select v-model="QueryParam.status" placeholder="请输入">
+                    <el-option label="启用" value="0"></el-option>
+                    <el-option label="禁用" value="1"></el-option>
+                </el-select>
+            </el-form-item>
+
+            <generate-form :model="QueryParam"></generate-form>
+
             <el-form-item>
                 <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
                 <el-button @click="handleEdit({sort:1,status:'0'}, 'post')" circle type="primary" icon="el-icon-plus"></el-button>
@@ -11,43 +20,37 @@
             </el-form-item>
         </el-form>
 
-        <el-table
-            :data="tableData"
-            :height="tableHeight"
-            @selection-change="val => multipleSelection = val"
-            v-loading="tableLoading"
-            style="width: 100%"
-            :stripe="true"
-            header-row-class-name="table-header-color"
-        >
-            <el-table-column type="selection" width="42"></el-table-column>
-            <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="color" label="颜色"></el-table-column>
-            <el-table-column prop="type" label="类型"></el-table-column>
-            <el-table-column prop="sort" label="排序"></el-table-column>
-            <el-table-column label="状态">
-                <template slot-scope="scope">{{ scope.row.status == '0' ? '启用' : '禁用'}}</template>
-            </el-table-column>
-            <el-table-column prop="updatedAt" label="更新时间" width="140"></el-table-column>
+        <div class="article-table">
+            <el-table :data="tableData" :height="tableHeight" @selection-change="val => multipleSelection = val" v-loading="tableLoading" :stripe="true" header-row-class-name="table-header-color">
+                <el-table-column type="selection" width="42"></el-table-column>
+                <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="color" label="颜色"></el-table-column>
+                <el-table-column prop="type" label="类型"></el-table-column>
+                <el-table-column prop="sort" label="排序"></el-table-column>
+                <el-table-column label="状态">
+                    <template slot-scope="scope">{{ scope.row.status == '0' ? '启用' : '禁用'}}</template>
+                </el-table-column>
+                <el-table-column prop="updatedAt" label="更新时间" width="140"></el-table-column>
 
-            <el-table-column label="操作" width="160" fixed="right">
-                <template slot-scope="scope">
-                    <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
-                    <el-button size="mini" type="text" @click="handleDelete(apiUrl, scope.row, query)">删除</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
+                <el-table-column label="操作" width="160" fixed="right">
+                    <template slot-scope="scope">
+                        <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
+                        <el-button size="mini" type="text" @click="handleDelete(apiUrl, scope.row, query)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
 
-        <div class="pu-pagination">
-            <el-pagination
-                @size-change="val => {pagination.size = val; query()}"
-                @current-change="val => {pagination.page = val; query()}"
-                :current-page="pagination.page"
-                :page-sizes="[10, 20, 30, 50]"
-                :page-size="pagination.size"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="totalCount"
-            ></el-pagination>
+            <div class="pu-pagination">
+                <el-pagination
+                    @size-change="val => {pagination.size = val; query()}"
+                    @current-change="val => {pagination.page = val; query()}"
+                    :current-page="pagination.page"
+                    :page-sizes="[10, 20, 30, 50]"
+                    :page-size="pagination.size"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="totalCount"
+                ></el-pagination>
+            </div>
         </div>
 
         <dialog-alert v-model="dialogValue" title="信息录入" :type="requestType" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
@@ -94,8 +97,8 @@ export default {
                 title: [{ required: true, message: '请输入内容', trigger: 'blur' },],
             },
 
-            /* 基本不变------------ */
-            tableHeight: GetHeight(200), // 列表高度       
+            /* ------------ */
+            tableHeight: GetHeight(240), // 列表高度       
             QueryParam: {},             //  搜索条件
             tableData: [],
             tableLoading: false,
@@ -155,10 +158,7 @@ export default {
                 }
             });
         },
-        /* 到这里基本不变----------- */
     }
 };
 </script>
 
-<style lang="scss">
-</style>
