@@ -1,16 +1,6 @@
 <template>
     <div>
         <el-form :inline="true" :model="QueryParam" class="header-query-form">
-            <el-form-item label="标题">
-                <el-input v-model="QueryParam.title" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item label="状态">
-                <el-select v-model="QueryParam.status" placeholder="请输入">
-                    <el-option label="启用" value="0"></el-option>
-                    <el-option label="禁用" value="1"></el-option>
-                </el-select>
-            </el-form-item>
-
             <generate-form :model="QueryParam"></generate-form>
 
             <el-form-item>

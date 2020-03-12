@@ -31,8 +31,14 @@ class TableUtilsController extends Controller {
         const fieldList = JSON.parse(info.fieldList);
         // 匹配路径
         const filepath = path.join(path.resolve(), 'app', 'temp/') + info.tableClass + '.vue';
+        console.log(fieldList);
+
+        const queryList = fieldList.filter(item => {
+            return item.isQuery;
+        });
+        const data = { fieldList, queryList };
         // 渲染模版
-        const body = await ctx.renderView('generate/index.ejs', { data: fieldList });
+        const body = await ctx.renderView('generate/index.ejs', data);
         // 生成文件
         fs.writeFileSync(filepath, body);
         ctx.body = {
