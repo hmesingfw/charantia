@@ -1,8 +1,7 @@
 <template>
     <div>
         <el-form :inline="true" :model="QueryParam" class="header-query-form">
-            <generate-form :model="QueryParam"></generate-form>
-
+            <generate-form :model="QueryParam" :datalist="queryComponentData"></generate-form>
             <el-form-item>
                 <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
                 <el-button @click="handleEdit({sort:1,status:'0'}, 'post')" circle type="primary" icon="el-icon-plus"></el-button>
@@ -78,6 +77,7 @@ import { mapState } from 'vuex';
 export default {
     computed: {
         ...mapState({
+            statusList: state => state.enumList.data.statusList,
         })
     },
     data() {
@@ -86,10 +86,13 @@ export default {
             rules: {
                 title: [{ required: true, message: '请输入内容', trigger: 'blur' },],
             },
-
             /* ------------ */
             tableHeight: GetHeight(240), // 列表高度       
             QueryParam: {},             //  搜索条件
+            queryComponentData: [
+                { name: 'el-input', key: 'title', label: "枚举名称", attr: { placeholder: '请输入' } },
+                { name: 'el-input', key: 'value', label: "状态", option: 'statusList', attr: { placeholder: '请输入' } },
+            ],
             tableData: [],
             tableLoading: false,
             multipleSelection: [],      // 多选选中的值

@@ -93,6 +93,11 @@
                             <el-input v-model="scope.row.enumType"></el-input>
                         </template>
                     </el-table-column>
+                    <el-table-column prop="defaultValue" label="默认值" width="110">
+                        <template slot-scope="scope">
+                            <el-input v-model="scope.row.defaultValue"></el-input>
+                        </template>
+                    </el-table-column>
                 </el-table>
                 <div class="pu-pagination" style="margin-top:20px">
                     <el-button type="primary" @click="handleSave" v-loading="loadingButton">保存并生成代码</el-button>
@@ -108,7 +113,7 @@ import { mapState } from 'vuex';
 export default {
     computed: {
         ...mapState({
-            components: state => state.enumList.enumList.components
+            components: state => state.enumList.data.components
         })
     },
     data() {
@@ -177,33 +182,36 @@ export default {
         /* 分析字段信息 */
         analyseField(fieldList) {
             return fieldList.map(item => {
-                let fieldType = item.type.match(/^[^(]*/);           //  匹配类型
-                let maxlength = item.type.match(/\d+/);               //  匹配数字
+                let fieldType = item.type.match(/^[^(]*/);
+                let maxlength = item.type.match(/\d+/);
 
-                let component = fieldType == 'datetime' ? 'el-date-picker' : '';
+                let component = fieldType == 'datetime' ? 'el-date-picker' : 'el-input';
 
                 let isHidden = item.field == 'created_at' || item.field == 'updated_at' || item.field == 'is_del' || item.key == 'PRI' ? true : false;  // 是否隐藏
-                let isNull = item.key == 'PRI' || item.isNull == 'NO' ? true : false;  //   true 必填   false 非必填
-                let isQuery = item.field == 'is_del' ? true : false;                // 查询
-                let isSort = item.field == 'updated_at' || fieldType == 'int' ? true : false;                 // 排序
+                let isNull = item.key == 'PRI' || item.isNull == 'NO' ? true : false;
+                let isQuery = item.field == 'is_del' ? true : false;
+                let isSort = item.field == 'updated_at' || fieldType == 'int' ? true : false;
                 let isTable = item.field == 'created_at' || item.field == 'updated_at' || item.field == 'is_del' || item.key == 'PRI' ? false : true;                 // 列表
+
+                let defaultValue = item.field == 'is_del' ? '0' : '';
                 return {
                     field: item.field,
                     type: item.type,
                     alias: this.toHump(item.field),
                     comment: item.comment,
                     key: item.key || item.key == 'PRI' ? true : false,
-                    component: component,
-                    fieldType: fieldType,
-                    maxlength: maxlength,
+                    component: component,               // 组件名称
+                    fieldType: fieldType,               // 字段类型
+                    maxlength: maxlength,               // 字段长度
 
-                    isHidden: isHidden,
-                    isNull: isNull,
-                    isQuery: isQuery,
-                    isSort: isSort,
-                    isTable: isTable,
-                    enumType: '',
-                    matchType: '=',
+                    isHidden: isHidden,                 // 是否隐藏
+                    isNull: isNull,                     // 是否必填     true 必填   false 非必填
+                    isQuery: isQuery,                   // 是否查询
+                    isSort: isSort,                     // 是否排序
+                    isTable: isTable,                   // 列表是否显示
+                    enumType: '',                       // 字典类型
+                    matchType: '=',                     // 匹配方式
+                    defaultValue: defaultValue,         // 默认值
                 }
             })
         },

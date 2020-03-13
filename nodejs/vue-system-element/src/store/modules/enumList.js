@@ -1,12 +1,12 @@
 import axios from 'axios'
 import api from '@/config/api'
 const state = {
-    enumList: {}
+    data: {}
 }
 
 const mutations = {
-    GET_ENUM: (state, enumList) => {
-        state.enumList = enumList
+    GET_ENUM: (state, data) => {
+        state.data = data
     }
 }
 

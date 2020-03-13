@@ -33,10 +33,32 @@ class TableUtilsController extends Controller {
         const filepath = path.join(path.resolve(), 'app', 'temp/') + info.tableClass + '.vue';
         console.log(fieldList);
 
-        const queryList = fieldList.filter(item => {
-            return item.isQuery;
+
+        const queryList = [];
+        const queryHiddenList = {};
+        fieldList.forEach(item => {
+            /* 查询 */
+            if (item.isQuery) {
+                if (!item.isHidden) {
+                    /* 查询展示字段 */
+                    const obj = { name: item.component, key: item.field, label: item.comment, attr: { placeholder: '请输入内容' } };
+                    if (item.component === 'el-select') {
+                        obj.option = item.enumType;
+                        obj.attr = {
+                            placeholder: '请选择内容',
+                            clearable: true,
+                        };
+                    }
+                    queryList.push(obj);
+                } else {
+                    /* 查询隐藏字段 */
+                    queryHiddenList[item.field] = item.defaultValue;
+                }
+            }
+
+
         });
-        const data = { fieldList, queryList };
+        const data = { fieldList, queryList, queryHiddenList };
         // 渲染模版
         const body = await ctx.renderView('generate/index.ejs', data);
         // 生成文件

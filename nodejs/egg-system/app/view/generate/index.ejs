@@ -72,45 +72,44 @@
     </div>
 </template>
 <script>
-    import { GetHeight } from '@/utils/sys';
-    import { mapState } from 'vuex';
+    import {
+        GetHeight
+    } from '@/utils/sys';
+    import {
+        mapState
+    } from 'vuex';
 
     export default {
         computed: {
-            ...mapState({
-            })
+            ...mapState({})
         },
         data() {
             return {
-                apiUrl: this.$api.sys.tag,          // 请求路很
+                apiUrl: this.$api.sys.tag, // 请求路很
                 rules: {
-                    title: [{ required: true, message: '请输入内容', trigger: 'blur' },],
+                    title: [{
+                        required: true,
+                        message: '请输入内容',
+                        trigger: 'blur'
+                    }, ],
                 },
 
                 /* ------------ */
                 tableHeight: GetHeight(240), // 列表高度       
-                QueryParam: {},             //  搜索条件
-                queryComponentData: [
-                    <% queryList.forEach(function (item) { %>
-
-                    { name: '<%= item.component %>', key: '<%= item.field %>', label: "<%= item.comment %>", attr: { placeholder: '请输入' } },
-
-                    <% }) %>
-                    // { name: 'el-input', key: 'title', label: "标题", attr: { placeholder: '请输入' } },
-                    // { name: 'el-select', key: 'status', label: "标题", attr: { placeholder: '请输入' }, option: [{ label: '启用', value: '0' }, { label: '禁用', value: '1' }] },
-                ],
+                QueryParam: <%- JSON.stringify(queryHiddenList) %>, //  搜索条件
+                queryComponentData: <%- JSON.stringify(queryList) %>
                 tableData: [],
                 tableLoading: false,
-                multipleSelection: [],      // 多选选中的值
+                multipleSelection: [], // 多选选中的值
 
                 pagination: {
                     page: 1,
                     size: localStorage.getItem('pageSize') || 10,
                 },
-                totalCount: 0,      // 总共多少条
+                totalCount: 0, // 总共多少条
                 /* 表单 */
                 dialogValue: false,
-                requestType: '',            // 请求类型
+                requestType: '', // 请求类型
                 loadingButton: false,
                 form: {},
             };
@@ -121,13 +120,15 @@
         methods: {
             /* 查询操作 */
             query(flag) {
-                if (flag == 1) this.pagination.page = 1;         // 查询时，让页面等于1
+                if (flag == 1) this.pagination.page = 1; // 查询时，让页面等于1
                 let param = {
                     ...this.pagination,
                     ...this.QueryParam
                 };
                 this.tableLoading = true;
-                this.$http.get(this.apiUrl, { params: param }).then(res => {
+                this.$http.get(this.apiUrl, {
+                    params: param
+                }).then(res => {
                     this.tableData = res.data.rows;
                     this.totalCount = res.data.count;
                     this.tableLoading = false;
