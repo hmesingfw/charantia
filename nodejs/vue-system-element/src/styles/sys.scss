@@ -38,7 +38,6 @@
     }
 }
 
-
 .article-table {
     @extend .border-shadow;
     margin: 24px 28px 24px 28px;
@@ -57,4 +56,32 @@
 /* 表格表头颜色 */
 .el-table .table-header-color th {
     background: #efefef;
+}
+
+
+/* 更改switch样式，开关样式 */
+.switch-style .el-switch__label {
+  position: absolute;
+  display: none;
+  color: #fff;
+}
+.switch-style .el-switch__label--left {
+  z-index: 9;
+  left: 20px;
+}
+.switch-style .el-switch__label--right {
+  z-index: 9;
+  left: -4px;
+}
+.switch-style .el-switch__label.is-active {
+  display: block;
+}
+.switch-style.el-switch .el-switch__core,
+.el-switch .el-switch__label {
+  width: 56px !important;
+}
+
+/* 列表数据输入框 */
+.el-input-number-80{
+    width: 80px;
 }

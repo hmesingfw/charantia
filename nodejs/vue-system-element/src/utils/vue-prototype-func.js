@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import enumList from '@/store/modules/enumList';
 /**
  * 封装请求
  * url 请求地址
@@ -10,12 +11,7 @@ Vue.prototype.reqData = function (url, form, reqType, { idKey = 'id' } = {}) {
         let put = reqType == 'put' ? '/' + form[idKey] : '';
 
         this.$http[reqType](`${url}${put}`, form).then(res => {
-            if (res.data.code == 200) {
-                this.$message.success(res.data.msg);
-                resolve(true);
-            } else {
-                resolve(false);
-            }
+            resolve(true);
         }).catch(() => {
             resolve(false);
         });
@@ -58,7 +54,6 @@ Vue.prototype.handleDelete = async function (url, row, func) {
         ids.push(row.id);
     }
     let message = await this.deleteRequestData(url, ids);
-    console.log(message);
     if (message === false) {
         return
     }
@@ -82,4 +77,21 @@ Vue.prototype.DeepCopy = function (obj) {
         }
     }
     return result;
+}
+
+
+/** 列表匹配字段 
+ * key　　　枚举列表
+ * value    匹配值
+ */
+Vue.prototype.ListMatchField = function (key, value) {
+    const data = enumList.state.data[key];
+    let str = '暂无信息';
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].value == value) {
+            str = data[i].title;
+            break;
+        }
+    }
+    return str;
 }

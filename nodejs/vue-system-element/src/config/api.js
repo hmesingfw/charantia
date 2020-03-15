@@ -5,6 +5,7 @@ export default {
     sys: {
         tag: baseURL + '/v1/tag',           // 系统标签
         enum: baseURL + '/v1/enum',           // 系统枚举
+        menu: baseURL + '/v1/menu',           // 系统枚举
     },
     generate: {
         index: baseURL + '/v1/generate',                        // 代码生成表

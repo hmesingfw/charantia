@@ -17,12 +17,12 @@ class Tag extends Service {
         return this.ctx.model.Sys.Tag.create(tag);
     }
 
-    async update({ id, updates }) {
-        const user = await this.ctx.model.Sys.Tag.findByPk(id);
-        if (!user) {
+    async update(id, updates) {
+        const tag = await this.ctx.model.Sys.Tag.findByPk(id);
+        if (!tag) {
             this.ctx.throw(404, 'user not found');
         }
-        return user.update(updates);
+        return tag.update(updates);
     }
 
     async del(ids) {

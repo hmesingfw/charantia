@@ -7,7 +7,6 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
-// import componentsRouter from './modules/components'
 // import chartsRouter from './modules/charts'
 
 /**
@@ -106,6 +105,11 @@ export const constantRoutes = [{
         component: () => import('@/views/sys/enum/index'),
         name: 'SysEnum',
         meta: { title: '枚举管理', icon: 'guide', affix: true }
+    }, {
+        path: 'menu',
+        component: () => import('@/views/sys/menu/index'),
+        name: 'SysMenu',
+        meta: { title: '菜单管理', icon: 'guide', affix: true }
     }]
 }, {
     path: '/generate',
@@ -125,24 +129,6 @@ export const constantRoutes = [{
 },
 
 
-
-
-{
-    path: '/profile',
-    component: Layout,
-    redirect: '/profile/index',
-    hidden: true,
-    children: [{
-        path: 'index',
-        component: () => import('@/views/profile/index'),
-        name: 'Profile',
-        meta: {
-            title: 'Profile',
-            icon: 'user',
-            noCache: true
-        }
-    }]
-},
 {
     path: '/error',
     component: Layout,

@@ -5,7 +5,7 @@
 
             <el-form-item>
                 <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
-                <el-button @click="handleEdit({sort:1,status:'0',parentId:'0'}, 'post')" circle type="primary" icon="el-icon-plus"></el-button>
+                <el-button @click="handleEdit()" circle type="primary" icon="el-icon-plus"></el-button>
                 <el-button @click="handleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
             </el-form-item>
         </el-form>
@@ -23,9 +23,8 @@
             >
                 <el-table-column type="selection" width="42"></el-table-column>
                 <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="value" label="值" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="sort" label="排序" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="details" label="备注" show-overflow-tooltip F></el-table-column>
+                <el-table-column prop="details" label="备注" show-overflow-tooltip></el-table-column>
                 <el-table-column label="状态">
                     <template slot-scope="scope">{{ scope.row.status == '0' ? '启用' : '禁用'}}</template>
                 </el-table-column>
@@ -41,26 +40,32 @@
             </el-table>
         </div>
 
-        <dialog-alert v-model="dialogValue" title="枚举值" :type="requestType" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+        <dialog-alert v-model="dialogValue" title="菜单信息" :type="requestType" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
             <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
                 <el-form-item label="标题" prop="title">
-                    <el-input v-model="form.title" maxlength="32"></el-input>
+                    <el-input v-model="form.title" maxlength="128"></el-input>
                 </el-form-item>
-                <el-form-item label="值" prop="value">
-                    <el-input v-model="form.value" maxlength="32"></el-input>
+                <el-form-item label="路径" prop="path">
+                    <el-input v-model="form.path" maxlength="255"></el-input>
                 </el-form-item>
+                <el-form-item label="组件路径" prop="component">
+                    <el-input v-model="form.component" maxlength="255"></el-input>
+                </el-form-item>
+                <el-form-item label="图标" prop="icon">
+                    <el-input v-model="form.icon" maxlength="255"></el-input>
+                </el-form-item>
+                <el-form-item label="显示" prop="show">
+                    <el-switch class="switch-style" v-model="form.show" active-value="0" active-text="显示" inactive-value="1" inactive-text="隐藏"></el-switch>
+                </el-form-item>
+                <el-form-item label="状态" prop="status">
+                    <el-switch class="switch-style" v-model="form.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>
+                </el-form-item>
+
                 <el-form-item label="排序" prop="sort">
                     <el-input-number v-model="form.sort" :min="1" :max="100000"></el-input-number>
                 </el-form-item>
                 <el-form-item label="备注" prop="details">
                     <el-input type="textarea" :rows="2" v-model="form.details" maxlength="255"></el-input>
-                </el-form-item>
-
-                <el-form-item label="状态" prop="status">
-                    <el-radio-group v-model="form.status">
-                        <el-radio label="0">启用</el-radio>
-                        <el-radio label="1">禁用</el-radio>
-                    </el-radio-group>
                 </el-form-item>
             </el-form>
         </dialog-alert>
@@ -77,7 +82,7 @@ export default {
     },
     data() {
         return {
-            apiUrl: this.$api.sys.enum,          // 请求路很
+            apiUrl: this.$api.sys.menu,          // 请求路很
             rules: {
                 title: [{ required: true, message: '请输入内容', trigger: 'blur' },],
                 value: [{ required: true, message: '请输入内容', trigger: 'blur' },],
@@ -93,6 +98,7 @@ export default {
             tableLoading: false,
             multipleSelection: [],      // 多选选中的值
 
+
             /* 表单 */
             dialogValue: false,
             requestType: '',            // 请求类型
@@ -105,10 +111,8 @@ export default {
     },
     methods: {
         /* 查询操作 */
-        query(flag) {
-            if (flag == 1) this.pagination.page = 1;         // 查询时，让页面等于1
+        query() {
             let param = {
-                ...this.pagination,
                 ...this.QueryParam
             };
             this.tableLoading = true;
@@ -120,7 +124,7 @@ export default {
             });
         },
         /* 编辑 */
-        handleEdit(row, requestType) {
+        handleEdit(row = { sort: 1, status: '0', parentId: '0', show: '0' }, requestType = 'post') {
             this.dialogValue = true;
             this.form = this.DeepCopy(row);
             this.requestType = requestType;
@@ -135,8 +139,6 @@ export default {
                         this.loadingButton = false;
                         this.dialogValue = false;
                         this.query();
-
-                        this.$store.dispatch('enumList/getEnum');
                     } else {
                         this.loadingButton = false;
                     }

@@ -36,12 +36,15 @@ class TableUtilsController extends Controller {
 
         const queryList = [];
         const queryHiddenList = {};
+        const tableList = [];
+        const formList = [];
+        const formEnum = []; //  表单枚举值
         fieldList.forEach(item => {
             /* 查询 */
             if (item.isQuery) {
                 if (!item.isHidden) {
                     /* 查询展示字段 */
-                    const obj = { name: item.component, key: item.field, label: item.comment, attr: { placeholder: '请输入内容' } };
+                    const obj = { name: item.component, key: item.alias, label: item.comment, attr: { placeholder: '请输入内容' } };
                     if (item.component === 'el-select') {
                         obj.option = item.enumType;
                         obj.attr = {
@@ -56,9 +59,21 @@ class TableUtilsController extends Controller {
                 }
             }
 
+            /* 列表 */
+            if (item.isTable) {
+                tableList.push(item);
+            }
+
+            /* 编辑表单 */
+            if (item.isWriteonly || item.isReadonly) {
+                formList.push(item);
+            }
+            if (item.isWriteonly && item.enumType) {
+                formEnum.push(item);
+            }
 
         });
-        const data = { fieldList, queryList, queryHiddenList };
+        const data = { fieldList, queryList, queryHiddenList, tableList, formList, formEnum };
         // 渲染模版
         const body = await ctx.renderView('generate/index.ejs', data);
         // 生成文件

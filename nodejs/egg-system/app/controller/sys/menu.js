@@ -2,23 +2,23 @@
 const uuidv4 = require('uuid/v4');
 const Controller = require('egg').Controller;
 
-class TagController extends Controller {
+class MenuController extends Controller {
     async index() {
         const ctx = this.ctx;
-        const query = {
-            limit: ctx.helper.parseInt(ctx.query.size) * ctx.helper.parseInt(ctx.query.page),
-            offset: ctx.helper.parseInt(ctx.query.size) * ctx.helper.parseInt(ctx.query.page - 1),
+        const where = { ...this.ctx.helper.whereParams, ...ctx.query, parentId: '0' };
+        ctx.body = {
+            rows: await ctx.service.sys.menu.getTree(where),
         };
-        ctx.body = await ctx.service.sys.tag.list(query);
     }
 
     async create() {
         const ctx = this.ctx;
         const bodys = ctx.request.body;
         bodys.id = uuidv4();
-        const message = await ctx.service.sys.tag.create(bodys);
+        const message = await ctx.service.sys.menu.create(bodys);
         ctx.body = {
             message,
+            msg: '保存成功',
             code: 200,
         };
     }
@@ -27,9 +27,10 @@ class TagController extends Controller {
         const ctx = this.ctx;
         const id = ctx.params.id;
         const body = ctx.request.body;
-        const message = await ctx.service.sys.tag.update(id, body);
+        const message = await ctx.service.sys.menu.update(id, body);
         ctx.body = {
             message,
+            msg: '保存成功',
             code: 200,
         };
     }
@@ -37,9 +38,9 @@ class TagController extends Controller {
         const ctx = this.ctx;
         const id = ctx.params.id;
 
-        ctx.body = await ctx.service.sys.tag.del(id);
+        ctx.body = await ctx.service.sys.menu.del(id);
         ctx.status = 200;
     }
 }
 
-module.exports = TagController;
+module.exports = MenuController;

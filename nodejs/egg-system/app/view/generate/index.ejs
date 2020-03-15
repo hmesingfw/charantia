@@ -16,15 +16,15 @@
             <el-table :data="tableData" :height="tableHeight" @selection-change="val => multipleSelection = val"
                 v-loading="tableLoading" :stripe="true" header-row-class-name="table-header-color">
                 <el-table-column type="selection" width="42"></el-table-column>
-                <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="color" label="颜色"></el-table-column>
-                <el-table-column prop="type" label="类型"></el-table-column>
-                <el-table-column prop="sort" label="排序"></el-table-column>
-                <el-table-column label="状态">
-                    <template slot-scope="scope">{{ scope.row.status == '0' ? '启用' : '禁用'}}</template>
-                </el-table-column>
-                <el-table-column prop="updatedAt" label="更新时间" width="140"></el-table-column>
-
+                <%_ tableList.forEach(function(item){ -%>
+                <%_ if(item.component === 'el-select'){ -%>
+ 				<el-table-column label="<%=item.comment%>">
+                    <template slot-scope="scope">{{ ListMatchField('<%= item.enumType %>', scope.row.<%=item.alias%>) }}</template>
+                </el-table-column> 
+				<%_ }else{ -%>
+				<el-table-column prop="<%=item.alias%>" label="<%=item.comment%>" width="140"></el-table-column>
+            	<%_ } -%>				
+                <%_ }) -%>
                 <el-table-column label="操作" width="160" fixed="right">
                     <template slot-scope="scope">
                         <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
@@ -45,43 +45,48 @@
         <dialog-alert v-model="dialogValue" title="信息录入" :type="requestType" @submit="handleUpdate"
             :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
             <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
-                <el-form-item label="标题" prop="title">
-                    <el-input v-model="form.title" maxlength="32"></el-input>
+            	<%_ formList.forEach(function(item){ -%>
+                <%_ if(item.component === 'el-select'){ -%>
+                <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
+                    <el-select v-model="form.<%=item.alias%>" maxlength="<%=item.maxlength%>" :disabled="<%=item.isReadonly%>">
+                    	<el-option v-for="item in <%=item.enumType%>" :key="item.id" :label="item.title" :value="item.value"></el-option>
+                    </el-select>
                 </el-form-item>
-                <el-form-item label="类型" prop="type">
-                    <el-input v-model="form.type" maxlength="32"></el-input>
+                <%_ }else if(item.component === 'el-input'){ -%>
+                <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
+                    <el-input v-model="form.<%=item.alias%>" maxlength="<%=item.maxlength%>" :disabled="<%=item.isReadonly%>"></el-input>
                 </el-form-item>
-                <el-form-item label="颜色" prop="color">
-                    <el-input v-model="form.color" maxlength="32"></el-input>
-                </el-form-item>
-                <el-form-item label="排序" prop="sort">
-                    <el-input-number v-model="form.sort" :max="99" :min="1"></el-input-number>
-                </el-form-item>
-                <el-form-item label="备注" prop="details">
-                    <el-input v-model="form.details" maxlength="32"></el-input>
-                </el-form-item>
-
-                <el-form-item label="状态" prop="status">
-                    <el-radio-group v-model="form.status">
-                        <el-radio label="0">启用</el-radio>
-                        <el-radio label="1">禁用</el-radio>
+                <%_ }else if(item.component === 'el-radio'){ -%>
+                <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
+                    <el-radio-group v-model="form.<%=item.alias%>" maxlength="<%=item.maxlength%>" :disabled="<%=item.isReadonly%>">
+                    	<el-radio v-for="item in <%=item.enumType%>" :key="item.id" :label="item.value">{{item.title}}</el-radio>
                     </el-radio-group>
                 </el-form-item>
+                <%_ }else if(item.component === 'el-input-number'){ -%>
+                <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
+                    <el-input-number v-model="form.<%=item.alias%>"></el-input-number>
+                </el-form-item>
+                <%_ }else if(item.component === 'el-date-picker'){ -%>
+                <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
+                    <el-date-picker v-model="form.<%=item.alias%>" type="date" placeholder="选择日期"></el-date-picker>
+                </el-form-item>
+                <%_ } -%>				
+                <%_ }) -%>
             </el-form>
         </dialog-alert>
     </div>
 </template>
 <script>
-    import {
-        GetHeight
-    } from '@/utils/sys';
-    import {
-        mapState
-    } from 'vuex';
+    import { GetHeight } from '@/utils/sys';
+    import { mapState } from 'vuex';
 
     export default {
         computed: {
-            ...mapState({})
+            ...mapState({
+            	<%_ formEnum.forEach(function(item){ -%>
+            	<%= item.enumType %>: state => state.enumList.data.<%= item.enumType -%>,
+            	<%_ }) -%>	
+            })
         },
         data() {
             return {

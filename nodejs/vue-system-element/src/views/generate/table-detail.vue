@@ -55,32 +55,47 @@
                             <el-checkbox v-model="scope.row.key"></el-checkbox>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="key" label="隐藏" width="50" align="center">
-                        <template slot-scope="scope">
-                            <el-checkbox v-model="scope.row.isHidden"></el-checkbox>
-                        </template>
+                    <el-table-column label="查询" align="center">
+                        <el-table-column prop="isQuery" label="显示" width="50" align="center">
+                            <template slot-scope="scope">
+                                <el-checkbox v-model="scope.row.isQuery"></el-checkbox>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="isHidden" label="隐藏" width="50" align="center">
+                            <template slot-scope="scope">
+                                <el-checkbox v-model="scope.row.isHidden"></el-checkbox>
+                            </template>
+                        </el-table-column>
                     </el-table-column>
-                    <el-table-column prop="key" label="必填" width="50" align="center">
-                        <template slot-scope="scope">
-                            <el-checkbox v-model="scope.row.isNull"></el-checkbox>
-                        </template>
+                    <el-table-column label="列表" align="center">
+                        <el-table-column prop="isTable" label="显示" width="50" align="center">
+                            <template slot-scope="scope">
+                                <el-checkbox v-model="scope.row.isTable"></el-checkbox>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="isSort" label="排序" width="50" align="center">
+                            <template slot-scope="scope">
+                                <el-checkbox v-model="scope.row.isSort"></el-checkbox>
+                            </template>
+                        </el-table-column>
                     </el-table-column>
-                    <el-table-column prop="key" label="查询" width="50" align="center">
-                        <template slot-scope="scope">
-                            <el-checkbox v-model="scope.row.isQuery"></el-checkbox>
-                        </template>
+                    <el-table-column label="表单" align="center">
+                        <el-table-column prop="isNull" label="必填" width="50" align="center">
+                            <template slot-scope="scope">
+                                <el-checkbox v-model="scope.row.isNull"></el-checkbox>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="isWriteonly" label="可写" width="50" align="center">
+                            <template slot-scope="scope">
+                                <el-checkbox v-model="scope.row.isWriteonly"></el-checkbox>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="isReadonly" label="只读" width="50" align="center">
+                            <template slot-scope="scope">
+                                <el-checkbox v-model="scope.row.isReadonly"></el-checkbox>
+                            </template>
+                        </el-table-column>
                     </el-table-column>
-                    <el-table-column prop="key" label="列表" width="50" align="center">
-                        <template slot-scope="scope">
-                            <el-checkbox v-model="scope.row.isTable"></el-checkbox>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="key" label="排序" width="50" align="center">
-                        <template slot-scope="scope">
-                            <el-checkbox v-model="scope.row.isSort"></el-checkbox>
-                        </template>
-                    </el-table-column>
-
                     <el-table-column prop="matchType" label="匹配方式" width="110">
                         <template slot-scope="scope">
                             <el-select v-model="scope.row.matchType">
@@ -209,6 +224,8 @@ export default {
                     isQuery: isQuery,                   // 是否查询
                     isSort: isSort,                     // 是否排序
                     isTable: isTable,                   // 列表是否显示
+                    isWriteonly: true,                  // 可写
+                    isReadonly: true,                   // 可读
                     enumType: '',                       // 字典类型
                     matchType: '=',                     // 匹配方式
                     defaultValue: defaultValue,         // 默认值

@@ -15,10 +15,21 @@
                 <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="color" label="颜色"></el-table-column>
                 <el-table-column prop="type" label="类型"></el-table-column>
-                <el-table-column prop="sort" label="排序"></el-table-column>
-                <el-table-column label="状态">
-                    <template slot-scope="scope">{{ scope.row.status == '0' ? '启用' : '禁用'}}</template>
+                <el-table-column prop="sort" label="排序">
+                    <template slot-scope="scope">
+                        <el-input-number v-model="scope.row.sort" controls-position="right" class="el-input-number-80" :min="1" :max="10"></el-input-number>
+                    </template>
                 </el-table-column>
+                <el-table-column label="状态">
+                    <template slot-scope="scope">{{ ListMatchField('statusList', scope.row.status) }}</template>
+                </el-table-column>
+
+                <el-table-column label="状态">
+                    <template slot-scope="scope">
+                        <el-switch class="switch-style" v-model="form.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>
+                    </template>
+                </el-table-column>
+
                 <el-table-column prop="updatedAt" label="更新时间" width="140"></el-table-column>
 
                 <el-table-column label="操作" width="160" fixed="right">
@@ -61,10 +72,11 @@
                 </el-form-item>
 
                 <el-form-item label="状态" prop="status">
-                    <el-radio-group v-model="form.status">
+                    <!-- <el-radio-group v-model="form.status">
                         <el-radio label="0">启用</el-radio>
                         <el-radio label="1">禁用</el-radio>
-                    </el-radio-group>
+                    </el-radio-group>-->
+                    <el-switch class="switch-style" v-model="form.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>
                 </el-form-item>
             </el-form>
         </dialog-alert>
@@ -87,7 +99,7 @@ export default {
                 title: [{ required: true, message: '请输入内容', trigger: 'blur' },],
             },
             /* ------------ */
-            tableHeight: GetHeight(240), // 列表高度       
+            tableHeight: GetHeight(250), // 列表高度       
             QueryParam: {},             //  搜索条件
             queryComponentData: [
                 { name: 'el-input', key: 'title', label: "枚举名称", attr: { placeholder: '请输入' } },
@@ -142,12 +154,10 @@ export default {
                     this.loadingButton = true;
                     let issucc = await this.reqData(this.apiUrl, this.form, this.requestType);
                     if (issucc) {
-                        this.loadingButton = false;
                         this.dialogValue = false;
                         this.query();
-                    } else {
-                        this.loadingButton = false;
                     }
+                    this.loadingButton = false;
                 }
             });
         },

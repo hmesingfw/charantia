@@ -142,7 +142,9 @@ export default {
         /* 生成页面 */
         handlePage(row) {
             this.$http.get(this.$api.generate.tableGenerate, { params: { id: row.id } }).then(res => {
-                console.log(res);
+                if (res.data.message) {
+                    this.$message.success('生成成功');
+                }
             })
         },
     }
