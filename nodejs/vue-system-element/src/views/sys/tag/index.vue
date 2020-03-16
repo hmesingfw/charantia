@@ -26,7 +26,7 @@
 
                 <el-table-column label="状态">
                     <template slot-scope="scope">
-                        <el-switch class="switch-style" v-model="form.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>
+                        <el-switch class="switch-style" v-model="scope.row.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>
                     </template>
                 </el-table-column>
 

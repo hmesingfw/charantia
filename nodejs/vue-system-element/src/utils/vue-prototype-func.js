@@ -40,6 +40,49 @@ Vue.prototype.deleteRequestData = function (url, id, { message = '此操作将�
     });
 }
 
+
+/* 列表更新字段方法 */
+/* 
+*   data   数据
+*   url    请求地址
+*   keys   更改数据key值
+*/
+Vue.prototype.updateField = async function (data, url, keys, func, { reqType = 'put', idKey = 'id' } = {}) {
+    let form = {};
+    if (keys instanceof Array) {
+        keys.forEach(k => {
+            form[k] = data[k];
+        })
+    } else {
+        form[keys] = data[keys];
+    }
+    let put = reqType == 'put' ? '/' + data[idKey] : '';
+    let result = await this.$http[reqType](`${url}${put}`, form);
+
+    this.$message.success(result.data.message);
+    func();
+}
+
+Vue.prototype.updateSwitch = async function (data, url, key, func, { reqType = 'put', idKey = 'id', activeValue = '0', inactiveValue = '1' } = {}) {
+    this.$confirm('确定切换状态', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+    }).then(async () => {
+        let form = {};
+        form[key] = data[key];
+        let put = reqType == 'put' ? '/' + data[idKey] : '';
+        let result = await this.$http[reqType](`${url}${put}`, form);
+
+        this.$message.success(result.data.message);
+        func();
+    }).catch(() => {
+        Vue.set(data, key, data[key] == activeValue ? inactiveValue : activeValue);
+    });
+}
+
+
+
 /**
  * 全局删除执行方法
  * url      删除请求API
@@ -80,8 +123,8 @@ Vue.prototype.DeepCopy = function (obj) {
 }
 
 
-/** 列表匹配字段 
- * key　　　枚举列表
+/** 列表匹配字段  
+ * key      枚举列表
  * value    匹配值
  */
 Vue.prototype.ListMatchField = function (key, value) {

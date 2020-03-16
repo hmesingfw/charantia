@@ -15,10 +15,10 @@ class MenuController extends Controller {
         const ctx = this.ctx;
         const bodys = ctx.request.body;
         bodys.id = uuidv4();
-        const message = await ctx.service.sys.menu.create(bodys);
+        const msg = await ctx.service.sys.menu.create(bodys);
         ctx.body = {
-            message,
-            msg: '保存成功',
+            msg,
+            message: '保存成功',
             code: 200,
         };
     }
@@ -27,10 +27,10 @@ class MenuController extends Controller {
         const ctx = this.ctx;
         const id = ctx.params.id;
         const body = ctx.request.body;
-        const message = await ctx.service.sys.menu.update(id, body);
+        const msg = await ctx.service.sys.menu.update(id, body);
         ctx.body = {
-            message,
-            msg: '保存成功',
+            msg,
+            message: '保存成功',
             code: 200,
         };
     }

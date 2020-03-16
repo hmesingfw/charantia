@@ -23,10 +23,27 @@
             >
                 <el-table-column type="selection" width="42"></el-table-column>
                 <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="sort" label="排序" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="details" label="备注" show-overflow-tooltip></el-table-column>
-                <el-table-column label="状态">
-                    <template slot-scope="scope">{{ scope.row.status == '0' ? '启用' : '禁用'}}</template>
+                <el-table-column prop="sort" label="排序" width="120" align="center">
+                    <template slot-scope="scope">
+                        <el-popconfirm title="修改排序" @onConfirm="updateField(scope.row, apiUrl, 'sort', query)">
+                            <el-input-number slot="reference" v-model="scope.row.sort" controls-position="right" class="el-input-number-table" :min="1" :max="1000" size="mini"></el-input-number>
+                        </el-popconfirm>
+                    </template>
+                </el-table-column>
+
+                <el-table-column label="状态" width="80">
+                    <template slot-scope="scope">
+                        <el-switch
+                            class="switch-style"
+                            v-model="scope.row.status"
+                            @change="updateSwitch(scope.row, apiUrl, 'status', query)"
+                            active-value="0"
+                            active-text="启用"
+                            inactive-value="1"
+                            inactive-text="禁用"
+                        ></el-switch>
+                    </template>
                 </el-table-column>
                 <el-table-column prop="updatedAt" label="更新时间" width="140"></el-table-column>
 
