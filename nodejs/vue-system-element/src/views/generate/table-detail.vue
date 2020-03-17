@@ -52,7 +52,7 @@
                     </el-table-column>
                     <el-table-column prop="key" label="主键" width="50" align="center">
                         <template slot-scope="scope">
-                            <el-checkbox v-model="scope.row.key"></el-checkbox>
+                            <el-checkbox v-model="scope.row.key" disabled></el-checkbox>
                         </template>
                     </el-table-column>
                     <el-table-column label="查询" align="center">
@@ -73,9 +73,15 @@
                                 <el-checkbox v-model="scope.row.isTable"></el-checkbox>
                             </template>
                         </el-table-column>
+                        <el-table-column prop="isTableHanlde" label="操作" width="50" align="center">
+                            <template slot-scope="scope">
+                                <el-checkbox v-model="scope.row.isTableHanlde"></el-checkbox>
+                            </template>
+                        </el-table-column>
+
                         <el-table-column prop="isSort" label="排序" width="50" align="center">
                             <template slot-scope="scope">
-                                <el-checkbox v-model="scope.row.isSort"></el-checkbox>
+                                <el-checkbox v-model="scope.row.isSort" disabled></el-checkbox>
                             </template>
                         </el-table-column>
                     </el-table-column>
@@ -98,7 +104,7 @@
                     </el-table-column>
                     <el-table-column prop="matchType" label="匹配方式" width="110">
                         <template slot-scope="scope">
-                            <el-select v-model="scope.row.matchType">
+                            <el-select v-model="scope.row.matchType" disabled>
                                 <el-option v-for="item in matchTypeList" :key="item.id" :label="item.title" :value="item.value"></el-option>
                             </el-select>
                         </template>
@@ -207,7 +213,7 @@ export default {
                 let isQuery = item.field == 'is_del' ? true : false;
                 let isSort = item.field == 'updated_at' || fieldType == 'int' ? true : false;
                 let isTable = item.field == 'created_at' || item.field == 'updated_at' || item.field == 'is_del' || item.key == 'PRI' ? false : true;                 // 列表
-
+                let isTableHanlde = item.field == 'status' ? true : false;
                 let defaultValue = item.field == 'is_del' ? '0' : '';
                 return {
                     field: item.field,
@@ -219,16 +225,17 @@ export default {
                     fieldType: fieldType,               // 字段类型
                     maxlength: maxlength,               // 字段长度
 
-                    isHidden: isHidden,                 // 是否隐藏
-                    isNull: isNull,                     // 是否必填     true 必填   false 非必填
-                    isQuery: isQuery,                   // 是否查询
-                    isSort: isSort,                     // 是否排序
-                    isTable: isTable,                   // 列表是否显示
-                    isWriteonly: true,                  // 可写
-                    isReadonly: true,                   // 可读
-                    enumType: '',                       // 字典类型
-                    matchType: '=',                     // 匹配方式
-                    defaultValue: defaultValue,         // 默认值
+                    isHidden,                    // 是否隐藏
+                    isNull,                      // 是否必填     true 必填   false 非必填
+                    isQuery,                     // 是否查询
+                    isSort,                      // 是否排序
+                    isTable,                     // 列表是否显示
+                    isTableHanlde,               // 列表是否可操作
+                    isWriteonly: true,           // 可写
+                    isReadonly: false,           // 可读
+                    enumType: '',                // 字典类型
+                    matchType: '=',              // 匹配方式
+                    defaultValue,                // 默认值
                 }
             })
         },

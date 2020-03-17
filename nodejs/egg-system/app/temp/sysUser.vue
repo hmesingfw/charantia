@@ -1,13 +1,13 @@
 <template>
     <div>
         <el-form :inline="true" :model="QueryParam" class="header-query-form">
-            <generate-form :datalist="queryComponentData" :model="QueryParam"></generate-form>
+            <generate-form :model="QueryParam"></generate-form>
 
             <el-form-item>
                 <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
-                <el-button @click="handleEdit({sort:1,status:'0'})" circle type="primary" icon="el-icon-plus">
+                <el-button @click="handleEdit({sort:1,status:'0'}, 'post')" circle type="primary" icon="el-icon-plus">
                 </el-button>
-                <el-button @click="HandleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle
+                <el-button @click="handleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle
                     type="danger" v-show="multipleSelection.length>0"></el-button>
             </el-form-item>
         </el-form>
@@ -16,39 +16,27 @@
             <el-table :data="tableData" :height="tableHeight" @selection-change="val => multipleSelection = val"
                 v-loading="tableLoading" :stripe="true" header-row-class-name="table-header-color">
                 <el-table-column type="selection" width="42"></el-table-column>
-                <%_ tableList.forEach(function(item){ -%>
-                <%_ if(item.component === 'el-select'){ -%>
- 				<el-table-column label="<%=item.comment%>">
-                    <template slot-scope="scope">{{ ListMatchField('<%= item.enumType %>', scope.row.<%=item.alias%>) }}</template>
-                </el-table-column> 
-                <%_ }else if(item.component === 'el-input-number'){ -%>
- 				<el-table-column label="<%=item.comment%>">
- 					<%_ if(item.isTableHanlde === true){ -%>
+				<el-table-column prop="phone" label="手机号" width="140"></el-table-column>
+				
+				<el-table-column prop="password" label="密码" width="140"></el-table-column>
+				
+				<el-table-column prop="name" label="姓名" width="140"></el-table-column>
+				
+ 				<el-table-column label="状态">
                     <template slot-scope="scope">
-                        <el-input-number v-model="scope.row.<%=item.alias%>" controls-position="right" class="el-input-number-table" :min="1" :max="<%= item.defaultValue || 100000 %>"></el-input-number>
+                    	<el-switch class="switch-style" v-model="form.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>    
                     </template>
-                    <%_ } else {  -%>
-                    <template slot-scope="scope">{{ ListMatchField('<%= item.enumType %>', scope.row.<%=item.alias%>) }}</template>
-            		<%_ } -%>		
+		
                 </el-table-column> 
-                <%_ }else if(item.component === 'el-switch'){ -%>
- 				<el-table-column label="<%=item.comment%>">
- 					<%_ if(item.isTableHanlde === true){ -%>
-                    <template slot-scope="scope">
-                    	<el-switch class="switch-style" v-model="scope.row.<%=item.alias%>" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>    
-                    </template>
-                    <%_ } else {  -%>
-                    <template slot-scope="scope">{{ ListMatchField('<%= item.enumType %>', scope.row.<%=item.alias%>) }}</template>
-            		<%_ } -%>		
-                </el-table-column> 
-				<%_ }else{ -%>
-				<el-table-column prop="<%=item.alias%>" label="<%=item.comment%>" width="140"></el-table-column>
-            	<%_ } -%>				
-                <%_ }) -%>
+				
+				<el-table-column prop="userId" label="操作人" width="140"></el-table-column>
+				
+				<el-table-column prop="details" label="备注" width="140"></el-table-column>
+				
                 <el-table-column label="操作" width="160" fixed="right">
                     <template slot-scope="scope">
                         <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
-                        <el-button size="mini" type="text" @click="HandleDelete(apiUrl, scope.row, query)">删除
+                        <el-button size="mini" type="text" @click="handleDelete(apiUrl, scope.row, query)">删除
                         </el-button>
                     </template>
                 </el-table-column>
@@ -65,37 +53,22 @@
         <dialog-alert v-model="dialogValue" title="信息录入" :type="requestType" @submit="handleUpdate"
             :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
             <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
-            	<%_ formList.forEach(function(item){ -%>
-                <%_ if(item.component === 'el-select'){ -%>
-                <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
-                    <el-select v-model="form.<%=item.alias%>" maxlength="<%=item.maxlength%>" :disabled="<%=item.isReadonly%>">
-                    	<el-option v-for="item in <%=item.enumType%>" :key="item.id" :label="item.title" :value="item.value"></el-option>
-                    </el-select>
+                <el-form-item label="手机号" prop="phone">
+                    <el-input v-model="form.phone" maxlength="16" :disabled="true"></el-input>
                 </el-form-item>
-                <%_ }else if(item.component === 'el-input'){ -%>
-                <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
-                    <el-input v-model="form.<%=item.alias%>" maxlength="<%=item.maxlength%>" :disabled="<%=item.isReadonly%>"></el-input>
+				
+                <el-form-item label="密码" prop="password">
+                    <el-input v-model="form.password" maxlength="32" :disabled="true"></el-input>
                 </el-form-item>
-                <%_ }else if(item.component === 'el-radio'){ -%>
-                <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
-                    <el-radio-group v-model="form.<%=item.alias%>" maxlength="<%=item.maxlength%>" :disabled="<%=item.isReadonly%>">
-                    	<el-radio v-for="item in <%=item.enumType%>" :key="item.id" :label="item.value">{{item.title}}</el-radio>
-                    </el-radio-group>
+				
+                <el-form-item label="姓名" prop="name">
+                    <el-input v-model="form.name" maxlength="128" :disabled="true"></el-input>
                 </el-form-item>
-                <%_ }else if(item.component === 'el-input-number'){ -%>
-                <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
-                    <el-input-number v-model="form.<%=item.alias%>"></el-input-number>
+				
+                <el-form-item label="状态" prop="status">
+                	<el-switch class="switch-style" v-model="form.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>             
                 </el-form-item>
-                 <%_ }else if(item.component === 'el-switch'){ -%>
-                <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
-                	<el-switch class="switch-style" v-model="form.<%=item.alias%>" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>             
-                </el-form-item>
-                <%_ }else if(item.component === 'el-date-picker'){ -%>
-                <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
-                    <el-date-picker v-model="form.<%=item.alias%>" type="date" placeholder="选择日期"></el-date-picker>
-                </el-form-item>
-                <%_ } -%>				
-                <%_ }) -%>
+				
             </el-form>
         </dialog-alert>
     </div>
@@ -107,9 +80,8 @@
     export default {
         computed: {
             ...mapState({
-            	<%_ formEnum.forEach(function(item){ -%>
-            	<%= item.enumType %>: state => state.enumList.data.<%= item.enumType -%>,
-            	<%_ }) -%>	
+            	statusList: state => state.enumList.data.statusList,
+	
             })
         },
         data() {
@@ -125,8 +97,8 @@
 
                 /* ------------ */
                 tableHeight: GetHeight(240), // 列表高度       
-                QueryParam: <%- JSON.stringify(queryHiddenList) %>, //  搜索条件
-                queryComponentData: <%- JSON.stringify(queryList) %>,
+                QueryParam: {"is_del":"0"}, //  搜索条件
+                queryComponentData: []
                 tableData: [],
                 tableLoading: false,
                 multipleSelection: [], // 多选选中的值
@@ -166,7 +138,7 @@
                 });
             },
             /* 编辑 */
-            handleEdit(row, requestType = 'post') {
+            handleEdit(row, requestType) {
                 this.dialogValue = true;
                 this.form = this.DeepCopy(row);
                 this.requestType = requestType;
@@ -176,7 +148,7 @@
                 this.$refs.ruleForm.validate(async valid => {
                     if (valid) {
                         this.loadingButton = true;
-                        let issucc = await this.ReqData(this.apiUrl, this.form, this.requestType);
+                        let issucc = await this.reqData(this.apiUrl, this.form, this.requestType);
                         if (issucc) {
                             this.loadingButton = false;
                             this.dialogValue = false;

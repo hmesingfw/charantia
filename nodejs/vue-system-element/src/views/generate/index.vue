@@ -1,6 +1,6 @@
 <template>
-    <div class="margin-8">
-        <el-form :inline="true" :model="QueryParam">
+    <div>
+        <el-form :inline="true" :model="QueryParam" class="header-query-form">
             <el-form-item label="姓名">
                 <el-input v-model="QueryParam.title" placeholder="请输入"></el-input>
             </el-form-item>
@@ -10,42 +10,43 @@
                 <el-button @click="HandleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
             </el-form-item>
         </el-form>
+        <div class="article-table">
+            <el-table
+                :data="tableData"
+                :height="tableHeight"
+                @selection-change="val => multipleSelection = val"
+                v-loading="tableLoading"
+                style="width: 100%"
+                :stripe="true"
+                header-row-class-name="table-header-color"
+            >
+                <el-table-column type="selection" width="42"></el-table-column>
+                <el-table-column prop="tableName" label="表名" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="comment" label="表说明" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="author" label="作者" show-overflow-tooltip></el-table-column>
 
-        <el-table
-            :data="tableData"
-            :height="tableHeight"
-            @selection-change="val => multipleSelection = val"
-            v-loading="tableLoading"
-            style="width: 100%"
-            :stripe="true"
-            header-row-class-name="table-header-color"
-        >
-            <el-table-column type="selection" width="42"></el-table-column>
-            <el-table-column prop="tableName" label="表名" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="comment" label="表说明" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="author" label="作者" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="updatedAt" label="更新时间" width="140"></el-table-column>
 
-            <el-table-column prop="updatedAt" label="更新时间" width="140"></el-table-column>
+                <el-table-column label="操作" width="160" fixed="right">
+                    <template slot-scope="scope">
+                        <el-button size="mini" type="text" @click="handlePage(scope.row)">生成</el-button>
+                        <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
+                        <el-button size="mini" type="text" @click="HandleDelete(apiUrl, scope.row, query)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
 
-            <el-table-column label="操作" width="160" fixed="right">
-                <template slot-scope="scope">
-                    <el-button size="mini" type="text" @click="handlePage(scope.row)">生成</el-button>
-                    <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
-                    <el-button size="mini" type="text" @click="HandleDelete(apiUrl, scope.row, query)">删除</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-
-        <div class="pu-pagination">
-            <el-pagination
-                @size-change="val => {pagination.size = val; query()}"
-                @current-change="val => {pagination.page = val; query()}"
-                :current-page="pagination.page"
-                :page-sizes="[10, 20, 30, 50]"
-                :page-size="pagination.size"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="totalCount"
-            ></el-pagination>
+            <div class="pu-pagination">
+                <el-pagination
+                    @size-change="val => {pagination.size = val; query()}"
+                    @current-change="val => {pagination.page = val; query()}"
+                    :current-page="pagination.page"
+                    :page-sizes="[10, 20, 30, 50]"
+                    :page-size="pagination.size"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="totalCount"
+                ></el-pagination>
+            </div>
         </div>
 
         <el-dialog title="提示" :visible.sync="dialogVisible" width="40%">
@@ -79,7 +80,7 @@ export default {
             rules: {
                 tableName: [{ required: true, message: '请选择表名', trigger: 'blur' },],
             },
-            tableHeight: GetHeight(200), // 列表高度         
+            tableHeight: GetHeight(250), // 列表高度         
             QueryParam: {},             //  搜索条件
             tableData: [],
             tableLoading: false,

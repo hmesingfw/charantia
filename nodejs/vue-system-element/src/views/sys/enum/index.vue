@@ -24,8 +24,14 @@
                 <el-table-column type="selection" width="42"></el-table-column>
                 <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="value" label="值" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="sort" label="排序" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="details" label="备注" show-overflow-tooltip F></el-table-column>
+                <el-table-column prop="sort" label="排序" width="120">
+                    <template slot-scope="scope">
+                        <el-popconfirm title="修改排序" @onConfirm="UpdateField(scope.row, apiUrl, 'sort', query)">
+                            <el-input-number slot="reference" v-model="scope.row.sort" controls-position="right" class="el-input-number-table" :min="1" :max="1000" size="mini"></el-input-number>
+                        </el-popconfirm>
+                    </template>
+                </el-table-column>
+
                 <el-table-column label="状态" width="80">
                     <template slot-scope="scope">
                         <el-switch
@@ -39,6 +45,7 @@
                         ></el-switch>
                     </template>
                 </el-table-column>
+                <el-table-column prop="details" label="备注" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="updatedAt" label="更新时间" width="140"></el-table-column>
 
                 <el-table-column label="操作" width="160" fixed="right">

@@ -23,8 +23,8 @@ export default {
         datalist: {
             type: Array,
             default: () => [
-                { name: 'el-input', key: 'title', label: "标题", attr: { placeholder: '请输入' } },
-                { name: 'el-select', key: 'status', label: "标题", attr: { placeholder: '' }, option: 'statusList' },
+                // { name: 'el-input', key: 'title', label: "标题", attr: { placeholder: '请输入' } },
+                // { name: 'el-select', key: 'status', label: "状态", attr: { placeholder: '' }, option: 'statusList' },
             ]
         },
     }

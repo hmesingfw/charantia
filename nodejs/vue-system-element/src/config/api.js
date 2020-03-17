@@ -6,6 +6,7 @@ export default {
         tag: baseURL + '/v1/tag',           // 系统标签
         enum: baseURL + '/v1/enum',           // 系统枚举
         menu: baseURL + '/v1/menu',           // 系统枚举
+        user: baseURL + '/v1/user',           // 系统用户
     },
     generate: {
         index: baseURL + '/v1/generate',                        // 代码生成表

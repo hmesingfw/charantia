@@ -6,6 +6,7 @@ module.exports = app => {
     router.resources('tag', baseURL + '/v1/tag', controller.sys.tag); // 标签管理
     router.resources('enum', baseURL + '/v1/enum', controller.sys.enum); // 枚举管理
     router.resources('menu', baseURL + '/v1/menu', controller.sys.menu); // 系统菜单管理
+    router.resources('user', baseURL + '/v1/user', controller.sys.user); // 系统用户管理
 
     /* 生成单表 */
     router.resources('table', baseURL + '/v1/generate', controller.generate.table);
