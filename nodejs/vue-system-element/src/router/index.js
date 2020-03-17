@@ -78,55 +78,57 @@ export const constantRoutes = [{
             affix: true
         }
     }]
-}, {
-    path: '/icon',
-    component: Layout,
-    children: [{
-        path: 'index',
-        component: () => import('@/views/icons/index'),
-        name: 'Icons',
-        meta: {
-            title: '图标',
-            icon: 'icon',
-            noCache: true
-        }
-    }]
-}, {
-    path: '/sys',
-    component: Layout,
-    meta: { title: '系统管理', icon: 'guide' },
-    children: [{
-        path: 'tag',
-        component: () => import('@/views/sys/tag/index'),
-        name: 'SysTag',
-        meta: { title: '标签管理', icon: 'guide', affix: true }
-    }, {
-        path: 'enum',
-        component: () => import('@/views/sys/enum/index'),
-        name: 'SysEnum',
-        meta: { title: '枚举管理', icon: 'guide', affix: true }
-    }, {
-        path: 'menu',
-        component: () => import('@/views/sys/menu/index'),
-        name: 'SysMenu',
-        meta: { title: '菜单管理', icon: 'guide', affix: true }
-    }]
-}, {
-    path: '/generate',
-    component: Layout,
-    children: [{
-        path: 'index',
-        component: () => import('@/views/generate/index'),
-        name: 'generate',
-        meta: { title: '生成管理', icon: 'guide', affix: true }
-    }, {
-        path: 'table-detail',
-        hidden: true,
-        component: () => import('@/views/generate/table-detail'),
-        name: 'tableDetail',
-        meta: { title: '基本配置', icon: 'guide', affix: true }
-    }]
 },
+
+// {
+//     path: '/icon',
+//     component: Layout,
+//     children: [{
+//         path: 'index',
+//         component: () => import('@/views/icons/index'),
+//         name: 'Icons',
+//         meta: {
+//             title: '图标',
+//             icon: 'icon',
+//             noCache: true
+//         }
+//     }]
+// }, {
+//     path: '/sys',
+//     component: Layout,
+//     meta: { title: '系统管理', icon: 'guide' },
+//     children: [{
+//         path: 'tag',
+//         component: () => import('@/views/sys/tag/index'),
+//         name: 'SysTag',
+//         meta: { title: '标签管理', icon: 'guide', affix: true }
+//     }, {
+//         path: 'enum',
+//         component: () => import('@/views/sys/enum/index'),
+//         name: 'SysEnum',
+//         meta: { title: '枚举管理', icon: 'guide', affix: true }
+//     }, {
+//         path: 'menu',
+//         component: () => import('@/views/sys/menu/index'),
+//         name: 'SysMenu',
+//         meta: { title: '菜单管理', icon: 'guide', affix: true }
+//     }]
+// }, {
+//     path: '/generate',
+//     component: Layout,
+//     children: [{
+//         path: 'index',
+//         component: () => import('@/views/generate/index'),
+//         name: 'generate',
+//         meta: { title: '生成管理', icon: 'guide', affix: true }
+//     }, {
+//         path: 'table-detail',
+//         hidden: true,
+//         component: () => import('@/views/generate/table-detail'),
+//         name: 'tableDetail',
+//         meta: { title: '基本配置', icon: 'guide', affix: true }
+//     }]
+// },
 
 
 {
@@ -187,13 +189,11 @@ export const constantRoutes = [{
         }
     }]
 },
-
-
-{
-    path: '*',
-    redirect: '/404',
-    hidden: true
-}
+    // {
+    //     path: '*',
+    //     redirect: '/404',
+    //     hidden: true
+    // }
 ]
 
 const createRouter = () => new Router({

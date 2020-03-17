@@ -6,7 +6,7 @@
             <el-form-item>
                 <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
                 <el-button @click="handleEdit({sort:1,status:'0',parentId:'0'}, 'post')" circle type="primary" icon="el-icon-plus"></el-button>
-                <el-button @click="handleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
+                <el-button @click="HandleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
             </el-form-item>
         </el-form>
         <div class="article-table">
@@ -26,15 +26,25 @@
                 <el-table-column prop="value" label="值" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="sort" label="排序" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="details" label="备注" show-overflow-tooltip F></el-table-column>
-                <el-table-column label="状态">
-                    <template slot-scope="scope">{{ scope.row.status == '0' ? '启用' : '禁用'}}</template>
+                <el-table-column label="状态" width="80">
+                    <template slot-scope="scope">
+                        <el-switch
+                            class="switch-style"
+                            v-model="scope.row.status"
+                            @change="UpdateSwitch(scope.row, apiUrl, 'status', query)"
+                            active-value="0"
+                            active-text="启用"
+                            inactive-value="1"
+                            inactive-text="禁用"
+                        ></el-switch>
+                    </template>
                 </el-table-column>
                 <el-table-column prop="updatedAt" label="更新时间" width="140"></el-table-column>
 
                 <el-table-column label="操作" width="160" fixed="right">
                     <template slot-scope="scope">
                         <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
-                        <el-button size="mini" type="text" @click="handleDelete(apiUrl, scope.row, query)">删除</el-button>
+                        <el-button size="mini" type="text" @click="HandleDelete(apiUrl, scope.row, query)">删除</el-button>
                         <el-button size="mini" type="text" v-if="scope.row.parentId == '0'" @click="handleEdit({sort:1,status:'0',parentId:scope.row.id} , 'post')">添加值</el-button>
                     </template>
                 </el-table-column>
@@ -57,10 +67,7 @@
                 </el-form-item>
 
                 <el-form-item label="状态" prop="status">
-                    <el-radio-group v-model="form.status">
-                        <el-radio label="0">启用</el-radio>
-                        <el-radio label="1">禁用</el-radio>
-                    </el-radio-group>
+                    <el-switch class="switch-style" v-model="form.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>
                 </el-form-item>
             </el-form>
         </dialog-alert>
@@ -130,7 +137,7 @@ export default {
             this.$refs.ruleForm.validate(async valid => {
                 if (valid) {
                     this.loadingButton = true;
-                    let issucc = await this.reqData(this.apiUrl, this.form, this.requestType);
+                    let issucc = await this.ReqData(this.apiUrl, this.form, this.requestType);
                     if (issucc) {
                         this.loadingButton = false;
                         this.dialogValue = false;

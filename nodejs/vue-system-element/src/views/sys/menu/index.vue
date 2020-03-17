@@ -6,7 +6,7 @@
             <el-form-item>
                 <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
                 <el-button @click="handleEdit()" circle type="primary" icon="el-icon-plus"></el-button>
-                <el-button @click="handleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
+                <el-button @click="HandleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
             </el-form-item>
         </el-form>
         <div class="article-table">
@@ -23,21 +23,24 @@
             >
                 <el-table-column type="selection" width="42"></el-table-column>
                 <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="path" label="路径" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="component" label="组件路径" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="icon" label="图标" show-overflow-tooltip></el-table-column>
+
                 <el-table-column prop="details" label="备注" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="sort" label="排序" width="120" align="center">
                     <template slot-scope="scope">
-                        <el-popconfirm title="修改排序" @onConfirm="updateField(scope.row, apiUrl, 'sort', query)">
+                        <el-popconfirm title="修改排序" @onConfirm="UpdateField(scope.row, apiUrl, 'sort', query)">
                             <el-input-number slot="reference" v-model="scope.row.sort" controls-position="right" class="el-input-number-table" :min="1" :max="1000" size="mini"></el-input-number>
                         </el-popconfirm>
                     </template>
                 </el-table-column>
-
-                <el-table-column label="状态" width="80">
+                <el-table-column label="显示" width="80">
                     <template slot-scope="scope">
                         <el-switch
                             class="switch-style"
-                            v-model="scope.row.status"
-                            @change="updateSwitch(scope.row, apiUrl, 'status', query)"
+                            v-model="scope.row.show"
+                            @change="UpdateSwitch(scope.row, apiUrl, 'show', query)"
                             active-value="0"
                             active-text="启用"
                             inactive-value="1"
@@ -45,13 +48,18 @@
                         ></el-switch>
                     </template>
                 </el-table-column>
+                <el-table-column label="状态" width="80">
+                    <template slot-scope="scope">
+                        <el-switch class="switch-style" v-model="scope.row.status" @change="UpdateSwitch(scope.row, apiUrl, 'status', query)" v-bind="ConfigPamars.switchValue"></el-switch>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="updatedAt" label="更新时间" width="140"></el-table-column>
 
                 <el-table-column label="操作" width="160" fixed="right">
                     <template slot-scope="scope">
                         <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
-                        <el-button size="mini" type="text" @click="handleDelete(apiUrl, scope.row, query)">删除</el-button>
-                        <el-button size="mini" type="text" v-if="scope.row.parentId == '0'" @click="handleEdit({sort:1,status:'0',parentId:scope.row.id} , 'post')">添加值</el-button>
+                        <el-button size="mini" type="text" @click="HandleDelete(apiUrl, scope.row, query)">删除</el-button>
+                        <el-button size="mini" type="text" v-if="scope.row.parentId == '0'" @click="handleEdit({sort:1,status:'0',parentId:scope.row.id, show:'0'} , 'post')">添加值</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -72,7 +80,7 @@
                     <el-input v-model="form.icon" maxlength="255"></el-input>
                 </el-form-item>
                 <el-form-item label="显示" prop="show">
-                    <el-switch class="switch-style" v-model="form.show" active-value="0" active-text="显示" inactive-value="1" inactive-text="隐藏"></el-switch>
+                    <el-switch class="switch-style" v-model="form.show" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>
                 </el-form-item>
                 <el-form-item label="状态" prop="status">
                     <el-switch class="switch-style" v-model="form.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>
@@ -151,7 +159,7 @@ export default {
             this.$refs.ruleForm.validate(async valid => {
                 if (valid) {
                     this.loadingButton = true;
-                    let issucc = await this.reqData(this.apiUrl, this.form, this.requestType);
+                    let issucc = await this.ReqData(this.apiUrl, this.form, this.requestType);
                     if (issucc) {
                         this.loadingButton = false;
                         this.dialogValue = false;

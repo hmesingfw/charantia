@@ -6,7 +6,7 @@ import enumList from '@/store/modules/enumList';
  * form 请求内容
  * reqType 请求类型
  */
-Vue.prototype.reqData = function (url, form, reqType, { idKey = 'id' } = {}) {
+Vue.prototype.ReqData = function (url, form, reqType, { idKey = 'id' } = {}) {
     return new Promise((resolve) => {
         let put = reqType == 'put' ? '/' + form[idKey] : '';
 
@@ -23,7 +23,7 @@ Vue.prototype.reqData = function (url, form, reqType, { idKey = 'id' } = {}) {
  * url 请求地址
  * id 请求参数
 */
-Vue.prototype.deleteRequestData = function (url, id, { message = '此操作将永久删除信息, 是否继续?' } = {}) {
+Vue.prototype.DeleteRequestData = function (url, id, { message = '此操作将永久删除信息, 是否继续?' } = {}) {
     return new Promise((resolve) => {
         this.$confirm(message, '提示', {
             confirmButtonText: '确定',
@@ -47,7 +47,7 @@ Vue.prototype.deleteRequestData = function (url, id, { message = '此操作将�
 *   url    请求地址
 *   keys   更改数据key值
 */
-Vue.prototype.updateField = async function (data, url, keys, func, { reqType = 'put', idKey = 'id' } = {}) {
+Vue.prototype.UpdateField = async function (data, url, keys, func, { reqType = 'put', idKey = 'id' } = {}) {
     let form = {};
     if (keys instanceof Array) {
         keys.forEach(k => {
@@ -63,7 +63,7 @@ Vue.prototype.updateField = async function (data, url, keys, func, { reqType = '
     func();
 }
 
-Vue.prototype.updateSwitch = async function (data, url, key, func, { reqType = 'put', idKey = 'id', activeValue = '0', inactiveValue = '1' } = {}) {
+Vue.prototype.UpdateSwitch = async function (data, url, key, func, { reqType = 'put', idKey = 'id', activeValue = '0', inactiveValue = '1' } = {}) {
     this.$confirm('确定切换状态', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -89,14 +89,14 @@ Vue.prototype.updateSwitch = async function (data, url, key, func, { reqType = '
  * row      删除对象，对象内使用   ID   做为删除的判断依据
  * func     删除完成执行对象
  */
-Vue.prototype.handleDelete = async function (url, row, func) {
+Vue.prototype.HandleDelete = async function (url, row, func) {
     let ids = [];
     if (row.length > 0) {
         ids = row.map(item => item.id);
     } else {
         ids.push(row.id);
     }
-    let message = await this.deleteRequestData(url, ids);
+    let message = await this.DeleteRequestData(url, ids);
     if (message === false) {
         return
     }
@@ -137,4 +137,13 @@ Vue.prototype.ListMatchField = function (key, value) {
         }
     }
     return str;
+}
+
+Vue.prototype.ConfigPamars = {
+    switchValue: {
+        'active-value': '0',
+        'active-text': '启用',
+        'inactive-value': '1',
+        'inactive-text': '禁用'
+    },
 }

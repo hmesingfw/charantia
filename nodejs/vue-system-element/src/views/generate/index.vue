@@ -7,7 +7,7 @@
             <el-form-item>
                 <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
                 <el-button @click="tableName = '';dialogVisible = true;" circle type="primary" icon="el-icon-plus"></el-button>
-                <el-button @click="handleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
+                <el-button @click="HandleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
             </el-form-item>
         </el-form>
 
@@ -31,7 +31,7 @@
                 <template slot-scope="scope">
                     <el-button size="mini" type="text" @click="handlePage(scope.row)">生成</el-button>
                     <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
-                    <el-button size="mini" type="text" @click="handleDelete(apiUrl, scope.row, query)">删除</el-button>
+                    <el-button size="mini" type="text" @click="HandleDelete(apiUrl, scope.row, query)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>

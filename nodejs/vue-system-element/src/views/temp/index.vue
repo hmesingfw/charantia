@@ -7,7 +7,7 @@
             <el-form-item>
                 <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
                 <el-button @click="handleEdit({sort:1,status:'0'}, 'post')" circle type="primary" icon="el-icon-plus"></el-button>
-                <el-button @click="handleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
+                <el-button @click="HandleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
             </el-form-item>
         </el-form>
 
@@ -33,7 +33,7 @@
             <el-table-column label="操作" width="160" fixed="right">
                 <template slot-scope="scope">
                     <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
-                    <el-button size="mini" type="text" @click="handleDelete(apiUrl, scope.row, query)">删除</el-button>
+                    <el-button size="mini" type="text" @click="HandleDelete(apiUrl, scope.row, query)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -144,7 +144,7 @@ export default {
             this.$refs.ruleForm.validate(async valid => {
                 if (valid) {
                     this.loadingButton = true;
-                    let issucc = await this.reqData(this.apiUrl, this.form, this.requestType);
+                    let issucc = await this.ReqData(this.apiUrl, this.form, this.requestType);
                     if (issucc) {
                         this.loadingButton = false;
                         this.dialogValue = false;

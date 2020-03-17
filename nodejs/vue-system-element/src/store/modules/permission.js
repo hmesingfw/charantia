@@ -1,69 +1,51 @@
 import { asyncRoutes, constantRoutes } from '@/router'
+import axios from 'axios'
+import api from '@/config/api'
+import { TogetherRouter } from '@/utils/sys';
 
 /**
  * Use meta.role to determine if the current user has permission
  * @param roles
  * @param route
  */
-function hasPermission(roles, route) {
-  if (route.meta && route.meta.roles) {
-    return roles.some(role => route.meta.roles.includes(role))
-  } else {
-    return true
-  }
-}
-
-/**
- * Filter asynchronous routing tables by recursion
- * @param routes asyncRoutes
- * @param roles
- */
-export function filterAsyncRoutes(routes, roles) {
-  const res = []
-
-  routes.forEach(route => {
-    const tmp = { ...route }
-    if (hasPermission(roles, tmp)) {
-      if (tmp.children) {
-        tmp.children = filterAsyncRoutes(tmp.children, roles)
-      }
-      res.push(tmp)
-    }
-  })
-
-  return res
-}
 
 const state = {
-  routes: [],
-  addRoutes: []
+    routes: [],
+    sqlRouter: [],       // 数据库存的路由地址
+
 }
 
 const mutations = {
-  SET_ROUTES: (state, routes) => {
-    state.addRoutes = routes
-    state.routes = constantRoutes.concat(routes)
-  }
+    SET_ROUTES: (state, routes) => {
+        state.routes = constantRoutes.concat(routes);
+    },
+    SET_SQLROUTES: (state, routes) => {
+        state.sqlRouter = routes;
+    }
 }
 
 const actions = {
-  generateRoutes({ commit }, roles) {
-    return new Promise(resolve => {
-      let accessedRoutes
-      if (roles.includes('admin')) {
-        accessedRoutes = asyncRoutes || []
-      } else {
-        accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-      }
-      commit('SET_ROUTES', accessedRoutes)
-      resolve(accessedRoutes)
-    })
-  }
+    // 添加链接信息
+    ADD_ROUTES({
+        commit
+    }, routes) {
+        commit('SET_ROUTES', routes);
+    },
+
+    /* 查询数据库存储的菜单信息 */
+    ADD_SQLROUTES({
+        commit
+    }, routes) {
+        axios.get(api.sys.menu, { params: { status: 0 } }).then(res => {
+            let data = res.data.rows;
+            commit('SET_SQLROUTES', data);
+        });
+    }
 }
 
 export default {
-  namespaced: true,
-  state,
-  mutations,
-  actions
+    namespaced: true,
+    state,
+    mutations,
+    actions
 }

@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : woxihuanni
+Source Server         : localhost woxihuanni
 Source Server Version : 50712
 Source Host           : localhost:3306
 Source Database       : charantia_sys
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2020-03-15 22:36:00
+Date: 2020-03-17 17:42:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -105,7 +105,14 @@ CREATE TABLE `sys_menu` (
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('59ac6726-375f-4a84-9a8a-7fee50a3ca11', '0', '/sys', '系统管理', 'Layout', '0', '0', '1', 'guide', '系统管理', '2020-03-15 14:27:20', '2020-03-15 14:27:20', null, '0');
+INSERT INTO `sys_menu` VALUES ('17e4dc18-9e75-44af-97b0-b9344fcf0f23', '59ac6726-375f-4a84-9a8a-7fee50a3ca11', 'enum', '枚举管理', '/sys/enum/index', '0', '0', '1', 'guide', null, '2020-03-17 02:09:40', '2020-03-17 02:12:39', null, '0');
+INSERT INTO `sys_menu` VALUES ('59ac6726-375f-4a84-9a8a-7fee50a3ca11', '0', '/sys', '系统管理', 'Layout', '0', '0', '13', 'guide', '系统管理', '2020-03-15 14:27:20', '2020-03-17 06:17:55', null, '0');
+INSERT INTO `sys_menu` VALUES ('6a9b4508-03ae-4f2a-9052-197f1948fc4e', 'ad387565-caa5-4235-8bea-33fd6b082c6f', 'table-detail', '基本配置', '/generate/table-detail', '0', '1', '1', 'guide', null, '2020-03-17 07:29:55', '2020-03-17 07:29:55', null, '0');
+INSERT INTO `sys_menu` VALUES ('7ccc8e96-d5f1-4c06-9e6f-413458a6d055', 'ad387565-caa5-4235-8bea-33fd6b082c6f', 'index', '生成配置', '/generate/index', '0', '0', '2', 'guide', null, '2020-03-17 07:28:39', '2020-03-17 07:30:07', null, '0');
+INSERT INTO `sys_menu` VALUES ('ad387565-caa5-4235-8bea-33fd6b082c6f', '0', '/generate', '生成管理', 'Layout', '0', '0', '2', 'guide', null, '2020-03-17 07:26:53', '2020-03-17 07:33:22', null, '0');
+INSERT INTO `sys_menu` VALUES ('e38e4cda-f3d7-44b9-9870-e6fea45c17a0', '59ac6726-375f-4a84-9a8a-7fee50a3ca11', 'tag', '标签管理', '/sys/tag/index', '0', '0', '3', 'guide', null, '2020-03-17 01:58:03', '2020-03-17 03:25:05', null, '0');
+INSERT INTO `sys_menu` VALUES ('fd3da9a9-a87f-4c82-9098-530e79877d03', '0', '/icon', '图标', '/icons/index', '0', '0', '1', 'icon', null, '2020-03-17 07:33:17', '2020-03-17 07:33:17', null, '0');
+INSERT INTO `sys_menu` VALUES ('fd3da9a9-ccqd-4c82-9098-530e79877d03', '59ac6726-375f-4a84-9a8a-7fee50a3ca11', 'menu', '菜单管理', '/sys/menu/index', '0', '0', '1', 'guide', null, '2020-03-17 07:33:17', '2020-03-17 09:35:33', null, '0');
 
 -- ----------------------------
 -- Table structure for sys_tag

@@ -91,7 +91,7 @@ export function getMarkIdentity() {
 *       isResult 返回res
 *   }
 */
-export function reqData(url, form, reqType, { isAlert = true, isResult = false } = {}) {
+export function ReqData(url, form, reqType, { isAlert = true, isResult = false } = {}) {
     return new Promise((resolve) => {
 
         this.$http[reqType](url, form).then(res => {
@@ -179,13 +179,12 @@ export function TogetherRouter(arr) {
     let array = [];
     arr.forEach(item => {
         let json = {
-            path: item.url,
-            name: item.url + item.id,
-            component: () => item.type == '1' ? import('@/layout') : import(`@/views${item.path}`),
-            // component: item.type == '1' ? () => import('@/layout') : () => import(`@/views${item.path}`),
+            path: item.path,
+            name: item.path + item.id,
+            hidden: item.show == '1',
+            component: () => item.component == 'Layout' ? import('@/layout') : import(`@/views${item.component}`),
             meta: { title: item.title, icon: item.icon },
         };
-        // json.component = () => item.type == '1' ? import('@/layout') : import(`@/views${item.path}`);
         if (item.children && item.children.length > 0) {
             json.children = TogetherRouter(item.children);
         }

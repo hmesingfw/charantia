@@ -247,7 +247,7 @@ export default {
             this.$refs.fieldListref.validate(async valid => {
                 if (valid) {
                     this.loadingButton = true;
-                    let issucc = await this.reqData(this.apiUrl, form, this.requestType);
+                    let issucc = await this.ReqData(this.apiUrl, form, this.requestType);
                     if (issucc) {
                         this.query();
                         this.$store.dispatch('enumList/getEnum');

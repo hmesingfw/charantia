@@ -69,6 +69,7 @@ module.exports = app => {
         isDel: {
             type: STRING(1),
             field: 'is_del',
+            defaultValue: '0',
         },
     }, {
         // timestamps: false, // 禁止时间戳
