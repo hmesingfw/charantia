@@ -15,12 +15,27 @@ module.exports = appInfo => {
     };
     // change to your own sequelize configurations
     config.sequelize = {
-        username: 'root',
-        password: 'woxihuanni',
-        database: 'charantia_sys',
-        host: 'localhost',
-        post: 3306,
-        dialect: 'mysql',
+        datasources: [{
+            delegate: 'model', // load all models to app.model and ctx.model
+            baseDir: 'model', // load models from `app/model/*.js`
+            username: 'root',
+            password: 'woxihuanni',
+            database: 'charantia_sys',
+            host: 'localhost',
+            post: 3306,
+            dialect: 'mysql',
+        },
+            // {        // 配置多个数据库
+            // delegate: 'admninModel', // load all models to app.model and ctx.model
+            // baseDir: 'admnin_model', // load models from `app/model/*.js`
+            // username: 'root',
+            // password: 'jeff1234',
+            // database: 'consult_online',
+            // host: '172.18.15.5',
+            // post: 3306,
+            // dialect: 'mysql',
+            // }
+        ],
     };
 
     config.view = {

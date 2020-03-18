@@ -1,13 +1,13 @@
 <template>
     <div>
         <el-form :inline="true" :model="QueryParam" class="header-query-form">
-            <generate-form :model="QueryParam"></generate-form>
+            <generate-form :datalist="queryComponentData" :model="QueryParam" @change="query(1)"></generate-form>
 
             <el-form-item>
                 <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
-                <el-button @click="handleEdit({sort:1,status:'0'}, 'post')" circle type="primary" icon="el-icon-plus">
+                <el-button @click="handleEdit({sort:1,status:'0'})" circle type="primary" icon="el-icon-plus">
                 </el-button>
-                <el-button @click="handleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle
+                <el-button @click="HandleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle
                     type="danger" v-show="multipleSelection.length>0"></el-button>
             </el-form-item>
         </el-form>
@@ -24,7 +24,7 @@
 				
  				<el-table-column label="状态">
                     <template slot-scope="scope">
-                    	<el-switch class="switch-style" v-model="form.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>    
+                    	<el-switch class="switch-style" v-model="scope.row.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>    
                     </template>
 		
                 </el-table-column> 
@@ -36,7 +36,7 @@
                 <el-table-column label="操作" width="160" fixed="right">
                     <template slot-scope="scope">
                         <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
-                        <el-button size="mini" type="text" @click="handleDelete(apiUrl, scope.row, query)">删除
+                        <el-button size="mini" type="text" @click="HandleDelete(apiUrl, scope.row, query)">删除
                         </el-button>
                     </template>
                 </el-table-column>
@@ -54,15 +54,15 @@
             :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
             <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
                 <el-form-item label="手机号" prop="phone">
-                    <el-input v-model="form.phone" maxlength="16" :disabled="true"></el-input>
+                    <el-input v-model="form.phone" maxlength="16" :disabled="false"></el-input>
                 </el-form-item>
 				
                 <el-form-item label="密码" prop="password">
-                    <el-input v-model="form.password" maxlength="32" :disabled="true"></el-input>
+                    <el-input v-model="form.password" maxlength="32" :disabled="false"></el-input>
                 </el-form-item>
 				
                 <el-form-item label="姓名" prop="name">
-                    <el-input v-model="form.name" maxlength="128" :disabled="true"></el-input>
+                    <el-input v-model="form.name" maxlength="128" :disabled="false"></el-input>
                 </el-form-item>
 				
                 <el-form-item label="状态" prop="status">
@@ -98,7 +98,7 @@
                 /* ------------ */
                 tableHeight: GetHeight(240), // 列表高度       
                 QueryParam: {"is_del":"0"}, //  搜索条件
-                queryComponentData: []
+                queryComponentData: [{"name":"el-input","key":"phone","label":"手机号","attr":{"placeholder":"请输入内容"}},{"name":"el-input","key":"name","label":"姓名","attr":{"placeholder":"请输入内容"}},{"name":"el-switch","key":"status","label":"状态","attr":{"placeholder":"请选择内容","clearable":true},"option":"statusList"}],
                 tableData: [],
                 tableLoading: false,
                 multipleSelection: [], // 多选选中的值
@@ -138,7 +138,7 @@
                 });
             },
             /* 编辑 */
-            handleEdit(row, requestType) {
+            handleEdit(row, requestType = 'post') {
                 this.dialogValue = true;
                 this.form = this.DeepCopy(row);
                 this.requestType = requestType;
@@ -148,7 +148,7 @@
                 this.$refs.ruleForm.validate(async valid => {
                     if (valid) {
                         this.loadingButton = true;
-                        let issucc = await this.reqData(this.apiUrl, this.form, this.requestType);
+                        let issucc = await this.ReqData(this.apiUrl, this.form, this.requestType);
                         if (issucc) {
                             this.loadingButton = false;
                             this.dialogValue = false;

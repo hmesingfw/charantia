@@ -45,7 +45,7 @@ class TableUtilsController extends Controller {
                 if (!item.isHidden) {
                     /* 查询展示字段 */
                     const obj = { name: item.component, key: item.alias, label: item.comment, attr: { placeholder: '请输入内容' } };
-                    if (item.component === 'el-select') {
+                    if (['el-select', 'el-switch'].includes(item.component)) {
                         obj.option = item.enumType;
                         obj.attr = {
                             placeholder: '请选择内容',

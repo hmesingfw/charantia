@@ -1,11 +1,11 @@
 <template>
     <div>
         <el-form :inline="true" :model="QueryParam" class="header-query-form">
-            <generate-form :datalist="queryComponentData" :model="QueryParam"></generate-form>
+            <generate-form :datalist="queryComponentData" :model="QueryParam" @change="query(1)"></generate-form>
 
             <el-form-item>
                 <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
-                <el-button @click="handleEdit()" circle type="primary" icon="el-icon-plus"></el-button>
+                <el-button @click="handleEdit({sort:1,status:'0'})" circle type="primary" icon="el-icon-plus"></el-button>
                 <el-button @click="HandleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
             </el-form-item>
         </el-form>
@@ -21,7 +21,15 @@
 
                 <el-table-column label="状态">
                     <template slot-scope="scope">
-                        <el-switch class="switch-style" v-model="scope.row.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>
+                        <el-switch
+                            class="switch-style"
+                            v-model="scope.row.status"
+                            @change="UpdateSwitch(scope.row, apiUrl, 'status', query)"
+                            active-value="0"
+                            active-text="启用"
+                            inactive-value="1"
+                            inactive-text="禁用"
+                        ></el-switch>
                     </template>
                 </el-table-column>
 
@@ -53,15 +61,15 @@
         <dialog-alert v-model="dialogValue" title="信息录入" :type="requestType" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
             <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
                 <el-form-item label="手机号" prop="phone">
-                    <el-input v-model="form.phone" maxlength="16"></el-input>
+                    <el-input v-model="form.phone" maxlength="16" :disabled="false"></el-input>
                 </el-form-item>
 
                 <el-form-item label="密码" prop="password">
-                    <el-input v-model="form.password" maxlength="32"></el-input>
+                    <el-input v-model="form.password" maxlength="32" :disabled="false"></el-input>
                 </el-form-item>
 
                 <el-form-item label="姓名" prop="name">
-                    <el-input v-model="form.name" maxlength="128"></el-input>
+                    <el-input v-model="form.name" maxlength="128" :disabled="false"></el-input>
                 </el-form-item>
 
                 <el-form-item label="状态" prop="status">
@@ -96,10 +104,7 @@ export default {
             /* ------------ */
             tableHeight: GetHeight(240), // 列表高度       
             QueryParam: { "is_del": "0" }, //  搜索条件
-            queryComponentData: [
-                { name: 'el-input', key: 'phone', label: "手机号", attr: { placeholder: '请输入手机号' } },
-                { name: 'el-select', key: 'status', label: "状态", attr: { placeholder: '请选择状态' }, option: 'statusList' },
-            ],
+            queryComponentData: [{ "name": "el-input", "key": "phone", "label": "手机号", "attr": { "placeholder": "请输入内容" } }, { "name": "el-input", "key": "name", "label": "姓名", "attr": { "placeholder": "请输入内容" } }, { "name": "el-switch", "key": "status", "label": "状态", "attr": { "placeholder": "请选择内容", "clearable": true }, "option": "statusList" }],
             tableData: [],
             tableLoading: false,
             multipleSelection: [], // 多选选中的值
