@@ -102,7 +102,7 @@ export default {
             },
 
             /* ------------ */
-            tableHeight: GetHeight(240), // 列表高度       
+            tableHeight: GetHeight(250), // 列表高度       
             QueryParam: { "is_del": "0" }, //  搜索条件
             queryComponentData: [{ "name": "el-input", "key": "phone", "label": "手机号", "attr": { "placeholder": "请输入内容" } }, { "name": "el-input", "key": "name", "label": "姓名", "attr": { "placeholder": "请输入内容" } }, { "name": "el-switch", "key": "status", "label": "状态", "attr": { "placeholder": "请选择内容", "clearable": true }, "option": "statusList" }],
             tableData: [],

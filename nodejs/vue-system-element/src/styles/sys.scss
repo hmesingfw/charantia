@@ -69,11 +69,17 @@
 .switch-style .el-switch__label--left {
     z-index: 9;
     left: 20px;
+    span{
+        font-size: 12px;
+    }
 }
 
 .switch-style .el-switch__label--right {
     z-index: 9;
-    left: -4px;
+    left: 0px;
+    span{
+        font-size: 12px;
+    }
 }
 
 .switch-style .el-switch__label.is-active {
