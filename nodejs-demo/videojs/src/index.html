@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>video</title>
+
+    <link href="https://unpkg.com/video.js/dist/video-js.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/video.js/dist/video.min.js"></script>
+
+</head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    .video {
+        width: 1536px;
+        height: 864px;
+    }
+</style>
+
+<body>
+    <div>
+        <video id="my-player" class="video-js video" controls preload="auto" muted
+            poster="https://vjs.zencdn.net/v/oceans.png" class="video" data-setup='{}'>
+            <source src="L:\视频存储\吻别+Ending（張學友醒著做夢音樂會藍光原盘影片）60FPS - YouTube.webm" type="video/mp4">
+            </source>
+            <source src="L:\视频存储\吻别+Ending（張學友醒著做夢音樂會藍光原盘影片）60FPS - YouTube.webm" type="video/webm">
+            </source>
+            <source src="L:\视频存储\吻别+Ending（張學友醒著做夢音樂會藍光原盘影片）60FPS - YouTube.webm" type="video/ogg">
+            </source>
+            <p class="vjs-no-js">
+                To view this video please enable JavaScript, and consider upgrading to a
+                web browser that
+                <a href="https://videojs.com/html5-video-support/" target="_blank">
+                    supports HTML5 video
+                </a>
+            </p>
+        </video>
+    </div>
+</body>
+<script>
+    var options = {
+        autoplay: true,
+        controls: true,
+    };
+
+    var player = videojs('my-player', options, function onPlayerReady() {
+        videojs.log('Your player is ready!');
+
+        // In this context, `this` is the player that was created by Video.js.
+        this.play();
+
+        // How about an event listener?
+        this.on('ended', function () {
+            videojs.log('Awww...over so soon?!');
+        });
+    });
+</script>
+
+</html>
