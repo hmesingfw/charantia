@@ -8,6 +8,8 @@ module.exports = app => {
     router.resources('menu', baseURL + '/v1/menu', controller.sys.menu); // 系统菜单管理
     router.resources('user', baseURL + '/v1/user', controller.sys.user); // 系统用户管理
 
+    router.post(baseURL + '/v1/user-login', controller.sys.user.login); // 用户登录
+
     /* 生成单表 */
     router.resources('table', baseURL + '/v1/generate', controller.generate.table);
     router.get(baseURL + '/v1/generate-utils/get-tablename', controller.generate.tableUtils.getAllTableName); // 获取表名

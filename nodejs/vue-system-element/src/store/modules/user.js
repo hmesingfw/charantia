@@ -1,39 +1,46 @@
 import axios from 'axios'
 import { setToken } from '@/utils/local-storage-auto'
+import api from '@/config/api';
 
-const user = {
-    state:{
-        token: '',
-         name: '',
-        roles: []
+const state = {
+    token: '',
+    name: '',
+    roles: []
+};
+const mutations = {
+    SET_TOKEN: (state, token) => {
+        state.token = token
     },
-    mutations:{
-        SET_TOKEN: (state, token) => {
-            state.token = token
-        },
-    },
-    actions: {
-        // 用户名登录
-        LoginByUsername({
-            commit
-        }, userInfo) {
-            userInfo.username = userInfo.username.trim()
-            return new Promise((resolve, reject) => {
+}
+const actions = {
+    // 用户名登录
+    login({
+        commit
+    }, userInfo) {
+        userInfo.username = userInfo.username.trim()
+        return new Promise((resolve, reject) => {
 
-                axios.get('/api/login/login', {
-                    params: userInfo
-                }).then(response => {
-                    const data = response.data
-                    commit('SET_TOKEN', data.token)
+            axios.post(api.sys.userLogin, { params: userInfo }).then(response => {
+                const data = response.data
+                if (data.code === 4001) {
+                    resolve(data);
+                }
 
-                    setToken(response.data.token)
-                    resolve()
-                }).catch(error => {
-                    reject(error)
-                })                
+                commit('SET_TOKEN', data.token)
+
+                setToken(response.data.token)
+                resolve(data)
+            }).catch(error => {
+                reject(error)
             })
-        },
-    }
+        })
+    },
+
+    logout() { },
 }
 
-export default user
+
+export default {
+    namespaced: true,
+    state, mutations, actions
+}

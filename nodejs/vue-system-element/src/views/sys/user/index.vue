@@ -11,7 +11,7 @@
         </el-form>
 
         <div class="article-table">
-            <el-table :data="tableData" :height="tableHeight" @selection-change="val => multipleSelection = val" v-loading="tableLoading" :stripe="true" header-row-class-name="table-header-color">
+            <el-table :data="tableData" @selection-change="val => multipleSelection = val" v-loading="tableLoading" :stripe="true" header-row-class-name="table-header-color">
                 <el-table-column type="selection" width="42"></el-table-column>
                 <el-table-column prop="phone" label="手机号" width="140"></el-table-column>
 
@@ -80,7 +80,6 @@
     </div>
 </template>
 <script>
-import { GetHeight } from '@/utils/sys';
 import { mapState } from 'vuex';
 
 export default {
@@ -102,7 +101,6 @@ export default {
             },
 
             /* ------------ */
-            tableHeight: GetHeight(250), // 列表高度       
             QueryParam: { "is_del": "0" }, //  搜索条件
             queryComponentData: [{ "name": "el-input", "key": "phone", "label": "手机号", "attr": { "placeholder": "请输入内容" } }, { "name": "el-input", "key": "name", "label": "姓名", "attr": { "placeholder": "请输入内容" } }, { "name": "el-switch", "key": "status", "label": "状态", "attr": { "placeholder": "请选择内容", "clearable": true }, "option": "statusList" }],
             tableData: [],

@@ -67,7 +67,7 @@
 }
 
 .switch-style .el-switch__label--left {
-    z-index: 9;
+    z-index: 1;
     left: 20px;
     span{
         font-size: 12px;
@@ -75,7 +75,7 @@
 }
 
 .switch-style .el-switch__label--right {
-    z-index: 9;
+    z-index: 1;
     left: 0px;
     span{
         font-size: 12px;

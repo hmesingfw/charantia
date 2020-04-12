@@ -12,7 +12,6 @@
         <div class="article-table">
             <el-table
                 :data="tableData"
-                :height="tableHeight"
                 @selection-change="val => multipleSelection = val"
                 v-loading="tableLoading"
                 style="width: 100%"
@@ -81,7 +80,6 @@
     </div>
 </template>
 <script>
-import { GetHeight } from '@/utils/sys';
 import { mapState } from 'vuex';
 
 export default {
@@ -98,7 +96,6 @@ export default {
             },
 
             /* 基本不变------------ */
-            tableHeight: GetHeight(250), // 列表高度       
             QueryParam: {},             //  搜索条件
             queryComponentData: [
                 { name: 'el-input', key: 'title', label: "标题", attr: { placeholder: '请输入标题' } },

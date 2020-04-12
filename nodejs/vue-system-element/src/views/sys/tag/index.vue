@@ -10,7 +10,7 @@
         </el-form>
 
         <div class="article-table">
-            <el-table :data="tableData" :height="tableHeight" @selection-change="val => multipleSelection = val" v-loading="tableLoading" :stripe="true" header-row-class-name="table-header-color">
+            <el-table :data="tableData" @selection-change="val => multipleSelection = val" v-loading="tableLoading" :stripe="true" header-row-class-name="table-header-color">
                 <el-table-column type="selection" width="42"></el-table-column>
                 <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="color" label="颜色"></el-table-column>
@@ -80,7 +80,6 @@
     </div>
 </template>
 <script>
-import { GetHeight } from '@/utils/sys';
 import { mapState } from 'vuex';
 
 export default {
@@ -96,7 +95,6 @@ export default {
                 title: [{ required: true, message: '请输入内容', trigger: 'blur' },],
             },
             /* ------------ */
-            tableHeight: GetHeight(250), // 列表高度       
             QueryParam: {},             //  搜索条件
             queryComponentData: [
                 { name: 'el-input', key: 'title', label: "枚举名称", attr: { placeholder: '请输入' } },

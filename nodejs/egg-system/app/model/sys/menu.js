@@ -43,6 +43,14 @@ module.exports = app => {
             type: INTEGER(13),
             allowNull: true,
         },
+        type: {
+            type: STRING(1),
+            allowNull: true,
+        },
+        par: {
+            type: STRING(64),
+            allowNull: true,
+        },
         icon: {
             type: TEXT,
             allowNull: true,

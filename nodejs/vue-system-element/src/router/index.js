@@ -188,13 +188,7 @@ export const constantRoutes = [{
             icon: 'user'
         }
     }]
-},
-    // {
-    //     path: '*',
-    //     redirect: '/404',
-    //     hidden: true
-    // }
-]
+},]
 
 const createRouter = () => new Router({
     // mode: 'history', // require service support

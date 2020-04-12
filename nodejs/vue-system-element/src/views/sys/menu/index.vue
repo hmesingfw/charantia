@@ -12,7 +12,6 @@
         <div class="article-table">
             <el-table
                 :data="tableData"
-                :height="tableHeight"
                 @selection-change="val => multipleSelection = val"
                 v-loading="tableLoading"
                 style="width: 100%"
@@ -25,9 +24,17 @@
                 <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="path" label="路径" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="component" label="组件路径" show-overflow-tooltip></el-table-column>
+                <el-table-column prop="type" label="类型" width="120">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.type == 1">目录</span>
+                        <span v-if="scope.row.type == 2">菜单</span>
+                        <span v-if="scope.row.type == 3">按钮</span>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="par" label="权限" show-overflow-tooltip></el-table-column>
+
                 <el-table-column prop="icon" label="图标" show-overflow-tooltip></el-table-column>
 
-                <el-table-column prop="details" label="备注" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="sort" label="排序" width="120" align="center">
                     <template slot-scope="scope">
                         <el-popconfirm title="修改排序" @onConfirm="UpdateField(scope.row, apiUrl, 'sort', query)">
@@ -76,9 +83,20 @@
                 <el-form-item label="组件路径" prop="component">
                     <el-input v-model="form.component" maxlength="255"></el-input>
                 </el-form-item>
+                <el-form-item label="类型" prop="type">
+                    <el-radio-group v-model="form.type">
+                        <el-radio-button :label="1">目录</el-radio-button>
+                        <el-radio-button :label="2">菜单</el-radio-button>
+                        <el-radio-button :label="3">按钮</el-radio-button>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="权限" prop="par">
+                    <el-input v-model="form.par" maxlength="64"></el-input>
+                </el-form-item>
                 <el-form-item label="图标" prop="icon">
                     <el-input v-model="form.icon" maxlength="255"></el-input>
                 </el-form-item>
+
                 <el-form-item label="显示" prop="show">
                     <el-switch class="switch-style" v-model="form.show" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>
                 </el-form-item>
@@ -97,7 +115,6 @@
     </div>
 </template>
 <script>
-import { GetHeight } from '@/utils/sys';
 import { mapState } from 'vuex';
 
 export default {
@@ -114,7 +131,6 @@ export default {
             },
 
             /* 基本不变------------ */
-            tableHeight: GetHeight(250), // 列表高度       
             QueryParam: {},             //  搜索条件
             queryComponentData: [
                 { name: 'el-input', key: 'title', label: "标题", attr: { placeholder: '请输入标题' } },

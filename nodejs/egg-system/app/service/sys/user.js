@@ -17,6 +17,10 @@ class User extends Service {
         return this.ctx.model.Sys.User.create(user);
     }
 
+    async find(user) {
+        return this.ctx.model.Sys.User.findAll(user);
+    }
+
     async update(id, updates) {
         const user = await this.ctx.model.Sys.User.findByPk(id);
         if (!user) {

@@ -11,10 +11,6 @@
                 <el-tooltip content="全屏" effect="dark" placement="bottom">
                     <screenfull id="screenfull" class="right-menu-item hover-effect" />
                 </el-tooltip>
-
-                <el-tooltip content="组件尺寸" effect="dark" placement="bottom">
-                    <size-select id="size-select" class="right-menu-item hover-effect" />
-                </el-tooltip>
             </template>
 
             <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
@@ -23,18 +19,9 @@
                     <i class="el-icon-caret-bottom" />
                 </div>
                 <el-dropdown-menu slot="dropdown">
-                    <router-link to="/profile/index">
-                        <el-dropdown-item>主页</el-dropdown-item>
-                    </router-link>
                     <router-link to="/">
                         <el-dropdown-item>首页</el-dropdown-item>
                     </router-link>
-                    <a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin/">
-                        <el-dropdown-item>Github</el-dropdown-item>
-                    </a>
-                    <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-                        <el-dropdown-item>文档</el-dropdown-item>
-                    </a>
                     <el-dropdown-item divided>
                         <span style="display:block;" @click="logout">退出</span>
                     </el-dropdown-item>
