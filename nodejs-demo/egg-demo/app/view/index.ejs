@@ -3,64 +3,67 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>video</title>
+    <title>红薯良品</title>
 
-    <link href="https://unpkg.com/video.js/dist/video-js.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/video.js/dist/video.min.js"></script>
 
+
+    <!-- 引入 Vue 和 Vant 的 JS 文件 -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.6/lib/index.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vant@2.6/lib/vant.min.js"></script> -->
 </head>
 <style>
     * {
         padding: 0;
         margin: 0;
+        overflow-y: hidden;
+
+    }
+
+    #app {
+        width: 100%;
+        position: relative;
+        overflow-y: hidden;
+    }
+
+    .img {
+        width: 100%;
     }
 
     .video {
-        width: 1536px;
-        height: 864px;
+        margin: -4px;
+    }
+
+
+    /*video默认全屏按钮*/
+    /* video::-webkit-media-controls-fullscreen-button {
+        display: none !important;
+    } */
+
+    /*video默认aduio音量按钮*/
+    video::-webkit-media-controls-mute-button {
+        display: none !important;
     }
 </style>
 
 <body>
-    <div>
-        <%= data %>
-        <video id="my-player" class="video-js video" controls preload="auto" muted
-            poster="https://vjs.zencdn.net/v/oceans.png" class="video" data-setup='{}'>
-            <source src="L:\视频存储\吻别+Ending（張學友醒著做夢音樂會藍光原盘影片）60FPS - YouTube.webm" type="video/mp4">
-            </source>
-            <source src="L:\视频存储\吻别+Ending（張學友醒著做夢音樂會藍光原盘影片）60FPS - YouTube.webm" type="video/webm">
-            </source>
-            <source src="L:\视频存储\吻别+Ending（張學友醒著做夢音樂會藍光原盘影片）60FPS - YouTube.webm" type="video/ogg">
-            </source>
-            <p class="vjs-no-js">
-                To view this video please enable JavaScript, and consider upgrading to a
-                web browser that
-                <a href="https://videojs.com/html5-video-support/" target="_blank">
-                    supports HTML5 video
-                </a>
-            </p>
+    <div id="app">
+        <img class="img" src="https://hmvide.oss-cn-beijing.aliyuncs.com/2.png" fit="contain" />
+        <video controls="controls" width="100%" class="video" controlsList='nodownload noremote footbar'
+            src="https://hmvide.oss-cn-beijing.aliyuncs.com/WeChat_20200402221318.mp4">
+            您的浏览器不支持 video 标签。
         </video>
+        <img class="img" src="https://hmvide.oss-cn-beijing.aliyuncs.com/3.png" fit="contain" />
     </div>
 </body>
 <script>
-    var options = {
-        autoplay: true,
-        controls: true,
-    };
+    window.load = function () {
 
-    var player = videojs('my-player', options, function onPlayerReady() {
-        videojs.log('Your player is ready!');
-
-        // In this context, `this` is the player that was created by Video.js.
-        this.play();
-
-        // How about an event listener?
-        this.on('ended', function () {
-            videojs.log('Awww...over so soon?!');
-        });
-    });
+    }
 </script>
 
 </html>

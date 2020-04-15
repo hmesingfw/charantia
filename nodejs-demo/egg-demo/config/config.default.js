@@ -23,6 +23,13 @@ module.exports = appInfo => {
         // myAppName: 'egg',
     };
 
+    config.cluster = {
+        listen: {
+            path: '',
+            port: 80,
+            hostname: '0.0.0.0',
+        },
+    };
     config.view = {
         mapping: { '.ejs': 'ejs' },
     };
