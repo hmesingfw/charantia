@@ -53,6 +53,7 @@ class UserController extends Controller {
         const list = await ctx.service.sys.user.find(query);
         if (list.length > 0) {
             const userInfo = list[0];
+
             if (userInfo.password != body.password) { //eslint-disable-line
                 ctx.body = { code: 4001, message: '账号密码输入错误，请重新输入' };
             } else if (userInfo.status === 1 || userInfo.is_del === 1) {

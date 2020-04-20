@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-form :inline="true" :model="QueryParam" class="header-query-form">
-            <generate-form :model="QueryParam" :datalist="queryComponentData"></generate-form>
+            <generate-form :model="QueryParam" :datalist="queryComponentData" @change="query(1)"></generate-form>
             <el-form-item>
                 <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
                 <el-button @click="handleEdit()" circle type="primary" icon="el-icon-plus"></el-button>
@@ -37,17 +37,7 @@
                 </el-table-column>
             </el-table>
 
-            <div class="pu-pagination">
-                <el-pagination
-                    @size-change="val => {pagination.size = val; query()}"
-                    @current-change="val => {pagination.page = val; query()}"
-                    :current-page="pagination.page"
-                    :page-sizes="[10, 20, 30, 50]"
-                    :page-size="pagination.size"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="totalCount"
-                ></el-pagination>
-            </div>
+            <pagination :data="pagination" :callback="query" :total="totalCount" />
         </div>
 
         <dialog-alert v-model="dialogValue" title="信息录入" :type="requestType" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">

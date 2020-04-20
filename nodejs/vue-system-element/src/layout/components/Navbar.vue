@@ -15,7 +15,8 @@
 
             <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
                 <div class="avatar-wrapper">
-                    <img src="http://iph.href.lu/40x40" class="user-avatar" />
+                    <span class="name-icon">{{ getZ(info) }}</span>
+
                     <i class="el-icon-caret-bottom" />
                 </div>
                 <el-dropdown-menu slot="dropdown">
@@ -37,7 +38,6 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
-import SizeSelect from '@/components/SizeSelect'
 
 export default {
     components: {
@@ -45,13 +45,19 @@ export default {
         Hamburger,
         ErrorLog,
         Screenfull,
-        SizeSelect,
     },
     computed: {
         ...mapGetters([
             'sidebar',
-            'device'
+            'device',
+            // 'info'
+
         ])
+    },
+    data() {
+        return {
+            info: ''
+        }
     },
     methods: {
         toggleSideBar() {
@@ -60,7 +66,26 @@ export default {
         async logout() {
             await this.$store.dispatch('user/logout')
             this.$router.push(`/login?redirect=${this.$route.fullPath}`)
-        }
+        },
+        /* 首字母 */
+        getZ(info = '') {
+            if (info && info.userInfo) {
+                if (info.userInfo.account) {
+                    let str = info.userInfo.account;
+                    if (str.length > 0) {
+                        let s = str[0];
+
+                        var reg = new RegExp('[\\u4E00-\\u9FFF]+', 'g');
+                        if (reg.test(s)) {
+                            return s;
+                        } else {
+                            return s.toUpperCase();
+                        }
+                    }
+                }
+            }
+            return 'A';
+        },
     }
 }
 </script>
@@ -142,6 +167,16 @@ export default {
                     right: -20px;
                     top: 25px;
                     font-size: 12px;
+                }
+                .name-icon {
+                    cursor: pointer;
+                    width: 30px;
+                    height: 44px;
+                    border-radius: 10px;
+                    font-size: 22px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                 }
             }
         }

@@ -64,13 +64,21 @@ Vue.prototype.UpdateField = async function (data, url, keys, func, { reqType = '
 }
 
 Vue.prototype.UpdateSwitch = async function (data, url, key, func, { reqType = 'put', idKey = 'id', activeValue = '0', inactiveValue = '1' } = {}) {
-    let form = {};
-    form[key] = data[key];
-    let put = reqType == 'put' ? '/' + data[idKey] : '';
-    let result = await this.$http[reqType](`${url}${put}`, form);
+    this.$confirm('确定切换状态', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+    }).then(async () => {
+        let form = {};
+        form[key] = data[key];
+        let put = reqType == 'put' ? '/' + data[idKey] : '';
+        let result = await this.$http[reqType](`${url}${put}`, form);
 
-    this.$message.success(result.data.message);
-    func();
+        this.$message.success(result.data.message);
+        func();
+    }).catch(() => {
+        Vue.set(data, key, data[key] == activeValue ? inactiveValue : activeValue);
+    });
 }
 
 

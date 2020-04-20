@@ -28,8 +28,8 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-system2",
-    "stop": "egg-scripts stop --title=egg-server-system2",
+    "start": "egg-scripts start --daemon --prot=80 --title=egg-server-demo",
+    "stop": "egg-scripts stop --port=80 --title=egg-server-demo",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
     "test": "npm run lint -- --fix && npm run test-local",

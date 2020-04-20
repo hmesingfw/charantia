@@ -2,7 +2,16 @@
     <div :class="{'has-logo':showLogo}">
         <logo v-if="showLogo" :collapse="isCollapse" />
         <el-scrollbar wrap-class="scrollbar-wrapper">
-            <el-menu :default-active="activeMenu" :collapse="isCollapse" :background-color="variables.menuBg" :text-color="variables.menuText" :unique-opened="false" :active-text-color="variables.menuActiveText" :collapse-transition="false" mode="vertical">
+            <el-menu
+                :default-active="activeMenu"
+                :collapse="isCollapse"
+                :background-color="variables.menuBg"
+                :text-color="variables.menuText"
+                :unique-opened="false"
+                :active-text-color="variables.menuActiveText"
+                :collapse-transition="false"
+                mode="vertical"
+            >
                 <sidebar-item v-for="route in permission_routes" :key="route.path" :item="route" :base-path="route.path" />
             </el-menu>
         </el-scrollbar>
@@ -14,19 +23,19 @@ import { mapGetters } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
-import { constantRoutes } from '@/router/index'
+// import { constantRoutes } from '@/router/index'
 
 export default {
     components: { SidebarItem, Logo },
-    
+
     data() {
         return {
-            permission_routes: constantRoutes
+            // permission_routes: constantRoutes
         }
     },
     computed: {
         ...mapGetters([
-            // 'permission_routes',                 // 这个参数为前端渲染路由的主要参数，里面加载的是需要渲染的数据，过滤权限后的数据
+            'permission_routes',                 // 这个参数为前端渲染路由的主要参数，里面加载的是需要渲染的数据，过滤权限后的数据
             'sidebar'
         ]),
         activeMenu() {

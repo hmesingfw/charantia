@@ -18,7 +18,8 @@ export default new Vuex.Store({
                 // 只储存state中的assessmentData
                 // assessmentData: val.assessmentData
                 app: val.app,
-                user: val.user
+                user: val.user,
+                enumList: enumList.data
             };
         }
     })],

@@ -1,199 +1,97 @@
+.padding-8 {
+    padding: 8px;
+}
+
 .margin-8 {
-  margin: 8px;
+    margin: 8px;
 }
 
-.pu-pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 4px 0;
-}
-
-.search-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  height: 50px;
-  .el-form-item {
-    margin-bottom: 0px;
-  }
-}
-
-/* 按钮组 靠右 */
-.handle-button-right {
-  float: right;
-}
-
-/* 复写element.css */
-.pu-padding {
-  .el-tabs__content {
-    padding: 15px 15px 0px;
-  }
-}
-
-/* 字体颜色 */
-.font-color {
-  color: #909399;
-}
-
-.font-color-del {
-  color: #f56c6c;
-}
-
-.font-size-24 {
-  font-size: 24px;
-}
-
-.add-pointer {
-  cursor: pointer;
-}
-
-// .font-nowrap {
-//     overflow: hidden;
-//     text-overflow: ellipsis;
-//     white-space: nowrap;
-// }
-
-.el-image-viewer__img {
-  // 控制图片预览大小
-  height: 600px;
-}
-.examplePic {
-  color: red;
-  text-align: center;
-}
-
-.width80 {
-  width: 80px;
-}
-
-.table-cell-space-between {
-  .cell {
-    display: flex;
-    justify-content: space-between;
-  }
-}
-
-.switchStyle .el-switch__label {
-  position: absolute;
-  display: none;
-  color: #fff;
-}
-
-.switchStyle .el-switch__label * {
-  font-size: 13px;
-}
-
-.switchStyle .el-switch__label--left {
-  z-index: 1;
-  left: 20px;
-}
-
-.switchStyle .el-switch__label--right {
-  z-index: 1;
-  left: -4px;
-}
-
-.switchStyle .el-switch__label.is-active {
-  display: block;
-  top: 0px;
-}
-
-.switchStyle.el-switch .el-switch__core,
-.el-switch .el-switch__label {
-  width: 60px !important;
-}
-
-/* 图片上传样式 */
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-
-.avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
-}
-
-.span-width-200 {
-  width: 200px;
-  display: inline-block;
-}
-
-.span-width-130 {
-  width: 200px;
-  display: inline-block;
-}
-
-.el-drawer__header {
-  margin-bottom: 8px;
-  border-bottom: 1px solid #ebeef5;
-}
-
-.el-table td,
-.el-table th {
-  padding: 2px 0;
-}
-
-.el-table .table-header-color th {
-  background: #efefef;
-}
-
-.buts {
-  padding-left: 50px;
-  padding-right: 50px;
-
-  .el-form-item {
-    margin-bottom: 0px;
-  }
-
-  .el-input {
-    margin-top: 20px;
-
-    input {
-      background: #0a3e77;
-      border: 1px solid #004dd7;
-      color: #67b1ff;
-    }
-  }
-}
-
-.image-code {
-  width: 100%;
-  margin-left: 4px;
-  padding: 0px 3px;
-  border-radius: 2px;
-  height: 30px;
-  cursor: pointer;
-  // text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  img {
-    width: 100%;
+.border-shadow {
     border-radius: 4px;
-  }
+    border: 1px solid #e6ebf5;
+    background-color: #fff;
+    overflow: hidden;
+    color: #303133;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+    -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 
-.el-scrollbar__view > .el-menu > .menu-wrapper:last-child {
-  margin-bottom: 60px;
+.header-query-form {
+    @extend .border-shadow;
+    margin: 24px 28px 0px 28px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    min-height: 50px;
+
+    padding: {
+        top: 10px;
+        left: 20px;
+        right: 20px;
+        bottom: 0;
+    }
+
+    .el-form-item {
+        margin-bottom: 10px;
+    }
+}
+
+.article-table {
+    @extend .border-shadow;
+    margin: 24px 28px 24px 28px;
+
+    .el-table {
+        width: 100%;
+    }
+}
+
+/* 分页组件居中 */
+.pu-pagination {
+    display: flex;
+    justify-content: center;
+}
+
+/* 表格表头颜色 */
+.el-table .table-header-color th {
+    background: #efefef;
+}
+
+
+/* 更改switch样式，开关样式 */
+.switch-style .el-switch__label {
+    position: absolute;
+    display: none;
+    color: #fff;
+}
+
+.switch-style .el-switch__label--left {
+    z-index: 1;
+    left: 20px;
+    span{
+        font-size: 12px;
+    }
+}
+
+.switch-style .el-switch__label--right {
+    z-index: 1;
+    left: 0px;
+    span{
+        font-size: 12px;
+    }
+}
+
+.switch-style .el-switch__label.is-active {
+    display: block;
+}
+
+.switch-style.el-switch .el-switch__core,
+.el-switch .el-switch__label {
+    width: 56px !important;
+}
+
+/* 列表数据输入框 */
+.el-input-number-table {
+    width: 90px;
 }

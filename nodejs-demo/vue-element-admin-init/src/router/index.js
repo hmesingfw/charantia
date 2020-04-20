@@ -6,11 +6,6 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
-/* Router Modules */
-// import componentsRouter from './modules/components'
-// import chartsRouter from './modules/charts'
-// import nestedRouter from './modules/nested'
-
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -37,185 +32,151 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
-export const constantRoutes = [
-    {
-        path: '/redirect',
-        component: Layout,
-        hidden: true,
-        children: [
-            {
-                path: '/redirect/:path*',
-                component: () => import('@/views/redirect/index')
-            }
-        ]
-    },
-    {
-        path: '/login',
-        component: () => import('@/views/login/index'),
-        hidden: true
-    },
-    {
-        path: '/auth-redirect',
-        component: () => import('@/views/login/auth-redirect'),
-        hidden: true
-    },
-    {
-        path: '/404',
-        component: () => import('@/views/error-page/404'),
-        hidden: true
-    },
-    {
-        path: '/401',
-        component: () => import('@/views/error-page/401'),
-        hidden: true
-    },
-    {
-        path: '/',
-        component: Layout,
-        redirect: '/dashboard',
-        children: [
-            {
-                path: 'dashboard',
-                component: () => import('@/views/dashboard/index'),
-                name: 'Dashboard',
-                meta: { title: '首页', icon: 'dashboard', affix: true }
-            }
-        ]
-    },
-    {
-        path: '/documentation',
-        component: Layout,
-        hidden: true,
-        children: [
-            {
-                path: 'index',
-                component: () => import('@/views/documentation/index'),
-                name: 'Documentation',
-                meta: { title: '文档', icon: 'documentation', affix: true }
-            }
-        ]
-    },
-    {
-        path: '/guide',
-        component: Layout,
-        redirect: '/guide/index',
-        hidden: true,
-        children: [
-            {
-                path: 'index',
-                component: () => import('@/views/guide/index'),
-                name: 'Guide',
-                meta: { title: '引导页', icon: 'guide', noCache: true }
-            }
-        ]
-    },
-    {
-        path: '/icon',
-        component: Layout,
-        hidden: true,
-        children: [
-            {
-                path: 'index',
-                component: () => import('@/views/icons/index'),
-                name: 'Icons',
-                meta: { title: '图标', icon: 'icon', noCache: true }
-            }
-        ]
-    },
-    {
-        path: '/profile',
-        component: Layout,
-        redirect: '/profile/index',
-        hidden: true,
-        children: [
-            {
-                path: 'index',
-                component: () => import('@/views/profile/index'),
-                name: 'Profile',
-                meta: { title: 'Profile', icon: 'user', noCache: true }
-            }
-        ]
-    },
-    {
-        path: '/error',
-        component: Layout,
-        redirect: 'noRedirect',
-        hidden: true,
-        name: 'ErrorPages',
+export const constantRoutes = [{
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [{
+        path: '/redirect/:path*',
+        component: () => import('@/views/redirect/index')
+    }]
+},
+{
+    path: '/login',
+    component: () => import('@/views/login/index'),
+    hidden: true
+},
+{
+    path: '/auth-redirect',
+    component: () => import('@/views/login/auth-redirect'),
+    hidden: true
+},
+{
+    path: '/404',
+    component: () => import('@/views/error-page/404'),
+    hidden: true
+},
+{
+    path: '/401',
+    component: () => import('@/views/error-page/401'),
+    hidden: true
+},
+{
+    path: '/',
+    component: Layout,
+    redirect: '/dashboard',
+    children: [{
+        path: 'dashboard',
+        component: () => import('@/views/dashboard/index'),
+        name: 'Dashboard',
         meta: {
-            title: '错误页面',
-            icon: '404'
-        },
-        children: [
-            {
-                path: '401',
-                component: () => import('@/views/error-page/401'),
-                name: 'Page401',
-                meta: { title: '401', noCache: true }
-            },
-            {
-                path: '404',
-                component: () => import('@/views/error-page/404'),
-                name: 'Page404',
-                meta: { title: '404', noCache: true }
-            }
-        ]
+            title: '首页',
+            icon: 'dashboard',
+            affix: true
+        }
+    }]
+},
+
+// {
+//     path: '/icon',
+//     component: Layout,
+//     children: [{
+//         path: 'index',
+//         component: () => import('@/views/icons/index'),
+//         name: 'Icons',
+//         meta: {
+//             title: '图标',
+//             icon: 'icon',
+//             noCache: true
+//         }
+//     }]
+// },
+{
+    path: '/sys',
+    component: Layout,
+    meta: { title: '系统管理', icon: 'guide' },
+    children: [{
+        path: 'tag',
+        component: () => import('@/views/sys/tag/index'),
+        name: 'SysTag',
+        meta: { title: '标签管理', icon: 'guide', affix: true }
+    }, {
+        path: 'enum',
+        component: () => import('@/views/sys/enum/index'),
+        name: 'SysEnum',
+        meta: { title: '枚举管理', icon: 'guide', affix: true }
+    }, {
+        path: 'menu',
+        component: () => import('@/views/sys/menu/index'),
+        name: 'SysMenu',
+        meta: { title: '菜单管理', icon: 'guide', affix: true }
+    }]
+},
+
+{
+    path: '/error',
+    component: Layout,
+    redirect: 'noRedirect',
+    name: 'ErrorPages',
+    meta: {
+        title: '错误页面',
+        icon: '404'
+    },
+    children: [{
+        path: '401',
+        component: () => import('@/views/error-page/401'),
+        name: 'Page401',
+        meta: {
+            title: '401',
+            noCache: true
+        }
     },
     {
-        path: '/error-log',
-        component: Layout,
-        hidden: true,
-        children: [
-            {
-                path: 'log',
-                component: () => import('@/views/error-log/index'),
-                name: 'ErrorLog',
-                meta: { title: '错误日志', icon: 'guide' }
-            }
-        ]
-    },
+        path: '404',
+        component: () => import('@/views/error-page/404'),
+        name: 'Page404',
+        meta: {
+            title: '404',
+            noCache: true
+        }
+    }
+    ]
+},
 
-    {
-        path: '/activity',
-        component: Layout,
-        meta: { title: '活动管理', icon: 'guide' },
-        children: [
-            {
-                path: 'sort',
-                component: () => import('@/views/activity/sort/index'),
-                name: 'activitySort',
-                meta: { title: '活动类型', icon: 'guide' }
-            }, {
-                path: 'info',
-                component: () => import('@/views/activity/info/index'),
-                name: 'activityInfo',
-                meta: { title: '活动信息', icon: 'guide' }
-            },
-        ]
-    },
+{
+    path: '/error-log',
+    component: Layout,
+    children: [{
+        path: 'log',
+        component: () => import('@/views/error-log/index'),
+        name: 'ErrorLog',
+        meta: {
+            title: '错误日志',
+            icon: 'bug'
+        }
+    }]
+},
 
 
-    {
-        path: '/sys',
-        component: Layout,
-        meta: { title: '系统管理', icon: 'guide' },
-        children: [
-            {
-                path: 'router',
-                component: () => import('@/views/sys/sys-view/index'),
-                name: 'ErrorLog',
-                meta: { title: '系统管理', icon: 'guide' }
-            }
-        ]
-    },
-
-
-    { path: '*', redirect: '/404', hidden: true }
-]
+{
+    path: '/ifrmae',
+    component: Layout,
+    children: [{
+        path: 'index',
+        component: () => import('@/views/iframe-view/index'),
+        name: 'TempIndexview',
+        meta: {
+            title: '样例2',
+            icon: 'user'
+        }
+    }]
+},]
 
 const createRouter = () => new Router({
     // mode: 'history', // require service support
-    scrollBehavior: () => ({ y: 0 }),
+    scrollBehavior: () => ({
+        y: 0
+    }),
     routes: constantRoutes
 })
 

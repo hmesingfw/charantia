@@ -34,6 +34,11 @@ export default {
             this.$router.addRoutes(routerArr);          /* 重新刷新routes内容信息 */
 
             this.$store.dispatch('permission/ADD_ROUTES', routerArr); /* 重新加载面板 */
+
+            // let token = this.token;
+            // if (!token || token == 'undefined') {
+            //     this.$router.push({ path: '/login' });
+            // }
         },
     }
 }

@@ -1,21 +1,19 @@
-var baseURL = '';
+var baseURL = '/api';
 
-if (process.env.NODE_ENV === 'development') {
-    baseURL = 'http://192.168.31.135:10006'
-} else {
-    baseURL = window.g.Url || process.env.VUE_APP_URL
-}
-console.log(process.env.NODE_ENV, process.env);
 export default {
     /* 系统管理 */
     sys: {
-        eventCategory: baseURL + '/api/v1/eventCategory',   // 活动类型   
+        tag: baseURL + '/v1/tag',           // 系统标签
+        enum: baseURL + '/v1/enum',           // 系统枚举
+        menu: baseURL + '/v1/menu',           // 系统枚举
+        user: baseURL + '/v1/user',           // 系统用户
 
+        userLogin: baseURL + '/v1/user-login', // 用户登录
     },
-    /* 平台登录  */
-    user: {
-        login: baseURL + '/api/v1/user/signIn',   // 登录接口
-        queryButtonByPId: baseURL + '/sys/syspermission/queryButtonByPId',   // 用户获取按钮权限信息
-        updatePwd: baseURL + '/sys/sysuser/updatePwd', // 修改密码
-    },
-}
+    generate: {
+        index: baseURL + '/v1/generate',                        // 代码生成表
+        tableName: baseURL + '/v1/generate-utils/get-tablename',        // 
+        tableField: baseURL + '/v1/generate-utils/get-tablefield',      // 跟据表名获取字段信息
+        tableGenerate: baseURL + '/v1/generate-utils/generate-page',    // 生成代码
+    }
+};

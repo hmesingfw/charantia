@@ -36,7 +36,17 @@
                 </el-table-column>
             </el-table>
 
-            <pagination :data="pagination" :callback="query" />
+            <div class="pu-pagination">
+                <el-pagination
+                    @size-change="val => {pagination.limit = val; query()}"
+                    @current-change="val => {pagination.page = val; query()}"
+                    :current-page="pagination.page"
+                    :page-sizes="[10, 20, 30, 50]"
+                    :page-size="pagination.limit"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="totalCount"
+                ></el-pagination>
+            </div>
         </div>
 
         <dialog-alert v-model="dialogValue" title="角色信息" width="500px" :type="requestType" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
