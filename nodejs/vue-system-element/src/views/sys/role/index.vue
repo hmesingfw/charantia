@@ -4,37 +4,38 @@
             <generate-form :model="QueryParam" :datalist="queryComponentData" @change="query(1)"></generate-form>
             <el-form-item class="header-handle">
                 <el-tooltip class="item" effect="dark" content="新增" placement="top">
-                    <el-button @click="handleEdit()" circle type="primary" icon="el-icon-plus" v-permission="'sys:role:edit'"></el-button>
+                    <el-button @click="handleEdit()" circle type="primary" icon="el-icon-plus"></el-button>
                 </el-tooltip>
             </el-form-item>
         </el-form>
 
         <div class="article-table">
-            <el-table :data="tableData" @selection-change="val => multipleSelection = val" v-loading="tableLoading" :stripe="true" header-row-class-name="table-header-color">
+            <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" v-loading="tableLoading"></generate-table>
+
+            <!-- <el-table :data="tableData" @selection-change="val => multipleSelection = val" v-loading="tableLoading" :stripe="true" header-row-class-name="table-header-color">
                 <el-table-column type="selection" width="42"></el-table-column>
                 <el-table-column prop="code" label="标识"></el-table-column>
                 <el-table-column prop="name" label="名称"></el-table-column>
 
-                <el-table-column prop="description" label="描述"></el-table-column>
                 <el-table-column prop="remark" label="备注"></el-table-column>
                 <el-table-column label="状态">
                     <template slot-scope="scope">
-                        <z-update-switch :data="scope.row" data-key="status" :url="apiUrl" :callback="query" permission="sys:role:edit"></z-update-switch>
+                        <z-update-switch :data="scope.row" data-key="status" :url="apiUrl" :callback="query"></z-update-switch>
                     </template>
                 </el-table-column>
-                <el-table-column prop="updateTime" label="更新时间" width="140"></el-table-column>
+                <el-table-column prop="updatedAt" label="更新时间" width="140"></el-table-column>
                 <el-table-column label="点击授权" width="100" fixed="right">
                     <template slot-scope="scope">
-                        <el-button size="mini" type="text" v-permission="'sys:role:rela'" @click="handleOpenAuth(scope.row)">操作授权</el-button>
+                        <el-button size="mini" type="text" @click="handleOpenAuth(scope.row)">操作授权</el-button>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="160" fixed="right">
                     <template slot-scope="scope">
-                        <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')" v-permission="'sys:role:edit'">编辑</el-button>
-                        <el-button size="mini" type="text" @click="HandleDelete(apiUrl, scope.row, query)" v-permission="'sys:role:delete'">删除</el-button>
+                        <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
+                        <el-button size="mini" type="text" @click="HandleDelete(apiUrl, scope.row, query)">删除</el-button>
                     </template>
                 </el-table-column>
-            </el-table>
+            </el-table>-->
 
             <pagination :data="pagination" :callback="query" />
         </div>
@@ -46,9 +47,6 @@
                 </el-form-item>
                 <el-form-item label="名称" prop="name">
                     <el-input v-model="form.name" maxlength="32"></el-input>
-                </el-form-item>
-                <el-form-item label="描述" prop="description">
-                    <el-input v-model="form.description" maxlength="500"></el-input>
                 </el-form-item>
 
                 <el-form-item label="备注" prop="remark">
@@ -71,7 +69,7 @@
                             <div class="role-row padding-left">
                                 <el-checkbox :label="child.id">{{ child.title }}</el-checkbox>
                             </div>
-                            <div class="role-row handle-group padding-left-s">
+                            <div class="role-row handle-group padding-left-s" v-if="child.children && child.children.length>0">
                                 <el-checkbox v-for="hand in child.children" :key="hand.id" :label="hand.id">{{ hand.title }}</el-checkbox>
                             </div>
                         </div>
@@ -92,7 +90,7 @@ export default {
     },
     data() {
         return {
-            apiUrl: this.$api.sys.sysRole,          // 请求路很
+            apiUrl: this.$api.sys.role,          // 请求路很
             rules: {
                 code: [{ required: true, message: '请输入内容', trigger: 'blur' },],
                 name: [{ required: true, message: '请输入内容', trigger: 'blur' },],
@@ -112,12 +110,21 @@ export default {
                 { name: 'el-input', key: 'name', label: "名称", attr: { placeholder: '请输入角色名称' } },
             ],
             tableData: [],
+            tableParams: [
+                { prop: 'code', label: "标识" },
+                { prop: 'name', label: "名称" },
+                { prop: 'remark', label: "备注" },
+                { prop: 'status', label: "状态", f: this.sw() },
+
+            ],
+
+
             tableLoading: false,
             multipleSelection: [],      // 多选选中的值
 
             pagination: {
                 page: 1,
-                limit: localStorage.getItem('pageSize') || 10,
+                size: localStorage.getItem('pageSize') || 10,
             },
             totalCount: 0,      // 总共多少条
             /* 表单 */
@@ -135,9 +142,13 @@ export default {
         /* 查询操作 */
         init() {
             this.tableLoading = true;
-            this.$http.get(this.$api.sys.sysMenu, { params: { status: 1 } }).then(res => {
-                this.menuList = res.data.data;
+            this.$http.get(this.$api.sys.menu).then(res => {
+                this.menuList = res.data.rows;
             })
+        },
+        sw(row) {
+            return <el-button size="mini" type="text" on-click={() => this.handleOpenAuth(row)}>操作授权</el-button>
+
         },
         /* 查询操作 */
         query(flag) {
@@ -148,8 +159,8 @@ export default {
             };
             this.tableLoading = true;
             this.$http.get(this.apiUrl, { params: param }).then(res => {
-                this.tableData = res.data.data.list;
-                this.totalCount = res.data.data.totalCount;
+                this.tableData = res.data.rows;
+                this.totalCount = res.data.count;
                 this.tableLoading = false;
             }).catch(() => {
                 this.tableLoading = false;
@@ -179,7 +190,7 @@ export default {
 
         /* 授权 */
         handleOpenAuth(row) {
-            this.roleMenuList = row.menuIds;
+            this.roleMenuList = row.menuIds || [];
             this.tempRoleMenu = row;
             this.dialogValueAuto = true;
         },

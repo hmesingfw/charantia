@@ -21,15 +21,7 @@
 
                 <el-table-column label="状态">
                     <template slot-scope="scope">
-                        <el-switch
-                            class="switch-style"
-                            v-model="scope.row.status"
-                            @change="UpdateSwitch(scope.row, apiUrl, 'status', query)"
-                            active-value="0"
-                            active-text="启用"
-                            inactive-value="1"
-                            inactive-text="禁用"
-                        ></el-switch>
+                        <z-update-switch :data="scope.row" data-key="status" :url="apiUrl" :callback="query"></z-update-switch>
                     </template>
                 </el-table-column>
 
@@ -45,17 +37,7 @@
                 </el-table-column>
             </el-table>
 
-            <div class="pu-pagination">
-                <el-pagination
-                    @size-change="val => {pagination.size = val; query()}"
-                    @current-change="val => {pagination.page = val; query()}"
-                    :current-page="pagination.page"
-                    :page-sizes="[10, 20, 30, 50]"
-                    :page-size="pagination.size"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="totalCount"
-                ></el-pagination>
-            </div>
+            <pagination :data="pagination" :callback="query" :total="totalCount" />
         </div>
 
         <dialog-alert v-model="dialogValue" title="信息录入" :type="requestType" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
@@ -73,7 +55,7 @@
                 </el-form-item>
 
                 <el-form-item label="状态" prop="status">
-                    <el-switch class="switch-style" v-model="form.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>
+                    <el-switch class="switch-style" v-model="form.status" v-bind="ConfigParmas.switchValue"></el-switch>
                 </el-form-item>
             </el-form>
         </dialog-alert>

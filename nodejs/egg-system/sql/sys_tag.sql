@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : woxihuanni
+Source Server         : localhost woxihuanni
 Source Server Version : 50712
 Source Host           : localhost:3306
 Source Database       : charantia_sys
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2020-03-17 23:32:50
+Date: 2020-04-21 17:39:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,13 +24,13 @@ CREATE TABLE `sys_enum` (
   `title` varchar(50) NOT NULL COMMENT '枚举名称',
   `value` varchar(50) NOT NULL COMMENT '枚举值',
   `parent_id` varchar(36) NOT NULL,
-  `status` varchar(1) DEFAULT NULL COMMENT '0 启用 1禁用',
+  `status` char(1) DEFAULT NULL COMMENT '0 启用 1禁用',
   `sort` int(11) DEFAULT NULL COMMENT '排序  数值大排前',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `user_id` varchar(36) DEFAULT NULL,
   `details` varchar(255) DEFAULT NULL COMMENT '备注',
-  `is_del` varchar(1) DEFAULT '0' COMMENT '0 正常 1删除',
+  `is_del` char(1) DEFAULT '0' COMMENT '0 正常 1删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='枚举管理';
 
@@ -63,7 +63,7 @@ CREATE TABLE `sys_generate_table` (
   `updated_at` datetime DEFAULT NULL,
   `user_id` varchar(36) CHARACTER SET utf8 DEFAULT NULL,
   `details` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '备注',
-  `is_del` varchar(1) CHARACTER SET utf8 DEFAULT '0' COMMENT '0 正常 1删除',
+  `is_del` char(1) CHARACTER SET utf8 DEFAULT '0' COMMENT '0 正常 1删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='代码生成表';
 
@@ -71,7 +71,7 @@ CREATE TABLE `sys_generate_table` (
 -- Records of sys_generate_table
 -- ----------------------------
 INSERT INTO `sys_generate_table` VALUES ('51d3ec21-f2d2-477b-a4e1-a3a0b85aab01', 'sys_enum', 'sysEnum', '枚举表', '张三', '[{\"field\":\"id\",\"type\":\"varchar(36)\",\"alias\":\"id\",\"comment\":\"编号\",\"key\":true,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"36\"],\"isHidden\":true,\"isNull\":true,\"isQuery\":false,\"isSort\":false,\"isTable\":false,\"enumType\":\"\",\"matchType\":\"=\"},{\"field\":\"title\",\"type\":\"varchar(50)\",\"alias\":\"title\",\"comment\":\"枚举名称\",\"key\":false,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"50\"],\"isHidden\":false,\"isNull\":true,\"isQuery\":true,\"isSort\":false,\"isTable\":true,\"enumType\":\"\",\"matchType\":\"=\",\"isWriteonly\":true},{\"field\":\"value\",\"type\":\"varchar(50)\",\"alias\":\"value\",\"comment\":\"枚举值\",\"key\":false,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"50\"],\"isHidden\":false,\"isNull\":true,\"isQuery\":true,\"isSort\":false,\"isTable\":true,\"enumType\":\"\",\"matchType\":\"=\",\"isWriteonly\":true,\"isReadonly\":true},{\"field\":\"parent_id\",\"type\":\"varchar(36)\",\"alias\":\"parentId\",\"comment\":\"\",\"key\":false,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"36\"],\"isHidden\":false,\"isNull\":true,\"isQuery\":false,\"isSort\":false,\"isTable\":false,\"enumType\":\"\",\"matchType\":\"=\"},{\"field\":\"status\",\"type\":\"varchar(1)\",\"alias\":\"status\",\"comment\":\"状态\",\"key\":false,\"component\":\"el-radio\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"1\"],\"isHidden\":false,\"isNull\":false,\"isQuery\":true,\"isSort\":false,\"isTable\":true,\"enumType\":\"statusList\",\"matchType\":\"=\",\"isWriteonly\":true,\"isReadonly\":false},{\"field\":\"sort\",\"type\":\"int(11)\",\"alias\":\"sort\",\"comment\":\"排序\",\"key\":false,\"component\":\"el-input-number\",\"fieldType\":[\"int\"],\"maxlength\":[\"11\"],\"isHidden\":false,\"isNull\":false,\"isQuery\":false,\"isSort\":true,\"isTable\":true,\"enumType\":\"\",\"matchType\":\"=\",\"isWriteonly\":true,\"isReadonly\":false},{\"field\":\"created_at\",\"type\":\"datetime\",\"alias\":\"createdAt\",\"comment\":\"创建时间\",\"key\":false,\"component\":\"el-date-picker\",\"fieldType\":[\"datetime\"],\"maxlength\":null,\"isHidden\":true,\"isNull\":false,\"isQuery\":false,\"isSort\":false,\"isTable\":false,\"enumType\":\"\",\"matchType\":\"=\"},{\"field\":\"updated_at\",\"type\":\"datetime\",\"alias\":\"updatedAt\",\"comment\":\"更新时间\",\"key\":false,\"component\":\"el-date-picker\",\"fieldType\":[\"datetime\"],\"maxlength\":null,\"isHidden\":true,\"isNull\":false,\"isQuery\":false,\"isSort\":true,\"isTable\":true,\"enumType\":\"\",\"matchType\":\"=\",\"isWriteonly\":true},{\"field\":\"user_id\",\"type\":\"varchar(36)\",\"alias\":\"userId\",\"comment\":\"\",\"key\":false,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"36\"],\"isHidden\":false,\"isNull\":false,\"isQuery\":false,\"isSort\":false,\"isTable\":false,\"enumType\":\"\",\"matchType\":\"=\"},{\"field\":\"details\",\"type\":\"varchar(255)\",\"alias\":\"details\",\"comment\":\"备注\",\"key\":false,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"255\"],\"isHidden\":false,\"isNull\":false,\"isQuery\":false,\"isSort\":false,\"isTable\":true,\"enumType\":\"\",\"matchType\":\"=\",\"isWriteonly\":true},{\"field\":\"is_del\",\"type\":\"varchar(1)\",\"alias\":\"isDel\",\"comment\":\"删除标识\",\"key\":false,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"1\"],\"isHidden\":true,\"isNull\":false,\"isQuery\":true,\"isSort\":false,\"isTable\":false,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"0\"}]', '2020-02-25 02:34:05', '2020-03-14 07:18:35', null, '你好啊', '0');
-INSERT INTO `sys_generate_table` VALUES ('6ff1818a-4615-41d3-b2df-5be5442edbc8', 'sys_user', 'sysUser', '用户表', 'charantia', '[{\"field\":\"id\",\"type\":\"varchar(36)\",\"alias\":\"id\",\"comment\":\"编号\",\"key\":true,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"36\"],\"isHidden\":true,\"isNull\":true,\"isQuery\":false,\"isSort\":false,\"isTable\":false,\"isWriteonly\":false,\"isReadonly\":false,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"\"},{\"field\":\"phone\",\"type\":\"varchar(16)\",\"alias\":\"phone\",\"comment\":\"手机号\",\"key\":false,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"16\"],\"isHidden\":false,\"isNull\":true,\"isQuery\":false,\"isSort\":false,\"isTable\":true,\"isWriteonly\":true,\"isReadonly\":true,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"\"},{\"field\":\"password\",\"type\":\"varchar(32)\",\"alias\":\"password\",\"comment\":\"密码\",\"key\":false,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"32\"],\"isHidden\":false,\"isNull\":true,\"isQuery\":false,\"isSort\":false,\"isTable\":true,\"isWriteonly\":true,\"isReadonly\":true,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"\"},{\"field\":\"name\",\"type\":\"varchar(128)\",\"alias\":\"name\",\"comment\":\"姓名\",\"key\":false,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"128\"],\"isHidden\":false,\"isNull\":false,\"isQuery\":false,\"isSort\":false,\"isTable\":true,\"isWriteonly\":true,\"isReadonly\":true,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"\"},{\"field\":\"status\",\"type\":\"varchar(1)\",\"alias\":\"status\",\"comment\":\"状态\",\"key\":false,\"component\":\"el-switch\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"1\"],\"isHidden\":false,\"isNull\":false,\"isQuery\":false,\"isSort\":false,\"isTable\":true,\"isWriteonly\":true,\"isReadonly\":true,\"enumType\":\"statusList\",\"matchType\":\"=\",\"defaultValue\":\"\",\"isTableHanlde\":true},{\"field\":\"created_at\",\"type\":\"datetime\",\"alias\":\"createdAt\",\"comment\":\"创建时间\",\"key\":false,\"component\":\"el-date-picker\",\"fieldType\":[\"datetime\"],\"maxlength\":null,\"isHidden\":true,\"isNull\":false,\"isQuery\":false,\"isSort\":false,\"isTable\":false,\"isWriteonly\":false,\"isReadonly\":false,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"\"},{\"field\":\"updated_at\",\"type\":\"datetime\",\"alias\":\"updatedAt\",\"comment\":\"更新时间\",\"key\":false,\"component\":\"el-date-picker\",\"fieldType\":[\"datetime\"],\"maxlength\":null,\"isHidden\":true,\"isNull\":false,\"isQuery\":false,\"isSort\":true,\"isTable\":false,\"isWriteonly\":false,\"isReadonly\":false,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"\"},{\"field\":\"user_id\",\"type\":\"varchar(36)\",\"alias\":\"userId\",\"comment\":\"操作人\",\"key\":false,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"36\"],\"isHidden\":false,\"isNull\":false,\"isQuery\":false,\"isSort\":false,\"isTable\":true,\"isWriteonly\":false,\"isReadonly\":false,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"\"},{\"field\":\"details\",\"type\":\"varchar(255)\",\"alias\":\"details\",\"comment\":\"备注\",\"key\":false,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"255\"],\"isHidden\":false,\"isNull\":false,\"isQuery\":false,\"isSort\":false,\"isTable\":true,\"isWriteonly\":false,\"isReadonly\":false,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"\"},{\"field\":\"is_del\",\"type\":\"varchar(1)\",\"alias\":\"isDel\",\"comment\":\"删除标识\",\"key\":false,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"1\"],\"isHidden\":true,\"isNull\":false,\"isQuery\":true,\"isSort\":false,\"isTable\":false,\"isWriteonly\":false,\"isReadonly\":false,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"0\"}]', '2020-03-17 14:44:54', '2020-03-17 15:03:05', null, null, '0');
+INSERT INTO `sys_generate_table` VALUES ('6ff1818a-4615-41d3-b2df-5be5442edbc8', 'sys_user', 'sysUser', '用户表', 'charantia', '[{\"field\":\"id\",\"type\":\"varchar(36)\",\"alias\":\"id\",\"comment\":\"编号\",\"key\":true,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"36\"],\"isHidden\":true,\"isNull\":true,\"isQuery\":false,\"isSort\":false,\"isTable\":false,\"isWriteonly\":false,\"isReadonly\":false,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"\"},{\"field\":\"phone\",\"type\":\"varchar(16)\",\"alias\":\"phone\",\"comment\":\"手机号\",\"key\":false,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"16\"],\"isHidden\":false,\"isNull\":true,\"isQuery\":true,\"isSort\":false,\"isTable\":true,\"isWriteonly\":true,\"isReadonly\":false,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"\"},{\"field\":\"password\",\"type\":\"varchar(32)\",\"alias\":\"password\",\"comment\":\"密码\",\"key\":false,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"32\"],\"isHidden\":false,\"isNull\":true,\"isQuery\":false,\"isSort\":false,\"isTable\":true,\"isWriteonly\":true,\"isReadonly\":false,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"\"},{\"field\":\"name\",\"type\":\"varchar(128)\",\"alias\":\"name\",\"comment\":\"姓名\",\"key\":false,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"128\"],\"isHidden\":false,\"isNull\":false,\"isQuery\":true,\"isSort\":false,\"isTable\":true,\"isWriteonly\":true,\"isReadonly\":false,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"\"},{\"field\":\"status\",\"type\":\"varchar(1)\",\"alias\":\"status\",\"comment\":\"状态\",\"key\":false,\"component\":\"el-switch\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"1\"],\"isHidden\":false,\"isNull\":false,\"isQuery\":true,\"isSort\":false,\"isTable\":true,\"isWriteonly\":true,\"isReadonly\":false,\"enumType\":\"statusList\",\"matchType\":\"=\",\"defaultValue\":\"\",\"isTableHanlde\":true},{\"field\":\"created_at\",\"type\":\"datetime\",\"alias\":\"createdAt\",\"comment\":\"创建时间\",\"key\":false,\"component\":\"el-date-picker\",\"fieldType\":[\"datetime\"],\"maxlength\":null,\"isHidden\":true,\"isNull\":false,\"isQuery\":false,\"isSort\":false,\"isTable\":false,\"isWriteonly\":false,\"isReadonly\":false,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"\"},{\"field\":\"updated_at\",\"type\":\"datetime\",\"alias\":\"updatedAt\",\"comment\":\"更新时间\",\"key\":false,\"component\":\"el-date-picker\",\"fieldType\":[\"datetime\"],\"maxlength\":null,\"isHidden\":true,\"isNull\":false,\"isQuery\":false,\"isSort\":true,\"isTable\":false,\"isWriteonly\":false,\"isReadonly\":false,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"\"},{\"field\":\"user_id\",\"type\":\"varchar(36)\",\"alias\":\"userId\",\"comment\":\"操作人\",\"key\":false,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"36\"],\"isHidden\":false,\"isNull\":false,\"isQuery\":false,\"isSort\":false,\"isTable\":true,\"isWriteonly\":false,\"isReadonly\":false,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"\"},{\"field\":\"details\",\"type\":\"varchar(255)\",\"alias\":\"details\",\"comment\":\"备注\",\"key\":false,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"255\"],\"isHidden\":false,\"isNull\":false,\"isQuery\":false,\"isSort\":false,\"isTable\":true,\"isWriteonly\":false,\"isReadonly\":false,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"\"},{\"field\":\"is_del\",\"type\":\"varchar(1)\",\"alias\":\"isDel\",\"comment\":\"删除标识\",\"key\":false,\"component\":\"el-input\",\"fieldType\":[\"varchar\"],\"maxlength\":[\"1\"],\"isHidden\":true,\"isNull\":false,\"isQuery\":true,\"isSort\":false,\"isTable\":false,\"isWriteonly\":false,\"isReadonly\":false,\"enumType\":\"\",\"matchType\":\"=\",\"defaultValue\":\"0\"}]', '2020-03-17 14:44:54', '2020-03-18 01:48:04', null, null, '0');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -83,30 +83,85 @@ CREATE TABLE `sys_menu` (
   `path` varchar(255) DEFAULT '' COMMENT '菜单路径',
   `title` varchar(128) DEFAULT NULL COMMENT '标题',
   `component` varchar(255) DEFAULT NULL COMMENT '组件路径',
-  `status` varchar(10) DEFAULT NULL COMMENT '状态',
-  `show` varchar(1) DEFAULT NULL COMMENT '隐藏与显示',
+  `type` char(1) DEFAULT NULL,
+  `par` varchar(64) DEFAULT NULL,
+  `status` char(10) DEFAULT NULL COMMENT '状态',
+  `show` char(1) DEFAULT NULL COMMENT '隐藏与显示',
   `sort` int(13) DEFAULT NULL COMMENT '权重',
   `icon` varchar(255) DEFAULT NULL,
   `details` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
   `user_id` varchar(64) DEFAULT NULL COMMENT '用户',
-  `is_del` varchar(1) DEFAULT NULL COMMENT '删除标识',
+  `is_del` char(1) DEFAULT NULL COMMENT '删除标识',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='系统菜单';
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('17e4dc18-9e75-44af-97b0-b9344fcf0f23', '59ac6726-375f-4a84-9a8a-7fee50a3ca11', 'enum', '枚举管理', '/sys/enum/index', '0', '0', '1', 'guide', null, '2020-03-17 02:09:40', '2020-03-17 02:12:39', null, '0');
-INSERT INTO `sys_menu` VALUES ('2aeaab86-bb3e-451b-818d-43adb9511fe9', '59ac6726-375f-4a84-9a8a-7fee50a3ca11', 'user', '用户管理', '/sys/user/index', '0', '0', '30', 'guide', null, '2020-03-17 15:12:52', '2020-03-17 15:13:00', null, '0');
-INSERT INTO `sys_menu` VALUES ('59ac6726-375f-4a84-9a8a-7fee50a3ca11', '0', '/sys', '系统管理', 'Layout', '0', '0', '13', 'guide', '系统管理', '2020-03-15 14:27:20', '2020-03-17 06:17:55', null, '0');
-INSERT INTO `sys_menu` VALUES ('6a9b4508-03ae-4f2a-9052-197f1948fc4e', 'ad387565-caa5-4235-8bea-33fd6b082c6f', 'table-detail', '基本配置', '/generate/table-detail', '0', '1', '1', 'guide', null, '2020-03-17 07:29:55', '2020-03-17 07:29:55', null, '0');
-INSERT INTO `sys_menu` VALUES ('7ccc8e96-d5f1-4c06-9e6f-413458a6d055', 'ad387565-caa5-4235-8bea-33fd6b082c6f', 'index', '生成配置', '/generate/index', '0', '0', '2', 'guide', null, '2020-03-17 07:28:39', '2020-03-17 07:30:07', null, '0');
-INSERT INTO `sys_menu` VALUES ('ad387565-caa5-4235-8bea-33fd6b082c6f', '0', '/generate', '生成管理', 'Layout', '0', '0', '2', 'guide', null, '2020-03-17 07:26:53', '2020-03-17 07:33:22', null, '0');
-INSERT INTO `sys_menu` VALUES ('e38e4cda-f3d7-44b9-9870-e6fea45c17a0', '59ac6726-375f-4a84-9a8a-7fee50a3ca11', 'tag', '标签管理', '/sys/tag/index', '0', '0', '3', 'guide', null, '2020-03-17 01:58:03', '2020-03-17 03:25:05', null, '0');
-INSERT INTO `sys_menu` VALUES ('fd3da9a9-a87f-4c82-9098-530e79877d03', '0', '/icon', '图标', '/icons/index', '0', '0', '1', 'icon', null, '2020-03-17 07:33:17', '2020-03-17 07:33:17', null, '0');
-INSERT INTO `sys_menu` VALUES ('fd3da9a9-ccqd-4c82-9098-530e79877d03', '59ac6726-375f-4a84-9a8a-7fee50a3ca11', 'menu', '菜单管理', '/sys/menu/index', '0', '0', '1', 'guide', null, '2020-03-17 07:33:17', '2020-03-17 09:35:33', null, '0');
+INSERT INTO `sys_menu` VALUES ('17e4dc18-9e75-44af-97b0-b9344fcf0f23', '59ac6726-375f-4a84-9a8a-7fee50a3ca11', 'enum', '数据字典', '/sys/enum/index', '2', null, '0', '0', '1', 'guide', null, '2020-03-17 02:09:40', '2020-04-21 03:02:32', null, '0');
+INSERT INTO `sys_menu` VALUES ('2aeaab86-bb3e-451b-818d-43adb9511fe9', '59ac6726-375f-4a84-9a8a-7fee50a3ca11', 'user', '用户管理', '/sys/user/index', '2', null, '0', '0', '30', 'guide', null, '2020-03-17 15:12:52', '2020-04-20 06:57:18', null, '0');
+INSERT INTO `sys_menu` VALUES ('3001b9a9-b6c5-4bb7-a668-67f012458b61', '59ac6726-375f-4a84-9a8a-7fee50a3ca11', 'role', '角色管理', '/sys/role/index', '2', null, '0', '0', '1', 'guide', null, '2020-04-21 02:05:15', '2020-04-21 02:06:07', null, '0');
+INSERT INTO `sys_menu` VALUES ('59ac6726-375f-4a84-9a8a-7fee50a3ca11', '0', '/sys', '系统管理', 'Layout', '1', null, '0', '0', '13', 'guide', '系统管理', '2020-03-15 14:27:20', '2020-04-20 06:57:12', null, '0');
+INSERT INTO `sys_menu` VALUES ('6a9b4508-03ae-4f2a-9052-197f1948fc4e', 'ad387565-caa5-4235-8bea-33fd6b082c6f', 'table-detail', '基本配置', '/generate/table-detail', null, null, '0', '1', '1', 'guide', null, '2020-03-17 07:29:55', '2020-03-17 07:29:55', null, '0');
+INSERT INTO `sys_menu` VALUES ('7ccc8e96-d5f1-4c06-9e6f-413458a6d055', 'ad387565-caa5-4235-8bea-33fd6b082c6f', 'index', '生成配置', '/generate/index', null, null, '0', '0', '2', 'guide', null, '2020-03-17 07:28:39', '2020-03-17 07:30:07', null, '0');
+INSERT INTO `sys_menu` VALUES ('ad387565-caa5-4235-8bea-33fd6b082c6f', '0', '/generate', '生成管理', 'Layout', '1', null, '0', '0', '2', 'guide', null, '2020-03-17 07:26:53', '2020-04-20 06:57:34', null, '0');
+INSERT INTO `sys_menu` VALUES ('e38e4cda-f3d7-44b9-9870-e6fea45c17a0', '59ac6726-375f-4a84-9a8a-7fee50a3ca11', 'tag', '标签管理', '/sys/tag/index', '2', null, '0', '0', '3', 'guide', null, '2020-03-17 01:58:03', '2020-04-20 06:57:22', null, '0');
+INSERT INTO `sys_menu` VALUES ('fd3da9a9-a87f-4c82-9098-530e79877d03', '0', '/icon', '图标', '/icons/index', null, null, '0', '1', '1', 'icon', null, '2020-03-17 07:33:17', '2020-04-20 06:57:54', null, '0');
+INSERT INTO `sys_menu` VALUES ('fd3da9a9-ccqd-4c82-9098-530e79877d03', '59ac6726-375f-4a84-9a8a-7fee50a3ca11', 'menu', '菜单管理', '/sys/menu/index', '2', null, '0', '0', '1', 'guide', null, '2020-03-17 07:33:17', '2020-04-20 06:57:30', null, '0');
+
+-- ----------------------------
+-- Table structure for sys_role
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role`;
+CREATE TABLE `sys_role` (
+  `id` varchar(36) NOT NULL,
+  `code` varchar(32) DEFAULT NULL COMMENT '标识',
+  `name` varchar(32) DEFAULT NULL COMMENT '名称',
+  `status` tinyint(1) DEFAULT '0' COMMENT '状态',
+  `remark` varchar(200) DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `user_id` varchar(36) DEFAULT NULL,
+  `details` varchar(255) DEFAULT NULL,
+  `is_del` char(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `Index_1` (`id`,`code`,`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_role
+-- ----------------------------
+INSERT INTO `sys_role` VALUES ('fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '0001', '超级管理员', '0', '43我', '2020-04-21 02:54:40', '2020-04-21 03:00:14', null, null, '0');
+
+-- ----------------------------
+-- Table structure for sys_role_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_menu`;
+CREATE TABLE `sys_role_menu` (
+  `role_id` varchar(36) NOT NULL,
+  `menu_id` varchar(4000) DEFAULT NULL,
+  PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_role_menu
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_role_user
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_user`;
+CREATE TABLE `sys_role_user` (
+  `uid` int(11) unsigned NOT NULL,
+  `role_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`uid`,`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_role_user
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sys_tag
@@ -123,7 +178,7 @@ CREATE TABLE `sys_tag` (
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `user_id` varchar(36) DEFAULT NULL,
-  `is_del` varchar(1) DEFAULT '0' COMMENT '0 正常 1删除',
+  `is_del` char(1) DEFAULT '0' COMMENT '0 正常 1删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统标签表';
 
@@ -142,16 +197,16 @@ CREATE TABLE `sys_user` (
   `phone` varchar(16) NOT NULL COMMENT '手机号',
   `password` varchar(32) NOT NULL COMMENT '密码',
   `name` varchar(128) DEFAULT NULL COMMENT '姓名',
-  `status` varchar(1) DEFAULT NULL,
+  `status` char(1) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `user_id` varchar(36) DEFAULT NULL,
   `details` varchar(255) DEFAULT NULL,
-  `is_del` varchar(1) DEFAULT NULL,
+  `is_del` char(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('4634424d-109a-4d51-9a53-cb900644ccd3', 'admin', '123465', 'admin', '0', '2020-03-17 15:29:28', '2020-03-17 15:29:28', null, null, '0');
+INSERT INTO `sys_user` VALUES ('4634424d-109a-4d51-9a53-cb900644ccd3', 'admin', '123456', 'admin', '0', '2020-03-17 15:29:28', '2020-04-20 09:23:29', null, null, '0');

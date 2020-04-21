@@ -57,7 +57,7 @@
                 </el-table-column>
                 <el-table-column label="状态" width="80">
                     <template slot-scope="scope">
-                        <el-switch class="switch-style" v-model="scope.row.status" @change="UpdateSwitch(scope.row, apiUrl, 'status', query)" v-bind="ConfigPamars.switchValue"></el-switch>
+                        <z-update-switch :data="scope.row" data-key="status" :url="apiUrl" :callback="query"></z-update-switch>
                     </template>
                 </el-table-column>
                 <el-table-column prop="updatedAt" label="更新时间" width="140"></el-table-column>
@@ -98,10 +98,10 @@
                 </el-form-item>
 
                 <el-form-item label="显示" prop="show">
-                    <el-switch class="switch-style" v-model="form.show" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>
+                    <el-switch class="switch-style" v-model="form.show" v-bind="ConfigParmas.switchValue"></el-switch>
                 </el-form-item>
                 <el-form-item label="状态" prop="status">
-                    <el-switch class="switch-style" v-model="form.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>
+                    <el-switch class="switch-style" v-model="form.status" v-bind="ConfigParmas.switchValue"></el-switch>
                 </el-form-item>
 
                 <el-form-item label="排序" prop="sort">

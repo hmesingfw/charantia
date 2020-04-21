@@ -61,7 +61,7 @@ class UserController extends Controller {
             } else {
                 ctx.body = {
                     code: 200,
-                    token: '123',
+                    token: '77777777777777777777',
                     message: '',
                 };
             }

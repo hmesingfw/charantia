@@ -131,7 +131,7 @@ Vue.prototype.ListMatchField = function (key, value) {
     return str;
 }
 
-Vue.prototype.ConfigPamars = {
+Vue.prototype.ConfigParmas = {
     switchValue: {
         'active-value': '0',
         'active-text': '启用',

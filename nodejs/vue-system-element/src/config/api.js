@@ -3,10 +3,11 @@ var baseURL = '/api';
 export default {
     /* 系统管理 */
     sys: {
-        tag: baseURL + '/v1/tag',           // 系统标签
+        tag: baseURL + '/v1/tag',             // 系统标签
         enum: baseURL + '/v1/enum',           // 系统枚举
         menu: baseURL + '/v1/menu',           // 系统枚举
         user: baseURL + '/v1/user',           // 系统用户
+        role: baseURL + '/v1/role',           // 系统角色
 
         userLogin: baseURL + '/v1/user-login', // 用户登录
     },
