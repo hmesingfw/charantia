@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost woxihuanni
+Source Server         : woxihuanni
 Source Server Version : 50712
 Source Host           : localhost:3306
 Source Database       : charantia_sys
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2020-04-21 17:39:47
+Date: 2020-04-21 23:30:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -119,7 +119,7 @@ CREATE TABLE `sys_role` (
   `id` varchar(36) NOT NULL,
   `code` varchar(32) DEFAULT NULL COMMENT '标识',
   `name` varchar(32) DEFAULT NULL COMMENT '名称',
-  `status` tinyint(1) DEFAULT '0' COMMENT '状态',
+  `status` char(1) DEFAULT '0' COMMENT '状态',
   `remark` varchar(200) DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
@@ -133,6 +133,7 @@ CREATE TABLE `sys_role` (
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
+INSERT INTO `sys_role` VALUES ('7a6dc67d-20b6-4ee1-97a1-f49a7f400d85', '0002', '普通会员', '1', null, '2020-04-21 14:14:32', '2020-04-21 15:27:21', null, null, '0');
 INSERT INTO `sys_role` VALUES ('fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '0001', '超级管理员', '0', '43我', '2020-04-21 02:54:40', '2020-04-21 03:00:14', null, null, '0');
 
 -- ----------------------------

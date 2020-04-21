@@ -11,32 +11,6 @@
 
         <div class="article-table">
             <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" v-loading="tableLoading"></generate-table>
-
-            <!-- <el-table :data="tableData" @selection-change="val => multipleSelection = val" v-loading="tableLoading" :stripe="true" header-row-class-name="table-header-color">
-                <el-table-column type="selection" width="42"></el-table-column>
-                <el-table-column prop="code" label="标识"></el-table-column>
-                <el-table-column prop="name" label="名称"></el-table-column>
-
-                <el-table-column prop="remark" label="备注"></el-table-column>
-                <el-table-column label="状态">
-                    <template slot-scope="scope">
-                        <z-update-switch :data="scope.row" data-key="status" :url="apiUrl" :callback="query"></z-update-switch>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="updatedAt" label="更新时间" width="140"></el-table-column>
-                <el-table-column label="点击授权" width="100" fixed="right">
-                    <template slot-scope="scope">
-                        <el-button size="mini" type="text" @click="handleOpenAuth(scope.row)">操作授权</el-button>
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作" width="160" fixed="right">
-                    <template slot-scope="scope">
-                        <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
-                        <el-button size="mini" type="text" @click="HandleDelete(apiUrl, scope.row, query)">删除</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>-->
-
             <pagination :data="pagination" :callback="query" />
         </div>
 
@@ -114,8 +88,10 @@ export default {
                 { prop: 'code', label: "标识" },
                 { prop: 'name', label: "名称" },
                 { prop: 'remark', label: "备注" },
-                { prop: 'status', label: "状态", f: this.sw() },
-
+                { prop: 'status', label: "状态", f: row => <z-update-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></z-update-switch> },
+                { prop: 'updatedAt', label: "更新时间" },
+                { prop: 'status', label: "点击授权", f: row => <el-button size="mini" type="text" on-click={() => this.handleOpenAuth(row)}>操作授权</el-button> },
+                { prop: 'status', label: "操作", f: row => <div><el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put')}>编辑</el-button><el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button></div> },
             ],
 
 
@@ -145,10 +121,6 @@ export default {
             this.$http.get(this.$api.sys.menu).then(res => {
                 this.menuList = res.data.rows;
             })
-        },
-        sw(row) {
-            return <el-button size="mini" type="text" on-click={() => this.handleOpenAuth(row)}>操作授权</el-button>
-
         },
         /* 查询操作 */
         query(flag) {

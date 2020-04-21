@@ -7,7 +7,6 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-    //  const roles = store.getters && store.getters.roles;
     computed: {
         ...mapGetters([
             'roles'

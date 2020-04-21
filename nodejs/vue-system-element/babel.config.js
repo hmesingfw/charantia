@@ -9,7 +9,7 @@ module.exports = {
     // plugins: plugins,
     // plugins: ["@vue/babel-preset-jsx"],
     presets: [
-        // '@vue/app',
-        "@vue/babel-preset-jsx"
+        '@vue/app',
+        // "@vue/babel-preset-jsx"y
     ]
 }
