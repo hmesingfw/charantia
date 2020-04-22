@@ -1,11 +1,12 @@
 
 export default {
     render(h) {
+
         return <el-table data={this.data} on-selection-change={this.selectionChange} stripe={this.stripe} header-row-class-name="table-header-color" >
-            <el-table-column type="selection" width="42"></el-table-column>
+            {this.isSelection && <el-table-column type="selection" width="42"></el-table-column>}
             {
                 this.params.map(item => {
-                    return <el-table-column prop={item.prop} label={item.label} formatter={this.test.bind(this, item)} ></el-table-column>
+                    return <el-table-column {...{ attrs: item }} formatter={this.formatter.bind(this, item)}></el-table-column>
                 })
             }
         </el-table>
@@ -14,19 +15,17 @@ export default {
         data: Array,                       // 数据来源
         params: Array,
         stripe: { type: Boolean, default: true },
-        url: { type: String, default: '' },
-        callbacl: { type: Function, default: () => { } }
-
+        isSelection: { type: Boolean, default: true },  // 是否显示多选
     },
     methods: {
         selectionChange(val) {
             this.$emit('selection-change', val);
         },
-        test(item, row, column, cellValue, index) {
+        formatter(item, row, column, cellValue, index) {
             if (item.f) {
                 return item.f(row);
             }
-            return <div >{cellValue}</div>;
+            return cellValue;
         }
     }
 }

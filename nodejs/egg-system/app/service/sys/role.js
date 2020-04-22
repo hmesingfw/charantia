@@ -5,9 +5,8 @@ const Service = require('egg').Service;
 class Role extends Service {
     async list({ offset = 0, limit = 10, where = {} }) {
         where = { ...where, ...this.ctx.helper.whereParams };
-        // const m = this;
         return this.ctx.model.Sys.Role.findAndCountAll({
-            // include: [{ model: m.ctx.model.Sys.Role, as: 'menus', attributes: ['menuId'] }],
+            include: [{ model: this.app.model.Sys.RoleMenu, as: 'menus' }],
             where,
             offset,
             limit,
@@ -45,6 +44,14 @@ class Role extends Service {
             }
         }
         return body;
+    }
+
+    async updateRoleMenu(id, updates) {
+        const item = await this.ctx.model.Sys.RoleMenu.findByPk(id);
+        if (!item) {
+            this.ctx.throw(404, '找不到数据');
+        }
+        return item.update(updates);
     }
 
 }

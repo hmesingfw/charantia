@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : woxihuanni
+Source Server         : localhost woxihuanni
 Source Server Version : 50712
 Source Host           : localhost:3306
 Source Database       : charantia_sys
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2020-04-21 23:30:31
+Date: 2020-04-22 17:36:45
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -134,6 +134,7 @@ CREATE TABLE `sys_role` (
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES ('7a6dc67d-20b6-4ee1-97a1-f49a7f400d85', '0002', '普通会员', '1', null, '2020-04-21 14:14:32', '2020-04-21 15:27:21', null, null, '0');
+INSERT INTO `sys_role` VALUES ('bb837cb2-829c-4397-b0b3-3e061a2dd292', '0032', '部门', '0', null, '2020-04-22 02:42:33', '2020-04-22 06:17:26', null, null, '1');
 INSERT INTO `sys_role` VALUES ('fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '0001', '超级管理员', '0', '43我', '2020-04-21 02:54:40', '2020-04-21 03:00:14', null, null, '0');
 
 -- ----------------------------
@@ -149,6 +150,7 @@ CREATE TABLE `sys_role_menu` (
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
+INSERT INTO `sys_role_menu` VALUES ('fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '[\"59ac6726-375f-4a84-9a8a-7fee50a3ca11\",\"ad387565-caa5-4235-8bea-33fd6b082c6f\",\"2aeaab86-bb3e-451b-818d-43adb9511fe9\",\"e38e4cda-f3d7-44b9-9870-e6fea45c17a0\",\"17e4dc18-9e75-44af-97b0-b9344fcf0f23\",\"3001b9a9-b6c5-4bb7-a668-67f012458b61\"]');
 
 -- ----------------------------
 -- Table structure for sys_role_user

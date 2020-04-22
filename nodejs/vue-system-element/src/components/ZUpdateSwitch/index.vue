@@ -1,6 +1,12 @@
 <template>
     <div>
-        <el-switch v-if="roles.includes(permission)" class="switch-style" v-model="data[dataKey]" @change="UpdateSwitch(data, url, dataKey, callback)" v-bind="ConfigParmas[configtitle]"></el-switch>
+        <el-switch
+            v-if="roles.includes(permission) || permission == 'default'"
+            class="switch-style"
+            v-model="data[dataKey]"
+            @change="UpdateSwitch(data, url, dataKey, callback)"
+            v-bind="ConfigParmas[configtitle]"
+        ></el-switch>
         <div v-else>{{ ListMatchField('statusList', data[dataKey]) }}</div>
     </div>
 </template>
@@ -18,7 +24,7 @@ export default {
         dataKey: { type: [String, Number] },                // 修改字段
         callback: Function,             // 回调方法 
 
-        permission: { type: String, default: '' },             // 权限
+        permission: { type: String, default: 'default' },             // 权限
 
         configtitle: { type: String, default: 'switchValue' }
     }

@@ -30,12 +30,14 @@ export default {
         value: { type: [Boolean], default: false }, // 状态值，是否打开关闭窗体
         title: { type: String, default: '提示' }, // 窗体标题
         width: { type: [Number, String], default: document.documentElement.clientWidth - 230 }, // 窗体宽度
-        type: { type: [String] }, // 主要用于判断是post请求还是put请求
+        type: { type: [String], default: 'post' }, // 主要用于判断是post请求还是put请求   下个版本弃用
         loadingButton: { type: [Boolean], default: false },
 
         buttonTitle: { type: Array, default: function () { return ['确定', '取消', '另存为']; } },        //  按钮名称
         threebutton: { type: Boolean, default: false },             // 是否返回取消事件
         isSubmit: { type: Boolean, default: true },         // 是否显示确认按钮
+        isColse: { type: Boolean, default: false }
+
     },
     data() {
         return {
@@ -45,12 +47,12 @@ export default {
     methods: {
         // 关闭窗口
         close() {
-            this.$emit('input', false);
+            this.isColse && this.$emit('input', false);
             this.$emit('colse');
         },
         // 提交数据
         submit() {
-            this.$emit('submit', this.type);
+            this.$emit('submit');
         },
         /* 第三个按钮 */
         handleClose() {

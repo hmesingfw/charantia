@@ -42,6 +42,19 @@ class RoleController extends Controller {
         ctx.body = await ctx.service.sys.role.del(id);
         ctx.status = 200;
     }
+
+    async updateMenus() {
+        const ctx = this.ctx;
+        const body = ctx.request.body;
+        const msg = await ctx.service.sys.role.updateRoleMenu(body.roleId, body);
+
+        ctx.body = {
+            msg,
+            message: '保存成功',
+            code: 200,
+        };
+        ctx.status = 200;
+    }
 }
 
 module.exports = RoleController;
