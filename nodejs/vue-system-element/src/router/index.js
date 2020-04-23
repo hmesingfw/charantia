@@ -162,26 +162,11 @@ export const constantRoutes = [{
 },
 
 {
-    path: '/error-log',
-    component: Layout,
-    children: [{
-        path: 'log',
-        component: () => import('@/views/error-log/index'),
-        name: 'ErrorLog',
-        meta: {
-            title: '错误日志',
-            icon: 'bug'
-        }
-    }]
-},
-
-
-{
-    path: '/ifrmae',
+    path: '/temp',
     component: Layout,
     children: [{
         path: 'index',
-        component: () => import('@/views/iframe-view/index'),
+        component: () => import('@/views/temp/index'),
         name: 'TempIndexview',
         meta: {
             title: '样例2',

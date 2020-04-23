@@ -30,8 +30,7 @@ class TableUtilsController extends Controller {
 
         const fieldList = JSON.parse(info.fieldList);
         // 匹配路径
-        const filepath = path.join(path.resolve(), 'app', 'temp/') + info.tableClass + '.vue';
-        console.log(fieldList);
+        const filepath = path.join(path.resolve(), 'app', 'temp/') + info.tableClass;
 
 
         const queryList = [];
@@ -42,26 +41,32 @@ class TableUtilsController extends Controller {
         fieldList.forEach(item => {
             /* 查询 */
             if (item.isQuery) {
-                if (!item.isHidden) {
-                    /* 查询展示字段 */
-                    const obj = { name: item.component, key: item.alias, label: item.comment, attr: { placeholder: '请输入内容' } };
-                    if (['el-select', 'el-switch'].includes(item.component)) {
-                        obj.option = item.enumType;
-                        obj.attr = {
-                            placeholder: '请选择内容',
-                            clearable: true,
-                        };
-                    }
-                    queryList.push(obj);
-                } else {
-                    /* 查询隐藏字段 */
-                    queryHiddenList[item.field] = item.defaultValue;
+                /* 查询展示字段 */
+                const obj = { name: item.component, key: item.alias, label: item.comment, attr: { placeholder: '请输入内容' } };
+                if (['el-select', 'el-switch'].includes(item.component)) {
+                    obj.option = item.enumType;
+                    obj.attr = {
+                        placeholder: '请选择内容',
+                        clearable: true,
+                    };
                 }
+                queryList.push(obj);
             }
+            /* 查询 */
+            if (item.isHidden) {
+                /* 查询隐藏字段 */
+                queryHiddenList[item.field] = item.defaultValue;
+            }
+
 
             /* 列表 */
             if (item.isTable) {
-                tableList.push(item);
+                const obj = {
+                    prop: item.alias,
+                    label: item.comment,
+                    f: item.component,
+                };
+                tableList.push(obj);
             }
 
             /* 编辑表单 */
@@ -73,11 +78,17 @@ class TableUtilsController extends Controller {
             }
 
         });
+        console.log(tableList);
         const data = { fieldList, queryList, queryHiddenList, tableList, formList, formEnum };
         // 渲染模版
-        const body = await ctx.renderView('generate/index.ejs', data);
+        const infovue = await ctx.renderView('generate/index.ejs', data);
+        const editvue = await ctx.renderView('generate/edit.ejs', data);
+        if (!fs.existsSync(filepath)) {
+            fs.mkdirSync(filepath);
+        }
         // 生成文件
-        fs.writeFileSync(filepath, body);
+        fs.writeFileSync(filepath + '/info.vue', infovue);
+        fs.writeFileSync(filepath + '/edit.vue', editvue);
         ctx.body = {
             message: 'success',
         };

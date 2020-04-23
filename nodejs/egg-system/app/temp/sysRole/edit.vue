@@ -1,20 +1,23 @@
-<template>
-    <dialog-alert v-model="value" title="角色信息" width="500px" @submit="handleUpdate" :loading-button="loadingButton" @colse="colse" :isColse="false" @changeLoadingButton="loadingButton = false">
-        <el-form label-position="right" label-width="50px" :rules="rules" :model="form" ref="ruleForm">
+ <template>
+     <dialog-alert v-model="value" title="信息录入" @submit="handleUpdate"  @colse="colse" :isColse="false"
+        :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+        <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
             <el-form-item label="标识" prop="code">
-                <el-input v-model="form.code" maxlength="32" show-word-limit></el-input>
+                <el-input v-model="form.code" maxlength="32" :disabled="false"></el-input>
             </el-form-item>
+				
             <el-form-item label="名称" prop="name">
-                <el-input v-model="form.name" maxlength="32" show-word-limit></el-input>
+                <el-input v-model="form.name" maxlength="32" :disabled="false"></el-input>
             </el-form-item>
-
-            <el-form-item label="备注" prop="remark">
-                <el-input type="textarea" :rows="6" v-model="form.remark" maxlength="200" show-word-limit></el-input>
-            </el-form-item>
-
+				
             <el-form-item label="状态" prop="status">
-                <el-switch class="switch-style" v-model="form.status" v-bind="ConfigParmas.switchValue"></el-switch>
+            	<el-switch class="switch-style" v-model="form.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>             
             </el-form-item>
+				
+            <el-form-item label="备注" prop="remark">
+                <el-input v-model="form.remark" maxlength="200" :disabled="false"></el-input>
+            </el-form-item>
+				
         </el-form>
     </dialog-alert>
 </template>

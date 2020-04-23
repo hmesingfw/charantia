@@ -1,0 +1,79 @@
+ <template>
+     <dialog-alert v-model="value" title="信息录入" @submit="handleUpdate"  @colse="colse" :isColse="false"
+        :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+        <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
+        	<%_ formList.forEach(function(item){ -%>
+            <%_ if(item.component === 'el-select'){ -%>
+            <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
+                <el-select v-model="form.<%=item.alias%>" maxlength="<%=item.maxlength%>" :disabled="<%=item.isReadonly%>">
+                	<el-option v-for="item in <%=item.enumType%>" :key="item.id" :label="item.title" :value="item.value"></el-option>
+                </el-select>
+            </el-form-item>
+            <%_ }else if(item.component === 'el-input'){ -%>
+            <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
+                <el-input v-model="form.<%=item.alias%>" maxlength="<%=item.maxlength%>" :disabled="<%=item.isReadonly%>" show-word-limit></el-input>
+            </el-form-item>
+            <%_ }else if(item.component === 'el-radio'){ -%>
+            <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
+                <el-radio-group v-model="form.<%=item.alias%>" maxlength="<%=item.maxlength%>" :disabled="<%=item.isReadonly%>">
+                	<el-radio v-for="item in <%=item.enumType%>" :key="item.id" :label="item.value">{{item.title}}</el-radio>
+                </el-radio-group>
+            </el-form-item>
+            <%_ }else if(item.component === 'el-input-number'){ -%>
+            <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
+                <el-input-number v-model="form.<%=item.alias%>"></el-input-number>
+            </el-form-item>
+             <%_ }else if(item.component === 'el-switch'){ -%>
+            <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
+            	<el-switch class="switch-style" v-model="form.<%=item.alias%>" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>             
+            </el-form-item>
+            <%_ }else if(item.component === 'el-date-picker'){ -%>
+            <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
+                <el-date-picker v-model="form.<%=item.alias%>" type="date" placeholder="选择日期"></el-date-picker>
+            </el-form-item>
+            <%_ } -%>				
+            <%_ }) -%>
+        </el-form>
+    </dialog-alert>
+</template>
+<script>
+export default {
+    props: {
+        value: { type: [Boolean, String] },
+        form: Object,
+        requestType: String,
+        callback: Function,
+        url: String,
+    },
+    data() {
+        return {
+            rules: {
+                code: [{ required: true, message: '请输入内容', trigger: 'blur' },],
+                name: [{ required: true, message: '请输入内容', trigger: 'blur' },],
+            },
+            loadingButton: false,
+
+        }
+    },
+    methods: {
+        /* 保存 */
+        async handleUpdate() {
+            this.$refs.ruleForm.validate(async valid => {
+                if (valid) {
+                    this.loadingButton = true;
+                    let issucc = await this.ReqData(this.url, this.form, this.requestType);
+                    if (issucc) {
+
+                        this.callback();
+                        this.$emit('input', false);
+                    }
+                    this.loadingButton = false;
+                }
+            });
+        },
+        colse() {
+            this.$emit('input', false);
+        }
+    }
+}
+</script>

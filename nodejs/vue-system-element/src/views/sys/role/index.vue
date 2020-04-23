@@ -7,7 +7,7 @@
 
         <div class="article-table">
             <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" v-loading="tableLoading"></generate-table>
-            <pagination :data="pagination" :callback="query" />
+            <pagination :data="pagination" :total="totalCount" :callback="query" />
         </div>
 
         <edit v-model="dialogValue" :form="form" :requestType="requestType" :callback="query" :url="apiUrl"></edit>
@@ -45,7 +45,7 @@ export default {
                 { prop: 'remark', label: "备注" },
                 { prop: 'status', label: "状态", f: row => <z-update-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></z-update-switch> },
                 { prop: 'updatedAt', label: "更新时间" },
-                { prop: 'status', label: "点击授权", f: row => <el-button size="mini" type="text" on-click={() => this.handleOpenAuth(row)}>操作授权</el-button> },
+                { prop: 'status', label: "权限", f: row => <el-button size="mini" type="text" on-click={() => this.handleOpenAuth(row)}>分配权限</el-button> },
                 { prop: 'status', label: "操作", f: row => <div><el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put')}>编辑</el-button><el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button></div> },
             ],
             tableLoading: false,
@@ -56,11 +56,9 @@ export default {
             },
             totalCount: 0,      // 总共多少条
 
-
             /* 表单 */
             dialogValue: false,
-            requestType: '',            // 请求类型
-            loadingButton: false,
+            requestType: '',            // 请求类型 
             form: {},
         };
     },

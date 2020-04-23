@@ -24,9 +24,8 @@
 	    },
         computed: {
             ...mapState({
-            	<%_ formEnum.forEach(function(item){ -%>
-            	<%= item.enumType %>: state => state.enumList.data.<%= item.enumType -%>,
-            	<%_ }) -%>	
+            	statusList: state => state.enumList.data.statusList,
+	
             })
         },
         data() {
@@ -34,11 +33,10 @@
                 apiUrl: this.$api.sys.tag, // 请求路很                
 
                 /* ------------ */  
-                QueryParam: <%- JSON.stringify(queryHiddenList) %>, //  搜索条件
-                queryComponentData: <%- JSON.stringify(queryList) %>,
+                QueryParam: {"is_del":"0"}, //  搜索条件
+                queryComponentData: [{"name":"el-input","key":"code","label":"标识","attr":{"placeholder":"请输入内容"}},{"name":"el-input","key":"name","label":"名称","attr":{"placeholder":"请输入内容"}},{"name":"el-switch","key":"status","label":"状态","attr":{"placeholder":"请选择内容","clearable":true},"option":"statusList"}],
                 tableData: [],
-                tableParams: [ <%_ tableList.forEach(function(item){ -%>
-                	{ prop:'<%= item.prop -%>',label:'<%= item.label -%>',  <%_ if(item.f === 'el-switch'){ -%> f: row => <z-update-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></z-update-switch>,  <%_ } -%>	 },						<%_ }) -%>            
+                tableParams: [                	{ prop:'code',label:'标识',	 },                	{ prop:'name',label:'名称',	 },                	{ prop:'status',label:'状态', f: row => <z-update-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></z-update-switch>,	 },                	{ prop:'remark',label:'备注',	 },                	{ prop:'updatedAt',label:'更新时间',	 },            
                     { prop: 'status', label: "操作", f: row => <div><el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put')}>编辑</el-button><el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button></div> },],
                 tableLoading: false,
                 multipleSelection: [], // 多选选中的值
@@ -50,7 +48,8 @@
                 totalCount: 0, // 总共多少条
                 /* 表单 */
                 dialogValue: false,
-                requestType: '', // 请求类型 
+                requestType: '', // 请求类型
+                loadingButton: false,
                 form: {},
             };
         },

@@ -11,11 +11,9 @@
                     </el-scrollbar>
                 </div>
                 <!-- 按钮 -->
-                <div v-if="clickButton" class="handle">
-                    <el-button type="primary" v-if="isSubmit" @click="submit" v-loading="loadingButton" :disabled="loadingButton">{{buttonTitle[0]}}</el-button>
-                    <el-button type="primary" v-if="threebutton" @click="handleClose">{{buttonTitle[2]}}</el-button>
-
-                    <el-button @click="close">{{buttonTitle[1]}}</el-button>
+                <div class="handle">
+                    <el-button type="primary" v-if="isSubmit" @click="submit" v-loading="loadingButton" :disabled="loadingButton">确定</el-button>
+                    <el-button @click="close">取消</el-button>
                 </div>
             </div>
         </el-drawer>
@@ -26,17 +24,14 @@ import { GetHeight } from '@/utils/sys';
 
 export default {
     props: {
-        clickButton: { type: Boolean, default: true }, // 是否显示按钮
         value: { type: [Boolean], default: false }, // 状态值，是否打开关闭窗体
         title: { type: String, default: '提示' }, // 窗体标题
         width: { type: [Number, String], default: document.documentElement.clientWidth - 230 }, // 窗体宽度
-        type: { type: [String], default: 'post' }, // 主要用于判断是post请求还是put请求   下个版本弃用
+
         loadingButton: { type: [Boolean], default: false },
 
-        buttonTitle: { type: Array, default: function () { return ['确定', '取消', '另存为']; } },        //  按钮名称
-        threebutton: { type: Boolean, default: false },             // 是否返回取消事件
         isSubmit: { type: Boolean, default: true },         // 是否显示确认按钮
-        isColse: { type: Boolean, default: false }
+        isColse: { type: Boolean, default: true },          // 关闭回调
 
     },
     data() {
@@ -45,7 +40,7 @@ export default {
         };
     },
     methods: {
-        // 关闭窗口
+        // 关闭窗口  
         close() {
             this.isColse && this.$emit('input', false);
             this.$emit('colse');
@@ -54,15 +49,11 @@ export default {
         submit() {
             this.$emit('submit');
         },
-        /* 第三个按钮 */
-        handleClose() {
-            this.$emit('threeHandle', this.type);
-        },
     },
     watch: {
         value(val) {
             if (val === true) {
-                this.$emit('changeLoadingButton');
+                this.$emit('changeLoadingButton');   //  关闭按钮loading
             }
         }
     }
@@ -71,7 +62,7 @@ export default {
 <style lang="scss">
 .model-alert {
     .main-body {
-        padding: 20px 20px;
+        padding: 0px 20px 40px;
     }
     .handle {
         background: #fff;
@@ -91,6 +82,7 @@ export default {
         }
     }
     .el-drawer__header {
+        margin-bottom: 0;
         padding-bottom: 10px;
         border-bottom: 1px solid #ebeef5;
         span {

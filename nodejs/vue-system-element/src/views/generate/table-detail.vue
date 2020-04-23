@@ -6,7 +6,7 @@
             </span>
             <el-form :model="tableForm" label-width="140px" :rules="rules" ref="tableRef">
                 <el-form-item label="表名" prop="tableName">{{ tableForm.tableName }}</el-form-item>
-                <el-form-item label="实体名称">
+                <el-form-item label="实体名称" prop="tableClass">
                     <el-input v-model="tableForm.tableClass" maxlength="128"></el-input>
                 </el-form-item>
                 <el-form-item label="表说明">
@@ -144,6 +144,7 @@ export default {
             requestType: 'post',                       // 请求类型
             rules: {
                 tableName: [{ required: true, message: '请选择表名', trigger: 'blur' },],
+                tableClass: [{ required: true, message: '请输入实体名', trigger: 'blur' },],
             },
             fieldTableHeight: GetHeight(220), // 列表高度    
             /*  */
@@ -214,7 +215,7 @@ export default {
                 let isSort = item.field == 'updated_at' || fieldType == 'int' ? true : false;
                 let isTable = item.field == 'created_at' || item.field == 'updated_at' || item.field == 'is_del' || item.key == 'PRI' ? false : true;                 // 列表
                 let isTableHanlde = item.field == 'status' ? true : false;
-                let defaultValue = item.field == 'is_del' ? '0' : '';
+
                 return {
                     field: item.field,
                     type: item.type,
@@ -235,7 +236,7 @@ export default {
                     isReadonly: false,           // 可读
                     enumType: '',                // 字典类型
                     matchType: '=',              // 匹配方式
-                    defaultValue,                // 默认值
+                    defaultValue: '',            // 默认值
                 }
             })
         },

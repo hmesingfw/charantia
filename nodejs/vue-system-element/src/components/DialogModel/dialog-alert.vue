@@ -27,7 +27,7 @@ export default {
         height: { type: [Number, String], default: 400 }, // 窗体高度度
 
         isSubmit: { type: Boolean, default: true },         // 是否显示确认按钮
-        isColse: { type: Boolean, default: false }
+        isColse: { type: Boolean, default: true }
     },
     name: 'Detail',
     data() {
@@ -38,7 +38,9 @@ export default {
     methods: {
         // 关闭窗口
         close() {
-            this.isColse && this.$emit('input', false);
+            if (this.isColse) {
+                this.$emit('input', false);
+            }
             this.$emit('colse');
         },
         // 提交数据

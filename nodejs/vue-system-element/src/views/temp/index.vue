@@ -1,114 +1,75 @@
 <template>
-    <div class="padding-8">
-        <el-form :inline="true" :model="QueryParam">
-            <el-form-item label="姓名">
-                <el-input v-model="QueryParam.title" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
-                <el-button @click="handleEdit({sort:1,status:'0'}, 'post')" circle type="primary" icon="el-icon-plus"></el-button>
-                <el-button @click="HandleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
-            </el-form-item>
+    <div>
+        <el-form :inline="true" :model="QueryParam" class="header-query-form">
+            <generate-form :datalist="queryComponentData" :model="QueryParam" @change="query(1)"></generate-form>
+
+            <generate-query :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection"></generate-query>
         </el-form>
 
-        <el-table
-            :data="tableData"
-            :height="tableHeight"
-            @selection-change="val => multipleSelection = val"
-            v-loading="tableLoading"
-            style="width: 100%"
-            :stripe="true"
-            header-row-class-name="table-header-color"
-        >
-            <el-table-column type="selection" width="42"></el-table-column>
-            <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="color" label="颜色"></el-table-column>
-            <el-table-column prop="type" label="类型"></el-table-column>
-            <el-table-column prop="sort" label="排序"></el-table-column>
-            <el-table-column label="状态">
-                <template slot-scope="scope">{{ scope.row.status == '0' ? '启用' : '禁用'}}</template>
-            </el-table-column>
-            <el-table-column prop="updatedAt" label="更新时间" width="140"></el-table-column>
-
-            <el-table-column label="操作" width="160" fixed="right">
-                <template slot-scope="scope">
-                    <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
-                    <el-button size="mini" type="text" @click="HandleDelete(apiUrl, scope.row, query)">删除</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
-
-        <div class="pu-pagination">
-            <el-pagination
-                @size-change="val => {pagination.size = val; query()}"
-                @current-change="val => {pagination.page = val; query()}"
-                :current-page="pagination.page"
-                :page-sizes="[10, 20, 30, 50]"
-                :page-size="pagination.size"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="totalCount"
-            ></el-pagination>
+        <div class="article-table">
+            <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" v-loading="tableLoading"></generate-table>
+            <pagination :data="pagination" :callback="query" />
         </div>
 
         <dialog-alert v-model="dialogValue" title="信息录入" :type="requestType" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
             <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
-                <el-form-item label="标题" prop="title">
-                    <el-input v-model="form.title" maxlength="32"></el-input>
+                <el-form-item label="标识" prop="code">
+                    <el-input v-model="form.code" maxlength="32" :disabled="false"></el-input>
                 </el-form-item>
-                <el-form-item label="类型" prop="type">
-                    <el-input v-model="form.type" maxlength="32"></el-input>
-                </el-form-item>
-                <el-form-item label="颜色" prop="color">
-                    <el-input v-model="form.color" maxlength="32"></el-input>
-                </el-form-item>
-                <el-form-item label="排序" prop="sort">
-                    <el-input-number v-model="form.sort" :max="99" :min="1"></el-input-number>
-                </el-form-item>
-                <el-form-item label="备注" prop="details">
-                    <el-input v-model="form.details" maxlength="32"></el-input>
+
+                <el-form-item label="名称" prop="name">
+                    <el-input v-model="form.name" maxlength="32" :disabled="false"></el-input>
                 </el-form-item>
 
                 <el-form-item label="状态" prop="status">
-                    <el-radio-group v-model="form.status">
-                        <el-radio label="0">启用</el-radio>
-                        <el-radio label="1">禁用</el-radio>
-                    </el-radio-group>
+                    <el-switch class="switch-style" v-model="form.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>
+                </el-form-item>
+
+                <el-form-item label="备注" prop="remark">
+                    <el-input v-model="form.remark" maxlength="200" :disabled="false"></el-input>
                 </el-form-item>
             </el-form>
         </dialog-alert>
     </div>
 </template>
 <script>
-import { GetHeight } from '@/utils/sys';
 import { mapState } from 'vuex';
 
 export default {
     computed: {
         ...mapState({
+            statusList: state => state.enumList.data.statusList,
+
         })
     },
     data() {
         return {
-            apiUrl: this.$api.sys.tag,          // 请求路很
+            apiUrl: this.$api.sys.role, // 请求路很
             rules: {
-                title: [{ required: true, message: '请输入内容', trigger: 'blur' },],
+                title: [{
+                    required: true,
+                    message: '请输入内容',
+                    trigger: 'blur'
+                },],
             },
 
-            /* 基本不变------------ */
-            tableHeight: GetHeight(200), // 列表高度       
-            QueryParam: {},             //  搜索条件
+            /* ------------ */
+            QueryParam: {}, //  搜索条件
+            queryComponentData: [{ "name": "el-input", "key": "code", "label": "标识", "attr": { "placeholder": "请输入内容" } }, { "name": "el-input", "key": "name", "label": "名称", "attr": { "placeholder": "请输入内容" } }, { "name": "el-switch", "key": "status", "label": "状态", "attr": { "placeholder": "请选择内容", "clearable": true }, "option": "statusList" }],
             tableData: [],
+            tableParams: [{ prop: 'code', label: '标识', }, { prop: 'name', label: '名称', }, { prop: 'status', label: '状态', f: row => <z-update-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></z-update-switch>, }, { prop: 'remark', label: '备注', }, { prop: 'updatedAt', label: '更新时间', },
+            { prop: 'status', label: "操作", f: row => <div><el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put')}>编辑</el-button><el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button></div> },],
             tableLoading: false,
-            multipleSelection: [],      // 多选选中的值
+            multipleSelection: [], // 多选选中的值
 
             pagination: {
                 page: 1,
                 size: localStorage.getItem('pageSize') || 10,
             },
-            totalCount: 0,      // 总共多少条
+            totalCount: 0, // 总共多少条
             /* 表单 */
             dialogValue: false,
-            requestType: '',            // 请求类型
+            requestType: '', // 请求类型
             loadingButton: false,
             form: {},
         };
@@ -119,13 +80,15 @@ export default {
     methods: {
         /* 查询操作 */
         query(flag) {
-            if (flag == 1) this.pagination.page = 1;         // 查询时，让页面等于1
+            if (flag == 1) this.pagination.page = 1; // 查询时，让页面等于1
             let param = {
                 ...this.pagination,
                 ...this.QueryParam
             };
             this.tableLoading = true;
-            this.$http.get(this.apiUrl, { params: param }).then(res => {
+            this.$http.get(this.apiUrl, {
+                params: param
+            }).then(res => {
                 this.tableData = res.data.rows;
                 this.totalCount = res.data.count;
                 this.tableLoading = false;
@@ -134,7 +97,7 @@ export default {
             });
         },
         /* 编辑 */
-        handleEdit(row, requestType) {
+        handleEdit(row, requestType = 'post') {
             this.dialogValue = true;
             this.form = this.DeepCopy(row);
             this.requestType = requestType;
@@ -155,10 +118,6 @@ export default {
                 }
             });
         },
-        /* 到这里基本不变----------- */
     }
 };
 </script>
-
-<style lang="scss">
-</style>
