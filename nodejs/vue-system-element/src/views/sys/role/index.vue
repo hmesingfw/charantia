@@ -44,6 +44,7 @@ export default {
                 { prop: 'name', label: "名称" },
                 { prop: 'remark', label: "备注" },
                 { prop: 'status', label: "状态", f: row => <z-update-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></z-update-switch> },
+                { prop: 'user.name', label: "更新人" },
                 { prop: 'updatedAt', label: "更新时间" },
                 { prop: 'status', label: "权限", f: row => <el-button size="mini" type="text" on-click={() => this.handleOpenAuth(row)}>分配权限</el-button> },
                 { prop: 'status', label: "操作", f: row => <div><el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put')}>编辑</el-button><el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button></div> },

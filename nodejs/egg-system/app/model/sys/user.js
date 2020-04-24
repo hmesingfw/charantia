@@ -3,7 +3,7 @@ const moment = require('moment');
 module.exports = app => {
     const { STRING, DATE } = app.Sequelize;
 
-    const Tag = app.model.define('sys_user', {
+    const User = app.model.define('sys_user', {
         id: {
             type: STRING(36),
             primaryKey: true,
@@ -45,6 +45,10 @@ module.exports = app => {
         tableName: 'sys_user', // 数据库表名 ;
     });
 
+    User.associate = function () {
+        app.model.Sys.User.hasOne(app.model.Sys.RoleUser, { as: 'role', foreignKey: 'userId' });
 
-    return Tag;
+    };
+
+    return User;
 };

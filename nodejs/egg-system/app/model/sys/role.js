@@ -46,6 +46,7 @@ module.exports = app => {
     });
     Role.associate = function () {
         app.model.Sys.Role.hasOne(app.model.Sys.RoleMenu, { as: 'menus', foreignKey: 'roleId' });
+        app.model.Sys.Role.hasOne(app.model.Sys.User, { as: 'user', foreignKey: 'id', sourceKey: 'userId' });
     };
     return Role;
 };

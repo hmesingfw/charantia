@@ -41,9 +41,9 @@ export default {
     props: {
         value: { type: [Boolean, String] },
         form: Object,
-        requestType: String,
+        requestType: { type: String, default: '' },
         callback: Function,
-        url: String,
+        url: { type: String, default: '' },
     },
     data() {
         return {

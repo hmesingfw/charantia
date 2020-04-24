@@ -87,7 +87,7 @@ class TableUtilsController extends Controller {
             fs.mkdirSync(filepath);
         }
         // 生成文件
-        fs.writeFileSync(filepath + '/info.vue', infovue);
+        fs.writeFileSync(filepath + '/index.vue', infovue);
         fs.writeFileSync(filepath + '/edit.vue', editvue);
         ctx.body = {
             message: 'success',

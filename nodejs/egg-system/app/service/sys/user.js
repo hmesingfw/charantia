@@ -6,6 +6,7 @@ class User extends Service {
     async list({ offset = 0, limit = 10, where = {} }) {
         where = { ...where, ...this.ctx.helper.whereParams };
         return this.ctx.model.Sys.User.findAndCountAll({
+            include: [{ model: this.app.model.Sys.RoleUser, as: 'role' }],
             where,
             offset,
             limit,

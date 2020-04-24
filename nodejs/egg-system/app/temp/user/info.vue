@@ -8,7 +8,7 @@
 
         <div class="article-table">
             <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" v-loading="tableLoading"></generate-table>
-            <pagination :data="pagination" :callback="query" :total="totalCount" />
+            <pagination :data="pagination" :callback="query" />
         </div>
 
         <edit v-model="dialogValue" :form="form" :requestType="requestType" :callback="query" :url="apiUrl"></edit>
@@ -16,7 +16,7 @@
 </template>
 <script>
     import { mapState } from 'vuex';
-	import edit from './edit.vue'
+	import edit from './edit'
 
     export default {
     	components: {
@@ -24,9 +24,8 @@
 	    },
         computed: {
             ...mapState({
-            	<%_ formEnum.forEach(function(item){ -%>
-            	<%= item.enumType %>: state => state.enumList.data.<%= item.enumType -%>,
-            	<%_ }) -%>	
+            	statusList: state => state.enumList.data.statusList,
+	
             })
         },
         data() {
@@ -34,11 +33,10 @@
                 apiUrl: this.$api.sys.tag, // 请求路很                
 
                 /* ------------ */  
-                QueryParam: <%- JSON.stringify(queryHiddenList) %>, //  搜索条件
-                queryComponentData: <%- JSON.stringify(queryList) %>,
+                QueryParam: {}, //  搜索条件
+                queryComponentData: [{"name":"el-input","key":"phone","label":"手机号","attr":{"placeholder":"请输入内容"}},{"name":"el-input","key":"name","label":"姓名","attr":{"placeholder":"请输入内容"}},{"name":"el-switch","key":"status","label":"状态","attr":{"placeholder":"请选择内容","clearable":true},"option":"statusList"}],
                 tableData: [],
-                tableParams: [ <%_ tableList.forEach(function(item){ -%>
-                	{ prop:'<%= item.prop -%>',label:'<%= item.label -%>',  <%_ if(item.f === 'el-switch'){ -%> f: row => <z-update-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></z-update-switch>,  <%_ } -%>	 },						<%_ }) -%>            
+                tableParams: [                	{ prop:'phone',label:'手机号',	 },                	{ prop:'password',label:'密码',	 },                	{ prop:'name',label:'姓名',	 },                	{ prop:'status',label:'状态', f: row => <z-update-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></z-update-switch>,	 },                	{ prop:'details',label:'备注',	 },            
                     { prop: 'status', label: "操作", f: row => <div><el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put')}>编辑</el-button><el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button></div> },],
                 tableLoading: false,
                 multipleSelection: [], // 多选选中的值

@@ -71,6 +71,20 @@ class UserController extends Controller {
 
         ctx.status = 200;
     }
+
+    async updateRole() {
+        const ctx = this.ctx;
+        const body = ctx.request.body;
+        console.log(body, '----');
+        const msg = await ctx.service.sys.role.updateRoleUser(body.userId, body);
+
+        ctx.body = {
+            msg,
+            message: '保存成功',
+            code: 200,
+        };
+        ctx.status = 200;
+    }
 }
 
 module.exports = UserController;

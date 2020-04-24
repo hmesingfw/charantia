@@ -11,6 +11,7 @@ export default {
 
         userLogin: baseURL + '/v1/sys/user-login', // 用户登录
         roleMenu: baseURL + '/v1/sys/role-menu', // 角色菜单关联
+        roleUser: baseURL + '/v1/sys/user-role', // 角色用户关联
     },
     generate: {
         index: baseURL + '/v1/generate',                        // 代码生成表

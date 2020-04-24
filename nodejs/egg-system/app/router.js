@@ -11,6 +11,7 @@ module.exports = app => {
 
     router.resources('user', baseURL + '/v1/sys/user', controller.sys.user); // 系统用户管理
     router.post(baseURL + '/v1/sys/user-login', controller.sys.user.login); // 用户登录
+    router.post(baseURL + '/v1/sys/user-role', controller.sys.user.updateRole); // 保存用户角色
 
     router.resources('role', baseURL + '/v1/sys/role', controller.sys.role);
     router.post(baseURL + '/v1/sys/role-menu', controller.sys.role.updateMenus); // 角色保存菜单

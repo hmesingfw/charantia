@@ -6,7 +6,7 @@ class Role extends Service {
     async list({ offset = 0, limit = 10, where = {} }) {
         where = { ...where, ...this.ctx.helper.whereParams };
         return this.ctx.model.Sys.Role.findAndCountAll({
-            include: [{ model: this.app.model.Sys.RoleMenu, as: 'menus' }],
+            include: [{ model: this.app.model.Sys.RoleMenu, as: 'menus' }, { model: this.app.model.Sys.User, as: 'user' }],
             where,
             offset,
             limit,
@@ -49,11 +49,19 @@ class Role extends Service {
     async updateRoleMenu(id, updates) {
         const item = await this.ctx.model.Sys.RoleMenu.findByPk(id);
         if (!item) {
-            this.ctx.throw(404, '找不到数据');
+            return await this.ctx.model.Sys.RoleMenu.create(updates);
         }
         return item.update(updates);
     }
 
+
+    async updateRoleUser(id, updates) {
+        const item = await this.ctx.model.Sys.RoleUser.findOne({ where: { userId: id } });
+        if (!item) {
+            return await this.ctx.model.Sys.RoleUser.create(updates);
+        }
+        return item.update(updates);
+    }
 }
 
 module.exports = Role;
