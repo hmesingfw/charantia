@@ -45,7 +45,7 @@ class Role extends Service {
         }
         return body;
     }
-
+    /* 保存角色与菜单 */
     async updateRoleMenu(id, updates) {
         const item = await this.ctx.model.Sys.RoleMenu.findByPk(id);
         if (!item) {
@@ -54,14 +54,21 @@ class Role extends Service {
         return item.update(updates);
     }
 
+    /* 根据角色查询权限 */
+    async roleMenuList(role) {
+        return await this.ctx.model.Sys.RoleMenu.findOne(role);
+    }
 
+    /* 保存角色与用户 */
     async updateRoleUser(id, updates) {
         const item = await this.ctx.model.Sys.RoleUser.findOne({ where: { userId: id } });
         if (!item) {
             return await this.ctx.model.Sys.RoleUser.create(updates);
         }
-        return item.update(updates);
+        return await this.ctx.model.Sys.RoleUser.update({ roleId: updates.roleId }, { where: { userId: id } });
     }
+
+
 }
 
 module.exports = Role;

@@ -8,10 +8,13 @@
                     <el-option v-for="opt in enumList[item.option]" :key="opt.id" :label="opt.title" :value="opt.value"></el-option>
                 </el-select>
 
-                <el-radio-group v-if="item.name == 'el-switch'" v-model="model[item.key]" v-bind="item.attr" @change="handleChange">
+                <el-radio-group v-if="item.name == 'el-switch' && (enumList[item.option] && enumList[item.option].length<=3)" v-model="model[item.key]" v-bind="item.attr" @change="handleChange">
                     <el-radio-button label>全部</el-radio-button>
                     <el-radio-button v-for="opt in enumList[item.option]" :key="opt.id" :label="opt.value">{{opt.title}}</el-radio-button>
                 </el-radio-group>
+                <el-select v-if="item.name == 'el-switch'  && (enumList[item.option] && enumList[item.option].length>3)" v-model="model[item.key]" v-bind="item.attr" clearable @change="handleChange">
+                    <el-option v-for="opt in enumList[item.option]" :key="opt.id" :label="opt.title" :value="opt.value"></el-option>
+                </el-select>
 
                 <span v-if="item.name == 'time'">
                     <el-radio-group v-model="changevalue" @change="changeSf" style="margin-top:-2px">
@@ -69,9 +72,6 @@ export default {
             changevalue: '',
             pickerOptions: {},
         }
-    },
-    created() {
-        console.log(this.enumList);
     },
     methods: {
         handleChange() {

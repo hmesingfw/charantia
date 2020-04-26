@@ -49,25 +49,36 @@ class UserController extends Controller {
         const body = ctx.request.body.params;
         const query = {
             where: { phone: body.username },
+            include: [{ model: this.app.model.Sys.RoleUser, as: 'role' }],
         };
-        const list = await ctx.service.sys.user.find(query);
-        if (list.length > 0) {
-            const userInfo = list[0];
+        const userInfo = await ctx.service.sys.user.findOne(query);
 
-            if (userInfo.password != body.password) { //eslint-disable-line
-                ctx.body = { code: 4001, message: '账号密码输入错误，请重新输入' };
-            } else if (userInfo.status === 1 || userInfo.is_del === 1) {
-                ctx.body = { code: 4001, message: '账号已停用，请联系管理人员' };
-            } else {
-                ctx.body = {
-                    code: 200,
-                    token: '77777777777777777777',
-                    message: '',
-                };
-            }
-        } else {
+        if (userInfo.password != body.password) { //eslint-disable-line
             ctx.body = { code: 4001, message: '账号密码输入错误，请重新输入' };
+        } else if (userInfo.status === 1 || userInfo.is_del === 1) {
+            ctx.body = { code: 4001, message: '账号已停用，请联系管理人员' };
+        } else {
+            let menus = [];
+            if (userInfo.role && userInfo.role.roleId) {
+                const roleid = userInfo.role.roleId;
+                const roleInfo = await ctx.service.sys.role.roleMenuList({ roleId: roleid });
+
+                if (roleInfo && roleInfo.menuId.length > 0) {
+                    console.log(roleInfo.menuId);
+                    menus = await ctx.service.sys.menu.getTreeRole(roleInfo.menuId);
+
+                }
+            }
+            delete userInfo.role;
+            ctx.body = {
+                code: 200,
+                token: '77777777777777777777',
+                message: '',
+                info: userInfo,
+                sysMenu: menus,
+            };
         }
+
 
         ctx.status = 200;
     }

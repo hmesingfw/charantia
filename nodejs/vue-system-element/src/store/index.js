@@ -19,7 +19,9 @@ export default new Vuex.Store({
                 // assessmentData: val.assessmentData
                 app: val.app,
                 user: val.user,
-                enumList: enumList.data
+                enumList: enumList.data,
+                permission: val.permission,
+
             };
         }
     })],

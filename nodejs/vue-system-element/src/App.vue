@@ -16,16 +16,11 @@ export default {
     },
     created() {
         this.initStore();
-        this.initMenu();
-        setTimeout(() => {
-
-            this.init();
-        }, 2000)
+        this.init();
     },
     methods: {
         ...mapActions({
             initStore: 'enumList/getEnum',
-            initMenu: 'permission/ADD_SQLROUTES'
         }),
         init() {
             let routerArr = [];

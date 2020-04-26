@@ -5,7 +5,7 @@ const Controller = require('egg').Controller;
 class MenuController extends Controller {
     async index() {
         const ctx = this.ctx;
-        const where = { ...this.ctx.helper.whereParams, ...ctx.query, parentId: '0' };
+        const where = { ...this.ctx.helper.whereParams, ...ctx.query };
         ctx.body = {
             rows: await ctx.service.sys.menu.getTree(where),
         };

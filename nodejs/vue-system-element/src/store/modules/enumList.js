@@ -15,7 +15,7 @@ const actions = {
     getEnum({
         commit
     }) {
-        axios.get(api.sys.enum, { params: { status: 0 } }).then(res => {
+        axios.get(api.sys.enum).then(res => {
             let data = {};
             res.data.rows.forEach(item => {
                 data[item.value] = item.children

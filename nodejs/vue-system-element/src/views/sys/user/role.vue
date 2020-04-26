@@ -2,7 +2,7 @@
     <dialog-alert v-model="value" width="600px" title="角色列表" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
         <el-form label-position="right" label-width="100px" :rules="rules" :model="role" ref="ruleForm">
             <el-form-item label-width="0" prop="id">
-                <el-radio-group v-model="role.id" @change="chang1">
+                <el-radio-group v-model="role.roleId" @change="chang1">
                     <el-radio v-for="item in roleList" :key="item.id" :label="item.id">{{ item.name }}</el-radio>
                 </el-radio-group>
             </el-form-item>
@@ -35,7 +35,9 @@ export default {
             deep: true,
             handler(val) {
                 if (val.role) {
-                    this.$set(this.role, 'id', val.role.roleId);
+                    console.log(val.role.roleId);
+                    // this.$set(this.role, 'id', val.role.roleId);
+                    this.role = this.DeepCopy(val.role);
                 }
             },
         }
@@ -54,11 +56,7 @@ export default {
             this.$refs.ruleForm.validate(async valid => {
                 if (valid) {
                     this.loadingButton = true;
-                    let form = {
-                        userId: this.form.id,
-                        roleId: this.role.id
-                    }
-                    let issucc = await this.ReqData(this.$api.sys.roleUser, form, 'post');
+                    let issucc = await this.ReqData(this.$api.sys.roleUser, this.role, 'post');
                     if (issucc) {
                         this.callback();
                         this.$emit('input', false);

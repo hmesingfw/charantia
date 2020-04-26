@@ -124,14 +124,26 @@ export default {
             this.$refs.loginForm.validate(valid => {
                 if (valid) {
                     this.loading = true
-                    this.$store.dispatch('user/login', this.loginForm).then(res => {
-                        if (res.code === 4001) {
-                            this.$message.info(res.message);
+                    this.$store.dispatch('user/login', this.loginForm).then(routes => {
+                        if (routes.code == 4001) {
                             this.loading = false;
+                            routes.message && this.$message.info(routes.message);
                             return false;
+                        } else {
+                            this.$message.success('登录成功');
                         }
-                        this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-                        this.loading = false
+                        console.log(routes);
+                        this.$router.addRoutes(routes);
+                        this.$store.dispatch('permission/ADD_ROUTES', routes);  /* 重新加载面板 */
+
+                        this.$router.push({ path: '/', query: this.otherQuery });/* 登录跳转 */
+
+
+                        this.$store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
+                            if (this.affixTags.some(tag => tag.path === view.path)) {
+                                return;
+                            }
+                        });
                     }).catch(() => {
                         this.loading = false
                     })

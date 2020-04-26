@@ -20,13 +20,13 @@ axios.interceptors.request.use(function (config) {
     // 对请求错误做些什么
     return Promise.reject(error);
 });
-
+let codes = [1001, 1002, 1004, 403, 401];
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
     // console.log(response);
     // 对响应数据做点什么
     let code = response.data.code;
-    if (code == 1001 || code == 1002 || code == 1004 || code == 403 || code == 401) {
+    if (codes.includes(code)) {
 
         Message({
             message: '身份验证过期，请重新登录',
@@ -36,6 +36,12 @@ axios.interceptors.response.use(function (response) {
     } else if (code == 500) {
         Message.error('系统错误，请联系后台管理人员');
     }
+    // else if (code !== 200) {
+    //     Message({
+    //         message: response.data.message,
+    //         type: 'info'
+    //     });
+    // }
 
     return response;
 }, function () {

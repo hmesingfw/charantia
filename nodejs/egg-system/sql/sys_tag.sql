@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2020-04-24 17:22:40
+Date: 2020-04-26 17:47:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -152,7 +152,7 @@ CREATE TABLE `sys_role_menu` (
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
-INSERT INTO `sys_role_menu` VALUES ('fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '[\"59ac6726-375f-4a84-9a8a-7fee50a3ca11\",\"ad387565-caa5-4235-8bea-33fd6b082c6f\",\"2aeaab86-bb3e-451b-818d-43adb9511fe9\",\"e38e4cda-f3d7-44b9-9870-e6fea45c17a0\",\"17e4dc18-9e75-44af-97b0-b9344fcf0f23\",\"3001b9a9-b6c5-4bb7-a668-67f012458b61\",\"fd3da9a9-ccqd-4c82-9098-530e79877d03\",\"7ccc8e96-d5f1-4c06-9e6f-413458a6d055\",\"6a9b4508-03ae-4f2a-9052-197f1948fc4e\",\"fd3da9a9-a87f-4c82-9098-530e79877d03\"]');
+INSERT INTO `sys_role_menu` VALUES ('fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '[\"59ac6726-375f-4a84-9a8a-7fee50a3ca11\",\"ad387565-caa5-4235-8bea-33fd6b082c6f\",\"2aeaab86-bb3e-451b-818d-43adb9511fe9\",\"e38e4cda-f3d7-44b9-9870-e6fea45c17a0\",\"17e4dc18-9e75-44af-97b0-b9344fcf0f23\",\"3001b9a9-b6c5-4bb7-a668-67f012458b61\",\"fd3da9a9-ccqd-4c82-9098-530e79877d03\",\"7ccc8e96-d5f1-4c06-9e6f-413458a6d055\",\"6a9b4508-03ae-4f2a-9052-197f1948fc4e\"]');
 
 -- ----------------------------
 -- Table structure for sys_role_user
@@ -167,7 +167,7 @@ CREATE TABLE `sys_role_user` (
 -- ----------------------------
 -- Records of sys_role_user
 -- ----------------------------
-INSERT INTO `sys_role_user` VALUES ('7a6dc67d-20b6-4ee1-97a1-f49a7f400d85', '4634424d-109a-4d51-9a53-cb900644ccd3');
+INSERT INTO `sys_role_user` VALUES ('fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '4634424d-109a-4d51-9a53-cb900644ccd3');
 
 -- ----------------------------
 -- Table structure for sys_tag
