@@ -26,8 +26,11 @@ class RoleController extends Controller {
 
     async update() {
         const ctx = this.ctx;
+
         const id = ctx.params.id;
         const body = ctx.request.body;
+
+        body.userId = this.ctx.helper.userId();
         const msg = await ctx.service.sys.role.update(id, body);
         ctx.body = {
             msg,

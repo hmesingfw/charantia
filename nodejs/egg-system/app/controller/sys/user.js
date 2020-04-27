@@ -1,7 +1,7 @@
 'use strict';
 const uuidv4 = require('uuid/v4');
 const Controller = require('egg').Controller;
-
+const JWT = require('jsonwebtoken');
 class UserController extends Controller {
     async index() {
         const ctx = this.ctx;
@@ -66,14 +66,21 @@ class UserController extends Controller {
                 if (roleInfo && roleInfo.menuId.length > 0) {
                     console.log(roleInfo.menuId);
                     menus = await ctx.service.sys.menu.getTreeRole(roleInfo.menuId);
-
                 }
             }
-            delete userInfo.role;
+            userInfo.setDataValue('role', {});
+
+            // 签发token
+            const token = JWT.sign({
+                id: userInfo.id,
+                name: userInfo.name,
+            }, this.config.jwt.secret, {
+                expiresIn: 60 * 60,
+            });
             ctx.body = {
                 code: 200,
-                token: '77777777777777777777',
-                message: '',
+                token,
+                message: '登录成功',
                 info: userInfo,
                 sysMenu: menus,
             };

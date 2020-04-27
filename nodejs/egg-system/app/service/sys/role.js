@@ -23,6 +23,7 @@ class Role extends Service {
         if (!item) {
             this.ctx.throw(404, '找不到数据');
         }
+        updates.userId = this.ctx.helper.userId();
         return item.update(updates);
     }
 

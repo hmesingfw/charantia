@@ -5,9 +5,12 @@ module.exports = appInfo => {
 
     // use for cookie sign key, should change to your own and keep security
     config.keys = appInfo.name + '_nihaoa_woxihuannia';
-
+    /* jwt 配置 */
+    config.jwt = {
+        secret: 'egg-api-jwt-wohaoxiangshizaijiamiai',
+    };
     // add your config here
-    config.middleware = [];
+    config.middleware = ['jwt'];
     config.security = {
         csrf: {
             headerName: 'x-csrf-token', // 通过 header 传递 CSRF token 的默认字段为 x-csrf-token

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2020-04-26 17:47:36
+Date: 2020-04-27 18:02:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -135,9 +135,9 @@ CREATE TABLE `sys_role` (
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES ('7a6dc67d-20b6-4ee1-97a1-f49a7f400d85', '0002', '普通会员', '1', null, '2020-04-21 14:14:32', '2020-04-23 02:52:04', '4634424d-109a-4d51-9a53-cb900644ccd3', null, '0');
+INSERT INTO `sys_role` VALUES ('7a6dc67d-20b6-4ee1-97a1-f49a7f400d85', '00020', '普通会员', '0', 'kkk', '2020-04-21 14:14:32', '2020-04-27 10:02:08', '4634424d-109a-4d51-9a53-cb900644ccd3', null, '0');
 INSERT INTO `sys_role` VALUES ('bb837cb2-829c-4397-b0b3-3e061a2dd292', '0032', '部门', '0', null, '2020-04-22 02:42:33', '2020-04-22 06:17:26', '4634424d-109a-4d51-9a53-cb900644ccd3', null, '1');
-INSERT INTO `sys_role` VALUES ('fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '0001', '超级管理员', '0', '43我5', '2020-04-21 02:54:40', '2020-04-23 03:34:17', '4634424d-109a-4d51-9a53-cb900644ccd3', null, '0');
+INSERT INTO `sys_role` VALUES ('fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '0001', '超级管理员', '0', '43我5', '2020-04-21 02:54:40', '2020-04-27 09:02:56', '4634424d-109a-4d51-9a53-cb900644ccd3', null, '0');
 
 -- ----------------------------
 -- Table structure for sys_role_menu
