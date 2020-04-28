@@ -42,8 +42,12 @@ export default {
             tableParams: [
                 { prop: 'code', label: "标识", width: 80 },
                 { prop: 'name', label: "名称" },
-                { prop: 'remark', label: "备注" },
-                { prop: 'status', label: "状态", f: row => <z-update-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></z-update-switch> },
+                { prop: 'remark', label: "备注", },
+                {
+                    prop: 'status', width: 80,
+                    l: () => <generate-label label='状态' keys='status' option='statusList' params={this.QueryParam} call={this.query}></generate-label>,
+                    f: row => <z-update-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></z-update-switch>
+                },
                 { prop: 'user.name', label: "更新人" },
                 { prop: 'updatedAt', label: "更新时间" },
                 { prop: 'status', label: "权限", f: row => <el-button size="mini" type="text" on-click={() => this.handleOpenAuth(row)}>分配权限</el-button> },

@@ -15,7 +15,7 @@
                 <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
                 <el-table-column prop="color" label="颜色"></el-table-column>
                 <el-table-column prop="type" label="类型"></el-table-column>
-                <el-table-column prop="sort" label="排序">
+                <el-table-column prop="sort" label="排序" :render-header="renderHeader">
                     <template slot-scope="scope">
                         <el-input-number v-model="scope.row.sort" controls-position="right" class="el-input-number-table" :min="1" :max="10"></el-input-number>
                     </template>
@@ -67,7 +67,6 @@
 </template>
 <script>
 import { mapState } from 'vuex';
-
 export default {
     computed: {
         ...mapState({
@@ -142,6 +141,7 @@ export default {
                 }
             });
         },
+
     }
 };
 </script>

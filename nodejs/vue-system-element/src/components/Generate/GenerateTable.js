@@ -15,6 +15,7 @@ export default {
         params: Array,
         stripe: { type: Boolean, default: true },
         isSelection: { type: Boolean, default: true },  // 是否显示多选
+        callback: { type: Function, default: () => { } }
     },
     methods: {
         selectionChange(val) {
