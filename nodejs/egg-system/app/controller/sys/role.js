@@ -49,7 +49,8 @@ class RoleController extends Controller {
     async updateMenus() {
         const ctx = this.ctx;
         const body = ctx.request.body;
-        const msg = await ctx.service.sys.role.updateRoleMenu(body.roleId, body);
+        console.log(body);
+        const msg = await ctx.service.sys.role.updateRoleMenu(body.roleId, body.menuId);
 
         ctx.body = {
             msg,

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2020-04-27 18:02:49
+Date: 2020-04-29 17:32:12
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -105,11 +105,14 @@ CREATE TABLE `sys_menu` (
 INSERT INTO `sys_menu` VALUES ('17e4dc18-9e75-44af-97b0-b9344fcf0f23', '59ac6726-375f-4a84-9a8a-7fee50a3ca11', 'enum', '数据字典', '/sys/enum/index', '2', null, '0', '0', '1', 'guide', null, '2020-03-17 02:09:40', '2020-04-21 03:02:32', null, '0');
 INSERT INTO `sys_menu` VALUES ('2aeaab86-bb3e-451b-818d-43adb9511fe9', '59ac6726-375f-4a84-9a8a-7fee50a3ca11', 'user', '用户管理', '/sys/user/index', '2', null, '0', '0', '30', 'guide', null, '2020-03-17 15:12:52', '2020-04-20 06:57:18', null, '0');
 INSERT INTO `sys_menu` VALUES ('3001b9a9-b6c5-4bb7-a668-67f012458b61', '59ac6726-375f-4a84-9a8a-7fee50a3ca11', 'role', '角色管理', '/sys/role/index', '2', null, '0', '0', '1', 'guide', null, '2020-04-21 02:05:15', '2020-04-21 02:06:07', null, '0');
+INSERT INTO `sys_menu` VALUES ('3aeafd7e-b3c1-46a4-a129-75d84d287505', '3001b9a9-b6c5-4bb7-a668-67f012458b61', '', '编辑', null, '3', 'sys:role:edit', '1', '1', '1', null, null, '2020-04-29 06:15:28', '2020-04-29 07:00:53', null, '0');
 INSERT INTO `sys_menu` VALUES ('59ac6726-375f-4a84-9a8a-7fee50a3ca11', '0', '/sys', '系统管理', 'Layout', '1', null, '0', '0', '13', 'guide', '系统管理', '2020-03-15 14:27:20', '2020-04-20 06:57:12', null, '0');
 INSERT INTO `sys_menu` VALUES ('6a9b4508-03ae-4f2a-9052-197f1948fc4e', 'ad387565-caa5-4235-8bea-33fd6b082c6f', 'table-detail', '基本配置', '/generate/table-detail', null, null, '0', '1', '1', 'guide', null, '2020-03-17 07:29:55', '2020-03-17 07:29:55', null, '0');
 INSERT INTO `sys_menu` VALUES ('7ccc8e96-d5f1-4c06-9e6f-413458a6d055', 'ad387565-caa5-4235-8bea-33fd6b082c6f', 'index', '生成配置', '/generate/index', null, null, '0', '0', '2', 'guide', null, '2020-03-17 07:28:39', '2020-03-17 07:30:07', null, '0');
 INSERT INTO `sys_menu` VALUES ('ad387565-caa5-4235-8bea-33fd6b082c6f', '0', '/generate', '生成管理', 'Layout', '1', null, '0', '0', '2', 'guide', null, '2020-03-17 07:26:53', '2020-04-20 06:57:34', null, '0');
 INSERT INTO `sys_menu` VALUES ('e38e4cda-f3d7-44b9-9870-e6fea45c17a0', '59ac6726-375f-4a84-9a8a-7fee50a3ca11', 'tag', '标签管理', '/sys/tag/index', '2', null, '0', '0', '3', 'guide', null, '2020-03-17 01:58:03', '2020-04-20 06:57:22', null, '0');
+INSERT INTO `sys_menu` VALUES ('f662ec1b-33aa-4b02-95fc-11a911981051', '3001b9a9-b6c5-4bb7-a668-67f012458b61', '', '权限', null, '3', 'sys:role:auto', '1', '1', '1', null, null, '2020-04-29 06:16:01', '2020-04-29 07:00:55', null, '0');
+INSERT INTO `sys_menu` VALUES ('f7682ee5-19ac-4b89-8591-28305456638a', '3001b9a9-b6c5-4bb7-a668-67f012458b61', '', '删除', null, '3', 'sys:role:delete', '1', '1', '1', null, null, '2020-04-29 06:15:46', '2020-04-29 07:00:53', null, '0');
 INSERT INTO `sys_menu` VALUES ('fd3da9a9-a87f-4c82-9098-530e79877d03', '0', '/icon', '图标', '/icons/index', null, null, '0', '1', '1', 'icon', null, '2020-03-17 07:33:17', '2020-04-20 06:57:54', null, '0');
 INSERT INTO `sys_menu` VALUES ('fd3da9a9-ccqd-4c82-9098-530e79877d03', '59ac6726-375f-4a84-9a8a-7fee50a3ca11', 'menu', '菜单管理', '/sys/menu/index', '2', null, '0', '0', '1', 'guide', null, '2020-03-17 07:33:17', '2020-04-20 06:57:30', null, '0');
 
@@ -136,23 +139,35 @@ CREATE TABLE `sys_role` (
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES ('7a6dc67d-20b6-4ee1-97a1-f49a7f400d85', '00020', '普通会员', '0', 'kkk', '2020-04-21 14:14:32', '2020-04-27 10:02:08', '4634424d-109a-4d51-9a53-cb900644ccd3', null, '0');
-INSERT INTO `sys_role` VALUES ('bb837cb2-829c-4397-b0b3-3e061a2dd292', '0032', '部门', '0', null, '2020-04-22 02:42:33', '2020-04-22 06:17:26', '4634424d-109a-4d51-9a53-cb900644ccd3', null, '1');
-INSERT INTO `sys_role` VALUES ('fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '0001', '超级管理员', '0', '43我5', '2020-04-21 02:54:40', '2020-04-27 09:02:56', '4634424d-109a-4d51-9a53-cb900644ccd3', null, '0');
+INSERT INTO `sys_role` VALUES ('bb837cb2-829c-4397-b0b3-3e061a2dd292', '0032', '部门', '0', null, '2020-04-22 02:42:33', '2020-04-22 06:17:26', '', null, '1');
+INSERT INTO `sys_role` VALUES ('fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '0001', '超级管理员', '0', '43我5', '2020-04-21 02:54:40', '2020-04-28 08:20:28', '4634424d-109a-4d51-9a53-cb900644ccd3', null, '0');
 
 -- ----------------------------
 -- Table structure for sys_role_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_menu`;
 CREATE TABLE `sys_role_menu` (
-  `role_id` varchar(36) NOT NULL,
-  `menu_id` varchar(4000) DEFAULT NULL,
-  PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `role_id` varchar(36) DEFAULT NULL,
+  `menu_id` varchar(36) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
-INSERT INTO `sys_role_menu` VALUES ('fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '[\"59ac6726-375f-4a84-9a8a-7fee50a3ca11\",\"ad387565-caa5-4235-8bea-33fd6b082c6f\",\"2aeaab86-bb3e-451b-818d-43adb9511fe9\",\"e38e4cda-f3d7-44b9-9870-e6fea45c17a0\",\"17e4dc18-9e75-44af-97b0-b9344fcf0f23\",\"3001b9a9-b6c5-4bb7-a668-67f012458b61\",\"fd3da9a9-ccqd-4c82-9098-530e79877d03\",\"7ccc8e96-d5f1-4c06-9e6f-413458a6d055\",\"6a9b4508-03ae-4f2a-9052-197f1948fc4e\"]');
+INSERT INTO `sys_role_menu` VALUES ('16', 'fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '2aeaab86-bb3e-451b-818d-43adb9511fe9');
+INSERT INTO `sys_role_menu` VALUES ('17', 'fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '59ac6726-375f-4a84-9a8a-7fee50a3ca11');
+INSERT INTO `sys_role_menu` VALUES ('18', 'fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', 'e38e4cda-f3d7-44b9-9870-e6fea45c17a0');
+INSERT INTO `sys_role_menu` VALUES ('19', 'fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '3aeafd7e-b3c1-46a4-a129-75d84d287505');
+INSERT INTO `sys_role_menu` VALUES ('20', 'fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '3001b9a9-b6c5-4bb7-a668-67f012458b61');
+INSERT INTO `sys_role_menu` VALUES ('21', 'fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '17e4dc18-9e75-44af-97b0-b9344fcf0f23');
+INSERT INTO `sys_role_menu` VALUES ('22', 'fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', 'f7682ee5-19ac-4b89-8591-28305456638a');
+INSERT INTO `sys_role_menu` VALUES ('23', 'fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', 'fd3da9a9-ccqd-4c82-9098-530e79877d03');
+INSERT INTO `sys_role_menu` VALUES ('24', 'fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', 'f662ec1b-33aa-4b02-95fc-11a911981051');
+INSERT INTO `sys_role_menu` VALUES ('25', 'fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', 'ad387565-caa5-4235-8bea-33fd6b082c6f');
+INSERT INTO `sys_role_menu` VALUES ('26', 'fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '7ccc8e96-d5f1-4c06-9e6f-413458a6d055');
+INSERT INTO `sys_role_menu` VALUES ('27', 'fa27bc3a-c5c7-472d-9b60-2dd26bf4b7b3', '6a9b4508-03ae-4f2a-9052-197f1948fc4e');
 
 -- ----------------------------
 -- Table structure for sys_role_user

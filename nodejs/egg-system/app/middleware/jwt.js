@@ -34,7 +34,7 @@ module.exports = options => {
                 // }
                 await next();
             } catch (e) {
-                ctx.body = { msg: e, message: '身份认识已过期，请重新登录', code: 4001 };
+                ctx.body = { msg: e, message: '身份认证已过期，请重新登录', code: 4001 };
                 ctx.status = 200;
             }
         }

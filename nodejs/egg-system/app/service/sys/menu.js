@@ -77,16 +77,17 @@ class MenuService extends Service {
         return await this.getChildNeedsRole(rootNeeds, menuIds);
     }
     /* 树形结构 */
-    async getChildNeedsRole(rootNeeds, menuIds) {
+    async getChildNeedsRole(rootNeeds) {
         const expendPromise = [];
-        rootNeeds = rootNeeds.filter(item => {
-            return menuIds.includes(item.id);
-        });
+        // rootNeeds = rootNeeds.filter(item => {
+        //     return menuIds.includes(item.id);
+        // });
         rootNeeds.forEach(item => {
             expendPromise.push(this.ctx.model.Sys.Menu.findAll({
                 where: {
                     ...this.ctx.helper.whereParams,
                     parentId: item.id,
+                    status: '0',
                 },
                 order: [['sort', 'DESC'], ['updated_at', 'DESC']],
             }));
@@ -95,7 +96,7 @@ class MenuService extends Service {
         for (let [idx, item] of child.entries()) {
 
             if (item.length > 0) {
-                item = await this.getChildNeedsRole(item, menuIds);
+                item = await this.getChildNeedsRole(item);
             }
             rootNeeds[idx].setDataValue('children', item); // $$$ 在查询出来后的对象中赋值，需要使setDataValue方法
         }

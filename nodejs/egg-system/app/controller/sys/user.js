@@ -63,12 +63,15 @@ class UserController extends Controller {
                 const roleid = userInfo.role.roleId;
                 const roleInfo = await ctx.service.sys.role.roleMenuList({ roleId: roleid });
 
-                if (roleInfo && roleInfo.menuId.length > 0) {
-                    console.log(roleInfo.menuId);
-                    menus = await ctx.service.sys.menu.getTreeRole(roleInfo.menuId);
-                }
+
+                // select * from sys_role_menu
+                // left join sys_menu
+                // on sys_role_menu.menu_id = sys_menu.id
+                menus = await ctx.service.sys.menu.getTreeRole(roleInfo);
+
             }
             userInfo.setDataValue('role', {});
+            const test = await ctx.service.sys.role.roletest();
 
             // 签发token
             const token = JWT.sign({
@@ -83,6 +86,7 @@ class UserController extends Controller {
                 message: '登录成功',
                 info: userInfo,
                 sysMenu: menus,
+                test,
             };
         }
 

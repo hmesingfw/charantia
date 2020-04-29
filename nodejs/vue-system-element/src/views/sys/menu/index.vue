@@ -66,7 +66,7 @@
                     <template slot-scope="scope">
                         <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
                         <el-button size="mini" type="text" @click="HandleDelete(apiUrl, scope.row, query)">删除</el-button>
-                        <el-button size="mini" type="text" v-if="scope.row.parentId == '0'" @click="handleEdit({sort:1,status:'0',parentId:scope.row.id, show:'0'} , 'post')">添加值</el-button>
+                        <el-button size="mini" type="text" v-if="scope.row.type != 3" @click="handleEdit({sort:1,status:'0',parentId:scope.row.id, show:'0'} , 'post')">添加值</el-button>
                     </template>
                 </el-table-column>
             </el-table>

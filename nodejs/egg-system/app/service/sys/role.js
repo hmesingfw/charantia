@@ -1,17 +1,39 @@
 'use strict';
 
 const Service = require('egg').Service;
-
+const sequelize = require('sequelize');
 class Role extends Service {
     async list({ offset = 0, limit = 10, where = {} }) {
         where = { ...where, ...this.ctx.helper.whereParams };
-        return this.ctx.model.Sys.Role.findAndCountAll({
-            include: [{ model: this.app.model.Sys.RoleMenu, as: 'menus' }, { model: this.app.model.Sys.User, as: 'user' }],
-            where,
-            offset,
-            limit,
-            order: [['updated_at', 'DESC']],
+        let array = [];
+        try {
+            array = await this.ctx.model.Sys.Role.findAndCountAll({
+                attributes: {
+                    include: [[sequelize.col('user.name'), 'userName']],
+                },
+                include: [{
+                    model: this.app.model.Sys.User, as: 'user',
+                }],
+                where,
+                offset,
+                limit,
+                order: [['updated_at', 'DESC']],
+            });
+        } catch (error) {
+            console.log(error);
+        }
+
+        const expendPromise = [];
+
+        array.rows.forEach(async item => {
+            expendPromise.push(this.app.model.Sys.RoleMenu.findAll({ where: { roleId: item.id } }));
         });
+        const child = await Promise.all(expendPromise); /* 没想明白这一步的目的 */
+        for (const [idx, item] of child.entries()) {
+            array.rows[idx].setDataValue('menus', item);
+        }
+
+        return array;
     }
 
     async create(item) {
@@ -47,17 +69,20 @@ class Role extends Service {
         return body;
     }
     /* 保存角色与菜单 */
-    async updateRoleMenu(id, updates) {
-        const item = await this.ctx.model.Sys.RoleMenu.findByPk(id);
-        if (!item) {
-            return await this.ctx.model.Sys.RoleMenu.create(updates);
-        }
-        return item.update(updates);
+    async updateRoleMenu(roleId, menus) {
+        /* 删除所有 */
+        await this.ctx.model.Sys.RoleMenu.destroy({ where: { roleId } });
+
+        menus.forEach(async id => {
+            const data = { roleId, menuId: id };
+            await this.ctx.model.Sys.RoleMenu.create(data);
+        });
+        return '成功';
     }
 
     /* 根据角色查询权限 */
     async roleMenuList(role) {
-        return await this.ctx.model.Sys.RoleMenu.findOne(role);
+        return await this.ctx.model.Sys.RoleMenu.findAll(role);
     }
 
     /* 保存角色与用户 */
@@ -69,6 +94,11 @@ class Role extends Service {
         return await this.ctx.model.Sys.RoleUser.update({ roleId: updates.roleId }, { where: { userId: id } });
     }
 
+    async roletest() {
+        return await this.ctx.model.Sys.RoleMenu.findAll({
+            include: [{ model: this.app.model.Sys.Menu }],
+        });
+    }
 
 }
 

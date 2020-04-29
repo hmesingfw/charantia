@@ -1,24 +1,22 @@
 'use strict';
 module.exports = app => {
-    const { STRING } = app.Sequelize;
+    const { STRING, INTEGER } = app.Sequelize;
 
     const RoleMenu = app.model.define('sys_role_menu', {
+        id: {
+            type: INTEGER,
+
+            primaryKey: true,
+            autoIncrement: true, // 可用于创建自增的整数列
+        },
         roleId: {
             type: STRING(36),
-            primaryKey: true,
-            // autoIncrement: true,    // 可用于创建自增的整数列
             field: 'role_id',
         },
         menuId: {
-            type: STRING(4000),
+            type: STRING(36),
             field: 'menu_id',
-            get() {
-                // eslint-disable-next-line no-eval
-                return eval('(' + this.getDataValue('menuId') + ')');
-            },
-            set(val) {
-                this.setDataValue('menuId', JSON.stringify(val));
-            },
+
         },
 
     }, {
@@ -29,6 +27,10 @@ module.exports = app => {
         createdAt: false,
         updatedAt: false,
     });
+    RoleMenu.associate = function () {
+        app.model.Sys.RoleMenu.hasOne(app.model.Sys.Menu, { foreignKey: 'id', sourceKey: 'menuId' });
+
+    };
 
 
     return RoleMenu;
