@@ -19,6 +19,7 @@ import '@/styles/index.scss' // global css
 
 // import './directive/index'
 import './plugins/import-component.js'              //  封装引用的全局组件
+import '@/directive/permission/index';
 
 
 Vue.config.productionTip = false

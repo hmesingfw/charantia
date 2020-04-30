@@ -57,7 +57,7 @@ export default {
             QueryParam: {}, //  搜索条件
             queryComponentData: [{ "name": "el-input", "key": "code", "label": "标识", "attr": { "placeholder": "请输入内容" } }, { "name": "el-input", "key": "name", "label": "名称", "attr": { "placeholder": "请输入内容" } }, { "name": "el-switch", "key": "status", "label": "状态", "attr": { "placeholder": "请选择内容", "clearable": true }, "option": "statusList" }],
             tableData: [],
-            tableParams: [{ prop: 'code', label: '标识', }, { prop: 'name', label: '名称', }, { prop: 'status', label: '状态', f: row => <z-update-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></z-update-switch>, }, { prop: 'remark', label: '备注', }, { prop: 'updatedAt', label: '更新时间', },
+            tableParams: [{ prop: 'code', label: '标识', }, { prop: 'name', label: '名称', }, { prop: 'status', label: '状态', f: row => <c-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></c-switch>, }, { prop: 'remark', label: '备注', }, { prop: 'updatedAt', label: '更新时间', },
             { prop: 'status', label: "操作", f: row => <div><el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put')}>编辑</el-button><el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button></div> },],
             tableLoading: false,
             multipleSelection: [], // 多选选中的值

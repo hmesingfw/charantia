@@ -94,11 +94,6 @@ class Role extends Service {
         return await this.ctx.model.Sys.RoleUser.update({ roleId: updates.roleId }, { where: { userId: id } });
     }
 
-    async roletest() {
-        return await this.ctx.model.Sys.RoleMenu.findAll({
-            include: [{ model: this.app.model.Sys.Menu }],
-        });
-    }
 
 }
 

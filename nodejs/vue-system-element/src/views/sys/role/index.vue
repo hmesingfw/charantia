@@ -46,12 +46,21 @@ export default {
                 {
                     prop: 'status', width: 80,
                     l: () => <generate-label label='状态' keys='status' option='statusList' params={this.QueryParam} call={this.query}></generate-label>,
-                    f: row => <z-update-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></z-update-switch>
+                    f: row => <c-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></c-switch>
                 },
                 { prop: 'userName', label: "更新人" },
                 { prop: 'updatedAt', label: "更新时间" },
-                { prop: 'status', label: "权限", f: row => <el-button size="mini" type="text" on-click={() => this.handleOpenAuth(row)}>分配权限</el-button> },
-                { prop: 'status', label: "操作", f: row => <div><el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put')}>编辑</el-button><el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button></div> },
+                {
+                    prop: 'status', label: "权限", permission: 'sys:role:auto',
+                    f: row => <el-button size="mini" type="text" on-click={() => this.handleOpenAuth(row)}>分配权限</el-button>
+                },
+                {
+                    prop: 'status', label: "操作",
+                    f: row => <div>
+                        <el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put')} v-permission='sys:role:edit'>编辑</el-button>
+                        <el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} v-permission='sys:role:delete'>删除</el-button>
+                    </div>
+                },
             ],
             tableLoading: false,
             multipleSelection: [],      // 多选选中的值

@@ -1,7 +1,8 @@
 'use strict';
 
 const Service = require('egg').Service;
-
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 class MenuService extends Service {
     async getTree(where) {
@@ -68,39 +69,61 @@ class MenuService extends Service {
         return body;
     }
     /* 菜单用户权限 */
-    async getTreeRole(menuIds) {
+    async getTreeRole(roleId) {
         const where = { ...this.ctx.helper.whereParams, parentId: '0' };
         const rootNeeds = await this.ctx.model.Sys.Menu.findAll({
+            include: [{
+                model: this.app.model.Sys.RoleMenu, as: 'menus',
+                where: { roleId },
+            }],
             where,
-            order: [['sort', 'DESC'], ['updated_at', 'DESC']],
+            order: [['sort', 'DESC']],
         });
-        return await this.getChildNeedsRole(rootNeeds, menuIds);
+        return await this.getChildNeedsRole(rootNeeds, roleId);
     }
     /* 树形结构 */
-    async getChildNeedsRole(rootNeeds) {
+    async getChildNeedsRole(rootNeeds, roleId) {
         const expendPromise = [];
-        // rootNeeds = rootNeeds.filter(item => {
-        //     return menuIds.includes(item.id);
-        // });
+
         rootNeeds.forEach(item => {
             expendPromise.push(this.ctx.model.Sys.Menu.findAll({
+                include: [{
+                    model: this.app.model.Sys.RoleMenu, as: 'menus',
+                    where: { roleId },
+                }],
                 where: {
                     ...this.ctx.helper.whereParams,
                     parentId: item.id,
                     status: '0',
+                    type: {
+                        [Op.ne]: '3',
+                    },
                 },
-                order: [['sort', 'DESC'], ['updated_at', 'DESC']],
+                order: [['sort', 'DESC']],
             }));
         });
         const child = await Promise.all(expendPromise);
         for (let [idx, item] of child.entries()) {
 
             if (item.length > 0) {
-                item = await this.getChildNeedsRole(item);
+                item = await this.getChildNeedsRole(item, roleId);
             }
             rootNeeds[idx].setDataValue('children', item); // $$$ 在查询出来后的对象中赋值，需要使setDataValue方法
         }
         return rootNeeds;
+    }
+
+    /* 菜单用户按钮权限 */
+    async getTreeRoleHandle(roleId, body) {
+        const where = { ...body, ...this.ctx.helper.whereParams };
+        return await this.ctx.model.Sys.Menu.findAll({
+            include: [{
+                model: this.app.model.Sys.RoleMenu, as: 'menus',
+                where: { roleId },
+            }],
+            where,
+            order: [['sort', 'DESC']],
+        });
     }
 }
 

@@ -28,9 +28,7 @@
         },
         computed: {
             ...mapState({
-                <%_ formEnum.forEach(function (item) { -%>
-                    <%= item.enumType %>: state => state.enumList.data. <%= item.enumType -%> , 
-                <%_}) -%>
+                    statusList: state => state.enumList.data. statusList , 
             })
         },
         data() {
@@ -38,14 +36,34 @@
                 apiUrl: this.$api.sys.tag, // 请求路很                
 
                 /* ------------ */
-                QueryParam: <%- JSON.stringify(queryHiddenList) %> , //  搜索条件
-                queryComponentData: <%- JSON.stringify(queryList) %> ,
+                QueryParam: {"id":""} , //  搜索条件
+                queryComponentData: [] ,
                 tableData: [],
-                tableParams: [ <%_ tableList.forEach(function (item) {-%> {
-                    	prop: '<%= item.prop -%>', label: '<%= item.label -%>',
-    <%_ if (item.f === 'el-switch') { -%> f: row => <z-update-switch data={ row } data-key="status" url={this.apiUrl} callback={this.query} > </z-update-switch>,<%_ } -%>	 
+                tableParams: [ {
+                    	prop: 'title', label: '标题',
+	 
                         },
-                        <%_ }) -%> 
+ {
+                    	prop: 'type', label: '类型',
+	 
+                        },
+ {
+                    	prop: 'color', label: '颜色',
+	 
+                        },
+ {
+                    	prop: 'sort', label: '排序',
+	 
+                        },
+ {
+                    	prop: 'status', label: '状态',
+	 
+                        },
+ {
+                    	prop: 'details', label: '备注',
+	 
+                        },
+ 
                         { prop: 'status', label: "操作", f: row => <div><el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put') }>编辑</el-button>
                         <el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button> </div>},],
                     tableLoading: false,

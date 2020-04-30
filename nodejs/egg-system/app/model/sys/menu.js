@@ -84,6 +84,8 @@ module.exports = app => {
         freezeTableName: true, // 禁用修改表名
         tableName: 'sys_menu', // 数据库表名 ;
     });
-
+    Menu.associate = function () {
+        app.model.Sys.Menu.hasOne(app.model.Sys.RoleMenu, { as: 'menus', foreignKey: 'menuId' });
+    };
     return Menu;
 };

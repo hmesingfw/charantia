@@ -57,7 +57,7 @@
                 </el-table-column>
                 <el-table-column label="状态" width="80">
                     <template slot-scope="scope">
-                        <z-update-switch :data="scope.row" data-key="status" :url="apiUrl" :callback="query"></z-update-switch>
+                        <c-switch :data="scope.row" data-key="status" :url="apiUrl" :callback="query"></c-switch>
                     </template>
                 </el-table-column>
                 <el-table-column prop="updatedAt" label="更新时间" width="140"></el-table-column>

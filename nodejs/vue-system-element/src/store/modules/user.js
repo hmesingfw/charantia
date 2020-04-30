@@ -15,6 +15,9 @@ const mutations = {
     },
     SET_INFO: (state, info) => {
         state.info = info;
+    },
+    SET_ROLES: (state, info) => {
+        state.roles = info;
     }
 }
 const actions = {
@@ -32,15 +35,7 @@ const actions = {
                 }
 
                 const sysMenu = data.sysMenu;
-                /* 提取出按钮权限标识 */
-                // sysMenu.forEach(item => {
-                //     item.children.forEach(obj => {
-                //         obj.children.forEach(but => {
-                //             buttons.push(but.perms);
-                //         })
-                //     })
-                // });
-                console.log(sysMenu);
+
                 let routerArr = [];
                 routerArr = TogetherRouter(sysMenu);
                 routerArr.push({ path: '*', redirect: '/404', hidden: true }); /* 404 页面 */
@@ -49,7 +44,9 @@ const actions = {
                 commit('SET_INFO', data.info);
 
                 commit('SET_TOKEN', data.token);
-                // commit('SET_ROLES', buttons);
+                /* 按钮权限 */
+                const buttons = data.roles.map(item => item.par);
+                commit('SET_ROLES', buttons);
 
                 setToken(response.data.token)
                 resolve(routerArr);
