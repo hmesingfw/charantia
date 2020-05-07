@@ -11,49 +11,62 @@
             <pagination :data="pagination" :callback="query" :total="totalCount" />
         </div>
 
-        <edit v-model="dialogValue" :form="form" :requestType="requestType" :callback="query" :url="apiUrl"></edit>
+        <c-file v-model="dialogValue" :form="form" :callback="query"></c-file>
     </div>
 </template>
 <script>
-import {
-    mapState
-} from 'vuex';
-import edit from './edit.vue'
+import { mapState } from 'vuex';
 
 export default {
-    components: {
-        edit
-    },
+
     computed: {
         ...mapState({
-            statusList: state => state.enumList.data.statusList,
         })
     },
     data() {
         return {
-            apiUrl: this.$api.sys.tag, // 请求路很                
+            apiUrl: this.$api.sys.file, // 请求路很                
 
             /* ------------ */
-            QueryParam: {}, //  搜索条件
+            QueryParam: { "id": "" }, //  搜索条件
             queryComponentData: [],
             tableData: [],
-            tableParams: [{
-                prop: 'title', label: '标题',
-            }, {
-                prop: 'type', label: '类型',
-            }, {
-                prop: 'color', label: '颜色',
-            }, {
-                prop: 'sort', label: '排序',
-                formatF: row => <c-number data={row} data-key="sort" url={this.apiUrl} callback={this.query}></c-number>,
-            }, {
-                prop: 'status', label: '状态',
-                formatF: row => <c-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></c-switch>,
-            }, {
-                prop: 'details', label: '备注',
-            }, {
-                prop: 'status', label: "操作", f: row => <div><el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put')}>编辑</el-button>
-                    <el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button> </div>
+            tableParams: [{ prop: 'fileName', label: '文件名', },
+            { prop: 'saveName', label: '文件名', },
+            { prop: 'savePath', label: '文件路径', },
+            { prop: 'ext', label: '后缀', },
+            { prop: 'mime', label: '', },
+            {
+                prop: 'size', label: '文件大小',
+            },
+            {
+                prop: 'md5', label: '',
+
+            },
+
+            {
+                prop: 'sha1', label: '',
+
+            },
+            {
+                prop: 'url', label: '',
+
+            },
+            {
+                prop: 'isImg', label: '是否图片',
+
+            },
+            {
+                prop: 'driver', label: '',
+
+            },
+
+            {
+                prop: 'status', label: "操作",
+                f: row => <div>
+                    <el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put')}>编辑</el-button>
+                    <el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button>
+                </div>
             },],
             tableLoading: false,
             multipleSelection: [], // 多选选中的值

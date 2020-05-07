@@ -31,14 +31,14 @@ export default {
             this.$emit('selection-change', val);
         },
         formatter(item, row, column, cellValue) {
-            if (item.f) {
-                return item.f(row);
+            if (item.formatF) {
+                return item.formatF(row);
             }
             return cellValue;
         },
         renderHeader(item, h, { column }) {
-            if (item.l) {
-                return item.l(column)
+            if (item.labelF) {
+                return item.labelF(column)
             }
             return item.label;
 

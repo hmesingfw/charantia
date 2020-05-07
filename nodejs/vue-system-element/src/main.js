@@ -3,7 +3,6 @@ import App from './App.vue'
 import router from './router'
 import store from '@/store/index'
 import axios from 'axios'
-import i18n from './lang'
 import api from '@/config/api'
 import './plugins/element.js'
 
@@ -17,7 +16,6 @@ import '@/styles/sys.scss'
 
 import '@/styles/index.scss' // global css
 
-// import './directive/index'
 import './plugins/import-component.js'              //  封装引用的全局组件
 import '@/directive/permission/index';
 
@@ -30,6 +28,5 @@ import '@/utils/vue-prototype-func.js'              //  引用全局方法
 new Vue({
     router,
     store,
-    i18n,
     render: h => h(App),
 }).$mount('#app')

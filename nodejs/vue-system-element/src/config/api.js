@@ -8,6 +8,7 @@ export default {
         menu: baseURL + '/v1/sys/menu',           // 系统枚举
         user: baseURL + '/v1/sys/user',           // 系统用户
         role: baseURL + '/v1/sys/role',           // 系统角色
+        file: baseURL + '/v1/sys/file',           // 系统角色
 
         userLogin: baseURL + '/v1/sys/user-login', // 用户登录
         roleMenu: baseURL + '/v1/sys/role-menu', // 角色菜单关联

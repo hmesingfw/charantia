@@ -16,6 +16,8 @@ module.exports = app => {
     router.resources('role', baseURL + '/v1/sys/role', controller.sys.role);
     router.post(baseURL + '/v1/sys/role-menu', controller.sys.role.updateMenus); // 角色保存菜单
 
+    router.resources('file', baseURL + '/v1/sys/file', controller.sys.file); // 文件管理
+
     /* 生成单表 */
     router.resources('table', baseURL + '/v1/generate', controller.generate.table);
     router.get(baseURL + '/v1/generate-utils/get-tablename', controller.generate.tableUtils.getAllTableName); // 获取表名
