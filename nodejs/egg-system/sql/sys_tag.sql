@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2020-05-07 17:52:52
+Date: 2020-05-08 17:45:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -77,7 +77,7 @@ INSERT INTO `sys_enum` VALUES ('e3f818e7-fbe3-444d-8215-0791ab7bd457', '日期�
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_file`;
 CREATE TABLE `sys_file` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` varchar(36) NOT NULL,
   `file_name` varchar(128) DEFAULT NULL COMMENT '文件名',
   `save_name` varchar(32) DEFAULT NULL COMMENT '文件保存名',
   `save_path` varchar(255) DEFAULT NULL COMMENT '文件路径',
@@ -93,12 +93,11 @@ CREATE TABLE `sys_file` (
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `user_id` varchar(36) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1575 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_file
 -- ----------------------------
-INSERT INTO `sys_file` VALUES ('1', '2', null, null, null, null, null, null, null, null, '0', null, '2020-05-07 17:36:37', '2020-05-07 17:36:37', null);
 
 -- ----------------------------
 -- Table structure for sys_generate_table
