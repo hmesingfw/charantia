@@ -1,6 +1,8 @@
 'use strict';
 
 const Service = require('egg').Service;
+const fs = require('fs');
+const path = require('path');
 
 class File extends Service {
     async list({ offset = 0, limit = 10, where = {} }) {
@@ -40,6 +42,14 @@ class File extends Service {
             } else {
                 body.suc += 1;
                 file.destroy(obj);
+
+                /* 删除文件 */
+                try {
+                    const target = path.join('./app/public/', file.savePath);
+                    fs.unlinkSync(target);
+                } catch (error) {
+                    this.logger.info(error);
+                }
             }
         }
         return body;

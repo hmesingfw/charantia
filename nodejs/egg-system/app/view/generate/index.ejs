@@ -42,11 +42,10 @@
                 queryComponentData: <%- JSON.stringify(queryList) %> ,
                 tableData: [],
                 tableParams: [ <%_ tableList.forEach(function (item) {-%> {
-                    	prop: '<%= item.prop -%>', label: '<%= item.label -%>',
-    <%_ if (item.f === 'el-switch') { -%> f: row => <z-update-switch data={ row } data-key="status" url={this.apiUrl} callback={this.query} > </z-update-switch>,<%_ } -%>	 
+                    	prop: '<%= item.prop -%>', label: '<%= item.label -%>',    <%_ if (item.f === 'el-switch') { -%> formatF: row => <z-update-switch data={ row } data-key="status" url={this.apiUrl} callback={this.query} > </z-update-switch>,<%_ } -%>	 
                         },
                         <%_ }) -%> 
-                        { prop: 'status', label: "操作", f: row => <div><el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put') }>编辑</el-button>
+                        { prop: 'status', label: "操作", formatF: row => <div><el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put') }>编辑</el-button>
                         <el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button> </div>},],
                     tableLoading: false,
                     multipleSelection: [], // 多选选中的值

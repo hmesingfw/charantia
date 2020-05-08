@@ -2,7 +2,6 @@
     <div>
         <el-form :inline="true" :model="QueryParam" class="header-query-form">
             <generate-form :datalist="queryComponentData" :model="QueryParam" @change="query(1)"></generate-form>
-
             <generate-query :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection"></generate-query>
         </el-form>
 
@@ -11,7 +10,7 @@
             <pagination :data="pagination" :callback="query" :total="totalCount" />
         </div>
 
-        <c-file v-model="dialogValue" :form="form" :callback="query"></c-file>
+        <c-file v-model="dialogValue" :callback="getFile"></c-file>
     </div>
 </template>
 <script>
@@ -35,21 +34,12 @@ export default {
             { prop: 'saveName', label: '文件名', },
             { prop: 'savePath', label: '文件路径', },
             { prop: 'ext', label: '后缀', },
-            { prop: 'mime', label: '', },
+            { prop: 'mime', label: 'mime', },
             {
-                prop: 'size', label: '文件大小',
+                prop: 'size', label: '文件大小', width: 100,
             },
             {
-                prop: 'md5', label: '',
-
-            },
-
-            {
-                prop: 'sha1', label: '',
-
-            },
-            {
-                prop: 'url', label: '',
+                prop: 'md5', label: 'md5',
 
             },
             {
@@ -57,13 +47,8 @@ export default {
 
             },
             {
-                prop: 'driver', label: '',
-
-            },
-
-            {
                 prop: 'status', label: "操作",
-                f: row => <div>
+                formatF: row => <div>
                     <el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put')}>编辑</el-button>
                     <el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button>
                 </div>
@@ -107,8 +92,12 @@ export default {
         /* 编辑 */
         handleEdit(row, requestType = 'post') {
             this.dialogValue = true;
-            this.form = this.DeepCopy(row);
             this.requestType = requestType;
+        },
+
+        getFile(fileurl) {
+            console.log(fileurl);
+            this.query();
         },
     }
 };
