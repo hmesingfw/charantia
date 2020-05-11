@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>红薯良品</title>
+
+
+
+    <!-- 引入样式文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vant@2.8/lib/index.css" />
+
+    <style>
+        .title {
+            font-size: 1.5rem;
+            margin: 1rem;
+        }
+
+        .font {
+            margin: 0;
+            padding: 32px 16px 16px;
+            color: rgba(69, 90, 100, 0.6);
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 16px;
+        }
+
+        .video {
+            padding: 0 5%;
+            margin-bottom: 1rem;
+        }
+
+        /*video默认aduio音量按钮*/
+        video::-webkit-media-controls-mute-button {
+            display: none !important;
+        }
+
+        .img {
+            width: 5rem;
+            height: 5rem;
+        }
+
+
+        .text {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        .bottom {
+            margin: 30px 0;
+        }
+
+        .text-center {
+            margin-top: 4px;
+            color: rgba(69, 90, 100, 0.6);
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 16px;
+            text-align: center;
+        }
+    </style>
+
+<body>
+    <div id="app">
+        <div class="title">刀子嘴</div>
+
+        <div class="font">红烧砣粉、凉伴砣粉做法</div>
+
+        <video controls="controls" width="90%" class="video" controlsList='nodownload noremote footbar'
+            src="https://hmvide.oss-cn-beijing.aliyuncs.com/%E5%B9%BF%E7%BE%BDok.mp4">
+            您的浏览器不支持 video 标签。
+        </video>
+
+        <van-grid :column-num="3">
+            <van-grid-item>
+                <van-image class="img" fit="cover" src="https://hmvide.oss-cn-beijing.aliyuncs.com/w1.png" />
+            </van-grid-item>
+            <van-grid-item>
+                <van-image class="img" fit="cover" src="https://hmvide.oss-cn-beijing.aliyuncs.com/w2.png" />
+            </van-grid-item>
+            <van-grid-item>
+                <van-image class="img" fit="cover" src="https://hmvide.oss-cn-beijing.aliyuncs.com/w3.png" />
+            </van-grid-item>
+            <van-grid-item>
+                <van-image class="img" fit="cover" src="https://hmvide.oss-cn-beijing.aliyuncs.com/w4.png" />
+            </van-grid-item>
+            <van-grid-item>
+                <van-image class="img" fit="cover" src="https://hmvide.oss-cn-beijing.aliyuncs.com/w5.png" />
+            </van-grid-item>
+            <van-grid-item>
+                <van-image class="img" fit="cover" src="https://hmvide.oss-cn-beijing.aliyuncs.com/w6.png" />
+            </van-grid-item>
+        </van-grid>
+        <div class="text">1.准备好五花肉沫，香葱，剁辣椒；</div>
+        <div class="text">2.砣粉切丁;</div>
+        <div class="text">3.热油，煸香五花肉；</div>
+        <div class="text">4.加入砣粉，加入适量的水，焖煮；</div>
+        <div class="text">5.收汁，加入生抽，撒入葱花，出锅；</div>
+
+
+        <div class="bottom">
+
+            <div class=" text-center">
+                公司地址：湖南省长沙市区雨花区
+            </div>
+            <div class=" text-center">
+                电话：13875350161
+            </div>
+        </div>
+
+        <van-number-keyboard safe-area-inset-bottom />
+    </div>
+</body>
+<!-- 引入 Vue 和 Vant 的 JS 文件 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vant@2.8/lib/vant.min.js"></script>
+
+<script>
+    // 在 #app 标签下渲染一个按钮组件
+    new Vue({
+        el: '#app',
+    });
+
+
+    // 通过 CDN 引入时不会自动注册 Lazyload 组件
+    // 可以通过下面的方式手动注册
+    Vue.use(vant.Lazyload);
+</script>
+
+</html>

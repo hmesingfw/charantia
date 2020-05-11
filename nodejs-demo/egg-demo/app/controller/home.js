@@ -12,6 +12,11 @@ class HomeController extends Controller {
         const { ctx } = this;
         ctx.body = await ctx.renderView('src/new.ejs');
     }
+
+    async dofeng() {
+        const { ctx } = this;
+        ctx.body = await ctx.renderView('src/dofeng.ejs');
+    }
 }
 
 module.exports = HomeController;
