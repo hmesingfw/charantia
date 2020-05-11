@@ -42,12 +42,11 @@
 </template>
 
 <script> 
+import { mapActions } from 'vuex'
 
 export default {
     name: 'Login',
     data() {
-
-
         const validatePassword = (rule, value, callback) => {
             if (value.length < 6) {
                 callback(new Error('密码长度少于6位，请重新输入'))
@@ -98,6 +97,9 @@ export default {
         // window.removeEventListener('storage', this.afterQRScan)
     },
     methods: {
+        ...mapActions({
+            initStore: 'enumList/getEnum',
+        }),
         checkCapslock({ shiftKey, key } = {}) {
             if (key && key.length === 1) {
                 if (shiftKey && (key >= 'a' && key <= 'z') || !shiftKey && (key >= 'A' && key <= 'Z')) {
@@ -132,7 +134,8 @@ export default {
                         } else {
                             this.$message.success('登录成功');
                         }
-                        console.log(routes);
+
+                        this.initStore();           // 获取系统数据字典
                         this.$router.addRoutes(routes);
                         this.$store.dispatch('permission/ADD_ROUTES', routes);  /* 重新加载面板 */
 

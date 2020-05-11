@@ -4,7 +4,11 @@
 
 <script>
 import echarts from 'echarts'
-require('echarts/theme/macarons') // echarts theme
+// import echarts from 'echarts/lib/echarts'
+// import 'echarts/lib/chart/line'
+// import 'echarts/lib/component/legend'
+// import 'echarts/lib/component/title'
+
 import resize from './mixins/resize'
 
 export default {

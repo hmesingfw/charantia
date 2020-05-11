@@ -27,6 +27,8 @@
 </template>
 
 <script> 
+require('echarts/theme/macarons') // echarts theme   引入echarts 样式，全局这要一个地方引入就行
+
 import PanelGroup from './components/PanelGroup'
 import LineChart from './components/LineChart'
 import RaddarChart from './components/RaddarChart'
