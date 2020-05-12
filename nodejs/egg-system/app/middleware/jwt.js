@@ -6,7 +6,7 @@ module.exports = options => {
         const token = ctx.request.header.authorization;
         // const method = ctx.method.toLowerCase();
         // 当前请求时get请求，执行接下来的中间件
-        const urls = ['/api/v1/sys/user-login'];
+        const urls = ['/api/v1/sys/user-login', '/api/v1/sys/get-file'];
 
         if (urls.includes(ctx.path)) {
             await next();

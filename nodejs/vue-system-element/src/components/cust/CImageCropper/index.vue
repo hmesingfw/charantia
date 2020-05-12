@@ -76,6 +76,7 @@ export default {
             // 将剪裁好的图片回传给父组件
             this.loadingButton = true;
             this.$refs.cropper.getCropBlob(data => {
+
                 var file = new File([data], 'file.png');
                 var formdata = new FormData();
                 formdata.append('file', file);
@@ -85,8 +86,8 @@ export default {
                 }).then(res => {
 
                     this.loadingButton = false;
-                    this.$emit('input', res.data.data.fileUrl);
-                    this.$emit('getid', res.data.data.id);
+                    this.$emit('input', res.data.url);
+                    this.$emit('getid', res.data.id);
                     this.$emit('close');
                 }).catch(() => {
                     this.loadingButton = false;

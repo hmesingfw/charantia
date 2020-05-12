@@ -26,7 +26,7 @@ class FileController extends Controller {
         // 创建文件写入路径
         const target = path.join('./app/public/', filepath);
 
-        const result = await new Promise((resolve, reject) => {
+        await new Promise((resolve, reject) => {
             // 创建文件写入流
             const remoteFileStrem = fs.createWriteStream(target);
             // 以管道方式写入流
@@ -50,28 +50,32 @@ class FileController extends Controller {
             });
         });
 
+        let isImg = 0;
+        const imgType = ['.jpg', '.png'];
+
+        if (imgType.includes(ext)) {
+            isImg = 1;
+        }
+
         const obj = {
             id: uuidv4(),
             fileName: stream.filename,
             saveName: filename,
             savePath: filepath,
-            ext,
+            ext, isImg,
             mime: stream.mime,
         };
         const body = await ctx.service.sys.file.create(obj);
         ctx.body = {
-            body,
-            result,
-            obj,
-            stream,
+            message: '上传成功',
+            id: body.id,
+            url: filepath,
         };
     }
 
     async update() {
         const ctx = this.ctx;
         const stream = await ctx.getFileStream();
-        console.log(stream);
-
         ctx.body = {
             stream,
         };
@@ -81,6 +85,15 @@ class FileController extends Controller {
         const id = ctx.params.id;
 
         ctx.body = await ctx.service.sys.file.del(id);
+        ctx.status = 200;
+    }
+
+    async getFile() {
+        const ctx = this.ctx;
+        const id = ctx.query.id;
+        const file = await ctx.service.sys.file.find(id);
+        const target = path.join('./app/public/', file.savePath);
+        ctx.body = fs.readFileSync(target);
         ctx.status = 200;
     }
 }

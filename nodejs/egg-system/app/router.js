@@ -17,6 +17,7 @@ module.exports = app => {
     router.post(baseURL + '/v1/sys/role-menu', controller.sys.role.updateMenus); // 角色保存菜单
 
     router.resources('file', baseURL + '/v1/sys/file', controller.sys.file); // 文件管理
+    router.get(baseURL + '/v1/sys/get-file', controller.sys.file.getFile);
 
     /* 生成单表 */
     router.resources('table', baseURL + '/v1/generate', controller.generate.table);

@@ -65,6 +65,7 @@ import {
     Message,
     Scrollbar,
     Drawer,
+    Popconfirm,
 } from 'element-ui';
 
 Vue.use(Pagination);
@@ -125,6 +126,7 @@ Vue.use(Divider);
 Vue.use(Image);
 Vue.use(Drawer);
 Vue.use(Scrollbar);
+Vue.use(Popconfirm);
 Vue.use(CascaderPanel);
 
 Vue.use(Loading.directive);

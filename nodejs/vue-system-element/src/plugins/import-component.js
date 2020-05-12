@@ -17,6 +17,8 @@ import CSwitch from '@/components/Cust/CSwitch';
 import CNumber from '@/components/Cust/CNumber';
 /* 文件管理 */
 import CFile from '@/components/Cust/CFile';
+/* 图片裁剪 */
+import CImageCropper from '@/components/Cust/CImageCropper';
 
 Vue.component('dialog-alert', DialogAlert);
 Vue.component('generate-form', GenerateForm);
@@ -30,3 +32,4 @@ Vue.component('dialog-model', DialogModel);
 Vue.component('c-switch', CSwitch);
 Vue.component('c-number', CNumber);
 Vue.component('c-file', CFile);
+Vue.component('c-image-cropper', CImageCropper);

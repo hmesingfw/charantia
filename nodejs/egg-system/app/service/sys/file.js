@@ -19,6 +19,14 @@ class File extends Service {
         return this.ctx.model.Sys.File.create(file);
     }
 
+    async find(id) {
+        const file = await this.ctx.model.Sys.File.findByPk(id);
+        if (!file) {
+            this.ctx.throw(404, 'fild not found');
+        }
+        return file;
+    }
+
     async update(id, updates) {
         const file = await this.ctx.model.Sys.File.findByPk(id);
         if (!file) {

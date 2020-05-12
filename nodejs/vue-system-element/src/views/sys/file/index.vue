@@ -10,14 +10,16 @@
             <pagination :data="pagination" :callback="query" :total="totalCount" />
         </div>
 
-        <c-file v-model="dialogValue" :callback="getFile"></c-file>
+        <edit v-model="dialogValue" :form="form" :requestType="requestType" :callback="query" :url="apiUrl"></edit>
     </div>
 </template>
 <script>
 import { mapState } from 'vuex';
-
+import edit from './edit';
 export default {
-
+    components: {
+        edit
+    },
     computed: {
         ...mapState({
         })
@@ -25,34 +27,38 @@ export default {
     data() {
         return {
             apiUrl: this.$api.sys.file, // 请求路很                
-
             /* ------------ */
             QueryParam: { "id": "" }, //  搜索条件
             queryComponentData: [],
             tableData: [],
-            tableParams: [{ prop: 'fileName', label: '文件名', },
-            { prop: 'saveName', label: '文件名', },
-            { prop: 'savePath', label: '文件路径', },
-            { prop: 'ext', label: '后缀', },
-            { prop: 'mime', label: 'mime', },
-            {
-                prop: 'size', label: '文件大小', width: 100,
-            },
-            {
-                prop: 'md5', label: 'md5',
+            tableParams: [
+                {
+                    prop: 'isImg', label: '预览', width: 100,
+                    formatF: row => {
+                        if (row.isImg == '1')
+                            return <el-image src={this.$api.sys.getFile + '?id=' + row.id} preview-src-list={[this.$api.sys.getFile + '?id=' + row.id]}></el-image>
+                        return <div></div>
+                    }
+                },
 
-            },
-            {
-                prop: 'isImg', label: '是否图片',
+                { prop: 'fileName', label: '文件名', },
+                { prop: 'saveName', label: '文件名', },
+                { prop: 'savePath', label: '文件路径', },
+                { prop: 'ext', label: '后缀', },
+                { prop: 'mime', label: 'mime', },
+                {
+                    prop: 'size', label: '文件大小', width: 100,
+                },
+                {
+                    prop: 'md5', label: 'md5',
+                },
 
-            },
-            {
-                prop: 'status', label: "操作",
-                formatF: row => <div>
-                    <el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put')}>编辑</el-button>
-                    <el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button>
-                </div>
-            },],
+                {
+                    prop: 'status', label: "操作",
+                    formatF: row => <div>
+                        <el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button>
+                    </div>
+                },],
             tableLoading: false,
             multipleSelection: [], // 多选选中的值
 
@@ -92,12 +98,8 @@ export default {
         /* 编辑 */
         handleEdit(row, requestType = 'post') {
             this.dialogValue = true;
+            this.form = this.DeepCopy(row);
             this.requestType = requestType;
-        },
-
-        getFile(fileurl) {
-            console.log(fileurl);
-            this.query();
         },
     }
 };
