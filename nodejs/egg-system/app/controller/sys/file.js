@@ -10,13 +10,13 @@ const path = require('path');
 const sendToWormhole = require('stream-wormhole');
 class FileController extends Controller {
     async index() {
-        const ctx = this.ctx;
+        const { ctx } = this;
         const where = { ...ctx.query };
         ctx.body = await ctx.service.sys.file.list(where);
     }
 
     async create() {
-        const ctx = this.ctx;
+        const { ctx, config } = this;
         const stream = await ctx.getFileStream(); // stream对象也包含了文件名，大小等基本信息
 
         const ext = stream.filename.substring(stream.filename.lastIndexOf('.'), stream.filename.length); // 文件后缀
@@ -24,7 +24,7 @@ class FileController extends Controller {
         const filepath = `uploadfile/${filename}`;
 
         // 创建文件写入路径
-        const target = path.join('./app/public/', filepath);
+        const target = path.join(config._file.upload, filepath);
 
         await new Promise((resolve, reject) => {
             // 创建文件写入流
@@ -89,10 +89,11 @@ class FileController extends Controller {
     }
 
     async getFile() {
-        const ctx = this.ctx;
+        const { ctx, config } = this;
+
         const id = ctx.query.id;
         const file = await ctx.service.sys.file.find(id);
-        const target = path.join('./app/public/', file.savePath);
+        const target = path.join(config._file.upload, file.savePath);
         ctx.body = fs.readFileSync(target);
         ctx.status = 200;
     }

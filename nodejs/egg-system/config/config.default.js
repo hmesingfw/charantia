@@ -45,6 +45,9 @@ module.exports = appInfo => {
         mapping: { '.ejs': 'ejs' },
     };
 
-
+    /* 文件上传配置 */
+    config._file = {
+        upload: './app/public/',
+    };
     return config;
 };

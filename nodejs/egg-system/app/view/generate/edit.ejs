@@ -21,11 +21,11 @@
             </el-form-item>
             <%_ }else if(item.component === 'el-input-number'){ -%>
             <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
-                <el-input-number v-model="form.<%=item.alias%>"></el-input-number>
+                <el-input-number v-model="form.<%=item.alias%>" :min="1" :max="10000"></el-input-number>
             </el-form-item>
              <%_ }else if(item.component === 'el-switch'){ -%>
             <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
-            	<el-switch class="switch-style" v-model="form.<%=item.alias%>" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>             
+            	<el-switch class="switch-style" v-model="form.<%=item.alias%>" v-bind="ConfigParmas.switchValue"></el-switch>             
             </el-form-item>
             <%_ }else if(item.component === 'el-date-picker'){ -%>
             <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">

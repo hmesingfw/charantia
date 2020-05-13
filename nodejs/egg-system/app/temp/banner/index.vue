@@ -28,9 +28,7 @@
         },
         computed: {
             ...mapState({
-                <%_ formEnum.forEach(function (item) { -%>
-                    <%= item.enumType %>: state => state.enumList.data. <%= item.enumType -%> , 
-                <%_}) -%>
+                    statusList: state => state.enumList.data. statusList , 
             })
         },
         data() {
@@ -38,22 +36,30 @@
                 apiUrl: this.$api.sys.tag, // 请求路很                
 
                 /* ------------ */
-                QueryParam: <%- JSON.stringify(queryHiddenList) %> , //  搜索条件
-                queryComponentData: <%- JSON.stringify(queryList) %> ,
+                QueryParam: {"id":""} , //  搜索条件
+                queryComponentData: [] ,
                 tableData: [],
-                tableParams: [ <%_ tableList.forEach(function (item) {-%> 
-                    {
-                    	prop: '<%= item.prop -%>', label: '<%= item.label -%>',   
-                            <%_ if (item.f === 'el-switch') { -%> formatF: row => <c-switch data={ row } data-key="status" url={this.apiUrl} callback={this.query} > </c-switch>,<%_ } -%>	 
+                tableParams: [ {
+                    	prop: 'title', label: '标题',	 
                         },
-                        <%_ }) -%> 
-                    { 
-                        prop: 'status', label: "操作", 
-                        formatF: row => <div>
-                            <el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put') }>编辑</el-button>
-                            <el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button> 
-                        </div>
-                    },],
+ {
+                    	prop: 'coverId', label: '文件',	 
+                        },
+ {
+                    	prop: 'startDate', label: '开始时间',	 
+                        },
+ {
+                    	prop: 'endDate', label: '结束时间',	 
+                        },
+ {
+                    	prop: 'sort', label: '排序',	 
+                        },
+ {
+                    	prop: 'status', label: '状态', formatF: row => <z-update-switch data={ row } data-key="status" url={this.apiUrl} callback={this.query} > </z-update-switch>,	 
+                        },
+ 
+                        { prop: 'status', label: "操作", formatF: row => <div><el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put') }>编辑</el-button>
+                        <el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button> </div>},],
                     tableLoading: false,
                     multipleSelection: [], // 多选选中的值
 

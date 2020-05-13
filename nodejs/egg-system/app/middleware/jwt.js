@@ -18,20 +18,10 @@ module.exports = options => {
             try {
                 // 验证当前token
                 decode = JWT.verify(token, options.secret);
-                // console.log(decode);
-
                 if (Date.now() - decode.expire > 0) {
                     ctx.body = { msg: 'Token已过期', message: '身份会话已过期，请重新登录', code: 4001 };
                     ctx.status = 200;
                 }
-                // const user = await ctx.model.User.find({
-                //     userName: decode.userName,
-                // });
-                // if (user) {
-                //     await next();
-                // } else {
-                //     ctx.throw('401', '用户信息验证失败');
-                // }
                 await next();
             } catch (e) {
                 ctx.body = { msg: e, message: '身份认证已过期，请重新登录', code: 4001 };
