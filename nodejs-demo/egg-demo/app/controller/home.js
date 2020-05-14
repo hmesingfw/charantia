@@ -1,5 +1,5 @@
 'use strict';
-
+const axios = require('axios');
 const Controller = require('egg').Controller;
 
 class HomeController extends Controller {
@@ -17,6 +17,23 @@ class HomeController extends Controller {
         const { ctx } = this;
         ctx.body = await ctx.renderView('src/dofeng.ejs');
     }
+
+    async getCode() {
+        const { ctx } = this;
+        // const message = await axios.post('https://api.weixin.qq.com/cgi-bin/qrcode/create', {
+        //     access_token: '',
+        //     expire_seconds: 6000,
+        //     action_name: 'QR_SCENE',
+        //     scene_id: 778,
+        //     scene_str: 'node',
+        // });
+        const message = await ctx.service.home.getAccessToken();
+        ctx.body = {
+            message,
+        };
+    }
+
+
 }
 
 module.exports = HomeController;
