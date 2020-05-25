@@ -28,6 +28,7 @@ class HomeController extends Controller {
         //     scene_str: 'node',
         // });
         const message = await ctx.service.home.getAccessToken();
+        console.log(message.access_token);
         ctx.body = {
             message,
         };
