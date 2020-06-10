@@ -1,11 +1,12 @@
 <template>
     <div>
-        <el-form :inline="true" :model="QueryParam" class="header-query-form">
-            <generate-form :model="QueryParam" :datalist="queryComponentData" @change="query(1)"></generate-form>
-            <generate-query :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection"></generate-query>
-        </el-form>
-
-        <div class="article-table">
+        <div class="app-main-table">
+            <el-form :inline="true" :model="QueryParam" class="header-query-form">
+                <generate-form :model="QueryParam" :datalist="queryComponentData" @change="query(1)"></generate-form>
+                <generate-query :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection"></generate-query>
+            </el-form>
+        </div>
+        <div class="app-main-table">
             <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" v-loading="tableLoading"></generate-table>
             <pagination :data="pagination" :total="totalCount" :callback="query" />
         </div>

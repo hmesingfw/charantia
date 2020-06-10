@@ -2,8 +2,16 @@
     padding: 8px;
 }
 
+.padding-20 {
+    padding: 20px;
+}
+
 .margin-8 {
     margin: 8px;
+}
+
+.el-input-width {
+    width: 300px;
 }
 
 .border-shadow {
@@ -20,7 +28,6 @@
 
 .header-query-form {
     @extend .border-shadow;
-    margin: 24px 28px 0px 28px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -38,9 +45,9 @@
     }
 }
 
-.article-table {
+.app-main-table {
     @extend .border-shadow;
-    margin: 24px 28px 24px 28px;
+    margin: 15px;
 
     .el-table {
         width: 100%;

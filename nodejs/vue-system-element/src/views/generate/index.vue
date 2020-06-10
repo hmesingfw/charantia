@@ -1,16 +1,18 @@
 <template>
     <div>
-        <el-form :inline="true" :model="QueryParam" class="header-query-form">
-            <el-form-item label="姓名">
-                <el-input v-model="QueryParam.title" placeholder="请输入"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
-                <el-button @click="tableName = '';dialogVisible = true;" circle type="primary" icon="el-icon-plus"></el-button>
-                <el-button @click="HandleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
-            </el-form-item>
-        </el-form>
-        <div class="article-table">
+        <div class="app-main-table">
+            <el-form :inline="true" :model="QueryParam" class="header-query-form">
+                <el-form-item label="姓名">
+                    <el-input v-model="QueryParam.title" placeholder="请输入"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
+                    <el-button @click="tableName = '';dialogVisible = true;" circle type="primary" icon="el-icon-plus"></el-button>
+                    <el-button @click="HandleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+        <div class="app-main-table">
             <el-table
                 :data="tableData"
                 :height="tableHeight"

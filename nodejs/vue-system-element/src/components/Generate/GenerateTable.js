@@ -1,7 +1,7 @@
 import { mapGetters } from 'vuex';
 export default {
-    render(h) {
-        return <el-table data={this.data} on-selection-change={this.selectionChange} stripe={this.stripe} header-row-class-name="table-header-color" >
+    render() {
+        return <el-table data={this.data} on-selection-change={this.selectionChange} stripe={this.stripe}  {...{ attrs: this.tableAttrs }} header-row-class-name={this.headerRowClassName} >
             {this.isSelection && <el-table-column type="selection" width="42"></el-table-column>}
             {
                 this.params.map(item => {
@@ -22,6 +22,11 @@ export default {
     props: {
         data: Array,                       // 数据来源
         params: Array,
+        tableAttrs: {
+            type: Object,
+            default: () => ({})
+        },           // 表格自定义扩展参数
+        headerRowClassName: { type: String, default: 'table-header-color' },
         stripe: { type: Boolean, default: true },
         isSelection: { type: Boolean, default: true },  // 是否显示多选
         callback: { type: Function, default: () => { } }

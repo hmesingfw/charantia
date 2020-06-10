@@ -1,15 +1,17 @@
 <template>
     <div>
-        <el-form :inline="true" :model="QueryParam" class="header-query-form">
-            <generate-form :model="QueryParam" :datalist="queryComponentData"></generate-form>
+        <div class="app-main-table">
+            <el-form :inline="true" :model="QueryParam" class="header-query-form">
+                <generate-form :model="QueryParam" :datalist="queryComponentData"></generate-form>
 
-            <el-form-item>
-                <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
-                <el-button @click="handleEdit({sort:1,status:'0',parentId:'0'}, 'post')" circle type="primary" icon="el-icon-plus"></el-button>
-                <el-button @click="HandleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
-            </el-form-item>
-        </el-form>
-        <div class="article-table">
+                <el-form-item>
+                    <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
+                    <el-button @click="handleEdit({sort:1,status:'0',parentId:'0'}, 'post')" circle type="primary" icon="el-icon-plus"></el-button>
+                    <el-button @click="HandleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+        <div class="app-main-table">
             <el-table
                 :data="tableData"
                 @selection-change="val => multipleSelection = val"
