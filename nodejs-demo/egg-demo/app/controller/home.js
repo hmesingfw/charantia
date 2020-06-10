@@ -28,9 +28,12 @@ class HomeController extends Controller {
         //     scene_str: 'node',
         // });
         const message = await ctx.service.home.getAccessToken();
-        console.log(message.access_token);
+        const code = await ctx.service.home.createCode(message.access_token);
+        // const url = await ctx.service.home.getTicket(code.body.ticket);
+        console.log(code.body);
         ctx.body = {
-            message,
+            message, code,
+            // url,
         };
     }
 
