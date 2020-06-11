@@ -155,18 +155,27 @@ export const constantRoutes = [{
     }
     ]
 },
-
+{
+    path: '/page',
+    component: Layout,
+    children: [{
+        path: 'detail',
+        component: () => import('@/views/two-page/index'),
+        name: 'PageDetailTwo',
+        meta: {
+            title: '详细信息',
+            icon: 'user'
+        }
+    }]
+},
 {
     path: '/temp',
     component: Layout,
+    hidden: true,
     children: [{
         path: 'index',
         component: () => import('@/views/temp/index'),
         name: 'TempIndexview',
-        meta: {
-            title: '样例2',
-            icon: 'user'
-        }
     }]
 },]
 

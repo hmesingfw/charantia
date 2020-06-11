@@ -6,6 +6,7 @@
             v-model="data[dataKey]"
             @change="UpdateSwitch(data, url, dataKey, callback)"
             v-bind="ConfigParmas[configtitle]"
+            active-color="#4fc08d"
         ></el-switch>
         <div v-else>{{ ListMatchField('statusList', data[dataKey]) }}</div>
     </div>

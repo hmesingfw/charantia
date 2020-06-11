@@ -1,55 +1,14 @@
 <template>
     <div>
-        <div class="app-main-table">
+        <el-row class="app-main-table">
             <el-form :inline="true" :model="QueryParam" class="header-query-form">
                 <generate-form :model="QueryParam" :datalist="queryComponentData"></generate-form>
-
-                <el-form-item>
-                    <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
-                    <el-button @click="handleEdit({sort:1,status:'0',parentId:'0'}, 'post')" circle type="primary" icon="el-icon-plus"></el-button>
-                    <el-button @click="HandleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
-                </el-form-item>
             </el-form>
-        </div>
-        <div class="app-main-table">
-            <el-table
-                :data="tableData"
-                @selection-change="val => multipleSelection = val"
-                v-loading="tableLoading"
-                style="width: 100%"
-                :stripe="true"
-                row-key="id"
-                :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-                header-row-class-name="table-header-color"
-            >
-                <el-table-column type="selection" width="42"></el-table-column>
-                <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="value" label="值" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="sort" label="排序" width="120">
-                    <template slot-scope="scope">
-                        <el-popconfirm title="修改排序" @onConfirm="UpdateField(scope.row, apiUrl, 'sort', query)">
-                            <el-input-number slot="reference" v-model="scope.row.sort" controls-position="right" class="el-input-number-table" :min="1" :max="1000" size="mini"></el-input-number>
-                        </el-popconfirm>
-                    </template>
-                </el-table-column>
-
-                <el-table-column label="状态" width="80">
-                    <template slot-scope="scope">
-                        <c-switch :data="scope.row" data-key="status" :url="apiUrl" :callback="query"></c-switch>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="details" label="备注" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="updatedAt" label="更新时间" width="140"></el-table-column>
-
-                <el-table-column label="操作" width="160" fixed="right">
-                    <template slot-scope="scope">
-                        <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
-                        <el-button size="mini" type="text" @click="HandleDelete(apiUrl, scope.row, query)">删除</el-button>
-                        <el-button size="mini" type="text" v-if="scope.row.parentId == '0'" @click="handleEdit({sort:1,status:'0',parentId:scope.row.id} , 'post')">添加值</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </div>
+        </el-row>
+        <el-row class="app-main-table">
+            <generate-handle :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection"></generate-handle>
+            <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" :table-attrs="tableAttrs" v-loading="tableLoading"></generate-table>
+        </el-row>
 
         <dialog-alert v-model="dialogValue" title="枚举值" :type="requestType" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
             <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
@@ -95,6 +54,34 @@ export default {
                 { name: 'el-input', key: 'title', label: "标题", attr: { placeholder: '请输入标题' } },
             ],
             tableData: [],
+            tableParams: [
+                { prop: 'title', label: "标题" },
+                { prop: 'value', label: "值" },
+                {
+                    prop: 'sort', label: '排序', width: "120",
+                    formatF: row => <c-number data={row} data-key="sort" url={this.apiUrl} callback={this.query}></c-number>
+                },
+                {
+                    prop: 'status', label: "状态", width: 80,
+                    labelF: () => <generate-label label='状态' keys='status' option='statusList' params={this.QueryParam} call={this.query}></generate-label>,
+                    formatF: row => <c-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></c-switch>
+                },
+                { prop: 'details', label: "备注" },
+                { prop: 'updatedAt', label: "更新时间", width: '160' },
+                {
+                    prop: 'status', label: "操作",
+                    formatF: row =>
+                        <div>
+                            <el-button type="text" on-click={() => this.handleEdit(row, 'put')} v-permission='sys:role:edit'>编辑</el-button>
+                            <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button>
+                            {row.parentId != '0' && <el-button type="text" on-click={() => this.handleEdit({ sort: 1, status: '0', parentId: row.row.id }, 'post')}>添加值</el-button>}
+                        </div>
+                },
+            ],
+            tableAttrs: {
+                'row-key': "id",
+                'tree-props': { children: 'children', hasChildren: 'hasChildren' }
+            },
             tableLoading: false,
             multipleSelection: [],      // 多选选中的值
 

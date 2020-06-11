@@ -3,11 +3,10 @@
         <div class="app-main-table">
             <el-form :inline="true" :model="QueryParam" class="header-query-form">
                 <generate-form :datalist="queryComponentData" :model="QueryParam" @change="query(1)"></generate-form>
-
-                <generate-query :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection"></generate-query>
             </el-form>
         </div>
         <div class="app-main-table">
+            <generate-handle :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection"></generate-handle>
             <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" v-loading="tableLoading"></generate-table>
             <pagination :data="pagination" :callback="query" :total="totalCount" />
         </div>
@@ -62,8 +61,8 @@ export default {
 
                 {
                     prop: 'status', label: "操作",
-                    formatF: row => <div><el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put')}>编辑</el-button>
-                        <el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button> </div>
+                    formatF: row => <div><el-button type="text" on-click={() => this.handleEdit(row, 'put')}>编辑</el-button>
+                        <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button> </div>
                 },],
             tableLoading: false,
             multipleSelection: [], // 多选选中的值

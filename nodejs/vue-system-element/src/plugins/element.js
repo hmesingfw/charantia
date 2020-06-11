@@ -138,7 +138,7 @@ Vue.prototype.$confirm = MessageBox.confirm;
 Vue.prototype.$prompt = MessageBox.prompt;
 Vue.prototype.$message = Message;
 
-Vue.prototype.$ELEMENT = { size: localStorage.getItem('size') || 'mini' }; //项目中所有拥有 size 属性的组件的默认尺寸均为 'mini'
+Vue.prototype.$ELEMENT = { size: localStorage.getItem('size') || 'medium' }; //项目中所有拥有 size 属性的组件的默认尺寸均为 'mini'
 // Vue.use(Element, {
 //     size: localStorage.getItem('size') || 'mini',
 // })

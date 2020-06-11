@@ -22,8 +22,8 @@
     color: #303133;
     -webkit-transition: 0.3s;
     transition: 0.3s;
-    -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    // -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    // box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 
 .header-query-form {
@@ -31,7 +31,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    min-height: 50px;
+    min-height: 80px;
 
     padding: {
         top: 10px;
@@ -47,10 +47,11 @@
 
 .app-main-table {
     @extend .border-shadow;
-    margin: 15px;
+    margin: 14px;
 
     .el-table {
-        width: 100%;
+        width: 99%;
+        margin-left: .5%;
     }
 }
 

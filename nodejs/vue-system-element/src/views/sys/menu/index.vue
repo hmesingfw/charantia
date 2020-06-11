@@ -1,24 +1,34 @@
 <template>
     <el-row>
         <el-col :xl="5" :sm="4">
-            <el-row style="padding:20px">
-                <el-input placeholder="输入关键字进行过滤" v-model="filterText" style="margin-bottom:20px"></el-input>
-                <el-tree ref="treeMenu" :data="tableData" :props="{children: 'children',label: 'title'}" :filter-node-method="filterNode" @node-click="data => handleNodeClick(data, 'put')"></el-tree>
+            <el-row class="border-shadow padding-20" :style="{margin:'14px 0 14px 14px',height:treeHeight}">
+                <el-input placeholder="输入关键字进行过滤" v-model="filterText" style="padding-bottom:20px"></el-input>
+                <el-row style="padding-bottom:20px">
+                    <el-col>
+                        <el-button @click="handleEdit({ parentId: '0', }, 'post')" type="primary" icon="el-icon-plus">新增</el-button>
+                    </el-col>
+                </el-row>
+                <el-tree
+                    ref="treeMenu"
+                    :data="tableData"
+                    :props="{children: 'children',label: 'title'}"
+                    :filter-node-method="filterNode"
+                    @node-click="data => handleNodeClick(data, 'put')"
+                    :default-expand-all="true"
+                    :expand-on-click-node="false"
+                >
+                    <span class="custom-tree-node" slot-scope="{ node, data }">
+                        <span>{{ node.label }}</span>
+                        <span>
+                            <el-button type="text" @click.stop="() => handleEdit({ parentId: data.id, }, 'post')">新增</el-button>
+                            <el-button type="text" @click.stop="() => HandleDelete(apiUrl, data, query)">删除</el-button>
+                        </span>
+                    </span>
+                </el-tree>
             </el-row>
         </el-col>
-        <el-col :xl="19" :sm="20">
-            <!-- <el-row class="app-main-table">
-                <el-form :inline="true" :model="QueryParam" class="header-query-form">
-                    <generate-form :model="QueryParam" :datalist="queryComponentData"></generate-form>
-
-                    <generate-query :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection"></generate-query>
-                </el-form>
-            </el-row>-->
-            <!-- <el-row class="app-main-table">
-                <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" :table-attrs="tableAttrs" v-loading="tableLoading"></generate-table>
-            </el-row>-->
-            <el-row class="app-main-table padding-20" type="flex" justify="space-around" v-loading="formLoading">
-                <!-- <dialog-alert v-model="dialogValue" title="菜单信息" :type="requestType" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false"> -->
+        <el-col :xl="19" :sm="20" :style="{height:treeHeight2}">
+            <el-row class="app-main-table" type="flex" style="height:100%;padding:70px 40px" justify="space-around" v-loading="formLoading">
                 <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
                     <el-col :span="10" :offset="2">
                         <el-form-item label="标题" prop="title">
@@ -81,14 +91,25 @@
                         </el-form-item>
                     </el-col>
                 </el-form>
-                <!-- </dialog-alert> -->
             </el-row>
         </el-col>
+
+        <el-dialog title="新增菜单" :visible.sync="dialogValue" width="500px">
+            <el-form :model="form" label-width="80px">
+                <el-form-item label="标题：">
+                    <el-input v-model="form.title" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogValue = false">取 消</el-button>
+                <el-button type="primary" @click="handleUpdate">确 定</el-button>
+            </div>
+        </el-dialog>
     </el-row>
 </template>
 <script>
 import { mapState } from 'vuex';
-
+import { GetHeight } from '@/utils/sys'
 export default {
     computed: {
         ...mapState({
@@ -104,9 +125,9 @@ export default {
             apiUrl: this.$api.sys.menu,          // 请求路很
             rules: {
                 title: [{ required: true, message: '请输入内容', trigger: 'blur' },],
-                value: [{ required: true, message: '请输入内容', trigger: 'blur' },],
             },
-
+            treeHeight: GetHeight(120),
+            treeHeight2: GetHeight(180),
             /* 基本不变------------ */
             QueryParam: {},             //  搜索条件
             queryComponentData: [
@@ -149,9 +170,9 @@ export default {
                     prop: 'status', label: "操作",
                     formatF: row =>
                         <div>
-                            <el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put')} v-permission='sys:role:edit'>编辑</el-button>
-                            <el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button>
-                            {row.type != 3 && <el-button size="mini" type="text" on-click={() => this.handleEdit({ sort: 1, status: '0', parentId: row.row.id, show: '0' }, 'post')}>添加值</el-button>}
+                            <el-button type="text" on-click={() => this.handleEdit(row, 'put')} v-permission='sys:role:edit'>编辑</el-button>
+                            <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button>
+                            {row.type != 3 && <el-button type="text" on-click={() => this.handleEdit({ sort: 1, status: '0', parentId: row.row.id, show: '0' }, 'post')}>添加值</el-button>}
                         </div>
                 },
             ],
@@ -228,4 +249,12 @@ export default {
 </script>
 
 <style lang="scss">
+.custom-tree-node {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    padding-right: 8px;
+}
 </style>

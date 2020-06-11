@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import { TogetherRouter } from '@/utils/sys';
 export default {
     name: 'App',
@@ -13,11 +13,17 @@ export default {
         ...mapState({
             sqlRouter: state => state.permission.sqlRouter,
         }),
+
     },
     created() {
         this.init();
+        this.initStore();
+
     },
     methods: {
+        ...mapActions({
+            initStore: 'enumList/getEnum',
+        }),
         init() {
             let routerArr = [];
             routerArr = TogetherRouter(this.sqlRouter);

@@ -1,6 +1,6 @@
 <template>
-    <div class="generate-form">
-        <div v-for="(item,i) in datalist" :key="i">
+    <el-row class="generate-form">
+        <div v-for="(item,i) in datalist" :key="i" class="group" v-show="i < 3 ? true : custStatus">
             <el-form-item :label="item.label">
                 <el-input v-if="item.name == 'el-input'" v-model="model[item.key]" v-bind="item.attr"></el-input>
 
@@ -8,7 +8,13 @@
                     <el-option v-for="opt in enumList[item.option]" :key="opt.id" :label="opt.title" :value="opt.value"></el-option>
                 </el-select>
 
-                <el-radio-group v-if="item.name == 'el-switch' && (enumList[item.option] && enumList[item.option].length<=3)" v-model="model[item.key]" v-bind="item.attr" @change="handleChange">
+                <el-radio-group
+                    v-if="item.name == 'el-switch' && (enumList[item.option] && enumList[item.option].length<=3)"
+                    v-model="model[item.key]"
+                    v-bind="item.attr"
+                    @change="handleChange"
+                    style="margin-top:-2px"
+                >
                     <el-radio-button label>全部</el-radio-button>
                     <el-radio-button v-for="opt in enumList[item.option]" :key="opt.id" :label="opt.value">{{opt.title}}</el-radio-button>
                 </el-radio-group>
@@ -38,15 +44,18 @@
             </el-form-item>
             <slot v-if="i == slots"></slot>
         </div>
+
         <el-form-item>
-            <el-tooltip class="item" effect="dark" content="查询" placement="top">
-                <el-button @click="handleChange" icon="el-icon-search" circle></el-button>
-            </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="刷新" placement="top">
-                <el-button @click="flash" icon="el-icon-refresh" circle></el-button>
-            </el-tooltip>
+            <!-- <el-tooltip class="item" effect="dark" content="查询" placement="top"> -->
+            <el-button @click="handleChange" icon="el-icon-search" type="primary">查询</el-button>
+            <!-- </el-tooltip> -->
+            <!-- <el-tooltip class="item" effect="dark" content="刷新" placement="top"> -->
+            <el-button @click="flash" icon="el-icon-refresh" type="primary">刷新</el-button>
+            <!-- </el-tooltip> -->
+            <el-button @click="custStatus = true" v-if="datalist.length > 3" v-show="custStatus == false" icon="el-icon-arrow-down" type="text">展开</el-button>
+            <el-button @click="custStatus = false" v-if="datalist.length > 3" v-show="custStatus == true" icon="el-icon-arrow-up" type="text">收起</el-button>
         </el-form-item>
-    </div>
+    </el-row>
 </template>
 <script>
 import { mapGetters } from 'vuex';
@@ -71,6 +80,8 @@ export default {
             timeValue: [],
             changevalue: '',
             pickerOptions: {},
+
+            custStatus: false,
         }
     },
     methods: {
@@ -127,6 +138,10 @@ export default {
 .generate-form {
     display: flex;
     flex-wrap: wrap;
+
+    .group {
+        margin-right: 10px;
+    }
 
     @media screen and (min-width: 1860px) {
         .warp-line {
