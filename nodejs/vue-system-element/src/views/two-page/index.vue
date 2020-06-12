@@ -1,69 +1,22 @@
 <template>
-    <el-row class="page-two" :style="{height:treeHeight}" :gutter="4">
+    <el-row class="page-two" :style="{height:treeHeight}">
         <el-col :span="4" class="page-router">
-            <el-tree
-                ref="treeMenu"
-                :data="tableData"
-                :props="{children: 'children',label: 'label'}"
-                :filter-node-method="filterNode"
-                @node-click="data => handleNodeClick(data, 'put')"
-                :default-expand-all="true"
-                :expand-on-click-node="false"
-            ></el-tree>
+            <el-scrollbar class="scrollbar">
+                <el-tree
+                    ref="treeMenu"
+                    :data="tableData"
+                    :props="{children: 'children',label: 'label'}"
+                    :filter-node-method="filterNode"
+                    @node-click="data => handleNodeClick(data, 'put')"
+                    :default-expand-all="true"
+                    :expand-on-click-node="false"
+                ></el-tree>
+            </el-scrollbar>
         </el-col>
         <el-col :span="20">
             <el-row class="page-main" :style="{height:treeHeight2}">
                 <el-scrollbar class="scrollbar">
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
-                    <div>1</div>
+                    <component v-bind:is="componentName"></component>
                 </el-scrollbar>
             </el-row>
         </el-col>
@@ -71,50 +24,75 @@
 </template>
 <script>
 import { GetHeight } from "@/utils/sys";
+import comp from './components'
 export default {
+    components: comp,
+    created() {
+        this.loadingContent(this.tableData);
+    },
     data() {
         return {
             treeHeight: GetHeight(90),
             treeHeight2: GetHeight(130),
 
             tableData: [{
-                label: '一级 1',
-                children: [{
-                    label: '二级 1-1',
-                }]
+                label: '角色管理',
+                code: 'SysRole',
             }, {
-                label: '一级 2',
-            }, {
-                label: '一级 2',
-            }, {
-                label: '一级 2',
-            }, {
-                label: '一级 2',
-            }, {
-                label: '一级 2',
-            },],
+                label: '角色管理',
+                code: 'SysUser',
+            }
+            ],
+
+            componentName: '',
         }
     },
     methods: {
-        handleNodeClick(row = { sort: 1, status: '0', parentId: '0', show: '0' }, requestType = 'post') {
-            this.formLoading = true;
-            this.form = this.DeepCopy(row);
-            this.requestType = requestType;
-            this.formLoading = false;
+        /* 点击 */
+        handleNodeClick(row) {
+            this.componentName = row.code;
+
         },
+        /* 过滤 */
         filterNode(value, data) {
             if (!value) return true;
             return data.title.indexOf(value) !== -1;
-        }
+        },
+        /* 加载右侧面板 */
+        loadingContent(tableData) {
+            if (!tableData.length > 0) return;
+            if (tableData[0].children && tableData[0].children.length > 0) {
+                this.handleNodeClick(tableData[0].children[0]);
+            } else {
+                this.handleNodeClick(tableData[0]);
+            }
+        },
+    },
+    watch: {
+        tableData: {
+            handler(val) {
+                this.loadingContent(val);
+            },
+            deep: true//对象内部的属性监听，也叫深度监听
+        },
     }
 }
 </script>
 
 <style lang="scss">
 .page-two {
-    padding: 20px;
+    padding: 4px;
     .page-router {
         height: 100%;
+        background: #fff;
+
+        .el-scrollbar__wrap {
+            overflow-x: hidden;
+        }
+        .scrollbar {
+            height: 100%;
+        }
+
         .el-tree {
             height: 100%;
             padding: 20px;
@@ -123,7 +101,6 @@ export default {
     .page-main {
         position: relative;
         width: 100%;
-        background: #fff;
 
         .el-scrollbar__wrap {
             overflow-x: hidden;

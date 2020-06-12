@@ -55,9 +55,9 @@ export default {
                 },
 
                 {
-                    prop: 'status', label: "操作",
+                    prop: 'status', label: "操作", width: 160,
                     formatF: row => <div>
-                        <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button>
+                        <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon="el-icon-delete">删除</el-button>
                     </div>
                 },],
             tableLoading: false,

@@ -53,8 +53,11 @@ export default {
             }, {
                 prop: 'details', label: '备注',
             }, {
-                prop: 'status', label: "操作", f: row => <div><el-button type="text" on-click={() => this.handleEdit(row, 'put')}>编辑</el-button>
-                    <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button> </div>
+                prop: 'status', label: "操作", width: 200,
+                formatF: row => <div>
+                    <el-button type="text" on-click={() => this.handleEdit(row, 'put')} icon="el-icon-edit">编辑</el-button>
+                    <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon="el-icon-delete">删除</el-button>
+                </div>
             },],
             tableLoading: false,
             multipleSelection: [], // 多选选中的值

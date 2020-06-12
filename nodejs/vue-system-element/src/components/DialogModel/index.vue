@@ -5,7 +5,7 @@
                 <!-- 文本框内容 -->
                 <div class="main-body">
                     <el-scrollbar wrap-class="scrollbar-wrapper">
-                        <div v-bind:style="{height:divHeight}" style="display: flow-root;overflow-x: hidden;">
+                        <div v-bind:style="{height:divHeight}" style="display: flow-root;overflow-x: hidden;padding-top: 20px;">
                             <slot></slot>
                         </div>
                     </el-scrollbar>

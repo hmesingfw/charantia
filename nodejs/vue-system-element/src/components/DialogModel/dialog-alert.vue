@@ -22,7 +22,7 @@ export default {
     props: {
         value: { type: [Boolean], default: false }, // 状态值，是否打开关闭窗体
         title: { type: String, default: '提示' }, // 窗体标题
-        width: { type: [Number, String], default: '60%' }, // 窗体宽度
+        width: { type: [Number, String], default: '500px' }, // 窗体宽度
         loadingButton: { type: [Boolean], default: false },
         height: { type: [Number, String], default: 400 }, // 窗体高度度
 
@@ -59,6 +59,9 @@ export default {
 </script>
 <style lang="scss">
 .dialog-alert {
+    .el-dialog__body {
+        padding: 30px 40px;
+    }
     .el-dialog__header {
         border-bottom: 1px solid #efefef;
     }

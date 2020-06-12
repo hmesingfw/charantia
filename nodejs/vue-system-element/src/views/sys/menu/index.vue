@@ -1,110 +1,63 @@
 <template>
     <el-row>
-        <el-col :xl="5" :sm="4">
-            <el-row class="border-shadow padding-20" :style="{margin:'14px 0 14px 14px',height:treeHeight}">
-                <el-input placeholder="输入关键字进行过滤" v-model="filterText" style="padding-bottom:20px"></el-input>
-                <el-row style="padding-bottom:20px">
-                    <el-col>
-                        <el-button @click="handleEdit({ parentId: '0', }, 'post')" type="primary" icon="el-icon-plus">新增</el-button>
-                    </el-col>
-                </el-row>
-                <el-tree
-                    ref="treeMenu"
-                    :data="tableData"
-                    :props="{children: 'children',label: 'title'}"
-                    :filter-node-method="filterNode"
-                    @node-click="data => handleNodeClick(data, 'put')"
-                    :default-expand-all="true"
-                    :expand-on-click-node="false"
-                >
-                    <span class="custom-tree-node" slot-scope="{ node, data }">
-                        <span>{{ node.label }}</span>
-                        <span>
-                            <el-button type="text" @click.stop="() => handleEdit({ parentId: data.id, }, 'post')">新增</el-button>
-                            <el-button type="text" @click.stop="() => HandleDelete(apiUrl, data, query)">删除</el-button>
-                        </span>
-                    </span>
-                </el-tree>
-            </el-row>
-        </el-col>
-        <el-col :xl="19" :sm="20" :style="{height:treeHeight2}">
-            <el-row class="app-main-table" type="flex" style="height:100%;padding:70px 40px" justify="space-around" v-loading="formLoading">
-                <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
-                    <el-col :span="10" :offset="2">
-                        <el-form-item label="标题" prop="title">
-                            <el-input v-model="form.title" maxlength="128"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="10">
-                        <el-form-item label="路径" prop="path">
-                            <el-input v-model="form.path" maxlength="255"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="10" :offset="2">
-                        <el-form-item label="组件路径" prop="component">
-                            <el-input v-model="form.component" maxlength="255"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="10">
-                        <el-form-item label="类型" prop="type">
-                            <el-radio-group v-model="form.type">
-                                <el-radio-button :label="1">目录</el-radio-button>
-                                <el-radio-button :label="2">菜单</el-radio-button>
-                                <el-radio-button :label="3">按钮</el-radio-button>
-                            </el-radio-group>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="10" :offset="2">
-                        <el-form-item label="权限" prop="par">
-                            <el-input v-model="form.par" maxlength="64"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="10">
-                        <el-form-item label="图标" prop="icon">
-                            <el-input v-model="form.icon" maxlength="255"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="10" :offset="2">
-                        <el-form-item label="显示" prop="show">
-                            <el-switch class="switch-style" v-model="form.show" v-bind="ConfigParmas.switchValue"></el-switch>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="10">
-                        <el-form-item label="状态" prop="status">
-                            <el-switch class="switch-style" v-model="form.status" v-bind="ConfigParmas.switchValue"></el-switch>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="10" :offset="2">
-                        <el-form-item label="排序" prop="sort">
-                            <el-input-number v-model="form.sort" :min="1" :max="100000"></el-input-number>
-                        </el-form-item>
-                    </el-col>
-                    <el-col></el-col>
-                    <el-col :span="10" :offset="2">
-                        <el-form-item label="备注" prop="details">
-                            <el-input type="textarea" :rows="2" v-model="form.details" maxlength="255"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="22" :offset="2">
-                        <el-form-item>
-                            <el-button type="primary" @click="handleUpdate" v-loading="loadingButton" style="width:160px;">保存</el-button>
-                        </el-form-item>
-                    </el-col>
-                </el-form>
-            </el-row>
-        </el-col>
+        <el-row class="app-main-table">
+            <generate-handle :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection"></generate-handle>
+            <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" :table-attrs="tableAttrs" v-loading="tableLoading"></generate-table>
+        </el-row>
 
-        <el-dialog title="新增菜单" :visible.sync="dialogValue" width="500px">
-            <el-form :model="form" label-width="80px">
-                <el-form-item label="标题：">
-                    <el-input v-model="form.title" autocomplete="off"></el-input>
+        <dialog-model
+            v-model="dialogValue"
+            :title="requestType == 'post' ? '新增' : '详情'"
+            width="600"
+            :type="requestType"
+            @submit="handleUpdate"
+            :loading-button="loadingButton"
+            @changeLoadingButton="loadingButton = false"
+        >
+            <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
+                <el-form-item label="标题" prop="title">
+                    <el-input v-model="form.title" maxlength="128" show-word-limit></el-input>
+                </el-form-item>
+
+                <el-form-item label="路径" prop="path">
+                    <el-input v-model="form.path" maxlength="255" show-word-limit></el-input>
+                </el-form-item>
+
+                <el-form-item label="组件路径" prop="component">
+                    <el-input v-model="form.component" maxlength="255" show-word-limit></el-input>
+                </el-form-item>
+
+                <el-form-item label="权限" prop="par">
+                    <el-input v-model="form.par" maxlength="64" show-word-limit></el-input>
+                </el-form-item>
+
+                <el-form-item label="图标" prop="icon">
+                    <c-icon-select v-model="form.icon"></c-icon-select>
+                </el-form-item>
+                <el-form-item label="类型" prop="type">
+                    <el-radio-group v-model="form.type">
+                        <el-radio-button :label="1">目录</el-radio-button>
+                        <el-radio-button :label="2">菜单</el-radio-button>
+                        <el-radio-button :label="3">按钮</el-radio-button>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="显示" prop="show">
+                    <el-switch class="switch-style switch-form" v-model="form.show" v-bind="ConfigParmas.switchValue"></el-switch>
+                </el-form-item>
+
+                <el-form-item label="状态" prop="status">
+                    <el-switch class="switch-style switch-form" v-model="form.status" v-bind="ConfigParmas.switchValue"></el-switch>
+                </el-form-item>
+
+                <el-form-item label="排序" prop="sort">
+                    <el-input-number v-model="form.sort" :min="1" :max="100000"></el-input-number>
+                </el-form-item>
+
+                <el-form-item label="备注" prop="details">
+                    <el-input type="textarea" :rows="2" v-model="form.details" maxlength="255" show-word-limit></el-input>
                 </el-form-item>
             </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogValue = false">取 消</el-button>
-                <el-button type="primary" @click="handleUpdate">确 定</el-button>
-            </div>
-        </el-dialog>
+        </dialog-model>
     </el-row>
 </template>
 <script>
@@ -114,11 +67,6 @@ export default {
     computed: {
         ...mapState({
         })
-    },
-    watch: {
-        filterText(val) {
-            this.$refs.treeMenu.filter(val);
-        }
     },
     data() {
         return {
@@ -153,11 +101,11 @@ export default {
                 { prop: 'par', label: "权限" },
                 { prop: 'icon', label: "图标" },
                 {
-                    prop: 'sort', label: '排序', width: "120",
+                    prop: 'sort', label: '排序', width: 120,
                     formatF: row => <c-number data={row} data-key="sort" url={this.apiUrl} callback={this.query}></c-number>
                 },
                 {
-                    prop: 'show', label: "显示",
+                    prop: 'show', label: "显示", width: 80,
                     formatF: row => <c-switch data={row} data-key="show" url={this.apiUrl} callback={this.query}></c-switch>
                 },
                 {
@@ -165,14 +113,14 @@ export default {
                     labelF: () => <generate-label label='状态' keys='status' option='statusList' params={this.QueryParam} call={this.query}></generate-label>,
                     formatF: row => <c-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></c-switch>
                 },
-                { prop: 'updatedAt', label: "更新时间", width: '140' },
+                { prop: 'updatedAt', label: "更新时间", width: '160' },
                 {
-                    prop: 'status', label: "操作",
+                    prop: 'status', label: "操作", width: 240,
                     formatF: row =>
                         <div>
-                            <el-button type="text" on-click={() => this.handleEdit(row, 'put')} v-permission='sys:role:edit'>编辑</el-button>
-                            <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button>
-                            {row.type != 3 && <el-button type="text" on-click={() => this.handleEdit({ sort: 1, status: '0', parentId: row.row.id, show: '0' }, 'post')}>添加值</el-button>}
+                            <el-button type="text" on-click={() => this.handleEdit(row, 'put')} v-permission='sys:role:edit' icon="el-icon-edit">编辑</el-button>
+                            <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon="el-icon-delete">删除</el-button>
+                            {row.type != 3 && <el-button type="text" on-click={() => this.handleEdit({ sort: 1, status: '0', parentId: row.id, show: '0' }, 'post')} icon="el-icon-plus">添加值</el-button>}
                         </div>
                 },
             ],
@@ -191,7 +139,6 @@ export default {
             form: {},
             formLoading: false,
 
-            filterText: '',
         };
     },
     created() {
@@ -226,6 +173,7 @@ export default {
                     let issucc = await this.ReqData(this.apiUrl, this.form, this.requestType);
                     if (issucc) {
                         this.loadingButton = false;
+                        this.dialogValue = false;
                         this.query();
                     } else {
                         this.loadingButton = false;
@@ -233,28 +181,6 @@ export default {
                 }
             });
         },
-        /* 到这里基本不变----------- */
-        handleNodeClick(row = { sort: 1, status: '0', parentId: '0', show: '0' }, requestType = 'post') {
-            this.formLoading = true;
-            this.form = this.DeepCopy(row);
-            this.requestType = requestType;
-            this.formLoading = false;
-        },
-        filterNode(value, data) {
-            if (!value) return true;
-            return data.title.indexOf(value) !== -1;
-        }
     }
 };
 </script>
-
-<style lang="scss">
-.custom-tree-node {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 14px;
-    padding-right: 8px;
-}
-</style>

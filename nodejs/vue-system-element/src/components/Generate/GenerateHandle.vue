@@ -8,6 +8,7 @@
         <el-button @click="HandleDelete(url, multipleSelection, callback);" icon="el-icon-delete" type="danger" v-show="multipleSelection.length>0">批量删除</el-button>
         <!-- </el-tooltip> -->
         <!-- </el-form-item> -->
+        <slot />
     </el-row>
 </template>
 <script>

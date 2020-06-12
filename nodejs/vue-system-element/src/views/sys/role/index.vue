@@ -51,15 +51,13 @@ export default {
                 },
                 { prop: 'userName', label: "更新人" },
                 { prop: 'updatedAt', label: "更新时间" },
-                {
-                    prop: 'status', label: "权限", permission: 'sys:role:auto',
-                    formatF: row => <el-button type="text" on-click={() => this.handleOpenAuth(row)}>分配权限</el-button>
-                },
+
                 {
                     prop: 'status', label: "操作",
                     formatF: row => <div>
-                        <el-button type="text" on-click={() => this.handleEdit(row, 'put')} v-permission='sys:role:edit'>编辑</el-button>
-                        <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} v-permission='sys:role:delete'>删除</el-button>
+                        <el-button type="text" on-click={() => this.handleEdit(row, 'put')} icon="el-icon-edit" v-permission='sys:role:edit'>编辑</el-button>
+                        <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon="el-icon-delete" v-permission='sys:role:delete'>删除</el-button>
+                        <el-button type="text" on-click={() => this.handleOpenAuth(row)} icon="el-icon-edit-outline">授权</el-button>
                     </div>
                 },
             ],

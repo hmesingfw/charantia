@@ -19,6 +19,8 @@ import CNumber from '@/components/Cust/CNumber';
 import CFile from '@/components/Cust/CFile';
 /* 图片裁剪 */
 import CImageCropper from '@/components/Cust/CImageCropper';
+/* icon 选择事件 */
+import CIconSelect from '@/components/Cust/CIconSelect';
 
 Vue.component('dialog-alert', DialogAlert);
 Vue.component('generate-form', GenerateForm);
@@ -33,3 +35,4 @@ Vue.component('c-switch', CSwitch);
 Vue.component('c-number', CNumber);
 Vue.component('c-file', CFile);
 Vue.component('c-image-cropper', CImageCropper);
+Vue.component('c-icon-select', CIconSelect);

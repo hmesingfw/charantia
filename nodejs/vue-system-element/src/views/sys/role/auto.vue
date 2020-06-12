@@ -1,5 +1,5 @@
 <template>
-    <dialog-model v-model="value" width="700" title="权限信息" @submit="handleRoleUser" :loading-button="loadingButton" @colse="colse" :isColse="false" @changeLoadingButton="loadingButton = false">
+    <dialog-model v-model="value" width="700" title="角色权限配置" @submit="handleRoleUser" :loading-button="loadingButton" @colse="colse" :isColse="false" @changeLoadingButton="loadingButton = false">
         <div class="role-list">
             <div class="all-check">
                 <el-checkbox @change="val => changeCheckboxAll(val)" v-model="checkboxAll">全选</el-checkbox>
@@ -144,7 +144,7 @@ export default {
 </script>
 <style lang="scss">
 .role-list {
-    padding: 10px;
+    padding: 0 10px;
     .all-check {
         border-bottom: 1px solid #ebeef5;
         height: 40px;

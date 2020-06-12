@@ -10,19 +10,19 @@
             <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" :table-attrs="tableAttrs" v-loading="tableLoading"></generate-table>
         </el-row>
 
-        <dialog-alert v-model="dialogValue" title="枚举值" :type="requestType" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
-            <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
+        <dialog-alert v-model="dialogValue" title="枚举值" width="500px" :type="requestType" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+            <el-form label-position="right" label-width="50px" :rules="rules" :model="form" ref="ruleForm">
                 <el-form-item label="标题" prop="title">
-                    <el-input v-model="form.title" maxlength="32"></el-input>
+                    <el-input v-model="form.title" maxlength="32" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="值" prop="value">
-                    <el-input v-model="form.value" maxlength="32"></el-input>
+                    <el-input v-model="form.value" maxlength="32" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="排序" prop="sort">
                     <el-input-number v-model="form.sort" :min="1" :max="100000"></el-input-number>
                 </el-form-item>
                 <el-form-item label="备注" prop="details">
-                    <el-input type="textarea" :rows="2" v-model="form.details" maxlength="255"></el-input>
+                    <el-input type="textarea" :rows="2" v-model="form.details" maxlength="255" show-word-limit></el-input>
                 </el-form-item>
 
                 <el-form-item label="状态" prop="status">
@@ -56,7 +56,7 @@ export default {
             tableData: [],
             tableParams: [
                 { prop: 'title', label: "标题" },
-                { prop: 'value', label: "值" },
+                { prop: 'value', label: "字典值" },
                 {
                     prop: 'sort', label: '排序', width: "120",
                     formatF: row => <c-number data={row} data-key="sort" url={this.apiUrl} callback={this.query}></c-number>
@@ -72,9 +72,9 @@ export default {
                     prop: 'status', label: "操作",
                     formatF: row =>
                         <div>
-                            <el-button type="text" on-click={() => this.handleEdit(row, 'put')} v-permission='sys:role:edit'>编辑</el-button>
-                            <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button>
-                            {row.parentId != '0' && <el-button type="text" on-click={() => this.handleEdit({ sort: 1, status: '0', parentId: row.row.id }, 'post')}>添加值</el-button>}
+                            <el-button type="text" on-click={() => this.handleEdit(row, 'put')} v-permission='sys:role:edit' icon="el-icon-edit">编辑</el-button>
+                            <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon="el-icon-delete">删除</el-button>
+                            {row.parentId != '0' && <el-button type="text" on-click={() => this.handleEdit({ sort: 1, status: '0', parentId: row.row.id }, 'post')} icon="el-icon-plus">添加值</el-button>}
                         </div>
                 },
             ],

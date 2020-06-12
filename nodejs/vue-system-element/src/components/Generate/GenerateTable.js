@@ -35,12 +35,14 @@ export default {
         selectionChange(val) {
             this.$emit('selection-change', val);
         },
+        /* 渲染表头 */
         formatter(item, row, column, cellValue) {
             if (item.formatF) {
                 return item.formatF(row);
             }
             return cellValue;
         },
+        /* 渲染内容 */
         renderHeader(item, h, { column }) {
             if (item.labelF) {
                 return item.labelF(column)

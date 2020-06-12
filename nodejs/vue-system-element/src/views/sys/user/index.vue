@@ -6,7 +6,9 @@
             </el-form>
         </div>
         <div class="app-main-table">
-            <generate-handle :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection"></generate-handle>
+            <generate-handle :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection">
+                <el-button @click="handleEdit" icon="el-icon-refresh">重置密码</el-button>
+            </generate-handle>
             <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" v-loading="tableLoading"></generate-table>
             <pagination :data="pagination" :callback="query" :total="totalCount" />
         </div>
@@ -37,12 +39,12 @@ export default {
                 status: ''
             }, //  搜索条件
             queryComponentData: [
-                { "name": "el-switch", "key": "status", "label": "状态：", "attr": { "placeholder": "请选择内容", "clearable": true }, "option": "statusList" },
-                { "name": "el-input", "key": "phone", "label": "手机号：", "attr": { "placeholder": "请输入内容" } },
-                { "name": "el-input", "key": "name", "label": "姓名：", "attr": { "placeholder": "请输入内容" } },
-                { "name": "el-input", "key": "name", "label": "姓名：", "attr": { "placeholder": "请输入内容" } },
-                { "name": "el-input", "key": "name", "label": "姓名：", "attr": { "placeholder": "请输入内容" } },
-                { "name": "el-input", "key": "name", "label": "姓名：", "attr": { "placeholder": "请输入内容" } },
+                { "name": "el-switch", "key": "status", "label": "状态", "attr": { "placeholder": "请选择内容", "clearable": true }, "option": "statusList" },
+                { "name": "el-input", "key": "phone", "label": "手机号", "attr": { "placeholder": "请输入内容" } },
+                { "name": "el-input", "key": "name", "label": "姓名", "attr": { "placeholder": "请输入内容" } },
+                { "name": "el-input", "key": "name", "label": "姓名", "attr": { "placeholder": "请输入内容" } },
+                { "name": "el-input", "key": "name", "label": "姓名", "attr": { "placeholder": "请输入内容" } },
+                { "name": "el-input", "key": "name", "label": "姓名", "attr": { "placeholder": "请输入内容" } },
             ],
             tableData: [],
             tableParams: [
@@ -51,8 +53,15 @@ export default {
                 { prop: 'password', label: '密码', },
                 { prop: 'name', label: '姓名', },
                 { prop: 'status', label: '状态', formatF: row => <c-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></c-switch>, }, { prop: 'details', label: '备注', },
-                { prop: 'status', label: "角色", formatF: row => <el-button type="text" on-click={() => this.handleEditRole(row)}>分配角色</el-button> },
-                { prop: 'status', label: "操作", formatF: row => <div><el-button type="text" on-click={() => this.handleEdit(row, 'put')}>编辑</el-button><el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}>删除</el-button></div> },],
+                {
+                    prop: 'status', label: "操作", width: 240,
+                    formatF: row =>
+                        <div>
+                            <el-button type="text" on-click={() => this.handleEdit(row, 'put')} icon="el-icon-edit">编辑</el-button>
+                            <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon="el-icon-delete">删除</el-button>
+                            <el-button type="text" on-click={() => this.handleEditRole(row)} icon="el-icon-edit-outline">分配角色</el-button>
+                        </div>
+                },],
             tableLoading: false,
             multipleSelection: [], // 多选选中的值
 
