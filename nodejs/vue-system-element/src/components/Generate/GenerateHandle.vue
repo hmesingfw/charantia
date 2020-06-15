@@ -17,7 +17,7 @@ export default {
         edit: Function,
         url: String,
         callback: Function,
-        multipleSelection: Array
+        multipleSelection: { type: Array, default: () => [] }
     }
 }
 </script>

@@ -66,6 +66,8 @@ import {
     Scrollbar,
     Drawer,
     Popconfirm,
+    Timeline,
+    TimelineItem,
 } from 'element-ui';
 
 Vue.use(Pagination);
@@ -114,6 +116,8 @@ Vue.use(Col);
 Vue.use(Upload);
 // Vue.use(Spinner);
 Vue.use(Badge);
+Vue.use(Timeline);
+Vue.use(TimelineItem);
 Vue.use(Card);
 Vue.use(Cascader);
 Vue.use(ColorPicker);

@@ -158,6 +158,7 @@ export const constantRoutes = [{
 {
     path: '/page',
     component: Layout,
+    hidden: true,
     children: [{
         path: 'detail',
         component: () => import('@/views/two-page/index'),

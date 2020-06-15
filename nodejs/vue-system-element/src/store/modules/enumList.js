@@ -1,7 +1,11 @@
 import axios from 'axios'
 import api from '@/config/api'
 const state = {
-    data: {}
+    data: {},
+    static: {
+        // 
+        regType: [{}]
+    },
 }
 
 const mutations = {

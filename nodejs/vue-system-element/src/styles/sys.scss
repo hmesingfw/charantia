@@ -109,3 +109,10 @@
 .el-input-number-table {
     width: 90px;
 }
+
+/* 富文本框架样式 */
+.vue-ueditor-wrap-s {
+    .el-form-item__content {
+        line-height: 0px;
+    }
+}

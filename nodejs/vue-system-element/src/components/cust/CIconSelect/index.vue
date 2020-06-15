@@ -27,7 +27,7 @@
 import svgIcons from '@/views/icons/svg-icons'
 import elementIcons from '@/views/icons/element-icons'
 export default {
-    prop: {
+    props: {
         value: { type: String }
     },
     data() {
@@ -46,6 +46,7 @@ export default {
             this.$emit('input', iconName)
         },
         setVal(val) {
+
             this.iconValue = val;
         },
 
