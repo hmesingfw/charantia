@@ -175,14 +175,14 @@ export function forFindValue(list, key, value, rekey, option = { returnStr: '' }
 /* 组装路由表,将后台请求到的数据，组装成vue-ruter实别的格式信息 */
 /* arr 接收数据 */
 /* array 返回处理后的数据  */
-export function TogetherRouter(arr) {
+export function TogetherRouter(arr, type = 'admin') {
     let array = [];
     arr.forEach(item => {
         let json = {
             path: item.path,
             name: item.path + item.id,
             hidden: item.show == '1',
-            component: () => item.component == 'Layout' ? import('@/layout') : import(`@/views${item.component}`),
+            component: () => item.component == 'Layout' ? import('@/layout') : import(`@/${type}/views${item.component}`),
             meta: { title: item.title, icon: item.icon },
         };
         if (item.children && item.children.length > 0) {

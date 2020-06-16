@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Message } from 'element-ui';
 import router from './router/index';
 import Cookies from 'js-cookie';
-import store from './store/index'
+import store from '@/store/index'
 // import { FilterTokenAdress } from '@/utils/filter-adress';
 
 // 添加请求拦截器

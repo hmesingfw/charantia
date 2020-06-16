@@ -6,9 +6,6 @@ Vue.use(Router)
 /* Layout */
 import Layout from '@/layout'
 
-/* Router Modules */
-// import chartsRouter from './modules/charts'
-
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -41,22 +38,12 @@ export const constantRoutes = [{
     hidden: true,
     children: [{
         path: '/redirect/:path*',
-        component: () => import('@/views/redirect/index')
+        component: () => import('@admin/views/redirect/index')
     }]
 },
 {
     path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true
-},
-{
-    path: '/404',
-    component: () => import('@/views/error-page/404'),
-    hidden: true
-},
-{
-    path: '/401',
-    component: () => import('@/views/error-page/401'),
+    component: () => import('@admin/views/login/index'),
     hidden: true
 },
 {
@@ -65,7 +52,7 @@ export const constantRoutes = [{
     redirect: '/dashboard',
     children: [{
         path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
+        component: () => import('@admin/views/dashboard/index'),
         name: 'Dashboard',
         meta: {
             title: '首页',
@@ -161,22 +148,12 @@ export const constantRoutes = [{
     hidden: true,
     children: [{
         path: 'detail',
-        component: () => import('@/views/two-page/index'),
+        component: () => import('@admin/views/two-page/index'),
         name: 'PageDetailTwo',
         meta: {
             title: '详细信息',
             icon: 'user'
         }
-    }]
-},
-{
-    path: '/temp',
-    component: Layout,
-    hidden: true,
-    children: [{
-        path: 'index',
-        component: () => import('@/views/temp/index'),
-        name: 'TempIndexview',
     }]
 },]
 

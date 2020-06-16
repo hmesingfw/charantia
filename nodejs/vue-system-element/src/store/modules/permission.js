@@ -1,7 +1,7 @@
-import { asyncRoutes, constantRoutes } from '@/router'
+import { constantRoutes as tenanlRouters } from '@index/router'
+import { constantRoutes as adminRouters } from '@admin/router'
 import axios from 'axios'
 import api from '@/config/api'
-import { TogetherRouter } from '@/utils/sys';
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -16,8 +16,11 @@ const state = {
 }
 
 const mutations = {
-    SET_ROUTES: (state, routes) => {
-        state.routes = constantRoutes.concat(routes);
+    SET_ROUTES_TENANL: (state, routes) => {
+        state.routes = tenanlRouters.concat(routes);
+    },
+    SET_ROUTES_ADMIN: (state, routes) => {
+        state.routes = adminRouters.concat(routes);
     },
     SET_SQLROUTES: (state, routes) => {
         state.sqlRouter = routes;
