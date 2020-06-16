@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <dialog-model v-model="value" title="信息录入" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
         <div class="app-main-table">
             <el-form :inline="true" :model="QueryParam" class="header-query-form">
                 <generate-form :datalist="queryComponentData" :model="QueryParam" @change="query(1)"></generate-form>
@@ -7,32 +7,30 @@
         </div>
         <div class="app-main-table">
             <generate-handle :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection"></generate-handle>
-            <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" v-loading="tableLoading" :isSelection="false"></generate-table>
+            <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" v-loading="tableLoading"></generate-table>
             <pagination :data="pagination" :callback="query" :total="totalCount" />
         </div>
 
         <edit v-model="dialogValue" :form="form" :requestType="requestType" :callback="query" :url="apiUrl"></edit>
-    </div>
+    </dialog-model>
 </template>
 <script>
 import {
     mapState
 } from 'vuex';
 import edit from './edit.vue'
-import pubDictItem from './pubDictItem/index'
 
 export default {
     components: {
-        edit, pubDictItem
+        edit
     },
     computed: {
         ...mapState({
-            statusList: state => state.enumList.data.statusList,
         })
     },
     data() {
         return {
-            apiUrl: 'https://mock.yonyoucloud.com/mock/8636/dict', // 请求路很                
+            apiUrl: this.$api.sys.tag, // 请求路很                
 
             /* ------------ */
             QueryParam: {}, //  搜索条件
@@ -40,22 +38,28 @@ export default {
             tableData: [],
             tableParams: [
                 {
-                    prop: 'dictCode', label: '编码',
+                    prop: 'dictCode', label: '字典值',
+
                 },
+
                 {
-                    prop: 'dictName', label: '名称',
+                    prop: 'itemLabel', label: '文本标题',
+
                 },
+
                 {
-                    prop: 'description', label: '描述',
+                    prop: 'itemValue', label: '数据值',
+
                 },
+
                 {
-                    prop: 'status', label: '数据状态', width: 160,
-                    formatF: row => <c-switch data={row} data-key={row.status} url={this.apiUrl} callback={this.query}></c-switch>
+                    prop: 'status', label: '数据状态',
+
                 },
+
                 {
-                    prop: 'status', label: "操作", width: 300,
+                    prop: 'status', label: "操作",
                     formatF: row => <div>
-                        <el-button type="text" on-click={() => this.handleEdit(row, 'put')} icon="el-icon-setting">字典值</el-button>
                         <el-button type="text" on-click={() => this.handleEdit(row, 'put')} icon="el-icon-edit">编辑</el-button>
                         <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon="el-icon-delete">删除</el-button>
                     </div>

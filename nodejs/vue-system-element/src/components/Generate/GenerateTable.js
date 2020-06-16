@@ -2,7 +2,7 @@ import { mapGetters } from 'vuex';
 export default {
     render() {
         return <el-table data={this.data} on-selection-change={this.selectionChange} stripe={this.stripe}  {...{ attrs: this.tableAttrs }} header-row-class-name={this.headerRowClassName} >
-            {this.isSelection && <el-table-column type="selection" width="42"></el-table-column>}
+            {this.isSelection ? <el-table-column type="selection" width="42"></el-table-column> : ''}
             {
                 this.params.map(item => {
                     if (item.permission) {

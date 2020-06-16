@@ -27,6 +27,7 @@ export default {
     computed: {
         ...mapState({
             statusList: state => state.enumList.data.statusList,
+            regType: state => state.enumList.data.regType,
         })
     },
     data() {
@@ -39,26 +40,27 @@ export default {
             tableData: [],
             tableParams: [
                 {
-                    prop: 'name', label: '租户名称', width: 160, 'show-overflow-tooltip': true,
+                    prop: 'name', label: '租户名称', width: 300, 'show-overflow-tooltip': true,
                 },
                 {
-                    prop: 'conact', label: '联系人',
+                    prop: 'conact', label: '管理员',
                 },
                 {
-                    prop: 'mobile', label: '手机号码', width: 160
+                    prop: 'mobile', label: '账号', width: 160
                 },
                 {
-                    prop: 'email', label: '电子邮箱', width: 180
+                    prop: 'regType', label: '类型', width: 160,
+                    formatF: row => this.ListMatchField('regType', row.regType)
                 },
                 {
-                    prop: 'startTime', label: '授权时间', width: 160,
-                    formatF: row => <div>{row.startTime} - {row.endTime}</div>
+                    prop: 'startTime', label: '授权时间', width: 240,
+                    formatF: row => <div>{row.startTime.substring(0, 10)} - {row.endTime.substring(0, 10)}</div>
                 },
                 {
-                    prop: 'accountLimit', label: '账号数',
+                    prop: 'accountLimit', label: '账号数', width: 100,
                 },
                 {
-                    prop: 'status', label: '数据状态',
+                    prop: 'status', label: '状态', width: 100,
                     formatF: row => <c-switch data={row} data-key={row.status} url={this.apiUrl} callback={this.query}></c-switch>
                 },
                 {

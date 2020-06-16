@@ -1,21 +1,23 @@
  <template>
-    <dialog-alert v-model="value" width="600px" title="信息录入" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+     <dialog-alert v-model="value" title="信息录入" @submit="handleUpdate"  @colse="colse" :isColse="false"
+        :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
         <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
-            <el-form-item label="手机号" prop="phone">
-                <el-input v-model="form.phone" maxlength="16" :disabled="false" show-word-limit></el-input>
+            <el-form-item label="字典值" prop="dictCode">
+                <el-input v-model="form.dictCode" maxlength="16" :disabled="false" show-word-limit placeholder="请输入字典值"></el-input>
             </el-form-item>
-
-            <el-form-item label="密码" prop="password">
-                <el-input v-model="form.password" maxlength="32" :disabled="false" show-word-limit></el-input>
+				
+            <el-form-item label="文本标题" prop="itemLabel">
+                <el-input v-model="form.itemLabel" maxlength="32" :disabled="false" show-word-limit placeholder="请输入文本标题"></el-input>
             </el-form-item>
-
-            <el-form-item label="姓名" prop="name">
-                <el-input v-model="form.name" maxlength="30" :disabled="false"></el-input>
+				
+            <el-form-item label="数据值" prop="itemValue">
+                <el-input v-model="form.itemValue" maxlength="16" :disabled="false" show-word-limit placeholder="请输入数据值"></el-input>
             </el-form-item>
-
-            <el-form-item label="状态" prop="status">
-                <el-switch class="switch-style" v-model="form.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>
+				
+            <el-form-item label="数据状态" prop="status">
+                <el-input v-model="form.status" maxlength="1" :disabled="false" show-word-limit placeholder="请输入数据状态"></el-input>
             </el-form-item>
+				
         </el-form>
     </dialog-alert>
 </template>
@@ -24,9 +26,9 @@ export default {
     props: {
         value: { type: [Boolean, String] },
         form: Object,
-        requestType: String,
+        requestType: { type: String, default: '' },
         callback: Function,
-        url: String,
+        url: { type: String, default: '' },
     },
     data() {
         return {

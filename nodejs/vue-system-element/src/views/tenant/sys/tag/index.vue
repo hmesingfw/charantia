@@ -12,50 +12,47 @@
                 ></el-tree>
             </el-scrollbar>
         </el-col>
-        <el-col :sm="22" :xs="20">
-            <el-row class="app-main-table">
-                <el-form :inline="true" :model="tagQueryParam" class="header-query-form">
-                    <generate-form :datalist="queryComponentData" :model="tagQueryParam" @change="query(1)"></generate-form>
-                </el-form>
-            </el-row>
-            <el-row class="app-main-table">
-                <generate-handle :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection">
-                    <el-radio-group v-model="handleType" style="float:right" @change="handleTypeChange">
-                        <el-radio-button label="radio">单选</el-radio-button>
-                        <el-radio-button label="checkbox">多选</el-radio-button>
-                    </el-radio-group>
-                </generate-handle>
-                <el-row class="tag-group">
-                    <div v-show="handleType == 'radio'" v-for="item in tagGroupVal" :key="item.id + 'radio'" class="tag-item" :style="{color:item.color,borderColor:item.color}">
-                        <span @click="handleEdit(item)">{{ item.title }}</span>
-                        <i @click="handleDeleteTag(item)" class="el-icon-close"></i>
-                    </div>
-                    <div
-                        v-show="handleType == 'checkbox'"
-                        v-for="item in tagGroupVal"
-                        :key="item.id + 'chechbox'"
-                        class="tag-item"
-                        :style="item.checked == false ? {color:item.color,borderColor:item.color} : {color:'#fff',backgroundColor:item.color}"
-                    >
-                        <span @click="handleEditCheckbox(item)">{{ item.title }}</span>
-                    </div>
+        <el-col :sm="22" :xs="20" class="tag-main">
+            <el-scrollbar class="scrollbar">
+                <el-row class="app-main-table">
+                    <el-form :inline="true" :model="tagQueryParam" class="header-query-form">
+                        <generate-form :datalist="queryComponentData" :model="tagQueryParam" @change="query(1)"></generate-form>
+                    </el-form>
                 </el-row>
-            </el-row>
+
+                <el-card class="app-main-table">
+                    <el-row slot="header" class="clearfix">
+                        <span style="margin-right:20px" @lick="handleEdit({}, 'put')">分类名称</span>
+                        <el-button type="text" @lick="handleEdit({}, 'put')" icon="el-icon-delete"></el-button>
+
+                        <el-button style="float: right;" type="primary" icon="el-icon-plus">新增</el-button>
+                    </el-row>
+                    <el-row class="tag-group">
+                        <div v-for="item in tagGroupVal" :key="item.id + 'radio'" class="tag-item" :style="{color:item.color,borderColor:item.color}">
+                            <span @click="handleEdit(item,'put')">{{ item.title }}</span>
+                            <i @click="handleDeleteTag(item,'put')" class="el-icon-close"></i>
+                        </div>
+
+                        <el-input class="input-new-tag" v-if="inputVisible" v-model="inputValue" ref="saveTagInput" @keyup.enter.native="handleInputConfirm" @blur="handleInputConfirm"></el-input>
+                        <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 标签</el-button>
+                    </el-row>
+                </el-card>
+            </el-scrollbar>
         </el-col>
 
         <dialog-alert
             v-model="dialogValue"
-            :title="requestType == 'post' ? '新增' : '详情'"
+            :title="requestType == 'post' ? '新增' : '编辑'"
             :type="requestType"
             @submit="handleUpdate"
             :loading-button="loadingButton"
             @changeLoadingButton="loadingButton = false"
         >
-            <el-form label-width="0px" :rules="rules" :model="form" ref="ruleForm">
-                <el-form-item prop="title">
+            <el-form label-width="50px" :rules="rules" :model="form" ref="ruleForm">
+                <el-form-item label="标题" prop="title">
                     <el-row type="flex" :gutter="8">
                         <el-col :span="20">
-                            <el-input v-model="form.title" maxlength="8" show-word-limit ref="colorInput" :style="{color:form.color}" style="width:100%"></el-input>
+                            <el-input v-model="form.title" maxlength="8" ref="colorInput" style="width:100%"></el-input>
                         </el-col>
                         <el-col :span="4">
                             <el-color-picker v-model="form.color" :predefine="predefineColors" @change="changeColor"></el-color-picker>
@@ -98,8 +95,10 @@ export default {
             tagGroupVal: [],
             tagQueryParam: {},
 
-            handleType: 'radio',        // 操作类型
             predefineColors: ['#000000', '#ff4500', '#ff8c00', '#ffd700', '#38EB26', '#90ee90', '#00ced1', '#1e90ff', '#c71585', '#EE1B1B',],
+            /* 新标签输入框 */
+            inputVisible: false,
+            inputValue: '',
             /* 基本不变------------ */
             QueryParam: {},             //  搜索条件
             queryComponentData: [
@@ -119,7 +118,7 @@ export default {
     },
     created() {
         this.query();
-        this.queryTab();
+        this.queryTag();
     },
     methods: {
         /* 查询操作 */
@@ -138,7 +137,7 @@ export default {
             });
         },
         /* 查询tab列表信息 */
-        queryTab() {
+        queryTag() {
             this.tableLoading = true;
             this.$http.get(this.apiUrl, { params: this.tagQueryParam }).then(res => {
                 let array = res.data.rows || [];
@@ -159,6 +158,10 @@ export default {
             this.dialogValue = true;
             this.form = this.DeepCopy(row);
             this.requestType = requestType;
+
+            setTimeout(() => {
+                this.changeColor(this.form.color);
+            }, 0)
         },
         /* 保存 */
         async handleUpdate() {
@@ -213,10 +216,21 @@ export default {
         changeColor(val) {
             this.$refs.colorInput.$refs.input.style.color = val;
         },
-        /* 改变操作方式 */
-        handleTypeChange(val) {
-            if (val == 'radio') this.multipleSelection = [];
+        showInput() {
+            this.inputVisible = true;
+            this.$nextTick(() => {
+                this.$refs.saveTagInput.$refs.input.focus();
+            });
         },
+        handleInputConfirm() {
+            let inputValue = this.inputValue;
+            if (inputValue) {
+                let obj = { title: inputValue, checked: false }
+                this.tagGroupVal.push(obj);
+            }
+            this.inputVisible = false;
+            this.inputValue = '';
+        }
     }
 };
 
@@ -239,11 +253,19 @@ export default {
         padding: 20px;
     }
 }
+.tag-main {
+    height: 100%;
+    .el-scrollbar__wrap {
+        overflow-x: hidden;
+    }
+    .scrollbar {
+        height: 100%;
+    }
+}
 .tag-group {
-    padding: 20px;
     .tag-item {
         display: inline-flex;
-        margin: 10px;
+        margin: 0 10px 10px;
         padding: 0 8px;
         align-items: center;
         line-height: 27px;
@@ -256,6 +278,21 @@ export default {
         span {
             padding: 0 6px 0 2px;
         }
+    }
+
+    .el-tag + .el-tag {
+        margin-left: 10px;
+    }
+    .button-new-tag {
+        margin-left: 10px;
+        height: 32px;
+        line-height: 30px;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    .input-new-tag {
+        width: 90px;
+        margin-left: 10px;
     }
 }
 </style>

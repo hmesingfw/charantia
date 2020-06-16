@@ -11,7 +11,7 @@
             </el-form-item>
             <%_ }else if(item.component === 'el-input'){ -%>
             <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">
-                <el-input v-model="form.<%=item.alias%>" maxlength="<%=item.maxlength%>" :disabled="<%=item.isReadonly%>" show-word-limit></el-input>
+                <el-input v-model="form.<%=item.alias%>" maxlength="<%=item.maxlength%>" :disabled="<%=item.isReadonly%>" show-word-limit placeholder="请输入<%=item.comment%>"></el-input>
             </el-form-item>
             <%_ }else if(item.component === 'el-radio'){ -%>
             <el-form-item label="<%=item.comment%>" prop="<%=item.alias%>">

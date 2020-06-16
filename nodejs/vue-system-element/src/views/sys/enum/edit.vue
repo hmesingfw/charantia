@@ -1,32 +1,40 @@
  <template>
-    <dialog-alert v-model="value" width="600px" title="信息录入" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+    <dialog-alert v-model="value" title="信息录入" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
         <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
-            <el-form-item label="手机号" prop="phone">
-                <el-input v-model="form.phone" maxlength="16" :disabled="false" show-word-limit></el-input>
+            <el-form-item label="编码" prop="dictCode">
+                <el-input v-model="form.dictCode" maxlength="16" :disabled="false"></el-input>
             </el-form-item>
 
-            <el-form-item label="密码" prop="password">
-                <el-input v-model="form.password" maxlength="32" :disabled="false" show-word-limit></el-input>
+            <el-form-item label="名称" prop="dictName">
+                <el-input v-model="form.dictName" maxlength="20" :disabled="false"></el-input>
             </el-form-item>
 
-            <el-form-item label="姓名" prop="name">
-                <el-input v-model="form.name" maxlength="30" :disabled="false"></el-input>
+            <el-form-item label="描述" prop="description">
+                <el-input v-model="form.description" maxlength="32" :disabled="false" show-word-limit></el-input>
             </el-form-item>
 
-            <el-form-item label="状态" prop="status">
-                <el-switch class="switch-style" v-model="form.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>
+            <el-form-item label="数据状态" prop="status">
+                <el-radio-group v-model="form.status" :disabled="false">
+                    <el-radio v-for="item in statusList" :key="item.id" :label="item.value">{{item.title}}</el-radio>
+                </el-radio-group>
             </el-form-item>
         </el-form>
     </dialog-alert>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
+    computed: {
+        ...mapState({
+            statusList: state => state.enumList.data.statusList,
+        })
+    },
     props: {
         value: { type: [Boolean, String] },
         form: Object,
-        requestType: String,
+        requestType: { type: String, default: '' },
         callback: Function,
-        url: String,
+        url: { type: String, default: '' },
     },
     data() {
         return {

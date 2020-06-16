@@ -28,9 +28,6 @@
         },
         computed: {
             ...mapState({
-                <%_ formEnum.forEach(function (item) { -%>
-                    <%= item.enumType %>: state => state.enumList.data. <%= item.enumType -%> , 
-                <%_}) -%>
             })
         },
         data() {
@@ -38,15 +35,30 @@
                 apiUrl: this.$api.sys.tag, // 请求路很                
 
                 /* ------------ */
-                QueryParam: <%- JSON.stringify(queryHiddenList) %> , //  搜索条件
-                queryComponentData: <%- JSON.stringify(queryList) %> ,
+                QueryParam: {} , //  搜索条件
+                queryComponentData: [] ,
                 tableData: [],
-                tableParams: [ <%_ tableList.forEach(function (item) {-%> 
+                tableParams: [ 
                     {
-                    	prop: '<%= item.prop -%>', label: '<%= item.label -%>',   
-                            <%_ if (item.f === 'el-switch') { -%> formatF: row => <c-switch data={ row } data-key="status" url={this.apiUrl} callback={this.query} > </c-switch>,<%_ } -%>	 
+                    	prop: 'dictCode', label: '字典值',   
+	 
                         },
-                        <%_ }) -%> 
+ 
+                    {
+                    	prop: 'itemLabel', label: '文本标题',   
+	 
+                        },
+ 
+                    {
+                    	prop: 'itemValue', label: '数据值',   
+	 
+                        },
+ 
+                    {
+                    	prop: 'status', label: '数据状态',   
+	 
+                        },
+ 
                     { 
                         prop: 'status', label: "操作", 
                         formatF: row => <div>

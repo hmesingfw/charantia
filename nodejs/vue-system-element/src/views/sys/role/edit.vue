@@ -2,10 +2,10 @@
     <dialog-alert v-model="value" title="角色信息" width="500px" @submit="handleUpdate" :loading-button="loadingButton" @colse="colse" :isColse="false" @changeLoadingButton="loadingButton = false">
         <el-form label-position="right" label-width="50px" :rules="rules" :model="form" ref="ruleForm">
             <el-form-item label="标识" prop="code">
-                <el-input v-model="form.code" maxlength="32" show-word-limit></el-input>
+                <el-input v-model="form.code" maxlength="16" show-word-limit></el-input>
             </el-form-item>
             <el-form-item label="名称" prop="name">
-                <el-input v-model="form.name" maxlength="32" show-word-limit></el-input>
+                <el-input v-model="form.name" maxlength="32"></el-input>
             </el-form-item>
 
             <el-form-item label="备注" prop="remark">

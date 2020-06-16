@@ -1,60 +1,30 @@
  <template>
-    <dialog-alert v-model="value" title="信息录入" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
-        <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
-            <el-form-item label="租户名称" prop="name">
-                <el-input v-model="form.name" maxlength="128" :disabled="false" show-word-limit></el-input>
-            </el-form-item>
+    <dialog-alert v-model="value" width="600px" title="创建租户" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+        <el-row>
+            <el-form label-width="80px" :rules="rules" :model="form" ref="ruleForm">
+                <el-form-item label="租户名称" prop="name">
+                    <el-input v-model="form.name" maxlength="32" :disabled="false" show-word-limit placeholder="请输入租户名称"></el-input>
+                </el-form-item>
 
-            <el-form-item label="logo" prop="logo">
-                <el-input v-model="form.logo" maxlength="20" :disabled="false" show-word-limit></el-input>
-            </el-form-item>
+                <el-form-item label="联系人" prop="conact">
+                    <el-input v-model="form.conact" maxlength="20" :disabled="false" placeholder="请输入联系人"></el-input>
+                </el-form-item>
 
-            <el-form-item label="联系人" prop="conact">
-                <el-input v-model="form.conact" maxlength="32" :disabled="false" show-word-limit></el-input>
-            </el-form-item>
-
-            <el-form-item label="手机号码" prop="mobile">
-                <el-input v-model="form.mobile" maxlength="32" :disabled="false" show-word-limit></el-input>
-            </el-form-item>
-
-            <el-form-item label="电子邮箱" prop="email">
-                <el-input v-model="form.email" maxlength="32" :disabled="false" show-word-limit></el-input>
-            </el-form-item>
-
-            <el-form-item label="公司地址" prop="address">
-                <el-input v-model="form.address" maxlength="128" :disabled="false" show-word-limit></el-input>
-            </el-form-item>
-
-            <el-form-item label="域名前缀" prop="domain">
-                <el-input v-model="form.domain" maxlength="128" :disabled="false" show-word-limit></el-input>
-            </el-form-item>
-
-            <el-form-item label="注册类型" prop="regType">
-                <el-input v-model="form.regType" maxlength="1" :disabled="false" show-word-limit></el-input>
-            </el-form-item>
-
-            <el-form-item label="授权时间" prop="startTime">
-                <el-date-picker v-model="form.startTime" type="date" placeholder="选择日期"></el-date-picker>
-            </el-form-item>
-
-            <el-form-item label="授权结束时间" prop="endTime">
-                <el-date-picker v-model="form.endTime" type="date" placeholder="选择日期"></el-date-picker>
-            </el-form-item>
-
-            <el-form-item label="账号限制数" prop="accountLimit">
-                <el-input v-model="form.accountLimit" maxlength="10" :disabled="false" show-word-limit></el-input>
-            </el-form-item>
-
-            <el-form-item label="网盘容量" prop="diskCapacity">
-                <el-input v-model="form.diskCapacity" maxlength="10" :disabled="false" show-word-limit></el-input>
-            </el-form-item>
-
-            <el-form-item label="数据状态" prop="status">
-                <el-select v-model="form.status" maxlength="1" :disabled="false">
-                    <el-option v-for="item in statusList" :key="item.id" :label="item.title" :value="item.value"></el-option>
-                </el-select>
-            </el-form-item>
-        </el-form>
+                <el-form-item label="手机号码" prop="mobile">
+                    <el-input v-model="form.mobile" maxlength="24" :disabled="false" placeholder="请输入手机号码"></el-input>
+                </el-form-item>
+                <el-form-item label="地址" prop="mobile">
+                    <el-input v-model="form.mobile" maxlength="24" :disabled="false" placeholder="请输入地址"></el-input>
+                </el-form-item>
+                <el-divider></el-divider>
+                <el-form-item label="账号" prop="mobile">
+                    <el-input v-model="form.mobile" maxlength="24" :disabled="false" placeholder="请输入账号"></el-input>
+                </el-form-item>
+                <el-form-item label="密码" prop="mobile">
+                    <el-input v-model="form.mobile" maxlength="24" :disabled="false" placeholder="请输入密码"></el-input>
+                </el-form-item>
+            </el-form>
+        </el-row>
     </dialog-alert>
 </template>
 <script>
@@ -75,7 +45,7 @@ export default {
     data() {
         return {
             rules: {
-                code: [{ required: true, message: '请输入内容', trigger: 'blur' },],
+                code: [{ required: true, message: '请输入租户名称', trigger: 'blur' },],
                 name: [{ required: true, message: '请输入内容', trigger: 'blur' },],
             },
             loadingButton: false,

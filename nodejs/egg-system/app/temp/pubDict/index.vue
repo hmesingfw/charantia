@@ -28,9 +28,7 @@
         },
         computed: {
             ...mapState({
-                <%_ formEnum.forEach(function (item) { -%>
-                    <%= item.enumType %>: state => state.enumList.data. <%= item.enumType -%> , 
-                <%_}) -%>
+                    statusList: state => state.enumList.data. statusList , 
             })
         },
         data() {
@@ -38,20 +36,35 @@
                 apiUrl: this.$api.sys.tag, // 请求路很                
 
                 /* ------------ */
-                QueryParam: <%- JSON.stringify(queryHiddenList) %> , //  搜索条件
-                queryComponentData: <%- JSON.stringify(queryList) %> ,
+                QueryParam: {} , //  搜索条件
+                queryComponentData: [] ,
                 tableData: [],
-                tableParams: [ <%_ tableList.forEach(function (item) {-%> 
+                tableParams: [ 
                     {
-                    	prop: '<%= item.prop -%>', label: '<%= item.label -%>',   
-                            <%_ if (item.f === 'el-switch') { -%> formatF: row => <c-switch data={ row } data-key="status" url={this.apiUrl} callback={this.query} > </c-switch>,<%_ } -%>	 
+                    	prop: 'dictCode', label: '编码',   
+	 
                         },
-                        <%_ }) -%> 
+ 
+                    {
+                    	prop: 'dictName', label: '名称',   
+	 
+                        },
+ 
+                    {
+                    	prop: 'description', label: '描述',   
+	 
+                        },
+ 
+                    {
+                    	prop: 'status', label: '数据状态',   
+	 
+                        },
+ 
                     { 
                         prop: 'status', label: "操作", 
                         formatF: row => <div>
-                            <el-button type="text" on-click={() => this.handleEdit(row, 'put') } icon="el-icon-edit">编辑</el-button>
-                            <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}  icon="el-icon-delete">删除</el-button> 
+                            <el-button size="mini" type="text" on-click={() => this.handleEdit(row, 'put') } icon="el-icon-edit">编辑</el-button>
+                            <el-button size="mini" type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)}  icon="el-icon-delete">删除</el-button> 
                         </div>
                     },],
                     tableLoading: false,

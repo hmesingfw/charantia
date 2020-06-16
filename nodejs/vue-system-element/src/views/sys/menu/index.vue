@@ -16,19 +16,19 @@
         >
             <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
                 <el-form-item label="标题" prop="title">
-                    <el-input v-model="form.title" maxlength="128" show-word-limit></el-input>
+                    <el-input v-model="form.title" maxlength="28" show-word-limit></el-input>
                 </el-form-item>
 
                 <el-form-item label="路径" prop="path">
-                    <el-input v-model="form.path" maxlength="255" show-word-limit></el-input>
+                    <el-input v-model="form.path" maxlength="100"></el-input>
                 </el-form-item>
 
                 <el-form-item label="组件路径" prop="component">
-                    <el-input v-model="form.component" maxlength="255" show-word-limit></el-input>
+                    <el-input v-model="form.component" maxlength="100"></el-input>
                 </el-form-item>
 
                 <el-form-item label="权限" prop="par">
-                    <el-input v-model="form.par" maxlength="64" show-word-limit></el-input>
+                    <el-input v-model="form.par" maxlength="60"></el-input>
                 </el-form-item>
 
                 <el-form-item label="图标" prop="icon">
