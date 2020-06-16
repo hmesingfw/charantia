@@ -1,5 +1,5 @@
  <template>
-    <dialog-alert v-model="value" title="信息录入" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+    <dialog-alert v-model="value" title="编辑" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
         <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
             <el-form-item label="编码" prop="dictCode">
                 <el-input v-model="form.dictCode" maxlength="16" :disabled="false"></el-input>

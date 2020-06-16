@@ -1,6 +1,6 @@
 <template>
     <div class="dialog-alert">
-        <el-dialog :title="title" :visible.sync="value" :width="width" :show-close="false" :close-on-click-modal="false">
+        <el-dialog :title="title" :visible.sync="value" :width="width" :show-close="false" :close-on-click-modal="false" :modal-append-to-body="modalAppendToBody">
             <div class="main-body">
                 <slot></slot>
                 <!-- <el-scrollbar wrap-class="scrollbar-wrapper">
@@ -25,7 +25,7 @@ export default {
         width: { type: [Number, String], default: '500px' }, // 窗体宽度
         loadingButton: { type: [Boolean], default: false },
         height: { type: [Number, String], default: 400 }, // 窗体高度度
-
+        modalAppendToBody: { type: Boolean, default: true },
         isSubmit: { type: Boolean, default: true },         // 是否显示确认按钮
         isColse: { type: Boolean, default: true }
     },

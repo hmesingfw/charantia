@@ -16,7 +16,7 @@ const state = {
 }
 
 const mutations = {
-    SET_ROUTES_TENANL: (state, routes) => {
+    SET_ROUTES_INDEX: (state, routes) => {
         state.routes = tenanlRouters.concat(routes);
     },
     SET_ROUTES_ADMIN: (state, routes) => {
@@ -29,10 +29,16 @@ const mutations = {
 
 const actions = {
     // 添加链接信息
-    ADD_ROUTES({
+    ADD_ROUTES_ADMIN({
         commit
     }, routes) {
-        commit('SET_ROUTES', routes);
+        commit('SET_ROUTES_ADMIN', routes);
+    },
+    // 添加链接信息
+    ADD_ROUTES_INDEX({
+        commit
+    }, routes) {
+        commit('SET_ROUTES_INDEX', routes);
     },
 
     /* 查询数据库存储的菜单信息 */

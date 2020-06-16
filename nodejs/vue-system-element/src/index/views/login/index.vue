@@ -134,7 +134,7 @@ export default {
 
                         this.initStore();           // 获取系统数据字典
                         this.$router.addRoutes(routes);
-                        this.$store.dispatch('permission/ADD_ROUTES', routes);  /* 重新加载面板 */
+                        this.$store.dispatch('permission/ADD_ROUTES_INDEX', routes);  /* 重新加载面板 */
 
                         this.$router.push({ path: '/', query: this.otherQuery });/* 登录跳转 */
 

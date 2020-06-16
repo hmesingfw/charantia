@@ -30,7 +30,7 @@ export default {
             routerArr.push({ path: '*', redirect: '/404', hidden: true }); /* 404 页面 */
             this.$router.addRoutes(routerArr);          /* 重新刷新routes内容信息 */
 
-            this.$store.dispatch('permission/ADD_ROUTES', routerArr); /* 重新加载面板 */
+            this.$store.dispatch('permission/ADD_ROUTES_ADMIN', routerArr); /* 重新加载面板 */
 
             // let token = this.token;
             // if (!token || token == 'undefined') {

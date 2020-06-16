@@ -1,23 +1,30 @@
  <template>
-     <dialog-alert v-model="value" title="信息录入" @submit="handleUpdate"  @colse="colse" :isColse="false"
-        :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+    <dialog-alert
+        v-model="value"
+        title="编辑"
+        @submit="handleUpdate"
+        @colse="colse"
+        :isColse="false"
+        :loading-button="loadingButton"
+        @changeLoadingButton="loadingButton = false"
+        :modal-append-to-body="false"
+    >
         <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
             <el-form-item label="字典值" prop="dictCode">
                 <el-input v-model="form.dictCode" maxlength="16" :disabled="false" show-word-limit placeholder="请输入字典值"></el-input>
             </el-form-item>
-				
+
             <el-form-item label="文本标题" prop="itemLabel">
                 <el-input v-model="form.itemLabel" maxlength="32" :disabled="false" show-word-limit placeholder="请输入文本标题"></el-input>
             </el-form-item>
-				
+
             <el-form-item label="数据值" prop="itemValue">
                 <el-input v-model="form.itemValue" maxlength="16" :disabled="false" show-word-limit placeholder="请输入数据值"></el-input>
             </el-form-item>
-				
-            <el-form-item label="数据状态" prop="status">
+
+            <el-form-item label="状态" prop="status">
                 <el-input v-model="form.status" maxlength="1" :disabled="false" show-word-limit placeholder="请输入数据状态"></el-input>
             </el-form-item>
-				
         </el-form>
     </dialog-alert>
 </template>

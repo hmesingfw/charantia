@@ -1,5 +1,5 @@
 <template>
-    <dialog-model v-model="value" title="信息录入" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+    <dialog-model v-model="value" title="字典列表" width="700" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
         <div class="app-main-table">
             <el-form :inline="true" :model="QueryParam" class="header-query-form">
                 <generate-form :datalist="queryComponentData" :model="QueryParam" @change="query(1)"></generate-form>
@@ -21,6 +21,11 @@ import {
 import edit from './edit.vue'
 
 export default {
+    props: {
+        value: { type: [Boolean, String] },
+        callback: Function,
+
+    },
     components: {
         edit
     },
@@ -34,29 +39,18 @@ export default {
 
             /* ------------ */
             QueryParam: {}, //  搜索条件
-            queryComponentData: [],
+            queryComponentData: [
+                { name: 'el-input', key: 'itemLabel', label: "标题", attr: { placeholder: '请输入标题' } },
+
+            ],
             tableData: [],
             tableParams: [
                 {
-                    prop: 'dictCode', label: '字典值',
-
+                    prop: 'itemLabel', label: '标题',
                 },
-
-                {
-                    prop: 'itemLabel', label: '文本标题',
-
-                },
-
                 {
                     prop: 'itemValue', label: '数据值',
-
                 },
-
-                {
-                    prop: 'status', label: '数据状态',
-
-                },
-
                 {
                     prop: 'status', label: "操作",
                     formatF: row => <div>
@@ -76,6 +70,9 @@ export default {
             dialogValue: false,
             requestType: '', // 请求类型 
             form: {},
+            /*  */
+            loadingButton: false,
+
         };
     },
     created() {
@@ -106,6 +103,14 @@ export default {
             this.form = this.DeepCopy(row);
             this.requestType = requestType;
         },
+        /* 确定按钮 */
+        async handleUpdate() {
+            this.callback();
+            this.$emit('input', false);
+        },
+        colse() {
+            this.$emit('input', false);
+        }
     }
 };
 </script>
