@@ -138,4 +138,10 @@ Vue.prototype.ConfigParmas = {
         'inactive-value': '1',
         'inactive-text': '禁用'
     },
+    switchValue2: {
+        'active-value': '0',
+        'active-text': '是',
+        'inactive-value': '1',
+        'inactive-text': '否'
+    },
 }

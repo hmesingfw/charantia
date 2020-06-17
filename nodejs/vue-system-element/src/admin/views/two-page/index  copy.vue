@@ -15,19 +15,15 @@
         </el-col>
         <el-col :xl="22" :md="20">
             <el-row class="page-main" :style="{height:treeHeight2}">
-                <el-scrollbar class="scrollbar">
-                    <list></list>
-                </el-scrollbar>
+                <el-scrollbar class="scrollbar"></el-scrollbar>
             </el-row>
         </el-col>
     </el-row>
 </template>
 <script>
 import { GetHeight } from "@/utils/sys";
-import list from './list'
 export default {
     components: {
-        list
     },
     created() {
         this.loadingContent(this.tableData);
@@ -37,12 +33,15 @@ export default {
             treeHeight: GetHeight(90),
             treeHeight2: GetHeight(130),
             tableData: [{
-                label: '关于我们',
+                label: '公众号配置',
                 code: 'info',
             }, {
-                label: '协议配置',
+                label: '小程序配置',
                 code: 'settings',
-            },],
+            }, {
+                label: '支付配置',
+                code: 'pay'
+            }],
 
             componentName: '',
         }

@@ -19,8 +19,13 @@ const state = {
             { title: '日期选择器', value: 'el-date-picker' },
             { title: '开关选择器', value: 'el-switch' },
             { title: '计数器', value: 'el-input-number' },
-
         ],
+        TAG_TYPE: [
+            { title: '活动', value: 1 },
+            { title: '投票', value: 2 },
+            { title: '资讯', value: 3 },
+            { title: '商会圈', value: 4 },
+        ]
     },
 }
 

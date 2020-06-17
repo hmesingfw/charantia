@@ -29,10 +29,8 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item label="数据状态" prop="status">
-                            <el-select v-model="form.status" maxlength="1" :disabled="false">
-                                <el-option v-for="item in statusList" :key="item.id" :label="item.title" :value="item.value"></el-option>
-                            </el-select>
+                        <el-form-item label="状态" prop="status">
+                            <el-switch class="switch-style" v-model="form.status" v-bind="ConfigParmas.switchValue"></el-switch>
                         </el-form-item>
                     </el-col>
                 </el-row>

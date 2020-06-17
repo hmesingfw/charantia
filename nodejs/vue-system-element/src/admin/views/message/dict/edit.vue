@@ -1,35 +1,25 @@
  <template>
-     <dialog-alert v-model="value" title="信息录入" @submit="handleUpdate"  @colse="colse" :isColse="false"
-        :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+    <dialog-alert v-model="value" title="信息录入" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
         <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
-            <el-form-item label="" prop="id">
-                <el-input v-model="form.id" maxlength="36" :disabled="false" show-word-limit></el-input>
+            <el-form-item label="消息分类" prop="msgCode">
+                <el-input v-model="form.msgCode" maxlength="10" :disabled="false" placeholder="请输入消息分类"></el-input>
             </el-form-item>
-				
-            <el-form-item label="标题" prop="title">
-                <el-input v-model="form.title" maxlength="32" :disabled="false" show-word-limit></el-input>
+
+            <el-form-item label="标题" prop="name">
+                <el-input v-model="form.name" maxlength="32" :disabled="false" show-word-limit placeholder="请输入标题"></el-input>
             </el-form-item>
-				
-            <el-form-item label="类型" prop="type">
-                <el-input v-model="form.type" maxlength="36" :disabled="false" show-word-limit></el-input>
+
+            <el-form-item label="参数名称" prop="paramName">
+                <el-input v-model="form.paramName" maxlength="32" :disabled="false" show-word-limit placeholder="请输入参数名称"></el-input>
             </el-form-item>
-				
-            <el-form-item label="颜色" prop="color">
-                <el-input v-model="form.color" maxlength="16" :disabled="false" show-word-limit></el-input>
+
+            <el-form-item label="参数值" prop="paramValue">
+                <el-input v-model="form.paramValue" maxlength="32" :disabled="false" show-word-limit placeholder="请输入参数值"></el-input>
             </el-form-item>
-				
-            <el-form-item label="排序" prop="sort">
-                <el-input v-model="form.sort" maxlength="8" :disabled="false" show-word-limit></el-input>
-            </el-form-item>
-				
+
             <el-form-item label="状态" prop="status">
-                <el-input v-model="form.status" maxlength="1" :disabled="false" show-word-limit></el-input>
+                <el-switch class="switch-style" v-model="form.status" v-bind="ConfigParmas.switchValue"></el-switch>
             </el-form-item>
-				
-            <el-form-item label="备注" prop="details">
-                <el-input v-model="form.details" maxlength="255" :disabled="false" show-word-limit></el-input>
-            </el-form-item>
-				
         </el-form>
     </dialog-alert>
 </template>

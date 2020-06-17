@@ -42,7 +42,7 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="显示" prop="show">
-                    <el-switch class="switch-style switch-form" v-model="form.show" v-bind="ConfigParmas.switchValue"></el-switch>
+                    <el-switch class="switch-style switch-form" v-model="form.show" v-bind="ConfigParmas.switchValue2"></el-switch>
                 </el-form-item>
 
                 <el-form-item label="状态" prop="status">
@@ -106,7 +106,7 @@ export default {
                 },
                 {
                     prop: 'show', label: "显示", width: 80,
-                    formatF: row => <c-switch data={row} data-key="show" url={this.apiUrl} callback={this.query}></c-switch>
+                    formatF: row => <c-switch data={row} data-key="show" url={this.apiUrl} callback={this.query} configtitle="switchValue2"></c-switch>
                 },
                 {
                     prop: 'status', label: "状态", width: 80,

@@ -9,13 +9,13 @@
         @changeLoadingButton="loadingButton = false"
         :modal-append-to-body="false"
     >
-        <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
+        <el-form label-position="right" label-width="70px" :rules="rules" :model="form" ref="ruleForm">
             <el-form-item label="字典值" prop="dictCode">
                 <el-input v-model="form.dictCode" maxlength="16" :disabled="false" show-word-limit placeholder="请输入字典值"></el-input>
             </el-form-item>
 
-            <el-form-item label="文本标题" prop="itemLabel">
-                <el-input v-model="form.itemLabel" maxlength="32" :disabled="false" show-word-limit placeholder="请输入文本标题"></el-input>
+            <el-form-item label="标题" prop="itemLabel">
+                <el-input v-model="form.itemLabel" maxlength="32" :disabled="false" show-word-limit placeholder="请输入标题"></el-input>
             </el-form-item>
 
             <el-form-item label="数据值" prop="itemValue">
@@ -23,7 +23,7 @@
             </el-form-item>
 
             <el-form-item label="状态" prop="status">
-                <el-input v-model="form.status" maxlength="1" :disabled="false" show-word-limit placeholder="请输入数据状态"></el-input>
+                <el-switch class="switch-style switch-form" v-model="form.status" v-bind="ConfigParmas.switchValue"></el-switch>
             </el-form-item>
         </el-form>
     </dialog-alert>

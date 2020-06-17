@@ -1,16 +1,16 @@
  <template>
-    <dialog-alert v-model="value" width="600px" title="信息录入" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+    <dialog-alert v-model="value" title="信息录入" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
         <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
-            <el-form-item label="手机号" prop="phone">
-                <el-input v-model="form.phone" maxlength="16" :disabled="false" show-word-limit></el-input>
+            <el-form-item label="分类标识" prop="code">
+                <el-input v-model="form.code" maxlength="16" :disabled="false" show-word-limit placeholder="请输入分类标识"></el-input>
             </el-form-item>
 
-            <el-form-item label="密码" prop="password">
-                <el-input v-model="form.password" maxlength="32" :disabled="false" show-word-limit></el-input>
+            <el-form-item label="标题" prop="title">
+                <el-input v-model="form.title" maxlength="20" :disabled="false" show-word-limit placeholder="请输入标题"></el-input>
             </el-form-item>
 
-            <el-form-item label="姓名" prop="name">
-                <el-input v-model="form.name" maxlength="30" :disabled="false"></el-input>
+            <el-form-item label="目标表" prop="target">
+                <el-input v-model="form.target" maxlength="32" :disabled="false" show-word-limit placeholder="请输入目标表"></el-input>
             </el-form-item>
 
             <el-form-item label="状态" prop="status">
@@ -24,9 +24,9 @@ export default {
     props: {
         value: { type: [Boolean, String] },
         form: Object,
-        requestType: String,
+        requestType: { type: String, default: '' },
         callback: Function,
-        url: String,
+        url: { type: String, default: '' },
     },
     data() {
         return {

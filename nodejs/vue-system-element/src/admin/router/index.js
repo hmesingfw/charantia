@@ -62,100 +62,87 @@ export const constantRoutes = [{
     }]
 },
 
-// {
-//     path: '/icon',
-//     component: Layout,
-//     children: [{
-//         path: 'index',
-//         component: () => import('@/views/icons/index'),
-//         name: 'Icons',
-//         meta: {
-//             title: '图标',
-//             icon: 'icon',
-//             noCache: true
-//         }
-//     }]
-// }, {
-//     path: '/sys',
-//     component: Layout,
-//     meta: { title: '系统管理', icon: 'guide' },
-//     children: [{
-//         path: 'tag',
-//         component: () => import('@/views/sys/tag/index'),
-//         name: 'SysTag',
-//         meta: { title: '标签管理', icon: 'guide', affix: true }
-//     }, {
-//         path: 'enum',
-//         component: () => import('@/views/sys/enum/index'),
-//         name: 'SysEnum',
-//         meta: { title: '枚举管理', icon: 'guide', affix: true }
-//     }, {
-//         path: 'menu',
-//         component: () => import('@/views/sys/menu/index'),
-//         name: 'SysMenu',
-//         meta: { title: '菜单管理', icon: 'guide', affix: true }
-//     }]
-// }, {
-//     path: '/generate',
-//     component: Layout,
-//     children: [{
-//         path: 'index',
-//         component: () => import('@/views/generate/index'),
-//         name: 'generate',
-//         meta: { title: '生成管理', icon: 'guide', affix: true }
-//     }, {
-//         path: 'table-detail',
-//         hidden: true,
-//         component: () => import('@/views/generate/table-detail'),
-//         name: 'tableDetail',
-//         meta: { title: '基本配置', icon: 'guide', affix: true }
-//     }]
-// },
+    // {
+    //     path: '/icon',
+    //     component: Layout,
+    //     children: [{
+    //         path: 'index',
+    //         component: () => import('@/views/icons/index'),
+    //         name: 'Icons',
+    //         meta: {
+    //             title: '图标',
+    //             icon: 'icon',
+    //             noCache: true
+    //         }
+    //     }]
+    // }, {
+    //     path: '/sys',
+    //     component: Layout,
+    //     meta: { title: '系统管理', icon: 'guide' },
+    //     children: [{
+    //         path: 'tag',
+    //         component: () => import('@/views/sys/tag/index'),
+    //         name: 'SysTag',
+    //         meta: { title: '标签管理', icon: 'guide', affix: true }
+    //     }, {
+    //         path: 'enum',
+    //         component: () => import('@/views/sys/enum/index'),
+    //         name: 'SysEnum',
+    //         meta: { title: '枚举管理', icon: 'guide', affix: true }
+    //     }, {
+    //         path: 'menu',
+    //         component: () => import('@/views/sys/menu/index'),
+    //         name: 'SysMenu',
+    //         meta: { title: '菜单管理', icon: 'guide', affix: true }
+    //     }]
+    // }, {
+    //     path: '/generate',
+    //     component: Layout,
+    //     children: [{
+    //         path: 'index',
+    //         component: () => import('@/views/generate/index'),
+    //         name: 'generate',
+    //         meta: { title: '生成管理', icon: 'guide', affix: true }
+    //     }, {
+    //         path: 'table-detail',
+    //         hidden: true,
+    //         component: () => import('@/views/generate/table-detail'),
+    //         name: 'tableDetail',
+    //         meta: { title: '基本配置', icon: 'guide', affix: true }
+    //     }]
+    // },
 
 
-// {
-//     path: '/error',
-//     component: Layout,
-//     redirect: 'noRedirect',
-//     name: 'ErrorPages',
-//     meta: {
-//         title: '错误页面',
-//         icon: '404'
-//     },
-//     children: [{
-//         path: '401',
-//         component: () => import('@/views/error-page/401'),
-//         name: 'Page401',
-//         meta: {
-//             title: '401',
-//             noCache: true
-//         }
-//     },
-//     {
-//         path: '404',
-//         component: () => import('@/views/error-page/404'),
-//         name: 'Page404',
-//         meta: {
-//             title: '404',
-//             noCache: true
-//         }
-//     }
-//     ]
-// },
-{
-    path: '/page',
-    component: Layout,
-    hidden: true,
-    children: [{
-        path: 'detail',
-        component: () => import('@admin/views/two-page/index'),
-        name: 'PageDetailTwo',
-        meta: {
-            title: '详细信息',
-            icon: 'user'
-        }
-    }]
-},]
+    // {
+    //     path: '/error',
+    //     component: Layout,
+    //     redirect: 'noRedirect',
+    //     name: 'ErrorPages',
+    //     meta: {
+    //         title: '错误页面',
+    //         icon: '404'
+    //     },
+    //     children: [{
+    //         path: '401',
+    //         component: () => import('@/views/error-page/401'),
+    //         name: 'Page401',
+    //         meta: {
+    //             title: '401',
+    //             noCache: true
+    //         }
+    //     },
+    //     {
+    //         path: '404',
+    //         component: () => import('@/views/error-page/404'),
+    //         name: 'Page404',
+    //         meta: {
+    //             title: '404',
+    //             noCache: true
+    //         }
+    //     }
+    //     ]
+    // },
+]
 
 const createRouter = () => new Router({
     // mode: 'history', // require service support

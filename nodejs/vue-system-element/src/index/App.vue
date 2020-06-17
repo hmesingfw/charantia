@@ -13,11 +13,11 @@ export default {
         ...mapState({
             sqlRouter: state => state.permission.sqlRouter,
         }),
-
     },
     created() {
         this.init();
         this.initStore();
+        console.log('--------');
     },
     methods: {
         ...mapActions({
