@@ -2,7 +2,7 @@
     <dialog-alert v-model="value" title="信息录入" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
         <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
             <el-form-item label="分类标识" prop="code">
-                <el-input v-model="form.code" maxlength="16" :disabled="false" show-word-limit placeholder="请输入分类标识"></el-input>
+                <el-input v-model="form.code" maxlength="16" :disabled="requestType == 'put'" placeholder="请输入分类标识"></el-input>
             </el-form-item>
 
             <el-form-item label="标题" prop="title">
@@ -32,7 +32,8 @@ export default {
         return {
             rules: {
                 code: [{ required: true, message: '请输入内容', trigger: 'blur' },],
-                name: [{ required: true, message: '请输入内容', trigger: 'blur' },],
+                title: [{ required: true, message: '请输入内容', trigger: 'blur' },],
+                target: [{ required: true, message: '请输入内容', trigger: 'blur' },],
             },
             loadingButton: false,
 

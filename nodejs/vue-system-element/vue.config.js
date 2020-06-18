@@ -40,7 +40,7 @@ module.exports = {
         },
         proxy: {
             '/api': {
-                target: 'http://localhost:7001',// http://coc.purete.cn // process.env.VUE_APP_URL,
+                target: 'http://192.168.31.135:8081/',// http://coc.purete.cn // process.env.VUE_APP_URL,
                 changeOrigin: true,
                 pathRewrite: {
                     '^/api': 'api'
@@ -83,7 +83,7 @@ module.exports = {
         // 并且如果找不到的话，就回退到 `public/index.html`。
         // 输出文件名会被推导为 `subpage.html`。
         admin: 'src/admin/main.js',
-        index: 'src/index/main.js',
+        // index: 'src/index/main.js',
     },
     configureWebpack: (config) => {
         const baseConfig = {

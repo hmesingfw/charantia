@@ -10,10 +10,6 @@
         :modal-append-to-body="false"
     >
         <el-form label-position="right" label-width="70px" :rules="rules" :model="form" ref="ruleForm">
-            <el-form-item label="字典值" prop="dictCode">
-                <el-input v-model="form.dictCode" maxlength="16" :disabled="false" show-word-limit placeholder="请输入字典值"></el-input>
-            </el-form-item>
-
             <el-form-item label="标题" prop="itemLabel">
                 <el-input v-model="form.itemLabel" maxlength="32" :disabled="false" show-word-limit placeholder="请输入标题"></el-input>
             </el-form-item>
@@ -40,8 +36,8 @@ export default {
     data() {
         return {
             rules: {
-                code: [{ required: true, message: '请输入内容', trigger: 'blur' },],
-                name: [{ required: true, message: '请输入内容', trigger: 'blur' },],
+                itemLabel: [{ required: true, message: '请输入内容', trigger: 'blur' },],
+                itemValue: [{ required: true, message: '请输入内容', trigger: 'blur' },],
             },
             loadingButton: false,
 

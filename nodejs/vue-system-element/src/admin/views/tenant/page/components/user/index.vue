@@ -21,15 +21,19 @@ export default {
     components: {
         edit
     },
+    props: {
+        info: Object,
+    },
     computed: {
         ...mapState({
             statusList: state => state.enumList.data.statusList,
             regType: state => state.enumList.data.regType,
+            sexType: state => state.enumList.data.sexType,
         })
     },
     data() {
         return {
-            apiUrl: 'https://mock.yonyoucloud.com/mock/8636/tenant', // 请求路很                
+            apiUrl: this.$api.sys.tenantAdmin, // 请求路很                
 
             /* ------------ */
             QueryParam: {}, //  搜索条件 
@@ -39,14 +43,28 @@ export default {
             tableData: [],
             tableParams: [
                 {
-                    prop: 'name', label: '真实姓名', width: 160,
+                    prop: 'logo', label: '头像', width: 160,
+                },
+                {
+                    prop: 'name', label: '姓名', width: 160,
                 },
                 {
                     prop: 'mobile', label: '手机号码', width: 160,
                 },
                 {
+                    prop: 'email', label: '邮箱', width: 200,
+                },
+
+                {
+                    prop: 'gender', label: '性别', width: 160,
+                    formatF: row => this.ListMatchField('sexType', row.gender)
+                },
+                {
+                    prop: 'address', label: '地址',
+                },
+                {
                     prop: 'status', label: '状态', width: 160,
-                    formatF: row => <c-switch data={row} data-key={row.status} url={this.apiUrl} callback={this.query}></c-switch>
+                    formatF: row => <c-switch data={row} data-key='status' url={this.apiUrl} callback={this.query}></c-switch>
                 },
                 {
                     prop: 'status', label: "操作", width: 160,
@@ -59,8 +77,7 @@ export default {
             multipleSelection: [], // 多选选中的值
 
             pagination: {
-                page: 1,
-                size: localStorage.getItem('pageSize') || 10,
+                ...this.ConfigParmas.pagination
             },
             totalCount: 0, // 总共多少条
             /* 表单 */
@@ -78,14 +95,15 @@ export default {
             if (flag == 1) this.pagination.page = 1; // 查询时，让页面等于1
             let param = {
                 ...this.pagination,
-                ...this.QueryParam
+                ...this.QueryParam,
+                tenantId: this.info.tenantId,
             };
             this.tableLoading = true;
             this.$http.get(this.apiUrl, {
                 params: param
             }).then(res => {
-                this.tableData = res.data.rows;
-                this.totalCount = res.data.count;
+                this.tableData = res.data.data.list;
+                this.totalCount = res.data.data.totalCount;
                 this.tableLoading = false;
             }).catch(() => {
                 this.tableLoading = false;

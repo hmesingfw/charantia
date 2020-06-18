@@ -2,7 +2,7 @@
     <dialog-alert v-model="value" title="编辑" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
         <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
             <el-form-item label="编码" prop="dictCode">
-                <el-input v-model="form.dictCode" maxlength="16" :disabled="false"></el-input>
+                <el-input v-model="form.dictCode" maxlength="16" :disabled="requestType == 'put'"></el-input>
             </el-form-item>
 
             <el-form-item label="名称" prop="dictName">
@@ -13,10 +13,8 @@
                 <el-input v-model="form.description" maxlength="32" :disabled="false" show-word-limit></el-input>
             </el-form-item>
 
-            <el-form-item label="数据状态" prop="status">
-                <el-radio-group v-model="form.status" :disabled="false">
-                    <el-radio v-for="item in statusList" :key="item.id" :label="item.value">{{item.title}}</el-radio>
-                </el-radio-group>
+            <el-form-item label="状态" prop="status">
+                <el-switch class="switch-style switch-form" v-model="form.status" v-bind="ConfigParmas.switchValue"></el-switch>
             </el-form-item>
         </el-form>
     </dialog-alert>

@@ -1,5 +1,5 @@
 <template>
-    <dialog-model v-model="value" title="字典列表" width="700" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+    <dialog-model v-model="value" title="字典详情信息列表" width="700" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
         <div class="app-main-table">
             <el-form :inline="true" :model="QueryParam" class="header-query-form">
                 <generate-form :datalist="queryComponentData" :model="QueryParam" @change="query(1)"></generate-form>
@@ -22,6 +22,7 @@ import edit from './edit.vue'
 
 export default {
     props: {
+        data: { type: Object },
         value: { type: [Boolean, String] },
         callback: Function,
 
@@ -35,7 +36,7 @@ export default {
     },
     data() {
         return {
-            apiUrl: this.$api.sys.tag, // 请求路很                
+            apiUrl: this.$api.sys.enumDetail, // 请求路很                
 
             /* ------------ */
             QueryParam: {}, //  搜索条件
@@ -62,8 +63,7 @@ export default {
             multipleSelection: [], // 多选选中的值
 
             pagination: {
-                page: 1,
-                size: localStorage.getItem('pageSize') || 10,
+                ...this.ConfigParmas.pagination
             },
             totalCount: 0, // 总共多少条
             /* 表单 */
@@ -83,6 +83,7 @@ export default {
         query(flag) {
             if (flag == 1) this.pagination.page = 1; // 查询时，让页面等于1
             let param = {
+                dictCode: this.data.dictCode,
                 ...this.pagination,
                 ...this.QueryParam
             };
@@ -90,17 +91,18 @@ export default {
             this.$http.get(this.apiUrl, {
                 params: param
             }).then(res => {
-                this.tableData = res.data.rows;
-                this.totalCount = res.data.count;
+                this.tableData = res.data.data.list;
+                this.totalCount = res.data.data.totalCount;
                 this.tableLoading = false;
             }).catch(() => {
                 this.tableLoading = false;
             });
         },
         /* 编辑 */
-        handleEdit(row, requestType = 'post') {
+        handleEdit(row = { sort: 1, status: 1 }, requestType = 'post') {
             this.dialogValue = true;
             this.form = this.DeepCopy(row);
+            this.$set(this.form, 'dictCode', this.data.dictCode);
             this.requestType = requestType;
         },
         /* 确定按钮 */

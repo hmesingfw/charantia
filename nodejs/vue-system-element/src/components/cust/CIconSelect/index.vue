@@ -1,5 +1,5 @@
 <template>
-    <el-popover placement="bottom-start" width="460" trigger="click" popper-class="c-icon-select">
+    <el-popover placement="bottom-start" width="460" trigger="click" popper-class="c-icon-select" v-if="flashInput">
         <el-tabs>
             <el-tab-pane label="Icons" style="height:270px">
                 <el-scrollbar class="scrollbar">
@@ -20,7 +20,7 @@
                 </el-scrollbar>
             </el-tab-pane>
         </el-tabs>
-        <el-input v-model="iconValue" slot="reference"></el-input>
+        <el-input v-model="iconValue" slot="reference" :prefix-icon="iconValue"></el-input>
     </el-popover>
 </template>
 <script>  
@@ -34,7 +34,8 @@ export default {
         return {
             iconValue: '',
             svgIcons,
-            elementIcons
+            elementIcons,
+            flashInput: true,
         }
     },
     created() {
@@ -46,8 +47,14 @@ export default {
             this.$emit('input', iconName)
         },
         setVal(val) {
-
             this.iconValue = val;
+            this.flash();
+        },
+        flash() {
+            this.flashInput = false;
+            this.$nextTick(() => {
+                this.flashInput = true;
+            })
         },
 
     },

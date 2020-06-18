@@ -16,7 +16,7 @@ axios.interceptors.request.use(function (config) {
     if (config.method != 'get') {
         config.headers['x-csrf-token'] = Cookies.get('csrfToken');              // csrf 防御  egg框架
     }
-    config.headers.authorization = store.getters.token;
+    config.headers.Authorization = store.getters.token;
     return config;
 }, function (error) {
     // 对请求错误做些什么

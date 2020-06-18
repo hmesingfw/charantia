@@ -4,7 +4,7 @@
             v-if="roles.includes(permission) || permission == 'default'"
             class="switch-style"
             v-model="data[dataKey]"
-            @change="UpdateSwitch(data, url, dataKey, callback)"
+            @change="UpdateSwitch(data, url, dataKey, callback, {idKey:idKey})"
             v-bind="ConfigParmas[configtitle]"
             active-color="#4fc08d"
         ></el-switch>
@@ -27,7 +27,8 @@ export default {
 
         permission: { type: String, default: 'default' },             // 权限
 
-        configtitle: { type: String, default: 'switchValue' }
+        configtitle: { type: String, default: 'switchValue' },
+        idKey: { type: String, default: 'id' },
     }
 }
 </script>

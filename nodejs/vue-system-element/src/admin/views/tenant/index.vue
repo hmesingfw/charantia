@@ -29,7 +29,7 @@ export default {
     },
     data() {
         return {
-            apiUrl: 'https://mock.yonyoucloud.com/mock/8636/tenant', // 请求路很                
+            apiUrl: this.$api.sys.tenant, // 请求路很                
 
             /* ------------ */
             QueryParam: {}, //  搜索条件
@@ -39,12 +39,11 @@ export default {
             tableData: [],
             tableParams: [
                 {
-                    prop: 'name', label: '租户名称', width: 300, 'show-overflow-tooltip': true,
+                    prop: 'name', label: '租户名称', 'min-width': 300, 'show-overflow-tooltip': true,
                     formatF: row => <el-button type="text" on-click={() => this.handleOpenInfo(row)} >{row.name}</el-button>
-
                 },
                 {
-                    prop: 'conact', label: '管理员',
+                    prop: 'conact', label: '联系人', width: 200
                 },
                 {
                     prop: 'mobile', label: '手机号码', width: 160
@@ -62,7 +61,7 @@ export default {
                 },
                 {
                     prop: 'status', label: '状态', width: 100,
-                    formatF: row => <c-switch data={row} data-key={row.status} url={this.apiUrl} callback={this.query}></c-switch>
+                    formatF: row => <c-switch data={row} data-key='status' url={this.apiUrl} callback={this.query}></c-switch>
                 },
                 {
                     prop: 'status', label: "操作", width: 160,
@@ -75,8 +74,7 @@ export default {
             multipleSelection: [], // 多选选中的值
 
             pagination: {
-                page: 1,
-                size: localStorage.getItem('pageSize') || 10,
+                ...this.ConfigParmas.pagination
             },
             totalCount: 0, // 总共多少条
             /* 表单 */
@@ -100,23 +98,22 @@ export default {
             this.$http.get(this.apiUrl, {
                 params: param
             }).then(res => {
-                this.tableData = res.data.rows;
-                this.totalCount = res.data.count;
+                this.tableData = res.data.data.list;
+                this.totalCount = res.data.data.totalCount;
                 this.tableLoading = false;
             }).catch(() => {
                 this.tableLoading = false;
             });
         },
         /* 编辑 */
-        handleEdit(row, requestType = 'post') {
+        handleEdit(row = { status: 1 }, requestType = 'post') {
             this.dialogValue = true;
             this.form = this.DeepCopy(row);
             this.requestType = requestType;
         },
         /* 租户信息 */
         handleOpenInfo(row) {
-            console.log(this.$router);
-            this.$router.push({ path: '/tenant/detail', params: { id: row.id } })
+            this.$router.push({ path: '/tenant/detail', query: { id: row.tenantId } })
         },
     }
 };

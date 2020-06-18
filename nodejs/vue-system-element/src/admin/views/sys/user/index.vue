@@ -1,20 +1,18 @@
 <template>
     <div>
-        <div class="app-main-table">
+        <!-- <div class="app-main-table">
             <el-form :inline="true" :model="QueryParam" class="header-query-form">
                 <generate-form :datalist="queryComponentData" :model="QueryParam" @change="query(1)"></generate-form>
             </el-form>
-        </div>
+        </div>-->
         <div class="app-main-table">
-            <generate-handle :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection">
-                <el-button @click="handleEdit" icon="el-icon-refresh">重置密码</el-button>
-            </generate-handle>
-            <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" v-loading="tableLoading"></generate-table>
+            <generate-handle :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection"></generate-handle>
+            <generate-table :data="tableData" :params="tableParams" :isSelection="false" v-loading="tableLoading"></generate-table>
             <pagination :data="pagination" :callback="query" :total="totalCount" />
         </div>
 
         <edit v-model="dialogValue" :form="form" :requestType="requestType" :callback="query" :url="apiUrl"></edit>
-        <role v-model="dialogValueRole" :form="form" :callback="query"></role>
+        <!-- <role v-model="dialogValueRole" :form="form" :callback="query"></role> -->
     </div>
 </template>
 <script>
@@ -40,34 +38,28 @@ export default {
             }, //  搜索条件
             queryComponentData: [
                 { "name": "el-switch", "key": "status", "label": "状态", "attr": { "placeholder": "请选择内容", "clearable": true }, "option": "statusList" },
-                { "name": "el-input", "key": "phone", "label": "手机号", "attr": { "placeholder": "请输入内容" } },
-                { "name": "el-input", "key": "name", "label": "姓名", "attr": { "placeholder": "请输入内容" } },
-                { "name": "el-input", "key": "name", "label": "姓名", "attr": { "placeholder": "请输入内容" } },
-                { "name": "el-input", "key": "name", "label": "姓名", "attr": { "placeholder": "请输入内容" } },
-                { "name": "el-input", "key": "name", "label": "姓名", "attr": { "placeholder": "请输入内容" } },
             ],
             tableData: [],
             tableParams: [
-                { prop: 'phone', label: "手机号", formatF: row => <el-button type="text" on-click={() => this.gotoDetail(row)}>{row.phone}</el-button> },
-
-                { prop: 'password', label: '密码', },
-                { prop: 'name', label: '姓名', },
-                { prop: 'status', label: '状态', formatF: row => <c-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></c-switch>, }, { prop: 'details', label: '备注', },
+                { prop: 'account', label: "账号", },
+                { prop: 'lastLoginTime', label: '最后登录时间', },
+                { prop: 'lastLoginIp', label: '登录IP', },
+                { prop: 'loginCount', label: '登录次数', },
+                { prop: 'createdBy', label: '创建人', },
+                { prop: 'status', label: '状态', formatF: row => <c-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></c-switch>, },
                 {
                     prop: 'status', label: "操作", width: 240,
                     formatF: row =>
                         <div>
-                            <el-button type="text" on-click={() => this.handleEdit(row, 'put')} icon="el-icon-edit">编辑</el-button>
+                            <el-button type="text" on-click={() => this.password(row)} icon="el-icon-refresh">重置密码</el-button>
                             <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon="el-icon-delete">删除</el-button>
-                            <el-button type="text" on-click={() => this.handleEditRole(row)} icon="el-icon-edit-outline">分配角色</el-button>
                         </div>
                 },],
             tableLoading: false,
             multipleSelection: [], // 多选选中的值
 
             pagination: {
-                page: 1,
-                size: localStorage.getItem('pageSize') || 10,
+                ...this.ConfigParmas.pagination,
             },
             totalCount: 0, // 总共多少条
             /* 表单 */
@@ -93,28 +85,36 @@ export default {
             this.$http.get(this.apiUrl, {
                 params: param
             }).then(res => {
-                this.tableData = res.data.rows;
-                this.totalCount = res.data.count;
+                this.tableData = res.data.data.list;
+                this.totalCount = res.data.data.totalCount;
                 this.tableLoading = false;
             }).catch(() => {
                 this.tableLoading = false;
             });
         },
         /* 编辑 */
-        handleEdit(row, requestType = 'post') {
+        handleEdit(row = { status: 1 }, requestType = 'post') {
             this.dialogValue = true;
             this.form = this.DeepCopy(row);
             this.requestType = requestType;
         },
-        /* 编辑 */
+        /* 分配角色 */
         handleEditRole(row) {
             this.dialogValueRole = true;
             this.form = this.DeepCopy(row);
         },
 
-        /* 跳转到详情 */
-        gotoDetail() {
-            this.$router.push({ path: '/page/detail' })
+        password(row) {
+            this.$confirm('确认重置当前账号密码', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'info'
+            }).then(async () => {
+                let issucc = await this.ReqData(this.$api.sys.userPwd, { id: row.id }, 'put');
+                if (issucc) {
+                    this.$message.success('密码重置成功');
+                }
+            });
         }
     }
 };

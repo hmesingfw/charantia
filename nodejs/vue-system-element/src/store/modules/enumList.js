@@ -4,6 +4,10 @@ const state = {
     data: {},
     static: {
         // 
+        sexType: [
+            { title: '男', value: 1 },
+            { title: '女', value: 0 }
+        ],
         regType: [
             { title: '自主', value: 1 },
             { title: '平台', value: 2 }
@@ -20,11 +24,17 @@ const state = {
             { title: '开关选择器', value: 'el-switch' },
             { title: '计数器', value: 'el-input-number' },
         ],
-        TAG_TYPE: [
+        MODULE_TYPE: [
             { title: '活动', value: 1 },
             { title: '投票', value: 2 },
             { title: '资讯', value: 3 },
             { title: '商会圈', value: 4 },
+        ],
+        CONFIG_TYPE: [
+            { title: '公众号配置', value: 'official' },
+            { title: '小程序配置', value: 'mini' },
+            { title: '支付配置', value: 'pay' },
+
         ]
     },
 }
@@ -40,12 +50,14 @@ const actions = {
     getEnum({
         commit
     }) {
-        axios.get(api.sys.enum).then(res => {
-            let data = {};
-            res.data.rows.forEach(item => {
-                data[item.value] = item.children
+        axios.get(api.sys.enumDetail).then(res => {
+            let obj = {};
+
+            res.data.data.list.forEach(item => {
+                if (!obj.hasOwnProperty(item.dictCode)) obj[item.dictCode] = [];
+                obj[item.dictCode].push(item);
             });
-            commit('GET_ENUM', data)
+            commit('GET_ENUM', obj)
         });
     },
 }

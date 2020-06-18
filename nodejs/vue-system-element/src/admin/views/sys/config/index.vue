@@ -5,7 +5,7 @@
                 <el-tree
                     ref="treeMenu"
                     :data="tableData"
-                    :props="{children: 'children',label: 'label'}"
+                    :props="{children: 'children',label: 'title'}"
                     :filter-node-method="filterNode"
                     @node-click="data => handleNodeClick(data, 'put')"
                     :default-expand-all="true"
@@ -23,6 +23,7 @@
     </el-row>
 </template>
 <script>
+import { mapState } from 'vuex';
 import { GetHeight } from "@/utils/sys";
 import official from './official'
 export default {
@@ -32,20 +33,21 @@ export default {
     created() {
         this.loadingContent(this.tableData);
     },
+    computed: {
+        ...mapState({
+            statusList: state => state.enumList.data.statusList,
+            regType: state => state.enumList.data.regType,
+        })
+    },
     data() {
         return {
             treeHeight: GetHeight(90),
             treeHeight2: GetHeight(130),
-            tableData: [{
-                label: '公众号配置',
-                code: 'info',
-            }, {
-                label: '小程序配置',
-                code: 'settings',
-            }, {
-                label: '支付配置',
-                code: 'pay'
-            }],
+            tableData: [
+                { title: '公众号配置', value: 'official' },
+                { title: '小程序配置', value: 'mini' },
+                { title: '支付配置', value: 'pay' },
+            ],
 
             componentName: '',
         }
@@ -53,7 +55,7 @@ export default {
     methods: {
         /* 点击 */
         handleNodeClick(row) {
-            this.componentName = row.code;
+            this.componentName = row.value;
 
         },
         /* 过滤 */

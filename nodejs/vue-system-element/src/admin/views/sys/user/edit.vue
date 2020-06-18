@@ -1,16 +1,12 @@
  <template>
-    <dialog-alert v-model="value" width="600px" title="信息录入" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
-        <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
-            <el-form-item label="手机号" prop="phone">
-                <el-input v-model="form.phone" maxlength="16" :disabled="false" show-word-limit></el-input>
+    <dialog-alert v-model="value" title="创建账号" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+        <el-form label-position="right" label-width="70px" :rules="rules" :model="form" ref="ruleForm">
+            <el-form-item label="账号" prop="account">
+                <el-input v-model="form.account" maxlength="16" :disabled="false" show-word-limit></el-input>
             </el-form-item>
 
             <el-form-item label="密码" prop="password">
                 <el-input v-model="form.password" maxlength="32" :disabled="false" show-word-limit></el-input>
-            </el-form-item>
-
-            <el-form-item label="姓名" prop="name">
-                <el-input v-model="form.name" maxlength="30" :disabled="false"></el-input>
             </el-form-item>
 
             <el-form-item label="状态" prop="status">
@@ -31,8 +27,8 @@ export default {
     data() {
         return {
             rules: {
-                code: [{ required: true, message: '请输入内容', trigger: 'blur' },],
-                name: [{ required: true, message: '请输入内容', trigger: 'blur' },],
+                account: [{ required: true, message: '请输入内容', trigger: 'blur' },],
+                password: [{ required: true, message: '请输入内容', trigger: 'blur' },],
             },
             loadingButton: false,
 

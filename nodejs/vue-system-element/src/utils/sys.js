@@ -181,7 +181,7 @@ export function TogetherRouter(arr, type = 'admin') {
         let json = {
             path: item.path,
             name: item.path + item.id,
-            hidden: item.show == '1',
+            hidden: item.isHidden == 0,
             component: () => item.component == 'Layout' ? import('@/layout') : import(`@/${type}/views${item.component}`),
             meta: { title: item.title, icon: item.icon },
         };

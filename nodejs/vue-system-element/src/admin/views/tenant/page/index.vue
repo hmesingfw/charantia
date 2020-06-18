@@ -20,7 +20,7 @@
             <el-col :xl="22" :md="20">
                 <el-row class="page-main" :style="{height:treeHeight2}">
                     <el-scrollbar class="scrollbar">
-                        <component v-bind:is="componentName"></component>
+                        <component v-bind:is="componentName" :info="info"></component>
                     </el-scrollbar>
                 </el-row>
             </el-col>
@@ -35,6 +35,8 @@ export default {
     components: comp,
     created() {
         this.loadingContent(this.tableData);
+        this.id = this.$route.query.id;
+        this.init();
     },
     data() {
         return {
@@ -57,13 +59,19 @@ export default {
             ],
 
             componentName: '',
+            id: 0,
+            info: {},
         }
     },
     methods: {
+        init() {
+            this.$http.get(`${this.$api.sys.tenant}/${this.id}`).then(res => {
+                this.info = res.data.data;
+            });
+        },
         /* 点击 */
         handleNodeClick(row) {
             this.componentName = row.code;
-
         },
         /* 过滤 */
         filterNode(value, data) {
@@ -81,12 +89,7 @@ export default {
         },
     },
     watch: {
-        tableData: {
-            handler(val) {
-                this.loadingContent(val);
-            },
-            deep: true//对象内部的属性监听，也叫深度监听
-        },
+
     }
 }
 </script>

@@ -31,7 +31,7 @@ export default {
     },
     data() {
         return {
-            apiUrl: this.$api.sys.tag, // 请求路很                
+            apiUrl: this.$api.message.dict, // 请求路很                
 
             /* ------------ */
             QueryParam: {}, //  搜索条件
@@ -55,7 +55,7 @@ export default {
                 },
                 {
                     prop: 'status', label: '状态',
-                    formatF: row => <c-switch data={row} data-key={row.status} url={this.apiUrl} callback={this.query}></c-switch>
+                    formatF: row => <c-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></c-switch>
                 },
                 {
                     prop: 'status', label: "操作",
@@ -68,20 +68,26 @@ export default {
             multipleSelection: [], // 多选选中的值
 
             pagination: {
-                page: 1,
-                size: localStorage.getItem('pageSize') || 10,
+                ...this.ConfigParmas.pagination
             },
             totalCount: 0, // 总共多少条
             /* 表单 */
             dialogValue: false,
             requestType: '', // 请求类型 
             form: {},
+
+            category: [],   // 分类列表
         };
     },
     created() {
         this.query();
     },
     methods: {
+        init() {
+            this.$http.get(`${this.$api.message.category}?page=1000&limit=1`).then(res => {
+
+            })
+        },
         /* 查询操作 */
         query(flag) {
             if (flag == 1) this.pagination.page = 1; // 查询时，让页面等于1
@@ -93,15 +99,15 @@ export default {
             this.$http.get(this.apiUrl, {
                 params: param
             }).then(res => {
-                this.tableData = res.data.rows;
-                this.totalCount = res.data.count;
+                this.tableData = res.data.data.list;
+                this.totalCount = res.data.data.totalCount;
                 this.tableLoading = false;
             }).catch(() => {
                 this.tableLoading = false;
             });
         },
         /* 编辑 */
-        handleEdit(row, requestType = 'post') {
+        handleEdit(row = { status: 1 }, requestType = 'post') {
             this.dialogValue = true;
             this.form = this.DeepCopy(row);
             this.requestType = requestType;

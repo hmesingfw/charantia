@@ -21,6 +21,41 @@ const mutations = {
     }
 }
 const actions = {
+    // 
+    login_admin({
+        commit
+    }, userInfo) {
+        userInfo.username = userInfo.username.trim()
+        return new Promise((resolve, reject) => {
+
+            axios.post(api.sys.userLogin, userInfo).then(response => {
+                const data = response.data.data;
+                if (response.data.code != 200) {
+                    resolve(data);
+                }
+
+                const sysMenu = data.menus;
+
+                let routerArr = [];
+                routerArr = TogetherRouter(sysMenu);
+                routerArr.push({ path: '*', redirect: '/404', hidden: true }); /* 404 页面 */
+                commit('permission/SET_SQLROUTES', sysMenu, { root: true });
+
+                commit('SET_INFO', data.user);
+
+                commit('SET_TOKEN', data.token);
+                /* 按钮权限 */
+                // const buttons = data.roles.map(item => item.par);
+                // commit('SET_ROLES', buttons);
+
+                setToken(data.token)
+                resolve(routerArr);
+
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    },
     // 用户名登录
     login({
         commit

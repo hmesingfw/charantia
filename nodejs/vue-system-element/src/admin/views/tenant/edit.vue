@@ -13,16 +13,23 @@
                 <el-form-item label="手机号码" prop="mobile">
                     <el-input v-model="form.mobile" maxlength="24" :disabled="false" placeholder="请输入手机号码"></el-input>
                 </el-form-item>
-                <el-form-item label="地址" prop="mobile">
-                    <el-input v-model="form.mobile" maxlength="24" :disabled="false" placeholder="请输入地址"></el-input>
+                <el-form-item label="地址" prop="address">
+                    <el-input v-model="form.address" maxlength="24" :disabled="false" placeholder="请输入地址"></el-input>
                 </el-form-item>
                 <el-divider></el-divider>
-                <el-form-item label="账号" prop="mobile">
-                    <el-input v-model="form.mobile" maxlength="24" :disabled="false" placeholder="请输入账号"></el-input>
+                <div>
+                    <i class="el-icon-info"></i>初始化账号：admin
+                </div>
+                <div>
+                    <i class="el-icon-info"></i>初始化密码：当前手机号码
+                </div>
+                <!--
+                <el-form-item label="账号" prop="account">
+                    <el-input v-model="form.account" maxlength="24" :disabled="false" placeholder="请输入账号"></el-input>
                 </el-form-item>
-                <el-form-item label="密码" prop="mobile">
-                    <el-input v-model="form.mobile" maxlength="24" :disabled="false" placeholder="请输入密码"></el-input>
-                </el-form-item>
+                <el-form-item label="密码" prop="password">
+                    <el-input v-model="form.password" maxlength="24" :disabled="false" placeholder="请输入密码"></el-input>
+                </el-form-item>-->
             </el-form>
         </el-row>
     </dialog-alert>
