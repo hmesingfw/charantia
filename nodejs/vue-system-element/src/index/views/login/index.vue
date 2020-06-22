@@ -123,7 +123,7 @@ export default {
             this.$refs.loginForm.validate(valid => {
                 if (valid) {
                     this.loading = true
-                    this.$store.dispatch('user/login', this.loginForm).then(routes => {
+                    this.$store.dispatch('user/login_index', this.loginForm).then(routes => {
                         if (routes.code == 4001) {
                             this.loading = false;
                             routes.message && this.$message.info(routes.message);

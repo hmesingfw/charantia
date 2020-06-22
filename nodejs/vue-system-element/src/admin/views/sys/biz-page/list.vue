@@ -31,7 +31,7 @@ export default {
     },
     data() {
         return {
-            apiUrl: 'https://mock.yonyoucloud.com/mock/8636/agreement', // 请求路很                
+            apiUrl: this.$api.sys.bizPage, // 请求路很                
 
             /* ------------ */
             QueryParam: {}, //  搜索条件
@@ -76,8 +76,7 @@ export default {
             multipleSelection: [], // 多选选中的值
 
             pagination: {
-                page: 1,
-                size: localStorage.getItem('pageSize') || 10,
+                ...this.ConfigParmas.pagination
             },
             totalCount: 0, // 总共多少条
             /* 表单 */
@@ -101,8 +100,8 @@ export default {
             this.$http.get(this.apiUrl, {
                 params: param
             }).then(res => {
-                this.tableData = res.data.rows;
-                this.totalCount = res.data.count;
+                this.tableData = res.data.data.list;
+                this.totalCount = res.data.data.totalCount;
                 this.tableLoading = false;
             }).catch(() => {
                 this.tableLoading = false;

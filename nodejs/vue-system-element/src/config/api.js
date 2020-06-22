@@ -13,21 +13,31 @@ export default {
 
         tenant: baseURL + '/pub/tenant',          // 系统租户信息
         role: baseURL + '/sys/role',              // 租房角色信息
+        roleMenu: baseURL + '/sys/role-menu',     // 租房角色信息
+        roleUser: baseURL + '/sys/role-user',   // 角色用户关联
 
         tenantAdmin: baseURL + '/pub/tenant/admin',  // 系统用户登录
+
+        config: baseURL + '/pub/config',          // 配置管理
+
+
+        versionLog: baseURL + '/pub/version-log',          // 更新日志
+
+        bizPage: baseURL + '/biz/page',          // 单页表
+
+        dashboard: baseURL + '/pub/dashboard',          // 首页
+
 
 
         file: baseURL + '/v1/sys/file',           // 系统文件
         banner: baseURL + '/v1/sys/banner',       // 首页轮播
 
-
-        roleMenu: baseURL + '/v1/sys/role-menu',   // 角色菜单关联
-        roleUser: baseURL + '/v1/sys/user-role',   // 角色用户关联
         getFile: baseURL + '/v1/sys/get-file',      // 获取文件信息 
     },
     message: {
         dict: baseURL + '/message/dict',                      // 消息字典
         category: baseURL + '/message/category',              // 消息分类
+        action: baseURL + '/message/action',              // 消息行为
     },
     generate: {
         index: baseURL + '/v1/generate',                        // 代码生成表

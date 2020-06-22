@@ -16,7 +16,8 @@
         <el-col :xl="22" :md="20">
             <el-row class="page-main" :style="{height:treeHeight2}">
                 <el-scrollbar class="scrollbar">
-                    <list></list>
+                    <!-- <list :info="codeName"></list> -->
+                    <edit :info="codeName"></edit>
                 </el-scrollbar>
             </el-row>
         </el-col>
@@ -24,33 +25,65 @@
 </template>
 <script>
 import { GetHeight } from "@/utils/sys";
-import list from './list'
+import { mapGetters } from 'vuex';
+// import list from './list'
+import edit from './edit'
 export default {
     components: {
-        list
+        // list
+        edit
+    },
+    computed: {
+        ...mapGetters({
+            enumList: 'enumList',
+        })
     },
     created() {
-        this.loadingContent(this.tableData);
+        this.init();
+
     },
+
     data() {
         return {
             treeHeight: GetHeight(90),
             treeHeight2: GetHeight(130),
-            tableData: [{
-                label: '关于我们',
-                code: 'info',
-            }, {
-                label: '协议配置',
-                code: 'settings',
-            },],
+            tableData: [],
 
-            componentName: '',
+            codeName: '',
         }
     },
     methods: {
+        async init() {
+            let dis = ['ABOUT_US', 'SINGLE_PAGE_GROUP'];
+
+            let treeList = [];
+            /* 第一级标题 */
+            let res = await this.$http.get(this.$api.sys.enum);
+            res.data.data.list.forEach(item => {
+                if (dis.includes(item.dictCode)) {
+                    treeList.push({
+                        label: item.dictName,
+                        code: item.dictCode,
+                        children: []
+                    })
+                }
+            });
+            /* 第二级标题 */
+            let enumDetail = await this.$http.get(this.$api.sys.enumDetail);
+            enumDetail.data.data.list.forEach(item => {
+                treeList.forEach(obj => {
+                    if (obj.code == item.dictCode) {
+                        obj.children.push({ ...item, label: item.itemLabel });
+                    }
+                })
+            });
+            this.tableData = treeList;
+
+            this.loadingContent(this.tableData);
+        },
         /* 点击 */
         handleNodeClick(row) {
-            this.componentName = row.code;
+            this.codeName = row;
 
         },
         /* 过滤 */
@@ -68,13 +101,5 @@ export default {
             }
         },
     },
-    watch: {
-        tableData: {
-            handler(val) {
-                this.loadingContent(val);
-            },
-            deep: true//对象内部的属性监听，也叫深度监听
-        },
-    }
 }
 </script>

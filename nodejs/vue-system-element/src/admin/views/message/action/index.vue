@@ -1,63 +1,57 @@
 <template>
     <div>
         <div class="app-main-table">
+            <el-form :inline="true" :model="QueryParam" class="header-query-form">
+                <generate-form :datalist="queryComponentData" :model="QueryParam" @change="query(1)"></generate-form>
+            </el-form>
+        </div>
+        <div class="app-main-table">
             <generate-handle :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection"></generate-handle>
-            <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" v-loading="tableLoading"></generate-table>
+            <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" v-loading="tableLoading" :isSelection="false"></generate-table>
             <pagination :data="pagination" :callback="query" :total="totalCount" />
         </div>
 
         <edit v-model="dialogValue" :form="form" :requestType="requestType" :callback="query" :url="apiUrl"></edit>
-        <auto v-model="dialogAuto" :row="autoinfo" :roleMenuList="roleMenuList" :callback="query"></auto>
     </div>
 </template>
 <script>
-import { mapState } from 'vuex';
+import {
+    mapState
+} from 'vuex';
 import edit from './edit.vue'
-import auto from './auto'
+
 export default {
     components: {
-        edit, auto
-    },
-    props: {
-        info: Object,
+        edit,
     },
     computed: {
         ...mapState({
             statusList: state => state.enumList.data.statusList,
-            regType: state => state.enumList.data.regType,
         })
     },
     data() {
         return {
-            apiUrl: this.$api.sys.role, // 请求路很                
+            apiUrl: this.$api.message.action, // 请求路很                
 
             /* ------------ */
-            QueryParam: {}, //  搜索条件 
+            QueryParam: {}, //  搜索条件
+            queryComponentData: [
+                { name: 'el-input', key: 'action', label: "动作标识", attr: { placeholder: '请输入动作标识' } },
+            ],
             tableData: [],
             tableParams: [
                 {
-                    prop: 'code', label: '标识', width: 100,
+                    prop: 'action', label: '动作标识',
                 },
                 {
-                    prop: 'name', label: '角色名称', width: 300, 'show-overflow-tooltip': true,
+                    prop: 'cnAction', label: '动作名称',
                 },
                 {
-                    prop: 'isSystem', label: '平台添加', width: 160,
-                    formatF: row => this.ListMatchField('statusList', row.isSystem)
-                },
-                {
-                    prop: 'description', label: '描述', 'show-overflow-tooltip': true,
-                },
-                {
-                    prop: 'status', label: '状态', width: 160,
-                    formatF: row => <c-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></c-switch>
-                },
-                {
-                    prop: 'status', label: "操作", width: 240,
+                    prop: 'status', label: "操作", width: 300,
                     formatF: row => <div>
-                        <el-button type="text" on-click={() => this.handleAuto(row)} icon="el-icon-edit">授权</el-button>
+                        <el-button type="text" on-click={() => this.handleOpenItem(row)} icon="el-icon-setting">字典值</el-button>
                         <el-button type="text" on-click={() => this.handleEdit(row, 'put')} icon="el-icon-edit">编辑</el-button>
-                        <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon="el-icon-delete">删除</el-button>
+                        <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query, { idKey: 'action' })} icon="el-icon-delete">删除</el-button>
                     </div>
                 },],
             tableLoading: false,
@@ -72,11 +66,9 @@ export default {
             requestType: '', // 请求类型 
             form: {},
 
-
-            /*  */
-            roleMenuList: [],
-            dialogAuto: false,
-            autoinfo: {},
+            /* 子项目 */
+            dialogValueItem: false,
+            flashItem: true,
         };
     },
     created() {
@@ -87,7 +79,6 @@ export default {
         query(flag) {
             if (flag == 1) this.pagination.page = 1; // 查询时，让页面等于1
             let param = {
-                tenantId: this.info.tenantId,
                 ...this.pagination,
                 ...this.QueryParam
             };
@@ -103,21 +94,22 @@ export default {
             });
         },
         /* 编辑 */
-        handleEdit(row = { status: 1 }, requestType = 'post') {
+        handleEdit(row = { sort: 1, status: 1 }, requestType = 'post') {
             this.dialogValue = true;
             this.form = this.DeepCopy(row);
-            this.$set(this.form, 'tenantId', this.info.tenantId);
-            this.$set(this.form, 'isSystem', 1);
-
             this.requestType = requestType;
         },
-        handleAuto(row) {
-            this.dialogAuto = true;
-            this.autoinfo = row;
-            this.$http.get(`${this.$api.sys.roleMenu}?roleId=${row.id}`).then(res => {
-                this.roleMenuList = res.data.data;
-            });
+        /* 编辑 */
+        handleOpenItem(row) {
+            this.flashItem = false;
+            this.$nextTick(() => {
+                this.flashItem = true;
+            })
+            this.dialogValueItem = true;
+            this.form = this.DeepCopy(row);
+
         },
+
     }
 };
 </script>

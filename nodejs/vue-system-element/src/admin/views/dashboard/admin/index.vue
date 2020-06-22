@@ -1,9 +1,9 @@
 <template>
     <div class="dashboard-editor-container">
-        <panel-group @handleSetLineChartData="handleSetLineChartData" />
+        <panel-group @handleSetLineChartData="handleSetLineChartData" :data="panelGroupValue" />
 
         <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-            <line-chart :chart-data="lineChartData" />
+            <line-chart :chart-data="lineChartDataValue" />
         </el-row>
 
         <el-row :gutter="32">
@@ -65,14 +65,40 @@ export default {
     },
     data() {
         return {
-            lineChartData: lineChartData.newVisitis
+            lineChartData: lineChartData.newVisitis,
+            conut: {},
+            panelGroupValue: {},
+            lineChartDataValue: {
+                title: [],
+                doctor: [],
+                patient: [],
+            },
         }
     },
     methods: {
         handleSetLineChartData(type) {
             this.lineChartData = lineChartData[type]
-        }
-    }
+        },
+        init() {
+            this.$http.get(`${this.$api.sys.dashboard}/chart`).then(res => {
+                let data = res.data.data;
+                this.panelGroupValue = {
+                    tenantTotal: data.tenantTotal,
+                    userTotal: data.userTotal,
+                }
+                /* 线性图 */
+                let title = data.registerChart.map(item => item.key + '月');
+                let doctor = data.registerChart.map(item => item.value);
+                let patient = data.registerChart.map(item => item.value);
+                this.lineChartDataValue = {
+                    title, doctor, patient
+                }
+            })
+        },
+    },
+    created() {
+        this.init();
+    },
 }
 </script>
 

@@ -44,19 +44,21 @@ export default {
             treeHeight2: GetHeight(180),
 
             tableData: [{
-                label: '基础信息',
+                label: '投票信息',
                 code: 'info',
             }, {
-                label: '参数设置',
-                code: 'settings',
+                label: '投票设置',
+                code: 'setting',
             }, {
-                label: '角色管理',
-                code: 'role',
+                label: '投票选项',
+                code: 'item',
             }, {
-                label: '管理员',
-                code: 'user',
-            }
-            ],
+                label: '投票结果',
+                code: 'result',
+            }, {
+                label: '成员关注',
+                code: 'follow',
+            }],
 
             componentName: '',
             id: 0,

@@ -1,12 +1,12 @@
 <template>
     <div class>
         <el-popover placement="bottom-end" v-model="visible" popper-class="el-popover-generate-label">
-            <el-radio-group v-model="params[keys]" class="generate-label-radio-group" @change="handleChange">
+            <el-radio-group v-model="params[key]" class="generate-label-radio-group" @change="handleChange">
                 <el-radio label>全部</el-radio>
                 <el-radio v-for="opt in enumList[option]" :key="opt.id" :label="opt.value">{{opt.title}}</el-radio>
             </el-radio-group>
 
-            <div slot="reference" :class="{ 'generate-label-color' : params[keys] }" style="cursor:pointer">
+            <div slot="reference" :class="{ 'generate-label-color' : params[key] }" style="cursor:pointer">
                 <span>{{label}}</span>
                 <i class="el-icon-arrow-down"></i>
             </div>
@@ -23,10 +23,10 @@ export default {
     },
     props: {
         label: String,
-        keys: { type: [String, Number] },
+        key: { type: [String, Number] },
         option: { type: [String, Number] },
         params: { type: [Object] },
-        call: { type: Function, default: () => { } }
+        callback: { type: Function, default: () => { } }
     },
 
     data() {
@@ -36,7 +36,7 @@ export default {
     },
     methods: {
         handleChange() {
-            this.call();
+            this.callback();
             this.visible = false;
         }
     }

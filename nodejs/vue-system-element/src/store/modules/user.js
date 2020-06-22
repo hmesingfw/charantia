@@ -57,7 +57,7 @@ const actions = {
         })
     },
     // 用户名登录
-    login({
+    login_index({
         commit
     }, userInfo) {
         userInfo.username = userInfo.username.trim()
@@ -72,7 +72,7 @@ const actions = {
                 const sysMenu = data.sysMenu;
 
                 let routerArr = [];
-                routerArr = TogetherRouter(sysMenu);
+                routerArr = TogetherRouter(sysMenu, 'index');
                 routerArr.push({ path: '*', redirect: '/404', hidden: true }); /* 404 页面 */
                 commit('permission/SET_SQLROUTES', sysMenu, { root: true });
 

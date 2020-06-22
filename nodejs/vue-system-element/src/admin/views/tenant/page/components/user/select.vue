@@ -1,43 +1,35 @@
-<template>
-    <div>
-        <div class="app-main-table">
-            <el-form :inline="true" :model="QueryParam" class="header-query-form">
-                <generate-form :datalist="queryComponentData" :model="QueryParam" @change="query(1)"></generate-form>
-            </el-form>
-        </div>
+ <template>
+    <dialog-alert v-model="value" title="已有用户" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
         <div class="app-main-table">
             <generate-handle :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection"></generate-handle>
             <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" v-loading="tableLoading"></generate-table>
             <pagination :data="pagination" :callback="query" :total="totalCount" />
         </div>
-
-        <edit v-model="dialogValue" :form="form" :requestType="requestType" :callback="query" :url="apiUrl"></edit>
-        <role v-model="dialogValueAuto" :form="autoInfo" :info="info" v-loading="flashRole"></role>
-    </div>
+    </dialog-alert>
 </template>
 <script>
-import { mapState } from 'vuex';
-import edit from './edit.vue'
-import role from './role.vue'
+import { mapState } from 'vuex'
 export default {
-    components: {
-        edit, role
-    },
-    props: {
-        info: Object,
-    },
     computed: {
         ...mapState({
             statusList: state => state.enumList.data.statusList,
-            regType: state => state.enumList.data.regType,
-            sexType: state => state.enumList.data.sexType,
         })
+    },
+    props: {
+        value: { type: [Boolean, String] },
+        form: Object,
+        requestType: { type: String, default: '' },
+        callback: Function,
+        url: { type: String, default: '' },
     },
     data() {
         return {
-            apiUrl: this.$api.sys.tenantAdmin, // 请求路很                
+            rules: {
+                code: [{ required: true, message: '请输入租户名称', trigger: 'blur' },],
+                name: [{ required: true, message: '请输入内容', trigger: 'blur' },],
+            },
+            loadingButton: false,
 
-            /* ------------ */
             QueryParam: {}, //  搜索条件 
             queryComponentData: [
                 { name: 'el-input', key: 'name', label: "名称", attr: { placeholder: '请输入租户名称' } },
@@ -65,13 +57,9 @@ export default {
                     prop: 'address', label: '地址',
                 },
                 {
-                    prop: 'status', label: '状态', width: 160,
-                    formatF: row => <c-switch data={row} data-key='status' url={this.apiUrl} callback={this.query}></c-switch>
-                },
-                {
                     prop: 'status', label: "操作", width: 160,
                     formatF: row => <div>
-                        <el-button type="text" on-click={() => this.handleOpenRole(row)} icon="el-icon-edit">授权</el-button>
+                        <el-button type="text" on-click={() => this.handleOpenInfo(row)} icon="el-icon-edit">编辑</el-button>
                         <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon="el-icon-delete">删除</el-button>
                     </div>
                 },],
@@ -82,22 +70,27 @@ export default {
                 ...this.ConfigParmas.pagination
             },
             totalCount: 0, // 总共多少条
-            /* 表单 */
-            dialogValue: false,
-            requestType: '', // 请求类型 
-            form: {},
-
-
-            /*  */
-            dialogValueAuto: false,
-            autoInfo: {},
-            flashRole: false,
-        };
-    },
-    created() {
-        this.query();
+        }
     },
     methods: {
+        /* 保存 */
+        async handleUpdate() {
+            this.$refs.ruleForm.validate(async valid => {
+                if (valid) {
+                    this.loadingButton = true;
+                    let issucc = await this.ReqData(this.url, this.form, this.requestType);
+                    if (issucc) {
+
+                        this.callback();
+                        this.$emit('input', false);
+                    }
+                    this.loadingButton = false;
+                }
+            });
+        },
+        colse() {
+            this.$emit('input', false);
+        },
         /* 查询操作 */
         query(flag) {
             if (flag == 1) this.pagination.page = 1; // 查询时，让页面等于1
@@ -117,22 +110,6 @@ export default {
                 this.tableLoading = false;
             });
         },
-        /* 编辑 */
-        handleEdit(row, requestType = 'post') {
-            this.dialogValue = true;
-            this.form = this.DeepCopy(row);
-            this.requestType = requestType;
-        },
-        /* 编辑角色 */
-        async handleOpenRole(row) {
-            this.dialogValueAuto = true;
-            this.autoInfo = row;
-            this.flashRole = true;
-            let res = await this.$http.get(`${this.$api.sys.roleUser}?uid=${row.id}`);
-
-            this.$set(this.autoInfo, 'roleId', res.data.data.roleId);
-            this.flashRole = false;
-        },
     }
-};
+}
 </script>

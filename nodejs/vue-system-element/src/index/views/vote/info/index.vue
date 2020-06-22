@@ -12,25 +12,19 @@
         </div>
 
         <edit v-model="dialogValue" :form="form" :requestType="requestType" :callback="query" :url="apiUrl"></edit>
-        <auto v-model="dialogValueAuto" :roleMenuList="roleMenuList" :row="tempRoleMenu" :callback="query"></auto>
     </div>
 </template>
 <script> 
 import edit from './edit'
-import auto from './auto'
 export default {
     components: {
-        edit, auto
+        edit
     },
 
     data() {
         return {
             apiUrl: this.$api.sys.role,          // 请求路很
 
-            /* 权限 */
-            dialogValueAuto: false,
-            tempRoleMenu: {},
-            roleMenuList: [],   // 用户权限列表
             /* ------------ 表格 */
             QueryParam: {
                 status: ''
@@ -41,37 +35,52 @@ export default {
             ],
             tableData: [],
             tableParams: [
-                { prop: 'code', label: "标识", width: 80 },
-                { prop: 'name', label: "名称" },
-                { prop: 'remark', label: "备注", },
+                { prop: 'title', label: "标题" },
+                { prop: 'keywords', label: "关键字", },
+                { prop: 'description', label: "介绍", },
+                {
+                    prop: 'author', label: "投票时间",
+                    formatF: row => <div>{row.startTime.substring(0, 15)} - {row.endTime.substring(0, 15)}</div>
+                },
+
+                { prop: 'voteNum', label: "投票数", },
+
                 {
                     prop: 'status', width: 80,
                     labelF: () => <generate-label label='状态' key='status' option='statusList' params={this.QueryParam} callback={this.query}></generate-label>,
                     formatF: row => <c-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></c-switch>
                 },
-                { prop: 'userName', label: "更新人" },
-                { prop: 'updatedAt', label: "更新时间" },
+                {
+                    prop: 'isTop', width: 80,
+                    labelF: () => <generate-label label='置顶' key='isTop' option='statusList2' params={this.QueryParam} callback={this.query}></generate-label>,
+                    formatF: row => <c-switch data={row} data-key="isTop" url={this.apiUrl} callback={this.query} configtitle="switchValue2"></c-switch>
+                },
+                {
+                    prop: 'isRecommend', width: 80,
+                    labelF: () => <generate-label label='推荐' key='isRecommend' option='statusList2' params={this.QueryParam} callback={this.query}></generate-label>,
+                    formatF: row => <c-switch data={row} data-key="isRecommend" url={this.apiUrl} callback={this.query} configtitle="switchValue2"></c-switch>
+                },
+                { prop: 'updatedTime', label: "更新时间", width: 160 },
 
                 {
-                    prop: 'status', label: "操作",
+                    prop: 'status', label: "操作", width: 160,
                     formatF: row => <div>
-                        <el-button type="text" on-click={() => this.handleEdit(row, 'put')} icon="el-icon-edit" v-permission='sys:role:edit'>编辑</el-button>
-                        <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon="el-icon-delete" v-permission='sys:role:delete'>删除</el-button>
-                        <el-button type="text" on-click={() => this.handleOpenAuth(row)} icon="el-icon-edit-outline">授权</el-button>
+                        <el-button type="text" on-click={() => this.handleEdit(row, 'put')} icon="el-icon-edit" >编辑</el-button>
+                        <el-button type="text" on-click={() => this.handleEdit(row, 'put')} icon="el-icon-setting" >设置</el-button>
+                        <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon="el-icon-delete" >删除</el-button>
                     </div>
                 },
             ],
             tableLoading: false,
             multipleSelection: [],      // 多选选中的值
             pagination: {
-                page: 1,
-                size: localStorage.getItem('pageSize') || 10,
+                ...this.ConfigParmas.pagination
             },
             totalCount: 0,      // 总共多少条
 
             /* 表单 */
             dialogValue: false,
-            requestType: '',            // 请求类型 
+            requestType: '',            // 请求类型
             form: {},
         };
     },
@@ -85,8 +94,8 @@ export default {
             let param = { ...this.pagination, ...this.QueryParam };
             this.tableLoading = true;
             this.$http.get(this.apiUrl, { params: param }).then(res => {
-                this.tableData = res.data.rows;
-                this.totalCount = res.data.count;
+                this.tableData = res.data.data.list;
+                this.totalCount = res.data.data.totalCount;
                 this.tableLoading = false;
             }).catch(() => {
                 this.tableLoading = false;
@@ -99,12 +108,6 @@ export default {
             this.requestType = requestType;
         },
 
-        /* 授权 */
-        handleOpenAuth(row) {
-            this.roleMenuList = row.menus || [];
-            this.tempRoleMenu = row;
-            this.dialogValueAuto = true;
-        },
     }
 };
 </script>

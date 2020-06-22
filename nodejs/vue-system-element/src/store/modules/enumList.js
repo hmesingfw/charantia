@@ -16,6 +16,10 @@ const state = {
             { title: '启用', value: 0 },
             { title: '禁用', value: 1 }
         ],
+        statusList2: [
+            { title: '是', value: 0 },
+            { title: '否', value: 1 }
+        ],
         components: [
             { title: '输入框', value: 'el-input' },
             { title: '选择框', value: 'el-select' },
@@ -35,12 +39,13 @@ const state = {
             { title: '小程序配置', value: 'mini' },
             { title: '支付配置', value: 'pay' },
 
-        ]
+        ],
     },
 }
 
 const mutations = {
     GET_ENUM: (state, data) => {
+        console.log(data);
         state.data = { ...data, ...state.static };
     }
 }

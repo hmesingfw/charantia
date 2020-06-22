@@ -4,11 +4,7 @@
 
 <script>
 import echarts from 'echarts'
-// import echarts from 'echarts/lib/echarts'
-// import 'echarts/lib/chart/line'
-// import 'echarts/lib/component/legend'
-// import 'echarts/lib/component/title'
-
+require('echarts/theme/macarons') // echarts theme
 import resize from './mixins/resize'
 
 export default {
@@ -65,10 +61,11 @@ export default {
             this.chart = echarts.init(this.$el, 'macarons')
             this.setOptions(this.chartData)
         },
-        setOptions({ expectedData, actualData } = {}) {
+        setOptions({ doctor, patient, title } = {}) {
             this.chart.setOption({
+                title: { text: '租户注册' },
                 xAxis: {
-                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    data: title,
                     boundaryGap: false,
                     axisTick: {
                         show: false
@@ -91,53 +88,94 @@ export default {
                 yAxis: {
                     axisTick: {
                         show: false
-                    }
+                    },
+                    minInterval: 1,
                 },
                 legend: {
                     show: false,
-                    data: ['expected', 'actual'],
+                    data: ['会员人数', '专家人数',],
                     selected: {
-                        'expected': true, 'actual': false
+                        '专家人数': true, '会员人数': true
                     }
                 },
                 series: [{
-                    name: 'expected', itemStyle: {
-                        normal: {
-                            color: '#FF005A',
-                            lineStyle: {
-                                color: '#FF005A',
-                                width: 2
-                            }
-                        }
-                    },
-                    smooth: true,
-                    type: 'line',
-                    data: expectedData,
-                    animationDuration: 2800,
-                    animationEasing: 'cubicInOut'
-                },
-                {
-                    name: 'actual',
-                    smooth: true,
-                    type: 'line',
+                    name: '会员人数',
+                    data: patient,
                     itemStyle: {
-                        opacity: 0,
                         normal: {
-                            opacity: 0,
-                            color: '#3888fa',
-                            lineStyle: {
-                                color: '#3888fa',
-                                width: 2
+                            color: '#38d4fa',
+                            borderWidth: 10,
+
+                        },
+                    },
+                    color: '#38d4fa',
+                    smooth: true,
+                    type: 'line',
+                    animationDuration: 2800,
+                    animationEasing: 'cubicInOut',
+                    lineStyle: {
+                        normal: {
+                            width: 5,
+                            color: {
+                                type: 'linear',
+
+                                colorStops: [{
+                                    offset: 0,
+                                    color: '#47e9eb' // 0% 处的颜色
+                                }, {
+                                    offset: 0.4,
+                                    color: '#38d4fa' // 100% 处的颜色
+                                }, {
+                                    offset: 1,
+                                    color: '#3888fa' // 100% 处的颜色
+                                }],
+                                globalCoord: false // 缺省为 false
                             },
-                            areaStyle: {
-                                color: '#f3f8ff'
-                            }
+                            shadowColor: 'rgba(245,128,128, 0.5)',
+                            shadowBlur: 10,
+                            shadowOffsetY: 7
                         }
                     },
-                    data: actualData,
+                }, {
+                    name: '专家人数',
+
+                    data: doctor,
+                    itemStyle: {
+                        normal: {
+                            color: '#F58080',
+                            borderWidth: 10,
+
+                        },
+                    },
+                    color: '#F58080',
+                    smooth: true,
+                    type: 'line',
                     animationDuration: 2800,
-                    animationEasing: 'quadraticOut'
-                }]
+                    animationEasing: 'cubicInOut',
+                    lineStyle: {
+                        normal: {
+                            width: 5,
+                            color: {
+                                type: 'linear',
+
+                                colorStops: [{
+                                    offset: 0,
+                                    color: '#FFCAD4' // 0% 处的颜色
+                                }, {
+                                    offset: 0.4,
+                                    color: '#F58080' // 100% 处的颜色
+                                }, {
+                                    offset: 1,
+                                    color: '#F58080' // 100% 处的颜色
+                                }],
+                                globalCoord: false // 缺省为 false
+                            },
+                            shadowColor: 'rgba(245,128,128, 0.5)',
+                            shadowBlur: 10,
+                            shadowOffsetY: 7
+                        }
+                    },
+                },]
             })
         }
     }

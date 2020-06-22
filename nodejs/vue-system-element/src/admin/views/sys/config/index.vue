@@ -16,7 +16,7 @@
         <el-col :xl="22" :md="20">
             <el-row class="page-main" :style="{height:treeHeight2}">
                 <el-scrollbar class="scrollbar">
-                    <official></official>
+                    <official :info="codeName" v-if="flashComponent"></official>
                 </el-scrollbar>
             </el-row>
         </el-col>
@@ -49,13 +49,18 @@ export default {
                 { title: '支付配置', value: 'pay' },
             ],
 
-            componentName: '',
+            codeName: '',
+            flashComponent: true,
         }
     },
     methods: {
         /* 点击 */
         handleNodeClick(row) {
-            this.componentName = row.value;
+            this.flashComponent = false;
+            this.$nextTick(() => {
+                this.flashComponent = true;
+            })
+            this.codeName = row;
 
         },
         /* 过滤 */

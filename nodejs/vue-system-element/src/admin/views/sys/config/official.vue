@@ -3,33 +3,33 @@
         <div class="app-main-table">
             <el-row style="padding:20px 40px 40px">
                 <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
-                    <h4 class="info-column-title">公众号配置</h4>
+                    <h4 class="info-column-title">{{ info.title }}</h4>
                     <el-divider></el-divider>
 
-                    <el-col :span="16">
+                    <el-col :span="16" v-loading="tableLoading">
                         <el-form-item v-for="(item,i) in dataList" :key="i" :label="item.title" :prop="item.name" class="config-table">
-                            <span v-if="item.type == 1">
-                                <el-input :placeholder="item.remark"></el-input>
+                            <span v-if="item.type == 'input'">
+                                <el-input v-model="item.value" :placeholder="item.remark"></el-input>
                             </span>
                             <span>
-                                <el-select v-if="item.type == 2" v-model="item.optionValue" placeholder="请选择类型">
-                                    <el-option v-for="opt in item.option" :key="opt.id" :label="opt.title" :value="opt.id"></el-option>
+                                <el-select v-if="item.type == 'select'" v-model="item.value" placeholder="请选择类型">
+                                    <el-option v-for="opt in item.options" :key="opt.id" :label="opt.title" :value="opt.id"></el-option>
                                 </el-select>
-                                <el-button v-if="item.type == 2" type="primary" icon="el-icon-plus" circle style="margin-left:20px" @click="handleaddOption(item)"></el-button>
+                                <el-button v-if="item.type == 'select'" type="primary" icon="el-icon-plus" circle style="margin-left:20px" @click="handleaddOption(item)"></el-button>
                             </span>
                             <span style="float:right">
                                 <el-button type="primary" icon="el-icon-top" circle style="margin-left:20px" v-if="i != 0" @click="handleMoveUp(dataList, i)"></el-button>
                                 <el-button type="primary" icon="el-icon-bottom" circle style="margin-left:20px" v-if="i != dataList.length-1" @click="handleMoveBottom(dataList, i)"></el-button>
                                 <el-button type="primary" icon="el-icon-minus" circle style="margin-left:20px" @click="handleDel(dataList, i)"></el-button>
-                                <el-button type="primary" icon="el-icon-plus" circle style="margin-left:20px" @click="handleEdit"></el-button>
+                                <el-button type="primary" icon="el-icon-plus" circle style="margin-left:20px" v-if="i == dataList.length-1" @click="handleEdit"></el-button>
                             </span>
                         </el-form-item>
                     </el-col>
 
                     <el-col>
                         <el-form-item>
-                            <el-button type="primary" @click="handleEdit">新增项</el-button>
-                            <el-button type="primary" @click="save">保存</el-button>
+                            <el-button type="primary" @click="handleEdit" v-if="dataList.length == 0">新增项</el-button>
+                            <el-button type="primary" @click="handleUpdate">保存</el-button>
                         </el-form-item>
                     </el-col>
                 </el-form>
@@ -49,8 +49,8 @@
 
                 <el-form-item label="活动区域" prop="type">
                     <el-select v-model="form.type" placeholder="请选择类型">
-                        <el-option label="输入框" :value="1"></el-option>
-                        <el-option label="选择框" :value="2"></el-option>
+                        <el-option label="输入框" value="input"></el-option>
+                        <el-option label="选择框" value="select"></el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
@@ -81,9 +81,12 @@ export default {
             statusList: state => state.enumList.data.statusList,
         })
     },
+    props: {
+        info: Object
+    },
     data() {
         return {
-            url: 'http://',
+            apiUrl: this.$api.sys.config,
             form: {},
             rules: {
                 code: [{ required: true, message: '请输入内容', trigger: 'blur' },],
@@ -96,26 +99,56 @@ export default {
             dataList: [],               // 整个form数据列表
             optionList: [],             // select 列表
             tempOption: [],
-
+            tableLoading: false,
+            requestType: 'put',
         }
     },
+    created() {
+        this.query();
+    },
     methods: {
+        query() {
+            let param = {
+                category: this.info.value
+            };
+            this.tableLoading = true;
+            this.$http.get(this.apiUrl, {
+                params: param
+            }).then(res => {
+                this.dataList = res.data.data || [];
+                if (!this.dataList.length > 0) this.requestType = 'post'
+                this.tableLoading = false;
+            }).catch(() => {
+                this.tableLoading = false;
+            });
+        },
         /* 保存 */
         async handleUpdate() {
-            this.$refs.ruleForm.validate(async valid => {
-                if (valid) {
-                    this.loadingButton = true;
-                    let issucc = await this.ReqData(this.url, this.form, 'post');
-                    if (issucc) { }
-                    this.loadingButton = false;
-                }
-            });
+            if (!this.dataList.length > 0) {
+                this.HandleDelete(`${this.apiUrl}/${this.info.value}`, {}, this.query);
+                return false;
+            } else {
+                this.$refs.ruleForm.validate(async valid => {
+                    if (valid) {
+                        this.loadingButton = true;
+                        let i = 199;
+                        let arr = this.dataList.map(item => ({
+                            ...item,
+                            sort: i--,
+                            category: this.info.value
+                        }))
+                        let issucc = await this.ReqData(this.apiUrl, arr, this.requestType);
+                        if (issucc) { }
+                        this.loadingButton = false;
+                    }
+                });
+            }
         },
 
         handleEdit() {
             this.dialogFormVisible = true;
             this.form = {
-                type: 1
+                type: 'input'
             };
         },
         handleSave() {
@@ -141,9 +174,9 @@ export default {
         handleaddOption(item) {
             this.tempOption = item;
             if (!item.option) {
-                this.$set(item, 'option', [{ title: '' }]);
+                this.$set(item, 'options', [{ title: '' }]);
             }
-            this.optionList = item.option;
+            this.optionList = item.options;
             this.dialogFormVisibleOption = true;
         },
         handleEditOption() {
@@ -156,12 +189,9 @@ export default {
                 ...item,
                 id: i++,
             }))
-            this.$set(this.tempOption, 'option', arr);
+            this.$set(this.tempOption, 'options', arr);
             this.dialogFormVisibleOption = false;
         },
-        save() {
-            console.log(this.dataList);
-        }
     }
 }
 </script>

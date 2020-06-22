@@ -44,19 +44,27 @@ export default {
             treeHeight2: GetHeight(180),
 
             tableData: [{
-                label: '基础信息',
+                label: '活动信息',
                 code: 'info',
             }, {
-                label: '参数设置',
-                code: 'settings',
+                label: '活动设置',
+                code: 'setting',
             }, {
-                label: '角色管理',
-                code: 'role',
+                label: '活动门票',
+                code: 'item',
             }, {
-                label: '管理员',
-                code: 'user',
-            }
-            ],
+                label: '活动收费',
+                code: 'ticket',
+            }, {
+                label: '活动签到',
+                code: 'sign',
+            }, {
+                label: '活动评论',
+                code: 'comment',
+            }, {
+                label: '成员关注',
+                code: 'follow',
+            }],
 
             componentName: '',
             id: 0,
