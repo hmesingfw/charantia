@@ -149,6 +149,21 @@ Vue.prototype.ConfigParmas = {
         'inactive-text': '否',
         'active-color': "#4fc08d",
     },
+    switchValue3: {
+        'active-value': 1,
+        'active-text': '通过',
+        'inactive-value': 0,
+        'inactive-text': '驳回',
+        'active-color': "#4fc08d",
+    },
+
+    switchValue5: {
+        'active-value': 1,
+        'active-text': '收费',
+        'inactive-value': 0,
+        'inactive-text': '免费',
+        'active-color': "#4fc08d",
+    },
     pagination: {
         page: 1,
         limit: localStorage.getItem('pageSize') || 10,

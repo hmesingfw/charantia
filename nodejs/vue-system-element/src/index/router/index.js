@@ -61,9 +61,7 @@ export const constantRoutes = [{
             affix: true
         }
     }]
-},
-
-{
+}, {
     path: '/page',
     component: Layout,
     hidden: true,
@@ -76,7 +74,35 @@ export const constantRoutes = [{
             icon: 'user'
         }
     }]
-},]
+}, {
+    path: '/vote',
+    component: Layout,
+    hidden: true,
+    children: [{
+        path: 'detail',
+        component: () => import('@index/views/vote/page/index'),
+        name: 'VoteDetailTwo',
+        meta: {
+            title: '详细信息',
+            icon: 'user'
+        }
+    }]
+}, {
+    path: '/event',
+    component: Layout,
+    hidden: true,
+    children: [{
+        path: 'detail',
+        component: () => import('@index/views/event/page/index'),
+        name: 'EventDetailTwo',
+        meta: {
+            title: '详细信息',
+            icon: 'user'
+        }
+    }]
+},
+
+]
 
 const createRouter = () => new Router({
     // mode: 'history', // require service support

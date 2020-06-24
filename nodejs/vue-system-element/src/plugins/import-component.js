@@ -6,6 +6,7 @@ import GenerateTable from '@/components/Generate/GenerateTable.js';
 
 import GenerateLabel from '@/components/Generate/GenerateLabel.vue';
 import GenerateHandle from '@/components/Generate/GenerateHandle.vue';
+import GenerateGroup from '@/components/Generate/GenerateGroup.vue';
 /* 分页组件 */
 import Pagination from '@/components/Pagination';
 /* 弹出层 */
@@ -27,6 +28,7 @@ Vue.component('generate-form', GenerateForm);
 Vue.component('generate-table', GenerateTable);
 Vue.component('generate-label', GenerateLabel);
 Vue.component('generate-handle', GenerateHandle);
+Vue.component('generate-group', GenerateGroup);
 Vue.component('pagination', Pagination);
 Vue.component('dialog-model', DialogModel);
 

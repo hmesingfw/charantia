@@ -1,21 +1,19 @@
 <template>
     <div>
         <div class="app-main-table">
-            <el-form :inline="true" :model="QueryParam" class="header-query-form">
-                <generate-form :datalist="queryComponentData" :model="QueryParam" @change="query(1)"></generate-form>
-            </el-form>
-        </div>
-        <div class="app-main-table">
             <generate-handle :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection"></generate-handle>
             <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" v-loading="tableLoading"></generate-table>
             <pagination :data="pagination" :callback="query" :total="totalCount" />
         </div>
+        <edit v-model="dialogValue" :form="form" :requestType="requestType" :callback="query" :url="apiUrl"></edit>
     </div>
 </template>
 <script>
 import { mapState } from 'vuex';
+import edit from './edit'
 export default {
     components: {
+        edit
     },
     props: {
         info: Object,
@@ -29,7 +27,7 @@ export default {
     },
     data() {
         return {
-            apiUrl: this.$api.sys.tenantAdmin, // 请求路很                
+            apiUrl: 'https://mock.yonyoucloud.com/mock/8636/event/item', // 请求路很                
 
             /* ------------ */
             QueryParam: {}, //  搜索条件 
@@ -39,23 +37,26 @@ export default {
             tableData: [],
             tableParams: [
                 {
-                    prop: 'attendId', label: '报名编号',
+                    prop: 'ticketTitle', label: '票名',
                 },
                 {
-                    prop: 'name', label: '姓名',
+                    prop: 'ticketPrice', label: '价格',
                 },
                 {
-                    prop: 'mobile', label: '手机号',
+                    prop: 'type', label: '免费',
                 },
                 {
-                    prop: 'source', label: '签到方式',
+                    prop: 'ticketStock', label: '已售/总数',
                 },
+
                 {
-                    prop: 'createTime', label: '签到时间',
+                    prop: 'status', label: '是否审核',
+                    formatF: row => <c-switch data={row} data-key='status' url={this.apiUrl} callback={this.query} configtitle="switchValue2"></c-switch>
                 },
                 {
                     prop: 'status', label: "操作", width: 240,
                     formatF: row => <div>
+                        <el-button type="text" on-click={() => this.handleEdit(row)} icon="el-icon-edit">设置</el-button>
                         <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon="el-icon-delete">删除</el-button>
                     </div>
                 },],
@@ -107,16 +108,7 @@ export default {
             this.form = this.DeepCopy(row);
             this.requestType = requestType;
         },
-        /* 编辑角色 */
-        async handleOpenRole(row) {
-            this.dialogValueAuto = true;
-            this.autoInfo = row;
-            this.flashRole = true;
-            let res = await this.$http.get(`${this.$api.sys.roleUser}?uid=${row.id}`);
 
-            this.$set(this.autoInfo, 'roleId', res.data.data.roleId);
-            this.flashRole = false;
-        },
     }
 };
 </script>

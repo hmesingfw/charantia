@@ -1,43 +1,76 @@
 <template>
-    <dialog-alert v-model="value" title="资讯设置" width="500px" @submit="handleUpdate" :loading-button="loadingButton" @colse="colse" :isColse="false" @changeLoadingButton="loadingButton = false">
-        <el-form label-position="right" label-width="50px" :rules="rules" :model="form" ref="ruleForm">
-            <el-form-item label="标题" prop="title">
-                <el-input v-model="form.title" maxlength="32" :disabled="true"></el-input>
-            </el-form-item>
+    <el-row>
+        <div class="app-main-table">
+            <el-row style="padding:20px 40px 40px">
+                <el-form label-position="right" label-width="100px" :rules="rules" :model="info" ref="ruleForm">
+                    <span class="info-column-title">基础信息</span>
+                    <el-divider></el-divider>
+                    <el-col :xl="4" :md="4" style="height:10px"></el-col>
 
-            <el-form-item label="状态" prop="status">
-                <el-switch class="switch-style" v-model="form.status" v-bind="ConfigParmas.switchValue"></el-switch>
-            </el-form-item>
-            <el-form-item label="置顶" prop="isTop">
-                <el-switch class="switch-style" v-model="form.isTop" v-bind="ConfigParmas.switchValue2"></el-switch>
-            </el-form-item>
-            <el-form-item label="推荐" prop="isRecommend">
-                <el-switch class="switch-style" v-model="form.isRecommend" v-bind="ConfigParmas.switchValue2"></el-switch>
-            </el-form-item>
-        </el-form>
-    </dialog-alert>
+                    <el-col :xl="8" :md="8">
+                        <el-form-item label="状态" prop="status">
+                            <el-switch class="switch-style" v-model="form.status" v-bind="ConfigParmas.switchValue"></el-switch>
+                        </el-form-item>
+                        <el-form-item label="置顶" prop="isTop">
+                            <el-switch class="switch-style" v-model="form.isTop" v-bind="ConfigParmas.switchValue2"></el-switch>
+                        </el-form-item>
+                        <el-form-item label="推荐" prop="isRecommend">
+                            <el-switch class="switch-style" v-model="form.isRecommend" v-bind="ConfigParmas.switchValue2"></el-switch>
+                        </el-form-item>
+                        <el-form-item label="报名截止" prop="expireTime">
+                            <el-date-picker v-model="form.expireTime" type="datetime" placeholder="报名截止时间" format="yyyy-MM-dd mm:HH:ss"></el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="投票时间" prop="postTime">
+                            <el-date-picker v-model="form.postTime" type="datetimerange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" format="yyyy-MM-dd mm:HH:ss"></el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="活动人数" prop="limitCount">
+                            <el-input-number v-model="form.limitCount" :max="1000" :min="0"></el-input-number>
+                            <span>/人</span>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :xl="8" :md="8">
+                        <el-form-item label="开启验证码" prop="isVerify">
+                            <el-switch class="switch-style" v-model="form.isVerify" v-bind="ConfigParmas.switchValue2"></el-switch>
+                        </el-form-item>
+                        <el-form-item label="收费" prop="isFree">
+                            <el-switch class="switch-style" v-model="form.isFree" v-bind="ConfigParmas.switchValue2"></el-switch>
+                        </el-form-item>
+
+                        <el-form-item label="游客投票" prop="allowGuest">
+                            <el-switch class="switch-style" v-model="form.allowGuest" v-bind="ConfigParmas.switchValue"></el-switch>
+                        </el-form-item>
+
+                        <el-form-item label="需要登陆" prop="allowLogin">
+                            <el-switch class="switch-style" v-model="form.allowLogin" v-bind="ConfigParmas.switchValue2"></el-switch>
+                        </el-form-item>
+                        <el-form-item label="开启微信" prop="allowWechat">
+                            <el-switch class="switch-style" v-model="form.allowWechat" v-bind="ConfigParmas.switchValue2"></el-switch>
+                        </el-form-item>
+                    </el-col>
+                </el-form>
+            </el-row>
+        </div>
+    </el-row>
 </template>
 <script>
 import { mapState } from 'vuex';
-// import {  } from '@/utils/sys';
-export default {
-    components: {
 
-    },
+export default {
     computed: {
         ...mapState({
             statusList: state => state.enumList.data.statusList,
         })
     },
+    components: {
+
+    },
     props: {
-        value: { type: [Boolean, String] },
-        form: Object,
-        requestType: String,
-        callback: Function,
-        url: String,
+        info: Object,
     },
     data() {
         return {
+            url: 'http://',
+            form: {},
             rules: {
                 code: [{ required: true, message: '请输入内容', trigger: 'blur' },],
                 name: [{ required: true, message: '请输入内容', trigger: 'blur' },],
@@ -52,19 +85,12 @@ export default {
             this.$refs.ruleForm.validate(async valid => {
                 if (valid) {
                     this.loadingButton = true;
-                    let issucc = await this.ReqData(this.url, this.form, this.requestType);
-                    if (issucc) {
+                    await this.ReqData(this.$api.sys.tenant, this.info, 'put');
 
-                        this.callback();
-                        this.$emit('input', false);
-                    }
                     this.loadingButton = false;
                 }
             });
         },
-        colse() {
-            this.$emit('input', false);
-        }
     }
 }
 </script>

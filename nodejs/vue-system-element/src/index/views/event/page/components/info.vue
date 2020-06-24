@@ -1,64 +1,84 @@
 <template>
-    <dialog-alert v-model="value" title="投票信息" width="500px" @submit="handleUpdate" :loading-button="loadingButton" @colse="colse" :isColse="false" @changeLoadingButton="loadingButton = false">
-        <el-form label-position="right" label-width="50px" :rules="rules" :model="form" ref="ruleForm">
-            <el-form-item label="标题" prop="title">
-                <el-input v-model="form.title" maxlength="32"></el-input>
-            </el-form-item>
+    <el-row>
+        <div class="app-main-table">
+            <el-row style="padding:20px 40px 40px">
+                <el-form label-position="right" label-width="100px" :rules="rules" :model="info" ref="ruleForm">
+                    <span class="info-column-title">活动信息</span>
+                    <el-divider></el-divider>
+                    <el-col :xl="14" :md="12">
+                        <el-form-item label="活动名称" prop="title">
+                            <el-input v-model="form.title" maxlength="32"></el-input>
+                        </el-form-item>
 
-            <el-form-item label="封面" prop="thumb">
-                <c-file v-model="form.thumb" fileUrl="api"></c-file>
-            </el-form-item>
-            <el-form-item label="关键字" prop="keywords">
-                <el-input v-model="form.keywords" maxlength="30" show-word-limit></el-input>
-            </el-form-item>
+                        <el-form-item label="活动地址" prop="coverId">
+                            <el-row>
+                                <el-col :span="10">
+                                    <el-cascader v-model="form.cityvalue" :options="cityDataChildren" :props="{value:'id'}" style="width: 100%;"></el-cascader>
+                                </el-col>
 
-            <el-form-item label="描述" prop="description">
-                <el-input type="textarea" :rows="6" v-model="form.description" maxlength="512" show-word-limit></el-input>
-            </el-form-item>
+                                <el-col :span="14">
+                                    <el-input v-model="form.address" maxlength="60" show-word-limit placeholder="详细地址"></el-input>
+                                </el-col>
+                            </el-row>
+                        </el-form-item>
 
-            <el-form-item label="投票时间" prop="postTime">
-                <el-date-picker v-model="form.postTime" type="datetimerange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期" format="yyyy-MM-dd mm:HH:ss"></el-date-picker>
-            </el-form-item>
+                        <el-form-item label="描述" prop="description">
+                            <el-input type="textarea" :rows="4" v-model="form.description" maxlength="512" show-word-limit></el-input>
+                        </el-form-item>
+                        <el-form-item label="内容" prop="content" class="vue-ueditor-wrap-s">
+                            <vue-ueditor-wrap v-model="form.content" :config="myConfig"></vue-ueditor-wrap>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :xl="8" :md="12">
+                        <el-form-item label="活动封面" prop="coverId">
+                            <c-file v-model="form.coverId" fileUrl="api"></c-file>
+                        </el-form-item>
+                    </el-col>
 
-            <el-card style="margin-top:20px">
-                <div slot="header" class="clearfix">
-                    <span>内容</span>
-                </div>
-                <el-form-item label-width="0px" prop="content" class="vue-ueditor-wrap-s">
-                    <vue-ueditor-wrap v-model="form.content" :config="myConfig"></vue-ueditor-wrap>
-                </el-form-item>
-            </el-card>
-        </el-form>
-    </dialog-alert>
+                    <!-- <el-col>
+                        <span class="info-column-title">活动详情</span>
+
+                        <el-divider></el-divider>
+                        <el-form-item label-width="0px" prop="description" class="vue-ueditor-wrap-s">
+                            <vue-ueditor-wrap v-model="form.description" :config="myConfig"></vue-ueditor-wrap>
+                        </el-form-item>
+                    </el-col>-->
+                </el-form>
+            </el-row>
+        </div>
+    </el-row>
 </template>
 <script>
+import cityDataChildren from '@/config/city-data-children'
+
+import vueUeditorWrap from 'vue-ueditor-wrap';
 import { mapState } from 'vuex';
-import VueUeditorWrap from 'vue-ueditor-wrap'; // ES6 Module
 import { ueConfig } from '@/utils/sys';
+
 export default {
-    components: {
-        VueUeditorWrap
-    },
     computed: {
         ...mapState({
             statusList: state => state.enumList.data.statusList,
         })
     },
+    components: {
+        vueUeditorWrap
+    },
     props: {
-        value: { type: [Boolean, String] },
-        form: Object,
-        requestType: String,
-        callback: Function,
-        url: String,
+        info: Object,
     },
     data() {
         return {
+            url: 'http://',
+            form: {},
             rules: {
                 code: [{ required: true, message: '请输入内容', trigger: 'blur' },],
                 name: [{ required: true, message: '请输入内容', trigger: 'blur' },],
             },
             loadingButton: false,
-            myConfig: ueConfig,
+            myConfig: { ...ueConfig, initialFrameHeight: 400 },
+
+            cityDataChildren: cityDataChildren,
 
         }
     },
@@ -68,19 +88,12 @@ export default {
             this.$refs.ruleForm.validate(async valid => {
                 if (valid) {
                     this.loadingButton = true;
-                    let issucc = await this.ReqData(this.url, this.form, this.requestType);
-                    if (issucc) {
+                    await this.ReqData(this.$api.sys.tenant, this.info, 'put');
 
-                        this.callback();
-                        this.$emit('input', false);
-                    }
                     this.loadingButton = false;
                 }
             });
         },
-        colse() {
-            this.$emit('input', false);
-        }
     }
 }
 </script>
