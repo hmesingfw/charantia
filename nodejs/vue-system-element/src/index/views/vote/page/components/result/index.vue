@@ -1,68 +1,27 @@
 <template>
-    <div>
-        <div class="app-main-table">
-            <el-form :inline="true" :model="QueryParam" class="header-query-form">
-                <generate-form :model="QueryParam" :datalist="queryComponentData" @change="query(1)"></generate-form>
-            </el-form>
-        </div>
-        <div class="app-main-table">
-            <generate-handle :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection"></generate-handle>
-            <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" v-loading="tableLoading"></generate-table>
-            <pagination :data="pagination" :total="totalCount" :callback="query" />
-        </div>
-
-        <detail v-model="dialogValue" :form="form" :requestType="requestType" :callback="query" :url="apiUrl"></detail>
+    <div style="margin:14px" class="result-tabs">
+        <el-tabs v-model="activeName">
+            <el-tab-pane label="统计" name="second">配置管理</el-tab-pane>
+            <el-tab-pane label="投票" name="options">
+                <item-option></item-option>
+            </el-tab-pane>
+            <el-tab-pane label="会员投票" name="first">
+                <user></user>
+            </el-tab-pane>
+        </el-tabs>
     </div>
 </template>
 <script> 
-import detail from './detail'
+import user from './user'
+import itemOption from './item-option'
 export default {
     components: {
-        detail
+        user, itemOption
     },
 
     data() {
         return {
-            apiUrl: 'https://mock.yonyoucloud.com/mock/8636/vote/result',          // 请求路很
-
-            /* ------------ 表格 */
-            QueryParam: {
-                status: ''
-            },             //  搜索条件
-            queryComponentData: [
-                { name: 'el-input', key: 'name', label: "名称", attr: { placeholder: '请输入角色名称' } },
-            ],
-            tableData: [],
-            tableParams: [
-                { prop: 'name', label: "姓名" },
-                { prop: 'mobile', label: "手机号", },
-                {
-                    prop: 'voteTime', label: "投票时间",
-                },
-                {
-                    prop: 'ip', label: "ip",
-                },
-                { prop: 'voteNum', label: "投票数", },
-
-                {
-                    prop: 'status', label: "操作", width: 160,
-                    formatF: row => <div>
-                        <el-button type="text" on-click={() => this.handleEdit(row, 'put')} icon="el-icon-edit" >详情</el-button>
-                        <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon="el-icon-delete" >删除</el-button>
-                    </div>
-                },
-            ],
-            tableLoading: false,
-            multipleSelection: [],      // 多选选中的值
-            pagination: {
-                ...this.ConfigParmas.pagination
-            },
-            totalCount: 0,      // 总共多少条
-
-            /* 表单 */
-            dialogValue: false,
-            requestType: '',            // 请求类型
-            form: {},
+            activeName: 'first'
         };
     },
     created() {
@@ -92,4 +51,12 @@ export default {
     }
 };
 </script>
+<style lang="scss">
+.result-tabs {
+    margin: 0 14px;
+    .el-tabs__nav-scroll {
+        padding: 0 20px;
+    }
+}
+</style>
 

@@ -64,6 +64,9 @@ export default {
             }, {
                 label: '成员关注',
                 code: 'follow',
+            }, {
+                label: '活动表单',
+                code: 'customPage',
             }],
 
             componentName: '',
