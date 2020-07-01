@@ -36,14 +36,11 @@ export default {
             tableData: [],
             tableParams: [
                 {
-                    prop: 'code', label: '标识', width: 100,
-                },
-                {
                     prop: 'name', label: '角色名称', width: 300, 'show-overflow-tooltip': true,
                 },
                 {
                     prop: 'isSystem', label: '平台添加', width: 160,
-                    formatF: row => this.ListMatchField('statusList', row.isSystem)
+                    formatF: row => this.ListMatchField('statusList2', row.isSystem)
                 },
                 {
                     prop: 'description', label: '描述', 'show-overflow-tooltip': true,

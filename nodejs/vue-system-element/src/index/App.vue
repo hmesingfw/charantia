@@ -6,18 +6,17 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import { TogetherRouter } from '@/utils/sys';
+import { TogetherRouterIndex } from '@/utils/sys';
 export default {
     name: 'App',
     computed: {
         ...mapState({
-            sqlRouter: state => state.permission.sqlRouter,
+            sqlRouterIndex: state => state.permission.sqlRouterIndex,
         }),
     },
     created() {
         this.init();
         this.initStore();
-        console.log('--------');
     },
     methods: {
         ...mapActions({
@@ -25,7 +24,7 @@ export default {
         }),
         init() {
             let routerArr = [];
-            routerArr = TogetherRouter(this.sqlRouter);
+            routerArr = TogetherRouterIndex(this.sqlRouterIndex);
             routerArr.push({ path: '*', redirect: '/404', hidden: true }); /* 404 页面 */
             this.$router.addRoutes(routerArr);          /* 重新刷新routes内容信息 */
 

@@ -24,6 +24,7 @@
                         <div class="vote-item-radio-new">
                             <span>{{ index + 1 }}).</span>
                             <el-input v-model="voteItem.title" maxlength="32" placeholder="请输入选择标题"></el-input>
+                            <el-button type="danger" icon="el-icon-delete" circle class="button-handle" v-if="index > 1" @click="handleDeleteVote(vote.options, index)"></el-button>
                             <el-button icon="el-icon-plus" v-if="index+1 == vote.options.length" @click="handleAddVoteItem(vote.options)" circle></el-button>
                         </div>
                     </el-col>
@@ -44,7 +45,7 @@ export default {
                 title: '投票',
                 optionType: true,
                 fieldType: 'input',
-                options: [{}]
+                options: [{}, {}]
             }],
 
             fileTemp: '',
@@ -64,7 +65,8 @@ export default {
         /* 添加主题 */
         handleAddVote() {
             this.voteItemList.push({
-                options: [{ fieldType: 'input', }],
+                fieldType: 'input',
+                options: [{}, {}],
             })
         },
         /* 添加主题选项 */

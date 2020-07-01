@@ -42,7 +42,7 @@ export default {
             this.$refs.ruleForm.validate(async valid => {
                 if (valid) {
                     this.loadingButton = true;
-                    let issucc = await this.ReqData(this.url, this.form, this.requestType);
+                    let issucc = await this.ReqData(this.url, this.form, this.requestType, { idKey: 'action' });
                     if (issucc) {
 
                         this.callback();

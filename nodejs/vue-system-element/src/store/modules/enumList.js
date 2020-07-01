@@ -9,16 +9,16 @@ const state = {
             { title: '女', value: 0 }
         ],
         regType: [
-            { title: '自主', value: 1 },
-            { title: '平台', value: 2 }
+            { title: '自主', value: 0 },
+            { title: '平台', value: 1 }
         ],
         statusList: [
-            { title: '启用', value: 0 },
-            { title: '禁用', value: 1 }
+            { title: '启用', value: 1 },
+            { title: '禁用', value: 0 }
         ],
         statusList2: [
-            { title: '是', value: 0 },
-            { title: '否', value: 1 }
+            { title: '是', value: 1 },
+            { title: '否', value: 0 }
         ],
         components: [
             { title: '输入框', value: 'el-input' },
@@ -29,10 +29,10 @@ const state = {
             { title: '计数器', value: 'el-input-number' },
         ],
         MODULE_TYPE: [
-            { title: '活动', value: 1 },
-            { title: '投票', value: 2 },
-            { title: '资讯', value: 3 },
-            { title: '商会圈', value: 4 },
+            { title: '精彩活动', value: 'event' },
+            { title: '在线投票', value: 'vote' },
+            { title: '新闻资讯', value: 'article' },
+            { title: '商会圈', value: 'feeds' },
         ],
         CONFIG_TYPE: [
             { title: '公众号配置', value: 'official' },
@@ -55,10 +55,10 @@ const actions = {
     getEnum({
         commit
     }) {
-        axios.get(api.sys.enumDetail).then(res => {
+        axios.get(api.sys.enumDetailList).then(res => {
             let obj = {};
 
-            res.data.data.list.forEach(item => {
+            res.data.data.forEach(item => {
                 if (!obj.hasOwnProperty(item.dictCode)) obj[item.dictCode] = [];
                 obj[item.dictCode].push(item);
             });

@@ -3,7 +3,6 @@
         <div class="app-main-table">
             <generate-handle :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection"></generate-handle>
             <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" v-loading="tableLoading"></generate-table>
-            <pagination :data="pagination" :callback="query" :total="totalCount" />
         </div>
         <edit v-model="dialogValue" :form="form" :requestType="requestType" :callback="query" :url="apiUrl"></edit>
     </div>
@@ -55,7 +54,8 @@ export default {
                 },
                 {
                     prop: 'status', label: "操作", width: 240,
-                    formatF: row => <div>
+                    formatF: (row, col) => <div>
+                        {console.log(col)}
                         <el-button type="text" on-click={() => this.handleEdit(row)} icon="el-icon-edit">设置</el-button>
                         <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon="el-icon-delete">删除</el-button>
                     </div>
@@ -64,7 +64,7 @@ export default {
             multipleSelection: [], // 多选选中的值
 
             pagination: {
-                ...this.ConfigParmas.pagination
+                page: 1, limit: 1000
             },
             totalCount: 0, // 总共多少条
             /* 表单 */

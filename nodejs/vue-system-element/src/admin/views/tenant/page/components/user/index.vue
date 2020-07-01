@@ -12,7 +12,7 @@
         </div>
 
         <edit v-model="dialogValue" :form="form" :requestType="requestType" :callback="query" :url="apiUrl"></edit>
-        <role v-model="dialogValueAuto" :form="autoInfo" :info="info" v-loading="flashRole"></role>
+        <role v-model="dialogValueAuto" :form="autoInfo" :info="info"></role>
     </div>
 </template>
 <script>
@@ -54,10 +54,6 @@ export default {
                     prop: 'mobile', label: '手机号码', width: 160,
                 },
                 {
-                    prop: 'email', label: '邮箱', width: 200,
-                },
-
-                {
                     prop: 'gender', label: '性别', width: 160,
                     formatF: row => this.ListMatchField('sexType', row.gender)
                 },
@@ -69,9 +65,11 @@ export default {
                     formatF: row => <c-switch data={row} data-key='status' url={this.apiUrl} callback={this.query}></c-switch>
                 },
                 {
-                    prop: 'status', label: "操作", width: 160,
+                    prop: 'status', label: "操作", width: 280,
                     formatF: row => <div>
-                        <el-button type="text" on-click={() => this.handleOpenRole(row)} icon="el-icon-edit">授权</el-button>
+                        <el-button type="text" on-click={() => this.handleOpenRole(row)} icon="el-icon-setting">授权</el-button>
+                        <el-button type="text" on-click={() => this.handleEdit(row, 'put')} icon="el-icon-edit">编辑</el-button>
+
                         <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon="el-icon-delete">删除</el-button>
                     </div>
                 },],
@@ -91,7 +89,6 @@ export default {
             /*  */
             dialogValueAuto: false,
             autoInfo: {},
-            flashRole: false,
         };
     },
     created() {
@@ -127,11 +124,9 @@ export default {
         async handleOpenRole(row) {
             this.dialogValueAuto = true;
             this.autoInfo = row;
-            this.flashRole = true;
             let res = await this.$http.get(`${this.$api.sys.roleUser}?uid=${row.id}`);
+            this.$set(this.autoInfo, 'roleId', res.data.data.roleId || '');
 
-            this.$set(this.autoInfo, 'roleId', res.data.data.roleId);
-            this.flashRole = false;
         },
     }
 };

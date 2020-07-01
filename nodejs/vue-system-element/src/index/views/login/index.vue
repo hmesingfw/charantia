@@ -2,14 +2,14 @@
     <div class="login-container">
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
             <div class="title-container">
-                <h3 class="title">系统登录</h3>
+                <h3 class="title">租户登录</h3>
             </div>
 
-            <el-form-item prop="username">
+            <el-form-item prop="account">
                 <span class="svg-container">
                     <svg-icon icon-class="user" />
                 </span>
-                <el-input ref="username" v-model="loginForm.username" placeholder="账号" name="username" type="text" tabindex="1" autocomplete="on" />
+                <el-input ref="account" v-model="loginForm.account" placeholder="账号" name="account" type="text" tabindex="1" autocomplete="on" />
             </el-form-item>
 
             <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
@@ -56,11 +56,11 @@ export default {
         }
         return {
             loginForm: {
-                username: 'admin',
+                account: 'admin',
                 password: '123456'
             },
             loginRules: {
-                username: [{ required: true, trigger: 'blur', message: '请输入账号' }],
+                account: [{ required: true, trigger: 'blur', message: '请输入账号' }],
                 password: [{ required: true, trigger: 'blur', validator: validatePassword }]
             },
             passwordType: 'password',
@@ -84,8 +84,8 @@ export default {
         }
     },
     mounted() {
-        if (this.loginForm.username === '') {
-            this.$refs.username.focus()
+        if (this.loginForm.account === '') {
+            this.$refs.account.focus()
         } else if (this.loginForm.password === '') {
             this.$refs.password.focus()
         }
@@ -124,6 +124,7 @@ export default {
                 if (valid) {
                     this.loading = true
                     this.$store.dispatch('user/login_index', this.loginForm).then(routes => {
+                        console.log(routes);
                         if (routes.code == 4001) {
                             this.loading = false;
                             routes.message && this.$message.info(routes.message);
@@ -139,11 +140,7 @@ export default {
                         this.$router.push({ path: '/', query: this.otherQuery });/* 登录跳转 */
 
 
-                        this.$store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
-                            if (this.affixTags.some(tag => tag.path === view.path)) {
-                                return;
-                            }
-                        });
+                        this.$store.dispatch('tagsView/delAllViews')
                     }).catch(() => {
                         this.loading = false
                     })
@@ -160,24 +157,6 @@ export default {
                 return acc
             }, {})
         }
-        // afterQRScan() {
-        //   if (e.key === 'x-admin-oauth-code') {
-        //     const code = getQueryObject(e.newValue)
-        //     const codeMap = {
-        //       wechat: 'code',
-        //       tencent: 'code'
-        //     }
-        //     const type = codeMap[this.auth_type]
-        //     const codeName = code[type]
-        //     if (codeName) {
-        //       this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-        //         this.$router.push({ path: this.redirect || '/' })
-        //       })
-        //     } else {
-        //       alert('第三方登录失败')
-        //     }
-        //   }
-        // }
     }
 }
 </script>

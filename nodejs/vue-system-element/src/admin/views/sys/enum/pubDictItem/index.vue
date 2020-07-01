@@ -36,7 +36,7 @@ export default {
     },
     data() {
         return {
-            apiUrl: this.$api.sys.enumDetail, // 请求路很                
+            apiUrl: this.$api.sys.enumDetail + this.data.dictCode + '/item', // 请求路很                
 
             /* ------------ */
             QueryParam: {}, //  搜索条件
@@ -83,12 +83,12 @@ export default {
         query(flag) {
             if (flag == 1) this.pagination.page = 1; // 查询时，让页面等于1
             let param = {
-                dictCode: this.data.dictCode,
+                // dictCode: this.data.dictCode,
                 ...this.pagination,
                 ...this.QueryParam
             };
             this.tableLoading = true;
-            this.$http.get(this.apiUrl, {
+            this.$http.get(`${this.apiUrl}`, {
                 params: param
             }).then(res => {
                 this.tableData = res.data.data.list;

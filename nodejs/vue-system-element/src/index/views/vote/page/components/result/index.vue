@@ -1,27 +1,37 @@
 <template>
-    <div style="margin:14px" class="result-tabs">
-        <el-tabs v-model="activeName">
-            <el-tab-pane label="统计" name="second">配置管理</el-tab-pane>
-            <el-tab-pane label="投票" name="options">
-                <item-option></item-option>
-            </el-tab-pane>
-            <el-tab-pane label="会员投票" name="first">
-                <user></user>
-            </el-tab-pane>
-        </el-tabs>
+    <div>
+        <generate-group :data="groupList"></generate-group>
+        <div class="app-main-table">
+            <div style="margin:14px" class="result-tabs">
+                <el-tabs v-model="activeName">
+                    <el-tab-pane label="概况" name="second">
+                        <pro></pro>
+                    </el-tab-pane>
+                    <el-tab-pane label="详情" name="first">
+                        <user></user>
+                    </el-tab-pane>
+                </el-tabs>
+            </div>
+        </div>
     </div>
 </template>
 <script> 
 import user from './user'
-import itemOption from './item-option'
+import pro from './pro'
 export default {
     components: {
-        user, itemOption
+        user, pro
     },
 
     data() {
         return {
-            activeName: 'first'
+            activeName: 'second',
+            groupList: [
+                { code: 'item', title: "总投票", endVal: 1000, class: 'icon-people', icon: 'peoples' },
+                { code: 'day', title: "七日投票", endVal: 1000, class: 'icon-people', icon: 'peoples' },
+                { code: 'num', title: "投票选项", endVal: 1000, class: 'icon-people', icon: 'peoples' },
+                { code: 'auto', title: "待审核", endVal: 1000, class: 'icon-people', icon: 'peoples' },
+            ],
         };
     },
     created() {

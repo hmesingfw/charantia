@@ -8,8 +8,8 @@ import enumList from '@/store/modules/enumList';
  */
 Vue.prototype.ReqData = function (url, form, reqType, { idKey = 'id' } = {}) {
     return new Promise((resolve) => {
-        // let put = reqType == 'put' ? '/' + form[idKey] : '';
-        let put = '';
+        let put = reqType == 'put' ? '/' + form[idKey] : '';
+        // let put = '';
         this.$http[reqType](`${url}${put}`, form).then(res => {
             this.$message.success(res.data.message);
             resolve(true);
@@ -31,8 +31,9 @@ Vue.prototype.DeleteRequestData = function (url, id, { message = '此操作将�
             cancelButtonText: '取消',
             type: 'error'
         }).then(() => {
-            // let ids = id.join(',');
-            this.$http.delete(`${url}`, { data: id }).then(res => {
+            let ids = id.join(',');
+            // , { data: id }
+            this.$http.delete(`${url}/${ids}`).then(res => {
                 resolve(res);
             }).catch(() => {
                 reject(false);
@@ -68,8 +69,8 @@ Vue.prototype.UpdateSwitch = async function (data, url, key, func, { reqType = '
     let form = {};
     form[idKey] = data[idKey];
     form[key] = data[key];
-    // let put = reqType == 'put' ? '/' + data[idKey] : '';
-    let put = '';
+    let put = reqType == 'put' ? '/' + data[idKey] : '';
+    // let put = '';
     let result = await this.$http[reqType](`${url}${put}`, form);
 
     this.$message.success(result.data.message);
@@ -162,6 +163,13 @@ Vue.prototype.ConfigParmas = {
         'active-text': '收费',
         'inactive-value': 0,
         'inactive-text': '免费',
+        'active-color': "#4fc08d",
+    },
+    switchValue6: {
+        'active-value': 1,
+        'active-text': '发布',
+        'inactive-value': 0,
+        'inactive-text': '草稿',
         'active-color': "#4fc08d",
     },
     pagination: {

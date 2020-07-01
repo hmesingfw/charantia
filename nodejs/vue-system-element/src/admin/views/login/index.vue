@@ -5,11 +5,11 @@
                 <h3 class="title">系统登录</h3>
             </div>
 
-            <el-form-item prop="username">
+            <el-form-item prop="account">
                 <span class="svg-container">
                     <svg-icon icon-class="user" />
                 </span>
-                <el-input ref="username" v-model="loginForm.username" placeholder="账号" name="username" type="text" tabindex="1" autocomplete="on" />
+                <el-input ref="account" v-model="loginForm.account" placeholder="账号" name="account" type="text" tabindex="1" autocomplete="on" />
             </el-form-item>
 
             <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
@@ -55,11 +55,11 @@ export default {
         }
         return {
             loginForm: {
-                username: 'admin',
+                account: 'admin',
                 password: '123456'
             },
             loginRules: {
-                username: [{ required: true, trigger: 'blur', message: '请输入账号' }],
+                account: [{ required: true, trigger: 'blur', message: '请输入账号' }],
                 password: [{ required: true, trigger: 'blur', validator: validatePassword }]
             },
             passwordType: 'password',
@@ -86,8 +86,8 @@ export default {
         // window.addEventListener('storage', this.afterQRScan)
     },
     mounted() {
-        if (this.loginForm.username === '') {
-            this.$refs.username.focus()
+        if (this.loginForm.account === '') {
+            this.$refs.account.focus()
         } else if (this.loginForm.password === '') {
             this.$refs.password.focus()
         }

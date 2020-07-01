@@ -7,6 +7,8 @@
         </div>
 
         <edit v-model="dialogValue" :form="form" :requestType="requestType" :callback="query" :url="apiUrl"></edit>
+
+        <dict v-model="dialogValueItem" :data="form" :callback="query" v-if="flashItem"></dict>
     </div>
 </template>
 <script>
@@ -14,10 +16,11 @@ import {
     mapState
 } from 'vuex';
 import edit from './edit.vue'
+import dict from './dict/index'
 
 export default {
     components: {
-        edit
+        edit, dict
     },
     computed: {
         ...mapState({
@@ -52,6 +55,8 @@ export default {
                 {
                     prop: 'status', label: "操作",
                     formatF: row => <div>
+                        <el-button type="text" on-click={() => this.handleOpenItem(row)} icon="el-icon-setting">字典值</el-button>
+
                         <el-button type="text" on-click={() => this.handleEdit(row, 'put')} icon="el-icon-edit">编辑</el-button>
                         <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query, { idKey: 'code' })} icon="el-icon-delete">删除</el-button>
                     </div>
@@ -67,6 +72,10 @@ export default {
             dialogValue: false,
             requestType: '', // 请求类型
             form: {},
+
+            /* 子项目 */
+            dialogValueItem: false,
+            flashItem: false,
         };
     },
     created() {
@@ -96,6 +105,17 @@ export default {
             this.dialogValue = true;
             this.form = this.DeepCopy(row);
             this.requestType = requestType;
+        },
+
+        /* 编辑 */
+        handleOpenItem(row) {
+            this.flashItem = false;
+            this.$nextTick(() => {
+                this.flashItem = true;
+            })
+            this.dialogValueItem = true;
+            this.form = this.DeepCopy(row);
+
         },
     }
 };

@@ -1,9 +1,9 @@
 <template>
     <el-row>
         <div class="app-main-table">
-            <el-row style="padding:20px 40px 40px">
-                <span class="info-column-title">投票设置</span>
-                <el-divider></el-divider>
+            <el-row style="padding:40px">
+                <!-- <span class="info-column-title">投票设置</span> -->
+                <!-- <el-divider></el-divider> -->
                 <el-form label-position="right" label-width="100px" :rules="rules" :model="info" ref="ruleForm">
                     <el-col :xl="4" :md="4" style="height:10px"></el-col>
                     <el-col :xl="8" :md="8">

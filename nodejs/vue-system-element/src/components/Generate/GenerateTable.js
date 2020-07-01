@@ -38,7 +38,7 @@ export default {
         /* 渲染表头 */
         formatter(item, row, column, cellValue) {
             if (item.formatF) {
-                return item.formatF(row);
+                return item.formatF(row, column);
             }
             return cellValue;
         },

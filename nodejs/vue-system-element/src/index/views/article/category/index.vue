@@ -15,15 +15,20 @@
     </div>
 </template>
 <script> 
-import edit from './edit'
+import edit from './edit';
+import { mapGetters } from 'vuex'
 export default {
     components: {
         edit
     },
-
+    computed: {
+        ...mapGetters({
+            info: 'info'
+        })
+    },
     data() {
         return {
-            apiUrl: this.$api.sys.role,          // 请求路很
+            apiUrl: this.$api.menber.articleCategory,          // 请求路很
 
             /* 权限 */
             dialogValueAuto: false,
@@ -39,36 +44,36 @@ export default {
             tableData: [],
             tableParams: [
                 {
-                    prop: 'iconId', label: '图标', width: 100,
-                    formatF: row => <el-image src={this.$api.sys.getFile + '?id=' + row.iconId} ></el-image>
+                    prop: 'iconId', label: '图标', width: 120,
+                    formatF: row => <el-image src={this.$api.sys.download + '/' + row.iconId} style="width:60px" ></el-image>
 
                 },
                 { prop: 'title', label: "标题" },
 
                 {
-                    prop: 'sort', label: '排序', width: 80,
+                    prop: 'sort', label: '排序', width: 120,
                     formatF: row => <c-number data={row} data-key="sort" url={this.apiUrl} callback={this.query}></c-number>
                 },
                 {
-                    prop: 'status',
-                    labelF: () => <generate-label label='状态' key='status' option='statusList' params={this.QueryParam} callback={this.query}></generate-label>,
+                    prop: 'status', width: 100,
+                    labelF: () => <generate-label label='状态' data-key='status' option='statusList' params={this.QueryParam} callback={this.query}></generate-label>,
                     formatF: row => <c-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></c-switch>
                 },
                 {
-                    prop: 'isShow',
-                    labelF: () => <generate-label label='显示' key='isShow' option='statusList2' params={this.QueryParam} callback={this.query}></generate-label>,
+                    prop: 'isShow', width: 100,
+                    labelF: () => <generate-label label='显示' data-key='isShow' option='statusList2' params={this.QueryParam} callback={this.query}></generate-label>,
                     formatF: row => <c-switch data={row} data-key="isShow" url={this.apiUrl} callback={this.query} configtitle="switchValue2"></c-switch>
                 },
                 {
-                    prop: 'needAudit',
-                    labelF: () => <generate-label label='审核' key='needAudit' option='statusList2' params={this.QueryParam} callback={this.query}></generate-label>,
+                    prop: 'needAudit', width: 100,
+                    labelF: () => <generate-label label='审核' data-key='needAudit' option='statusList2' params={this.QueryParam} callback={this.query}></generate-label>,
                     formatF: row => <c-switch data={row} data-key="needAudit" url={this.apiUrl} callback={this.query} configtitle="switchValue2"></c-switch>
                 },
 
-                { prop: 'updatedTime', label: "更新时间" },
+                { prop: 'updatedTime', label: "更新时间", width: 160, },
 
                 {
-                    prop: 'status', label: "操作",
+                    prop: 'status', label: "操作", width: 180,
                     formatF: row => <div>
                         <el-button type="text" on-click={() => this.handleEdit(row, 'put')} icon="el-icon-edit" >编辑</el-button>
                         <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon="el-icon-delete" >删除</el-button>
@@ -95,7 +100,7 @@ export default {
         /* 查询操作 */
         query(flag) {
             if (flag == 1) this.pagination.page = 1;         // 查询时，让页面等于1
-            let param = { ...this.pagination, ...this.QueryParam };
+            let param = { ...this.pagination, ...this.QueryParam, tenantId: this.info.id };
             this.tableLoading = true;
             this.$http.get(this.apiUrl, { params: param }).then(res => {
                 this.tableData = res.data.data.list;
@@ -106,9 +111,10 @@ export default {
             });
         },
         /* 编辑 */
-        handleEdit(row = { sort: 1, status: 1 }, requestType = 'post') {
+        handleEdit(row = { sort: 1, status: 1, isShow: 1, needAudit: 0 }, requestType = 'post') {
             this.dialogValue = true;
             this.form = this.DeepCopy(row);
+            this.$set(this.form, 'tenant', this.info.id);
             this.requestType = requestType;
         },
 

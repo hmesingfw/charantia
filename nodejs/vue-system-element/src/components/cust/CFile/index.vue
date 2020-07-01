@@ -1,11 +1,12 @@
 <template>
     <div class="c-upload-image">
         <el-upload class="avatar-uploader" :action="fileUrl" :headers="header()" :on-change="filechange" :auto-upload="false" :show-file-list="false">
-            <el-image v-if="value" :src="this.$api.sys.getFile + '?id=' + value" class="avatar" fit="cover"></el-image>
+            <el-image v-if="value" :src="this.$api.sys.download + '/' + value" class="avatar" fit="cover"></el-image>
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            <div class="el-upload__tip" slot="tip" style="margin:0">{{ tip }}</div>
         </el-upload>
 
-        <el-dialog title="图片裁剪" :visible.sync="dialogValue" width="900px" center :close-on-click-modal="false" :show-close="false" :append-to-body="true">
+        <el-dialog title="裁剪" :visible.sync="dialogValue" width="900px" center :close-on-click-modal="false" :show-close="false" :append-to-body="true">
             <div style="width:850px; height: 422px; border: dashed #cacaca 1px; text-align: center;">
                 <div class="cropper" style="max-width: 100%;height:100%;">
                     <vueCropper
@@ -49,6 +50,9 @@ export default {
         autoCropWidth: { type: String, default: '1960' }, // 默认生成截图框宽度  (无数值默认:80%)
         autoCropHeight: { type: String, default: '1080' }, // 默认生成截图框高度  (无数值默认:80%)
         fixedBox: { type: Boolean, default: false }, // 固定截图框大小 不允许改变  (默认:false)
+        tip: { type: String, default: '只能上传jpg/png文件，且不超过2M' },
+
+        group: { type: String, default: '' },
     },
     components: {
         VueCropper
@@ -105,12 +109,13 @@ export default {
                 var file = new File([data], 'file.png');
                 var formdata = new FormData();
                 formdata.append('file', file);
+                formdata.append('group', this.group);
 
                 this.$http.post(this.fileUrl, formdata, {
                     'Content-Type': 'multipart/form-data'
                 }).then(res => {
 
-                    this.$emit('input', res.data.id);
+                    this.$emit('input', res.data.data);
                     this.loadingButton = false;
                     this.dialogValue = false;
                 }).catch(() => {

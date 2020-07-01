@@ -68,6 +68,7 @@ import {
     Popconfirm,
     Timeline,
     TimelineItem,
+    Progress,
 } from 'element-ui';
 
 Vue.use(Pagination);
@@ -132,6 +133,7 @@ Vue.use(Drawer);
 Vue.use(Scrollbar);
 Vue.use(Popconfirm);
 Vue.use(CascaderPanel);
+Vue.use(Progress);
 
 Vue.use(Loading.directive);
 

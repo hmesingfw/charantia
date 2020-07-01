@@ -49,7 +49,6 @@ export default {
                 {
                     prop: 'status', label: "操作", width: 300,
                     formatF: row => <div>
-                        <el-button type="text" on-click={() => this.handleOpenItem(row)} icon="el-icon-setting">字典值</el-button>
                         <el-button type="text" on-click={() => this.handleEdit(row, 'put')} icon="el-icon-edit">编辑</el-button>
                         <el-button type="text" on-click={() => this.HandleDelete(this.apiUrl, row, this.query, { idKey: 'action' })} icon="el-icon-delete">删除</el-button>
                     </div>
@@ -66,9 +65,7 @@ export default {
             requestType: '', // 请求类型 
             form: {},
 
-            /* 子项目 */
-            dialogValueItem: false,
-            flashItem: true,
+
         };
     },
     created() {
@@ -99,16 +96,8 @@ export default {
             this.form = this.DeepCopy(row);
             this.requestType = requestType;
         },
-        /* 编辑 */
-        handleOpenItem(row) {
-            this.flashItem = false;
-            this.$nextTick(() => {
-                this.flashItem = true;
-            })
-            this.dialogValueItem = true;
-            this.form = this.DeepCopy(row);
 
-        },
+
 
     }
 };

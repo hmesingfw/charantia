@@ -15,50 +15,58 @@
     </div>
 </template>
 <script>
-import {
-    mapState
-} from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import edit from './edit.vue'
 
 export default {
     components: {
         edit
     },
+
     computed: {
         ...mapState({
             statusList: state => state.enumList.data.statusList,
+        }),
+        ...mapGetters({
+            info: 'info'
         })
     },
     data() {
         return {
-            apiUrl: this.$api.sys.banner, // 请求路很                
+            apiUrl: this.$api.menber.banner, // 请求路很                
 
             /* ------------ */
-            QueryParam: { "id": "" }, //  搜索条件
-            queryComponentData: [],
+            QueryParam: {}, //  搜索条件
+            queryComponentData: [
+                { name: 'el-input', key: 'title', label: "标题", attr: { placeholder: '请输入标题' } },
+            ],
             tableData: [],
             tableParams: [
-
                 {
-                    prop: 'coverId', label: '文件', width: 100,
-                    formatF: row => <el-image src={this.$api.sys.getFile + '?id=' + row.coverId} preview-src-list={[this.$api.sys.getFile + '?id=' + row.coverId]}></el-image>
+                    prop: 'images', label: '文件', width: 120,
+                    formatF: row => <el-image src={this.$api.sys.download + '/' + row.images} style="width:60px" fit="contain"></el-image>
+
                 },
                 {
                     prop: 'title', label: '标题',
                 },
                 {
-                    prop: 'startDate', label: '开始时间',
+                    prop: 'positionTitle', label: '广告位置', width: 160,
                 },
                 {
-                    prop: 'endDate', label: '结束时间',
-                },
-                {
-                    prop: 'sort', label: '排序',
-                },
-                {
-                    prop: 'status', label: '状态', formatF: row => <c-switch data={row} data-key="status" url={this.apiUrl} callback={this.query} > </c-switch>,
+                    prop: 'startDate', label: '时间', width: 300,
+                    formatF: row => <div> {row.startDate && row.startDate.substring(0, 16)} - {row.endDate && row.endDate.substring(0, 16)} </div>
                 },
 
+                {
+                    prop: 'sort', label: '排序', width: 160,
+                    formatF: row => <c-number data={row} data-key="sort" url={this.apiUrl} callback={this.query} > </c-number>,
+
+                },
+                {
+                    prop: 'status', label: '状态', width: 100,
+                    formatF: row => <c-switch data={row} data-key="status" url={this.apiUrl} callback={this.query} > </c-switch>,
+                },
                 {
                     prop: 'status', label: "操作", width: 200,
                     formatF: row => <div><el-button type="text" on-click={() => this.handleEdit(row, 'put')} icon="el-icon-edit">编辑</el-button>
@@ -68,14 +76,15 @@ export default {
             multipleSelection: [], // 多选选中的值
 
             pagination: {
-                page: 1,
-                size: localStorage.getItem('pageSize') || 10,
+                ...this.ConfigParmas.pagination
             },
             totalCount: 0, // 总共多少条
             /* 表单 */
             dialogValue: false,
             requestType: '', // 请求类型 
-            form: {},
+            form: {
+                times: [],
+            },
         };
     },
     created() {
@@ -86,6 +95,7 @@ export default {
         query(flag) {
             if (flag == 1) this.pagination.page = 1; // 查询时，让页面等于1
             let param = {
+                tenantId: this.info.id,
                 ...this.pagination,
                 ...this.QueryParam
             };
@@ -93,18 +103,19 @@ export default {
             this.$http.get(this.apiUrl, {
                 params: param
             }).then(res => {
-                this.tableData = res.data.rows;
-                this.totalCount = res.data.count;
+                this.tableData = res.data.data.list;
+                this.totalCount = res.data.data.totalCount;
                 this.tableLoading = false;
             }).catch(() => {
                 this.tableLoading = false;
             });
         },
         /* 编辑 */
-        handleEdit(row = { status: '0', sort: 1 }, requestType = 'post') {
-            this.dialogValue = true;
+        handleEdit(row = { status: 1, sort: 1, positionId: 'index', startDate: '', endDate: '' }, requestType = 'post') {
             this.form = this.DeepCopy(row);
+            this.$set(this.form, 'tenantId', this.info.id);
             this.requestType = requestType;
+            this.dialogValue = true;
         },
     }
 };

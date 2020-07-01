@@ -46,7 +46,7 @@ export default {
                 { prop: 'remark', label: "备注", },
                 {
                     prop: 'status', width: 80,
-                    labelF: () => <generate-label label='状态' key='status' option='statusList' params={this.QueryParam} callback={this.query}></generate-label>,
+                    labelF: () => <generate-label label='状态' data-key='status' option='statusList' params={this.QueryParam} callback={this.query}></generate-label>,
                     formatF: row => <c-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></c-switch>
                 },
                 { prop: 'userName', label: "更新人" },

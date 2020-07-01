@@ -1,10 +1,10 @@
 <template>
     <el-row>
         <div class="app-main-table">
-            <el-row style="padding:20px 40px 40px">
+            <el-row style="padding:40px">
                 <el-form label-position="right" label-width="100px" :rules="rules" :model="info" ref="ruleForm">
-                    <span class="info-column-title">基础信息</span>
-                    <el-divider></el-divider>
+                    <!-- <span class="info-column-title">基础信息</span>
+                    <el-divider></el-divider>-->
                     <el-col :xl="16" :md="12">
                         <el-row :gutter="20">
                             <el-col :xl="12" :md="20">

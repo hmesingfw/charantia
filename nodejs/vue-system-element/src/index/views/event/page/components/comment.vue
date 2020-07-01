@@ -1,15 +1,38 @@
 <template>
     <div>
-        <generate-group :data="groupList"></generate-group>
         <div class="app-main-table">
             <el-form :inline="true" :model="QueryParam" class="header-query-form">
                 <generate-form :datalist="queryComponentData" :model="QueryParam" @change="query(1)"></generate-form>
             </el-form>
         </div>
         <div class="app-main-table">
-            <generate-handle :edit="handleEdit" :url="apiUrl" :callback="query" :multipleSelection="multipleSelection"></generate-handle>
-            <generate-table :data="tableData" :params="tableParams" @selection-change="val => multipleSelection = val" v-loading="tableLoading"></generate-table>
-            <pagination :data="pagination" :callback="query" :total="totalCount" />
+            <el-timeline class="event-comment-content">
+                <el-timeline-item timestamp="2018/4/12 12:00:00 张三" placement="top">
+                    <el-card class="comment-card">
+                        <div class="comment-image-group">
+                            <el-image class="comment-image" src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg" fit="contain"></el-image>
+                            <el-image class="comment-image" src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg" fit="contain"></el-image>
+                            <el-image class="comment-image" src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg" fit="contain"></el-image>
+                            <el-image class="comment-image" src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg" fit="contain"></el-image>
+                        </div>
+                        <p>王小虎 提交于 2018/4/12 20:46</p>
+
+                        <div class="comment-delete">
+                            <i class="el-icon-delete icon"></i>
+                        </div>
+                    </el-card>
+                </el-timeline-item>
+                <el-timeline-item timestamp="2018/4/3 12:00:00 李四" placement="top">
+                    <el-card>
+                        <p>王小虎 提交于 2018/4/3 20:46</p>
+                    </el-card>
+                </el-timeline-item>
+                <el-timeline-item timestamp="2018/4/2 12:00:00 五王" placement="top">
+                    <el-card>
+                        <p>王小虎 提交于 2018/4/2 20:46</p>
+                    </el-card>
+                </el-timeline-item>
+            </el-timeline>
         </div>
     </div>
 </template>
@@ -30,13 +53,8 @@ export default {
     },
     data() {
         return {
-            apiUrl: this.$api.sys.tenantAdmin, // 请求路很                
-            groupList: [
-                { code: 'item', title: "收入总计", endVal: 1000, class: 'icon-people', icon: 'peoples' },
-                { code: 'day', title: "今日收入", endVal: 1000, class: 'icon-people', icon: 'peoples' },
-                { code: 'num', title: "付款人数", endVal: 1000, class: 'icon-people', icon: 'peoples' },
-                { code: 'auto', title: "待审核", endVal: 1000, class: 'icon-people', icon: 'peoples' },
-            ],
+            apiUrl: this.$api.sys.tenantAdmin, // 请求路很              
+
             /* ------------ */
             QueryParam: {}, //  搜索条件 
             queryComponentData: [
@@ -124,3 +142,36 @@ export default {
     }
 };
 </script>
+<style lang="scss">
+.event-comment-content {
+    margin: 20px 60px 20px 20px;
+
+    .comment-card {
+        position: relative;
+        .comment-image-group {
+            padding-top: 10px;
+            .comment-image {
+                width: 100px;
+            }
+        }
+        .el-card__body {
+            padding: 10px 20px;
+        }
+        .comment-delete {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 50px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .icon {
+                cursor: pointer;
+                font-size: 20px;
+                color: #f56c6c;
+            }
+        }
+    }
+}
+</style>

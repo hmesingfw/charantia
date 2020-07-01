@@ -14,6 +14,7 @@
                         @node-click="data => handleNodeClick(data, 'put')"
                         :default-expand-all="true"
                         :expand-on-click-node="false"
+                        :highlight-current="true"
                     ></el-tree>
                 </el-scrollbar>
             </el-col>
@@ -44,10 +45,10 @@ export default {
             treeHeight2: GetHeight(180),
 
             tableData: [{
-                label: '投票信息',
+                label: '基本信息',
                 code: 'info',
             }, {
-                label: '投票设置',
+                label: '扩展信息',
                 code: 'setting',
             }, {
                 label: '投票选项',

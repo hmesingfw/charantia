@@ -1,4 +1,5 @@
 import axios from 'axios';
+import api from '@/config/api';
 import { Message } from 'element-ui';
 
 export function GetHeight(offset) {
@@ -175,14 +176,15 @@ export function forFindValue(list, key, value, rekey, option = { returnStr: '' }
 /* 组装路由表,将后台请求到的数据，组装成vue-ruter实别的格式信息 */
 /* arr 接收数据 */
 /* array 返回处理后的数据  */
-export function TogetherRouter(arr, type = 'admin') {
+export function TogetherRouter(arr) {
     let array = [];
+
     arr.forEach(item => {
         let json = {
             path: item.path,
             name: item.path + item.id,
             hidden: item.isHidden == 0,
-            component: () => item.component == 'Layout' ? import('@/layout') : import(`@/${type}/views${item.component}`),
+            component: () => item.component == 'Layout' ? import('@/layout') : import(`@/admin/views${item.component}`),
             meta: { title: item.title, icon: item.icon },
         };
         if (item.children && item.children.length > 0) {
@@ -193,7 +195,24 @@ export function TogetherRouter(arr, type = 'admin') {
 
     return array;
 }
+export function TogetherRouterIndex(arr) {
+    let array = [];
 
+    arr.forEach(item => {
+        let json = {
+            path: item.path,
+            name: item.path + item.id,
+            hidden: item.isHidden == 0,
+            component: () => item.component == 'Layout' ? import('@/layout') : import(`@index/views${item.component}`),
+            meta: { title: item.title, icon: item.icon },
+        };
+        if (item.children && item.children.length > 0) {
+            json.children = TogetherRouterIndex(item.children);
+        }
+        array.push(json);
+    });
+    return array;
+}
 
 /* 组装完成后的vue-router信息，过滤重复的数据 */
 /* arr 接收数据 */
@@ -243,13 +262,37 @@ export var ueConfig = {
     // 编辑器不自动被内容撑高
     autoHeightEnabled: false,
     // 初始容器高度
-    initialFrameHeight: 640,
+    initialFrameHeight: 400,
     // 初始容器宽度
     initialFrameWidth: '100%',
     // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
-    serverUrl: 'http://35.201.165.105:8000/controller.php',
+    serverUrl: api.sys.ueditor,
     // serverUrl: api.sys2.uditor,
     // UEditor 资源文件的存放路径，如果你使用的是 vue-cli 生成的项目，通常不需要设置该选项，vue-ueditor-wrap 会自动处理常见的情况，如果需要特殊配置，参考下方的常见问题2
     UEDITOR_HOME_URL: '/UEditor/',
     maximumWords: 1000,
+};
+
+/* 纯文本 */
+export var ueConfigText = {
+    // 编辑器不自动被内容撑高
+    autoHeightEnabled: false,
+    // 初始容器高度
+    initialFrameHeight: 400,
+    // 初始容器宽度
+    initialFrameWidth: '100%',
+    // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
+    serverUrl: api.sys.ueditor,
+    // serverUrl: api.sys2.uditor,
+    // UEditor 资源文件的存放路径，如果你使用的是 vue-cli 生成的项目，通常不需要设置该选项，vue-ueditor-wrap 会自动处理常见的情况，如果需要特殊配置，参考下方的常见问题2
+    UEDITOR_HOME_URL: '/UEditor/',
+    maximumWords: 1000,
+    toolbars: [[
+        'fullscreen', 'source', '|', 'undo', 'redo', '|',
+        'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'removeformat', 'formatmatch', 'autotypeset', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', '|',
+        'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+        'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+        'indent', '|',
+        'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify',
+    ]]
 };

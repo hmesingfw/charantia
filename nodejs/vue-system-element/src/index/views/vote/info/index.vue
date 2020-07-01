@@ -40,24 +40,24 @@ export default {
                 { prop: 'description', label: "介绍", },
                 {
                     prop: 'author', label: "投票时间",
-                    formatF: row => <div>{row.startTime.substring(0, 15)} - {row.endTime.substring(0, 15)}</div>
+                    formatF: row => <div>{row.startTime && row.startTime.substring(0, 16)} - {row.endTime && row.endTime.substring(0, 16)}</div>
                 },
 
                 { prop: 'voteNum', label: "投票数", },
 
                 {
                     prop: 'status', width: 80,
-                    labelF: () => <generate-label label='状态' key='status' option='statusList' params={this.QueryParam} callback={this.query}></generate-label>,
+                    labelF: () => <generate-label label='状态' data-key='status' option='statusList' params={this.QueryParam} callback={this.query}></generate-label>,
                     formatF: row => <c-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></c-switch>
                 },
                 {
                     prop: 'isTop', width: 80,
-                    labelF: () => <generate-label label='置顶' key='isTop' option='statusList2' params={this.QueryParam} callback={this.query}></generate-label>,
+                    labelF: () => <generate-label label='置顶' data-key='isTop' option='statusList2' params={this.QueryParam} callback={this.query}></generate-label>,
                     formatF: row => <c-switch data={row} data-key="isTop" url={this.apiUrl} callback={this.query} configtitle="switchValue2"></c-switch>
                 },
                 {
                     prop: 'isRecommend', width: 80,
-                    labelF: () => <generate-label label='推荐' key='isRecommend' option='statusList2' params={this.QueryParam} callback={this.query}></generate-label>,
+                    labelF: () => <generate-label label='推荐' data-key='isRecommend' option='statusList2' params={this.QueryParam} callback={this.query}></generate-label>,
                     formatF: row => <c-switch data={row} data-key="isRecommend" url={this.apiUrl} callback={this.query} configtitle="switchValue2"></c-switch>
                 },
                 { prop: 'updatedTime', label: "更新时间", width: 160 },

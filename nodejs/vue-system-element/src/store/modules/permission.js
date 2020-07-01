@@ -12,6 +12,7 @@ import api from '@/config/api'
 const state = {
     routes: [],
     sqlRouter: [],       // 数据库存的路由地址
+    sqlRouterIndex: [],       // 数据库存的路由地址
 
 }
 
@@ -24,6 +25,9 @@ const mutations = {
     },
     SET_SQLROUTES: (state, routes) => {
         state.sqlRouter = routes;
+    },
+    SET_SQLROUTES_INDEX: (state, routes) => {
+        state.sqlRouterIndex = routes;
     }
 }
 

@@ -110,7 +110,7 @@ export default {
                 cancelButtonText: '取消',
                 type: 'info'
             }).then(async () => {
-                let issucc = await this.ReqData(this.$api.sys.userPwd, { id: row.id }, 'put');
+                let issucc = await this.$http.put(`${this.$api.sys.userPwd}/${row.id}/password`, { id: row.id });
                 if (issucc) {
                     this.$message.success('密码重置成功');
                 }

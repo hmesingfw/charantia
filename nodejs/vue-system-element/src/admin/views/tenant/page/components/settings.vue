@@ -12,7 +12,8 @@
                     </el-col>
                     <el-col :xl="10" :md="20">
                         <el-form-item label="账号限制数" prop="accountLimit">
-                            <el-input v-model="info.accountLimit" maxlength="10" :disabled="false" show-word-limit></el-input>
+                            <el-input-number v-model="info.accountLimit" maxlength="10" :disabled="false" show-word-limit></el-input-number>
+                            <span>/ 人</span>
                         </el-form-item>
                     </el-col>
                     <el-col :xl="10" :md="20">
@@ -39,7 +40,8 @@
 
                     <el-col :xl="10" :md="20">
                         <el-form-item label="网盘容量" prop="diskCapacity">
-                            <el-input v-model="info.diskCapacity" maxlength="10" :disabled="false" show-word-limit></el-input>
+                            <el-input-number v-model="info.diskCapacity" maxlength="10" :disabled="false" show-word-limit></el-input-number>
+                            <span>/ G</span>
                         </el-form-item>
                     </el-col>
                     <el-col :xl="20" :md="20" style="margin-top:20px">

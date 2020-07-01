@@ -14,6 +14,7 @@
                         @node-click="data => handleNodeClick(data, 'put')"
                         :default-expand-all="true"
                         :expand-on-click-node="false"
+                        :highlight-current="true"
                     ></el-tree>
                 </el-scrollbar>
             </el-col>
@@ -44,16 +45,16 @@ export default {
             treeHeight2: GetHeight(180),
 
             tableData: [{
-                label: '活动信息',
+                label: '基本信息',
                 code: 'info',
             }, {
-                label: '活动设置',
+                label: '扩展信息',
                 code: 'setting',
             }, {
-                label: '活动门票',
+                label: '门票设置',
                 code: 'item',
             }, {
-                label: '活动收费',
+                label: '报名收费',
                 code: 'ticket',
             }, {
                 label: '活动签到',
@@ -65,7 +66,7 @@ export default {
                 label: '成员关注',
                 code: 'follow',
             }, {
-                label: '活动表单',
+                label: '报名表单',
                 code: 'customPage',
             }],
 

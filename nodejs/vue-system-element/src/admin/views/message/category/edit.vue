@@ -1,5 +1,14 @@
  <template>
-    <dialog-alert v-model="value" title="信息录入" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+    <dialog-alert
+        v-model="value"
+        title="信息录入"
+        @submit="handleUpdate"
+        @colse="colse"
+        :isColse="false"
+        :loading-button="loadingButton"
+        @changeLoadingButton="loadingButton = false"
+        :modal-append-to-body="false"
+    >
         <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
             <el-form-item label="分类标识" prop="code">
                 <el-input v-model="form.code" maxlength="16" :disabled="requestType == 'put'" placeholder="请输入分类标识"></el-input>
@@ -45,7 +54,7 @@ export default {
             this.$refs.ruleForm.validate(async valid => {
                 if (valid) {
                     this.loadingButton = true;
-                    let issucc = await this.ReqData(this.url, this.form, this.requestType);
+                    let issucc = await this.ReqData(this.url, this.form, this.requestType, { idKey: 'code' });
                     if (issucc) {
 
                         this.callback();

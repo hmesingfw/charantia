@@ -61,46 +61,48 @@ export const constantRoutes = [{
             affix: true
         }
     }]
-}, {
-    path: '/page',
-    component: Layout,
-    hidden: true,
-    children: [{
-        path: 'detail',
-        component: () => import('@index/views/two-page/index'),
-        name: 'PageDetailTwo',
-        meta: {
-            title: '详细信息',
-            icon: 'user'
-        }
-    }]
-}, {
-    path: '/vote',
-    component: Layout,
-    hidden: true,
-    children: [{
-        path: 'detail',
-        component: () => import('@index/views/vote/page/index'),
-        name: 'VoteDetailTwo',
-        meta: {
-            title: '详细信息',
-            icon: 'user'
-        }
-    }]
-}, {
-    path: '/event',
-    component: Layout,
-    hidden: true,
-    children: [{
-        path: 'detail',
-        component: () => import('@index/views/event/page/index'),
-        name: 'EventDetailTwo',
-        meta: {
-            title: '详细信息',
-            icon: 'user'
-        }
-    }]
 },
+    // {
+    //     path: '/vote',
+    //     component: Layout,
+    //     // hidden: true,
+    //     children: [{
+    //         path: 'detail',
+    //         component: () => import('@index/views/vote/page/index'),
+    //         name: 'VoteDetailTwo',
+    //         meta: {
+    //             title: '投票详细',
+    //             icon: 'user'
+    //         }
+    //     }]
+    // }, {
+    //     path: '/event',
+    //     component: Layout,
+    //     // hidden: true,
+    //     children: [{
+    //         path: 'detail',
+    //         component: () => import('@index/views/event/page/index'),
+    //         name: 'EventDetailTwo',
+    //         meta: {
+    //             title: '活动详细',
+    //             icon: 'user'
+    //         }
+    //     }]
+    // }, 
+    // {
+    //     path: '/netdisk',
+    //     component: Layout,
+    //     // hidden: true,
+    //     children: [{
+    //         path: 'detail',
+    //         component: () => import('@index/views/netdisk/index'),
+    //         name: 'netdiskDetailTwo',
+    //         meta: {
+    //             title: '网盘管理',
+    //             icon: 'user'
+    //         }
+    //     }]
+    // },
 
 ]
 

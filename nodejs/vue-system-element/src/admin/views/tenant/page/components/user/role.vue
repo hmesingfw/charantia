@@ -64,8 +64,8 @@ export default {
                 roleId: this.radio
             }
             if (this.radio) {
-                await this.ReqData(this.$api.sys.roleUser, form, 'put');
-
+                let suc = await this.$http.put(this.$api.sys.roleUser, form);
+                this.$message.success(suc.data.message);
             } else {
                 await this.$http.delete(`${this.$api.sys.roleUser}/${this.form.id}`);
 

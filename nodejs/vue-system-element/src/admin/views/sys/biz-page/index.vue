@@ -1,6 +1,6 @@
 <template>
     <el-row class="page-two" :style="{height:treeHeight}">
-        <el-col :xl="2" :md="4" class="page-router">
+        <el-col :xl="3" :md="4" class="page-router">
             <el-scrollbar class="scrollbar">
                 <el-tree
                     ref="treeMenu"
@@ -10,13 +10,13 @@
                     @node-click="data => handleNodeClick(data, 'put')"
                     :default-expand-all="true"
                     :expand-on-click-node="false"
+                    :highlight-current="true"
                 ></el-tree>
             </el-scrollbar>
         </el-col>
-        <el-col :xl="22" :md="20">
+        <el-col :xl="21" :md="20">
             <el-row class="page-main" :style="{height:treeHeight2}">
                 <el-scrollbar class="scrollbar">
-                    <!-- <list :info="codeName"></list> -->
                     <edit :info="codeName"></edit>
                 </el-scrollbar>
             </el-row>
@@ -26,11 +26,9 @@
 <script>
 import { GetHeight } from "@/utils/sys";
 import { mapGetters } from 'vuex';
-// import list from './list'
 import edit from './edit'
 export default {
     components: {
-        // list
         edit
     },
     computed: {
@@ -49,7 +47,7 @@ export default {
             treeHeight2: GetHeight(130),
             tableData: [],
 
-            codeName: '',
+            codeName: {},
         }
     },
     methods: {
@@ -69,8 +67,8 @@ export default {
                 }
             });
             /* 第二级标题 */
-            let enumDetail = await this.$http.get(this.$api.sys.enumDetail);
-            enumDetail.data.data.list.forEach(item => {
+            let enumDetail = await this.$http.get(this.$api.sys.enumDetailList);
+            enumDetail.data.data.forEach(item => {
                 treeList.forEach(obj => {
                     if (obj.code == item.dictCode) {
                         obj.children.push({ ...item, label: item.itemLabel });

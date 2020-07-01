@@ -1,21 +1,20 @@
  <template>
-    <dialog-alert v-model="value" title="角色信息" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
+    <dialog-alert v-model="value" title="租户信息" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
         <el-row>
             <el-form label-width="80px" :rules="rules" :model="form" ref="ruleForm">
-                <el-form-item label="标识" prop="code">
-                    <el-input v-model="form.code" maxlength="20" :disabled="false" placeholder="请输入标识"></el-input>
+                <el-form-item label="租户名称" prop="name">
+                    <el-input v-model="form.name" maxlength="32" :disabled="false" show-word-limit placeholder="请输入租户名称"></el-input>
                 </el-form-item>
 
-                <el-form-item label="角色名称" prop="name">
-                    <el-input v-model="form.name" maxlength="20" :disabled="false" placeholder="请输入角色名称"></el-input>
+                <el-form-item label="联系人" prop="conact">
+                    <el-input v-model="form.conact" maxlength="20" :disabled="false" placeholder="请输入联系人"></el-input>
                 </el-form-item>
 
-                <el-form-item label="描述" prop="description">
-                    <el-input type="textarea" :row="5" v-model="form.description" maxlength="200" show-word-limit :disabled="false" placeholder="请输入内容"></el-input>
+                <el-form-item label="手机号码" prop="mobile">
+                    <el-input v-model="form.mobile" maxlength="24" :disabled="false" placeholder="请输入手机号码"></el-input>
                 </el-form-item>
-
-                <el-form-item label="状态" prop="status">
-                    <el-switch class="switch-style" v-model="form.status" v-bind="ConfigParmas.switchValue"></el-switch>
+                <el-form-item label="地址" prop="address">
+                    <el-input v-model="form.address" maxlength="24" :disabled="false" placeholder="请输入地址"></el-input>
                 </el-form-item>
             </el-form>
         </el-row>

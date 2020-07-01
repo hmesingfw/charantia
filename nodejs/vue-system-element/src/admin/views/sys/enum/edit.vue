@@ -1,6 +1,6 @@
  <template>
     <dialog-alert v-model="value" title="编辑" @submit="handleUpdate" @colse="colse" :isColse="false" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
-        <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
+        <el-form label-position="right" label-width="50px" :rules="rules" :model="form" ref="ruleForm">
             <el-form-item label="编码" prop="dictCode">
                 <el-input v-model="form.dictCode" maxlength="16" :disabled="requestType == 'put'"></el-input>
             </el-form-item>
@@ -50,7 +50,7 @@ export default {
             this.$refs.ruleForm.validate(async valid => {
                 if (valid) {
                     this.loadingButton = true;
-                    let issucc = await this.ReqData(this.url, this.form, this.requestType);
+                    let issucc = await this.ReqData(this.url, this.form, this.requestType, { idKey: 'dictCode' });
                     if (issucc) {
 
                         this.callback();

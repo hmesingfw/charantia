@@ -54,7 +54,7 @@ export default {
                 },
                 {
                     prop: 'startTime', label: '授权时间', width: 240,
-                    formatF: row => <div>{row.startTime.substring(0, 10)} - {row.endTime.substring(0, 10)}</div>
+                    formatF: row => <div>{row.startTime && row.startTime.substring(0, 10)} - {row.endTime && row.endTime.substring(0, 10)}</div>
                 },
                 {
                     prop: 'accountLimit', label: '账号数', width: 100,

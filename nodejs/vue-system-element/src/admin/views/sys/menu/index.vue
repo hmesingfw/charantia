@@ -144,7 +144,7 @@ export default {
                 },
                 {
                     prop: 'status', label: "状态", width: 80,
-                    labelF: () => <generate-label label='状态' key='status' option='statusList' params={this.QueryParam} callback={this.query}></generate-label>,
+                    labelF: () => <generate-label label='状态' data-key='status' option='statusList' params={this.QueryParam} callback={this.query}></generate-label>,
                     formatF: row => <c-switch data={row} data-key="status" url={this.apiUrl} callback={this.query}></c-switch>
                 },
                 { prop: 'updatedTime', label: "更新时间", width: '160' },
