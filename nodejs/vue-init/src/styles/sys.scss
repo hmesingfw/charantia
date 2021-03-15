@@ -1,0 +1,170 @@
+.padding-8 {
+    padding: 8px;
+}
+
+.padding-20 {
+    padding: 20px;
+}
+
+.margin-8 {
+    margin: 8px;
+}
+
+.el-input-width {
+    width: 300px;
+}
+
+.border-shadow {
+    border-radius: 4px;
+    border: 1px solid #e6ebf5;
+    background-color: #fff;
+    overflow: hidden;
+    color: #303133;
+    -webkit-transition: 0.3s;
+    transition: 0.3s;
+    // -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    // box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+.header-query-form {
+    @extend .border-shadow;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    min-height: 80px;
+
+    padding: {
+        top: 10px;
+        left: 20px;
+        right: 20px;
+        bottom: 0;
+    }
+
+    .el-form-item {
+        margin-bottom: 10px;
+    }
+}
+
+.app-main-table {
+    @extend .border-shadow;
+    margin: 14px;
+
+    .el-table {
+        width: 99%;
+        margin-top: 4px;
+        margin-left: .5%;
+    }
+
+    .el-divider--horizontal {
+        margin: 12px 0 24px;
+    }
+}
+
+/* 分页组件居中 */
+.pu-pagination {
+    display: flex;
+    justify-content: center;
+    padding: 6px 0;
+}
+
+/* 表格表头颜色 */
+.el-table .table-header-color th {
+    background: #efefef;
+}
+
+.switch-form {
+    margin-top: -2px;
+}
+
+/* 更改switch样式，开关样式 */
+.switch-style .el-switch__label {
+    position: absolute;
+    display: none;
+    color: #fff;
+}
+
+.switch-style .el-switch__label--left {
+    z-index: 1;
+    left: 20px;
+
+    span {
+        font-size: 12px;
+    }
+}
+
+.switch-style .el-switch__label--right {
+    z-index: 1;
+    left: 0px;
+
+    span {
+        font-size: 12px;
+    }
+}
+
+.switch-style .el-switch__label.is-active {
+    display: block;
+}
+
+.switch-style.el-switch .el-switch__core,
+.el-switch .el-switch__label {
+    width: 56px !important;
+}
+
+/* 列表数据输入框 */
+.el-input-number-table {
+    width: 90px;
+}
+
+/* 富文本框架样式 */
+.vue-ueditor-wrap-s {
+    .el-form-item__content {
+        line-height: 0px;
+    }
+}
+
+.info-column-title {
+    margin-bottom: 20px;
+    border-left: 3px solid #3080fe;
+    padding-left: 10px;
+}
+
+
+/* 左侧树形菜单 */
+.page-two {
+    padding: 4px;
+
+    .page-router {
+        height: 100%;
+        background: #fff;
+
+        .el-scrollbar__wrap {
+            overflow-x: hidden;
+        }
+
+        .scrollbar {
+            height: 100%;
+        }
+
+        .el-tree {
+            height: 100%;
+            padding: 20px;
+        }
+    }
+
+    .page-main {
+        position: relative;
+        width: 100%;
+
+        .el-scrollbar__wrap {
+            overflow-x: hidden;
+        }
+
+        .scrollbar {
+            height: 100%;
+        }
+    }
+
+    .el-tree-node__content {
+        height: 40px;
+    }
+}

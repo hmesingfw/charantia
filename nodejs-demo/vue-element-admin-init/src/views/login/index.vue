@@ -2,14 +2,14 @@
     <div class="login-container">
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
             <div class="title-container">
-                <h3 class="title">系统登录</h3>
+                <h3 class="title">Login Form</h3>
             </div>
 
             <el-form-item prop="username">
                 <span class="svg-container">
                     <svg-icon icon-class="user" />
                 </span>
-                <el-input ref="username" v-model="loginForm.username" placeholder="账号" name="username" type="text" tabindex="1" autocomplete="on" />
+                <el-input ref="username" v-model="loginForm.username" placeholder="Username" name="username" type="text" tabindex="1" autocomplete="on" />
             </el-form-item>
 
             <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
@@ -22,7 +22,7 @@
                         ref="password"
                         v-model="loginForm.password"
                         :type="passwordType"
-                        placeholder="密码"
+                        placeholder="Password"
                         name="password"
                         tabindex="2"
                         autocomplete="on"
@@ -36,21 +36,27 @@
                 </el-form-item>
             </el-tooltip>
 
-            <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+            <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
         </el-form>
     </div>
 </template>
 
-<script> 
+<script>
+import { validUsername } from '@/utils/validate'
 
 export default {
     name: 'Login',
     data() {
-
-
+        const validateUsername = (rule, value, callback) => {
+            if (!validUsername(value)) {
+                callback(new Error('Please enter the correct user name'))
+            } else {
+                callback()
+            }
+        }
         const validatePassword = (rule, value, callback) => {
             if (value.length < 6) {
-                callback(new Error('密码长度少于6位，请重新输入'))
+                callback(new Error('The password can not be less than 6 digits'))
             } else {
                 callback()
             }
@@ -58,16 +64,15 @@ export default {
         return {
             loginForm: {
                 username: 'admin',
-                password: '123456'
+                password: '111111'
             },
             loginRules: {
-                username: [{ required: true, trigger: 'blur', message: '请输入账号' }],
+                username: [{ required: true, trigger: 'blur', validator: validateUsername }],
                 password: [{ required: true, trigger: 'blur', validator: validatePassword }]
             },
             passwordType: 'password',
             capsTooltip: false,
             loading: false,
-            showDialog: false,
             redirect: undefined,
             otherQuery: {}
         }
@@ -84,18 +89,12 @@ export default {
             immediate: true
         }
     },
-    created() {
-        // window.addEventListener('storage', this.afterQRScan)
-    },
     mounted() {
         if (this.loginForm.username === '') {
             this.$refs.username.focus()
         } else if (this.loginForm.password === '') {
             this.$refs.password.focus()
         }
-    },
-    destroyed() {
-        // window.removeEventListener('storage', this.afterQRScan)
     },
     methods: {
         checkCapslock({ shiftKey, key } = {}) {
@@ -124,13 +123,8 @@ export default {
             this.$refs.loginForm.validate(valid => {
                 if (valid) {
                     this.loading = true
-                    this.$store.dispatch('user/login', this.loginForm).then(res => {
-                        if (res.code === 4001) {
-                            this.$message.info(res.message);
-                            this.loading = false;
-                            return false;
-                        }
-                        this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+                    this.$store.dispatch('user/login', this.loginForm).then(() => {
+                        this.$router.push({ path: this.redirect || '/dashboard', query: this.otherQuery })
                         this.loading = false
                     }).catch(() => {
                         this.loading = false

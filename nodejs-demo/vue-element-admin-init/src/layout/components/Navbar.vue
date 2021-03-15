@@ -6,22 +6,37 @@
 
         <div class="right-menu">
             <template v-if="device!=='mobile'">
-                <error-log class="errLog-container right-menu-item hover-effect" />
+                <!-- <search id="header-search" class="right-menu-item" /> -->
+
+                <!-- <error-log class="errLog-container right-menu-item hover-effect" /> -->
 
                 <el-tooltip content="全屏" effect="dark" placement="bottom">
                     <screenfull id="screenfull" class="right-menu-item hover-effect" />
                 </el-tooltip>
+
+                <!-- <el-tooltip content="组件尺寸" effect="dark" placement="bottom">
+          <size-select id="size-select" class="right-menu-item hover-effect" />
+                </el-tooltip>-->
             </template>
 
             <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
                 <div class="avatar-wrapper">
-                    <span class="name-icon">{{ getZ(info) }}</span>
+                    <span>loayout</span>
                     <i class="el-icon-caret-bottom" />
                 </div>
                 <el-dropdown-menu slot="dropdown">
-                    <router-link to="/">
+                    <router-link to="/profile/index">
+                        <el-dropdown-item>主页</el-dropdown-item>
+                    </router-link>
+                    <router-link to="/dashboard">
                         <el-dropdown-item>首页</el-dropdown-item>
                     </router-link>
+                    <!-- <a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin/">
+            <el-dropdown-item>Github</el-dropdown-item>
+          </a>
+          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
+            <el-dropdown-item>文档</el-dropdown-item>
+                    </a>-->
                     <el-dropdown-item divided>
                         <span style="display:block;" @click="logout">退出</span>
                     </el-dropdown-item>
@@ -35,27 +50,25 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import ErrorLog from '@/components/ErrorLog'
+// import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
+// import SizeSelect from '@/components/SizeSelect'
+// import Search from '@/components/HeaderSearch'
 
 export default {
     components: {
         Breadcrumb,
         Hamburger,
-        ErrorLog,
+        // ErrorLog,
         Screenfull,
+        // SizeSelect,
+        // Search
     },
     computed: {
         ...mapGetters([
             'sidebar',
-            'device',
-            // 'info'
+            'device'
         ])
-    },
-    data() {
-        return {
-            info: ''
-        }
     },
     methods: {
         toggleSideBar() {
@@ -64,26 +77,7 @@ export default {
         async logout() {
             await this.$store.dispatch('user/logout')
             this.$router.push(`/login?redirect=${this.$route.fullPath}`)
-        },
-        /* 首字母 */
-        getZ(info = '') {
-            if (info && info.userInfo) {
-                if (info.userInfo.account) {
-                    let str = info.userInfo.account;
-                    if (str.length > 0) {
-                        let s = str[0];
-
-                        var reg = new RegExp('[\\u4E00-\\u9FFF]+', 'g');
-                        if (reg.test(s)) {
-                            return s;
-                        } else {
-                            return s.toUpperCase();
-                        }
-                    }
-                }
-            }
-            return 'A';
-        },
+        }
     }
 }
 </script>
@@ -165,17 +159,6 @@ export default {
                     right: -20px;
                     top: 25px;
                     font-size: 12px;
-                }
-
-                .name-icon {
-                    cursor: pointer;
-                    width: 30px;
-                    height: 44px;
-                    border-radius: 10px;
-                    font-size: 22px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
                 }
             }
         }

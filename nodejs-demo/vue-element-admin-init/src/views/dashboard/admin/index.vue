@@ -26,7 +26,7 @@
     </div>
 </template>
 
-<script> 
+<script>
 import PanelGroup from './components/PanelGroup'
 import LineChart from './components/LineChart'
 import RaddarChart from './components/RaddarChart'
@@ -36,7 +36,7 @@ import BarChart from './components/BarChart'
 const lineChartData = {
     newVisitis: {
         expectedData: [100, 120, 161, 134, 105, 160, 165],
-        actualData: [1200, 820, 910, 1540, 1620, 1400, 145]
+        actualData: [120, 82, 91, 154, 162, 140, 145]
     },
     messages: {
         expectedData: [200, 192, 120, 144, 160, 130, 140],
@@ -59,7 +59,7 @@ export default {
         LineChart,
         RaddarChart,
         PieChart,
-        BarChart,
+        BarChart
     },
     data() {
         return {

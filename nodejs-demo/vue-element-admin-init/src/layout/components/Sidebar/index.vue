@@ -23,19 +23,19 @@ import { mapGetters } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
-// import { constantRoutes } from '@/router/index'
+import { constantRoutes } from '@/router/index'
 
 export default {
     components: { SidebarItem, Logo },
 
     data() {
         return {
-            // permission_routes: constantRoutes
+            permission_routes: constantRoutes
         }
     },
     computed: {
         ...mapGetters([
-            'permission_routes',                 // 这个参数为前端渲染路由的主要参数，里面加载的是需要渲染的数据，过滤权限后的数据
+            // 'permission_routes',                 // 这个参数为前端渲染路由的主要参数，里面加载的是需要渲染的数据，过滤权限后的数据
             'sidebar'
         ]),
         activeMenu() {

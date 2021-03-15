@@ -1,9 +1,5 @@
-.padding-8 {
-    padding: 8px;
-}
-
-.margin-8 {
-    margin: 8px;
+.el-input-width {
+    width: 300px;
 }
 
 .border-shadow {
@@ -14,17 +10,16 @@
     color: #303133;
     -webkit-transition: 0.3s;
     transition: 0.3s;
-    -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    // -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    // box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 
 .header-query-form {
     @extend .border-shadow;
-    margin: 24px 28px 0px 28px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    min-height: 50px;
+    min-height: 80px;
 
     padding: {
         top: 10px;
@@ -38,12 +33,18 @@
     }
 }
 
-.article-table {
+.app-main-table {
     @extend .border-shadow;
-    margin: 24px 28px 24px 28px;
+    margin: 14px;
 
     .el-table {
-        width: 100%;
+        width: 99%;
+        margin-top: 4px;
+        margin-left: .5%;
+    }
+
+    .el-divider--horizontal {
+        margin: 12px 0 24px;
     }
 }
 
@@ -51,13 +52,25 @@
 .pu-pagination {
     display: flex;
     justify-content: center;
+    padding: 6px 0;
 }
 
 /* 表格表头颜色 */
-.el-table .table-header-color th {
-    background: #efefef;
+.el-table{
+    .table-header-name th {
+        background: #efefef;
+        height: 50px;
+    }
+    
+    .table-row-name td{
+        padding-top: 7px;
+        padding-bottom: 6px;
+    }
 }
 
+.switch-form {
+    margin-top: -2px;
+}
 
 /* 更改switch样式，开关样式 */
 .switch-style .el-switch__label {
@@ -69,7 +82,8 @@
 .switch-style .el-switch__label--left {
     z-index: 1;
     left: 20px;
-    span{
+
+    span {
         font-size: 12px;
     }
 }
@@ -77,7 +91,8 @@
 .switch-style .el-switch__label--right {
     z-index: 1;
     left: 0px;
-    span{
+
+    span {
         font-size: 12px;
     }
 }
@@ -94,4 +109,137 @@
 /* 列表数据输入框 */
 .el-input-number-table {
     width: 90px;
+}
+
+/* 富文本框架样式 */
+.vue-ueditor-wrap-s {
+    .el-form-item__content {
+        line-height: 0px;
+    }
+}
+
+.info-column-title {
+    margin-bottom: 20px;
+    border-left: 3px solid #3080fe;
+    padding-left: 10px;
+}
+
+
+/* 左侧树形菜单 */
+.page-two {
+    padding: 4px;
+
+    .page-router {
+        height: 100%;
+        background: #fff;
+
+        .el-scrollbar__wrap {
+            overflow-x: hidden;
+        }
+
+        .scrollbar {
+            height: 100%;
+        }
+
+        .el-tree {
+            height: 100%;
+            padding: 20px;
+        }
+    }
+
+    .page-main {
+        position: relative;
+        width: 100%;
+
+        .el-scrollbar__wrap {
+            overflow-x: hidden;
+        }
+
+        .scrollbar {
+            height: 100%;
+        }
+    }
+
+    .el-tree-node__content {
+        height: 40px;
+    }
+}
+
+
+
+
+.report-menber {
+    display: flex;
+    align-items: center;
+
+    .name {
+        padding-left: 10px;
+    }
+}
+
+.task-avatar-name {
+
+    width: 60px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+}
+
+
+
+/* 含有富文本的弹出框 */
+.ueditor-info-model {
+    .el-drawer__wrapper {
+        z-index: 10 !important;
+    }
+}
+
+
+/* 全屏图片 关闭按钮 */
+.el-image-viewer__wrapper {
+
+    .el-image-viewer__close {
+        color: #fff;
+    }
+
+    .el-image-viewer__next {
+        border: 3px solid;
+        background: none;
+        font-size: 40px;
+    }
+
+    .el-image-viewer__prev {
+        border: 3px solid;
+        background: none;
+        font-size: 40px;
+    }
+}
+
+
+
+.disabled-noback {
+    .el-input.is-disabled .el-input__inner {
+        background: none;
+    }
+
+    .el-textarea.is-disabled .el-textarea__inner {
+        background: none;
+    }
+}
+
+
+.text-limit{
+    overflow:hidden; 
+    text-overflow:ellipsis;
+    display:-webkit-box; 
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:1; 
+}
+
+.no-scrollbar__wrap{
+
+    .el-scrollbar__wrap{
+        overflow-x: hidden;
+    }
 }

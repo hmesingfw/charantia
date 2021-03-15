@@ -11,8 +11,6 @@ const getters = {
     name: state => state.user.name,
     roles: state => state.user.roles,
 
-    permission_routes: state => state.permission.routes,
-    enumList: state => state.enumList.enumList,      ///* 枚举列表 */
 }
 
 export default getters;

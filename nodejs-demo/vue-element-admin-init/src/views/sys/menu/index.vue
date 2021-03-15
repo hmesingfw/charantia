@@ -1,122 +1,75 @@
 <template>
-    <div>
-        <el-form :inline="true" :model="QueryParam" class="header-query-form">
-            <generate-form :model="QueryParam" :datalist="queryComponentData"></generate-form>
+    <el-row class="page-main">
+        <el-scrollbar class="scrollbar">
+            <el-row>
+                <el-row class="app-main-table">
+                    <el-row style="padding:20px 0 0 20px; font-weight:700">
+                        <i class="el-icon-info" />
+                        <span>请勿修改菜单内容</span>
+                    </el-row>
+                    <g-handle :edit="handleEdit" :url="apiUrl" :callback="query" :multiple-selection="multipleSelection" />
+                    <g-table v-loading="tableLoading" :data="tableData" :params="tableParams" :table-attrs="tableAttrs" @selection-change="val => multipleSelection = val" />
+                </el-row>
 
-            <el-form-item>
-                <el-button @click="query(1)" icon="el-icon-search" circle></el-button>
-                <el-button @click="handleEdit()" circle type="primary" icon="el-icon-plus"></el-button>
-                <el-button @click="HandleDelete(apiUrl, multipleSelection, query);" icon="el-icon-delete" circle type="danger" v-show="multipleSelection.length>0"></el-button>
-            </el-form-item>
-        </el-form>
-        <div class="article-table">
-            <el-table
-                :data="tableData"
-                @selection-change="val => multipleSelection = val"
-                v-loading="tableLoading"
-                style="width: 100%"
-                :stripe="true"
-                row-key="id"
-                :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
-                header-row-class-name="table-header-color"
-            >
-                <el-table-column type="selection" width="42"></el-table-column>
-                <el-table-column prop="title" label="标题" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="path" label="路径" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="component" label="组件路径" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="type" label="类型" width="120">
-                    <template slot-scope="scope">
-                        <span v-if="scope.row.type == 1">目录</span>
-                        <span v-if="scope.row.type == 2">菜单</span>
-                        <span v-if="scope.row.type == 3">按钮</span>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="par" label="权限" show-overflow-tooltip></el-table-column>
+                <dialog-model
+                    v-model="dialogValue"
+                    :title="requestType == 'post' ? '新增' : '详情'"
+                    width="600"
+                    :type="requestType"
+                    :loading-button="loadingButton"
+                    @submit="handleUpdate"
+                    @changeLoadingButton="loadingButton = false"
+                >
+                    <el-form ref="ruleForm" label-position="right" label-width="100px" :rules="rules" :model="form">
+                        <el-form-item label="标题" prop="title">
+                            <el-input v-model="form.title" maxlength="28" show-word-limit />
+                        </el-form-item>
 
-                <el-table-column prop="icon" label="图标" show-overflow-tooltip></el-table-column>
+                        <el-form-item label="路径" prop="path">
+                            <el-input v-model="form.path" maxlength="100" />
+                        </el-form-item>
 
-                <el-table-column prop="sort" label="排序" width="120" align="center">
-                    <template slot-scope="scope">
-                        <el-popconfirm title="修改排序" @onConfirm="UpdateField(scope.row, apiUrl, 'sort', query)">
-                            <el-input-number slot="reference" v-model="scope.row.sort" controls-position="right" class="el-input-number-table" :min="1" :max="1000" size="mini"></el-input-number>
-                        </el-popconfirm>
-                    </template>
-                </el-table-column>
-                <el-table-column label="显示" width="80">
-                    <template slot-scope="scope">
-                        <el-switch
-                            class="switch-style"
-                            v-model="scope.row.show"
-                            @change="UpdateSwitch(scope.row, apiUrl, 'show', query)"
-                            active-value="0"
-                            active-text="启用"
-                            inactive-value="1"
-                            inactive-text="禁用"
-                        ></el-switch>
-                    </template>
-                </el-table-column>
-                <el-table-column label="状态" width="80">
-                    <template slot-scope="scope">
-                        <el-switch class="switch-style" v-model="scope.row.status" @change="UpdateSwitch(scope.row, apiUrl, 'status', query)" v-bind="ConfigPamars.switchValue"></el-switch>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="updatedAt" label="更新时间" width="140"></el-table-column>
+                        <el-form-item label="组件路径" prop="component">
+                            <el-input v-model="form.component" maxlength="100" />
+                        </el-form-item>
 
-                <el-table-column label="操作" width="160" fixed="right">
-                    <template slot-scope="scope">
-                        <el-button size="mini" type="text" @click="handleEdit(scope.row, 'put')">编辑</el-button>
-                        <el-button size="mini" type="text" @click="HandleDelete(apiUrl, scope.row, query)">删除</el-button>
-                        <el-button size="mini" type="text" v-if="scope.row.parentId == '0'" @click="handleEdit({sort:1,status:'0',parentId:scope.row.id, show:'0'} , 'post')">添加值</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </div>
+                        <el-form-item label="权限" prop="perms">
+                            <el-input v-model="form.perms" maxlength="60" />
+                        </el-form-item>
 
-        <dialog-alert v-model="dialogValue" title="菜单信息" :type="requestType" @submit="handleUpdate" :loading-button="loadingButton" @changeLoadingButton="loadingButton = false">
-            <el-form label-position="right" label-width="100px" :rules="rules" :model="form" ref="ruleForm">
-                <el-form-item label="标题" prop="title">
-                    <el-input v-model="form.title" maxlength="128"></el-input>
-                </el-form-item>
-                <el-form-item label="路径" prop="path">
-                    <el-input v-model="form.path" maxlength="255"></el-input>
-                </el-form-item>
-                <el-form-item label="组件路径" prop="component">
-                    <el-input v-model="form.component" maxlength="255"></el-input>
-                </el-form-item>
-                <el-form-item label="类型" prop="type">
-                    <el-radio-group v-model="form.type">
-                        <el-radio-button :label="1">目录</el-radio-button>
-                        <el-radio-button :label="2">菜单</el-radio-button>
-                        <el-radio-button :label="3">按钮</el-radio-button>
-                    </el-radio-group>
-                </el-form-item>
-                <el-form-item label="权限" prop="par">
-                    <el-input v-model="form.par" maxlength="64"></el-input>
-                </el-form-item>
-                <el-form-item label="图标" prop="icon">
-                    <el-input v-model="form.icon" maxlength="255"></el-input>
-                </el-form-item>
+                        <el-form-item label="图标" prop="icon">
+                            <c-icon-select v-model="form.icon" />
+                        </el-form-item>
+                        <el-form-item label="类型" prop="menuType">
+                            <el-radio-group v-model="form.menuType">
+                                <el-radio-button :label="1">目录</el-radio-button>
+                                <el-radio-button :label="2">菜单</el-radio-button>
+                                <el-radio-button :label="3">按钮</el-radio-button>
+                            </el-radio-group>
+                        </el-form-item>
+                        <el-form-item label="显示" prop="isHidden">
+                            <el-switch v-model="form.isHidden" class="switch-style swit ch-form" v-bind="ConfigParmas.switchValue2" />
+                        </el-form-item>
 
-                <el-form-item label="显示" prop="show">
-                    <el-switch class="switch-style" v-model="form.show" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>
-                </el-form-item>
-                <el-form-item label="状态" prop="status">
-                    <el-switch class="switch-style" v-model="form.status" active-value="0" active-text="启用" inactive-value="1" inactive-text="禁用"></el-switch>
-                </el-form-item>
+                        <el-form-item label="状态" prop="status">
+                            <el-switch v-model="form.status" class="switch-style switch-form" v-bind="ConfigParmas.switchValue" />
+                        </el-form-item>
 
-                <el-form-item label="排序" prop="sort">
-                    <el-input-number v-model="form.sort" :min="1" :max="100000"></el-input-number>
-                </el-form-item>
-                <el-form-item label="备注" prop="details">
-                    <el-input type="textarea" :rows="2" v-model="form.details" maxlength="255"></el-input>
-                </el-form-item>
-            </el-form>
-        </dialog-alert>
-    </div>
+                        <el-form-item label="排序" prop="sort">
+                            <el-input-number v-model="form.sort" :min="1" :max="100000" />
+                        </el-form-item>
+
+                        <el-form-item label="备注" prop="description">
+                            <el-input v-model="form.description" maxlength="32" show-word-limit />
+                        </el-form-item>
+                    </el-form>
+                </dialog-model>
+            </el-row>
+        </el-scrollbar>
+    </el-row>
 </template>
 <script>
 import { mapState } from 'vuex';
-
 export default {
     computed: {
         ...mapState({
@@ -124,48 +77,104 @@ export default {
     },
     data() {
         return {
-            apiUrl: this.$api.sys.menu,          // 请求路很
+            apiUrl: this.$api.sys.menu, // 请求路很
             rules: {
                 title: [{ required: true, message: '请输入内容', trigger: 'blur' },],
-                value: [{ required: true, message: '请输入内容', trigger: 'blur' },],
             },
 
             /* 基本不变------------ */
-            QueryParam: {},             //  搜索条件
+            QueryParam: {}, //  搜索条件
             queryComponentData: [
-                { name: 'el-input', key: 'title', label: "标题", attr: { placeholder: '请输入标题' } },
+                { name: 'el-input', key: 'title', label: '标题', attr: { placeholder: '请输入标题' } },
             ],
             tableData: [],
+            tableParams: [
+                { prop: 'title', label: '标题', minWidth: 120, },
+                { prop: 'path', label: '路径', minWidth: 120, },
+                { prop: 'component', label: '组件路径', minWidth: 120, },
+                {
+                    prop: 'status', label: '类型', width: 80,
+                    formatF: row => {
+                        if (row.menuType == 1) {
+                            return '目录'
+                        } else if (row.menuType == 2) {
+                            return '菜单'
+                        } else if (row.menuType == 3) {
+                            return '按钮'
+                        }
+                    }
+                },
+                { prop: 'perms', label: '权限' },
+                {
+                    prop: 'icon', label: '图标', width: 80,
+                    formatF: row => {
+                        if (!row.icon) {
+                            return ''
+                        } else if (row.icon.indexOf('el-') == -1) {
+                            return <svg-icon icon-class={row.icon} style='font-size: 22px;' />
+                        } else {
+                            return <i class={row.icon} style='font-size: 24px;' />
+                        }
+                    },
+                },
+                {
+                    prop: 'sort', label: '排序', width: 120,
+                    formatF: row => <c-number data={row} data-key='sort' url={this.apiUrl} callback={this.query}></c-number>
+                },
+                // {
+                //     prop: 'isHidden', label: '显示', width: 80,
+                //     labelF: () => <g-label label='显示' data-key='status' option='statusList2' params={this.QueryParam} callback={this.query}></g-label>,
+                //     formatF: row => <c-switch data={row} data-key='isHidden' url={this.apiUrl} callback={this.query} configtitle='switchValue2'></c-switch>
+                // },
+                // {
+                //     prop: 'status', label: '状态', width: 80,
+                //     labelF: () => <g-label label='状态' data-key='status' option='statusList' params={this.QueryParam} callback={this.query}></g-label>,
+                //     formatF: row => <c-switch data={row} data-key='status' url={this.apiUrl} callback={this.query}></c-switch>
+                // },
+                // { prop: 'updatedTime', label: '更新时间', width: '160' },
+                {
+                    prop: 'status', label: '操作', width: 240, fixed: 'right',
+                    formatF: row =>
+                        <div>
+                            <el-button type='text' on-click={() => this.handleEdit(row, 'put')} icon='el-icon-edit'>编辑</el-button>
+                            <el-button type='text' on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon='el-icon-delete'>删除</el-button>
+                            {row.menuType != 3 && <el-button type='text' on-click={() => this.handleEdit({ sort: 1, status: 1, parentId: row.id, isHidden: 1, appId: 'admin' }, 'post')} icon='el-icon-plus'>添加值</el-button>}
+                        </div>
+                },
+            ],
+            tableAttrs: {
+                'row-key': 'id',
+                'tree-props': { children: 'children', hasChildren: 'hasChildren' }
+            },
             tableLoading: false,
-            multipleSelection: [],      // 多选选中的值
-
+            multipleSelection: [], // 多选选中的值
 
             /* 表单 */
             dialogValue: false,
-            requestType: '',            // 请求类型
+            requestType: '', // 请求类型
             loadingButton: false,
             form: {},
+            formLoading: false,
+
         };
     },
     created() {
         this.query();
     },
+
     methods: {
         /* 查询操作 */
         query() {
-            let param = {
-                ...this.QueryParam
-            };
             this.tableLoading = true;
-            this.$http.get(this.apiUrl, { params: param }).then(res => {
-                this.tableData = res.data.rows;
+            this.$http.get(this.$api.sys.menuTree).then(res => {
+                this.tableData = res.data.data;
                 this.tableLoading = false;
             }).catch(() => {
                 this.tableLoading = false;
             });
         },
         /* 编辑 */
-        handleEdit(row = { sort: 1, status: '0', parentId: '0', show: '0' }, requestType = 'post') {
+        handleEdit(row = { sort: 1, status: 1, parentId: 0, isHidden: 1, appId: 'admin' }, requestType = 'post') {
             this.dialogValue = true;
             this.form = this.DeepCopy(row);
             this.requestType = requestType;
@@ -175,7 +184,7 @@ export default {
             this.$refs.ruleForm.validate(async valid => {
                 if (valid) {
                     this.loadingButton = true;
-                    let issucc = await this.ReqData(this.apiUrl, this.form, this.requestType);
+                    const issucc = await this.ReqData(this.apiUrl, this.form, this.requestType);
                     if (issucc) {
                         this.loadingButton = false;
                         this.dialogValue = false;
@@ -186,10 +195,6 @@ export default {
                 }
             });
         },
-        /* 到这里基本不变----------- */
     }
 };
 </script>
-
-<style lang="scss">
-</style>
