@@ -113,7 +113,7 @@ export default {
 }
 </script>
  
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .login-container {
     display: flex;
     -webkit-box-orient: vertical;

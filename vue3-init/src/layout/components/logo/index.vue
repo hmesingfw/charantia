@@ -11,7 +11,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .sidebar-logo {
     height: 64px;
     line-height: 64px;

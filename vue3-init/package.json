@@ -8,14 +8,15 @@
     "dependencies": {
         "element-plus": "^1.0.2-beta.35",
         "vue": "^3.0.4",
-        "vuex": "^4.0.0-0",
-        "vue-router": "^4.0.0-0"
+        "vue-router": "^4.0.0-0",
+        "vuex": "^4.0.0-0"
     },
     "devDependencies": {
         "@vue/compiler-sfc": "^3.0.4",
         "compression-webpack-plugin": "^7.0.0",
-        "less": "^4.1.1",
-        "less-loader": "^8.0.0",
+        "sass-loader": "^11.0.1",
+        "node-sass": "^5.0.0",
+        "sass": "^1.32.8",
         "vite": "^1.0.0-rc.13"
     }
 }

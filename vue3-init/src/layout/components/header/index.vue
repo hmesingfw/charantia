@@ -33,7 +33,7 @@ export default {
 
 }
 </script>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .heander-container {
     height: 64px;
     padding: 0 20px;

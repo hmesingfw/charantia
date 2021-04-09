@@ -31,7 +31,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .layout {
     height: 100vh;
     .sidebar-scrollbar {
