@@ -1,11 +1,19 @@
 <template>
     <div class="layout-settings">
-        <div class="shade" v-show="!panel.status"></div>
+        <div class="shade" v-show="!panel.status" @click="OpenSetting"></div>
         <div class="panel" :style="{width: panel.width }">
-            <div class="settings" @click="OpenSetting">
+            <el-button type="primary" class="settings" @click="OpenSetting">
                 <i class="el-icon-setting action-icon" v-if="panel.status"></i>
                 <i class="el-icon-close action-icon" v-if="!panel.status"></i>
-            </div>
+            </el-button>
+            <el-row>
+                <el-row>
+                    <div>23</div>
+                </el-row>
+                <el-row>
+                    <div>ggg</div>
+                </el-row>
+            </el-row>
         </div>
     </div>
 </template>
@@ -55,7 +63,6 @@ export default {
             position: absolute;
             left: -60px;
             top: 20vh;
-            background-color: #13c2c2;
             display: flex;
             justify-content: center;
             align-items: center;

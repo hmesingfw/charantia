@@ -38,7 +38,10 @@ export default {
     height: 64px;
     padding: 0 20px;
     align-items: center;
-    background-color: #002140; // 背景色
+    background-color: #fff; // 背景色
+
+    -moz-box-shadow: 4px 1px 3px #ccc; /* 老的 Firefox */
+    box-shadow: 1px 1px 3px #ccc;
 
     .avatar {
         display: flex;

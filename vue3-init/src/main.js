@@ -5,7 +5,6 @@ import vuex from './store/index'
 import element from './plugins/element'
 // import sytle
 import './styles/index.scss'
-import './styles/element-variables.scss'
 
 const app = createApp(App)
 element(app)

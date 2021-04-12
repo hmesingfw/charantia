@@ -34,6 +34,12 @@ export default {
 <style lang="scss" scoped>
 .layout {
     height: 100vh;
+    .el-scrollbar {
+        z-index: 10;
+        box-shadow: 1px 1px 3px #ccc;
+        -moz-box-box-shadow: 1px 1px 3px #ccc;
+    }
+
     .sidebar-scrollbar {
         height: 100%;
     }
