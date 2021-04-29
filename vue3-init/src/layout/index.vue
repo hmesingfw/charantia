@@ -11,7 +11,9 @@
             <el-header class="header">
                 <header-main></header-main>
             </el-header>
-            <el-main>111</el-main>
+            <el-main>
+                <router-view />
+            </el-main>
         </el-container>
 
         <settings></settings>
@@ -36,8 +38,8 @@ export default {
     height: 100vh;
     .el-scrollbar {
         z-index: 10;
-        box-shadow: 1px 1px 3px #ccc;
-        -moz-box-box-shadow: 1px 1px 3px #ccc;
+        box-shadow: 1px 2px 4px #ccc;
+        -moz-box-box-shadow: 1px 2px 4px #ccc;
     }
 
     .sidebar-scrollbar {

@@ -1,4 +1,8 @@
 'use strict'
+// import vueJsx from '@vitejs/plugin-vue-jsx'
+// import vueBabelJsx from '@vue/babel-plugin-jsx'
+
+//
 const path = require('path')
 const CompressionPlugin = require('compression-webpack-plugin')
 const defaultSettings = require('./src/settings.js')
@@ -26,8 +30,18 @@ module.exports = {
     alias: {
         '/@/': resolve('src'),
     },
-
-
+    // 第三方配置需要引用后， 才能在项目内import 引用
+    optimizeDeps: ['axios', 'vue-draggable-next'],
+    esbuild: {
+        jsxFactory: 'h',
+        jsxFragment: 'Fragment'
+    },
+    // plugins: [
+        // vueJsx({
+            // vueBabelJsx
+            // options are passed on to @vue/babel-plugin-jsx
+        // })
+    // ],
 
     /**
      * You will need to set publicPath if you plan to deploy your site under a sub path,
@@ -36,6 +50,7 @@ module.exports = {
      * In most cases please use '/' !!!
      * Detail: https://cli.vuejs.org/config/#publicpath
      */
+     /*
     publicPath: '/',
     outputDir: 'dist',
     assetsDir: 'static',
@@ -84,14 +99,14 @@ module.exports = {
                 ...baseConfig,
             };
         } else {
-            /* 开发环境 */
+            // 开发环境 
             return {
                 ...baseConfig
             };
         }
     },
     chainWebpack(config) {
-        /* 添加分析工具*/
+        // 添加分析工具
         if (process.env.NODE_ENV === 'production') {
             // config.plugin('webpack-bundle-analyzer').use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin).end();
         }
@@ -110,5 +125,7 @@ module.exports = {
                 options.compilerOptions.preserveWhitespace = true
                 return options
             }).end()
+
     }
+    */
 }
