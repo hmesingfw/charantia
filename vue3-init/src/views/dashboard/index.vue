@@ -9,13 +9,10 @@ export default {
     name: 'DashboardAdmin',
     data() {
         return {
-            lineChartData: lineChartData.newVisitis
         }
     },
     methods: {
-        handleSetLineChartData(type) {
-            this.lineChartData = lineChartData[type]
-        }
+
     }
 }
 </script>

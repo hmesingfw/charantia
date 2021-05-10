@@ -1,0 +1,13 @@
+{
+    "type": "mysql",
+    "host": "localhost",
+    "port": 3306,
+    "username": "root",
+    "password": "woxihuanni",
+    "database": "nest",
+    "synchronize": false,
+    "logging": true,
+    "entities": ["dist/**/*.entity.{ts,js}"],
+    "migrations": ["src/migration/**/*.ts"],
+    "subscribers": ["src/subscriber/**/*.ts"]
+}

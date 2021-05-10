@@ -1,6 +1,6 @@
 
 import Table from './Table/index.vue'
-import QueryForm from './QueryForm/index.js'
+import QueryForm from './QueryForm/index.jsx'
 import Drawer from './Drawer/index.vue'
 import ImageMatting from './ImageMatting'
 

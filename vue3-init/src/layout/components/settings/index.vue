@@ -45,7 +45,7 @@ export default {
         left: 0;
         background: #000;
         opacity: 0.45;
-        z-index: 1;
+        z-index: 10;
     }
     .panel {
         z-index: 10;

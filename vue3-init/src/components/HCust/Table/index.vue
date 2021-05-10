@@ -65,8 +65,8 @@
 <script>
 import { ref, reactive, onMounted, nextTick } from 'vue'
 import http from '/@/config/axios-config'
-import hMain from './main.js'
-import VueDraggableNext from 'vue-draggable-next'
+import hMain from './main.jsx'
+import { VueDraggableNext } from 'vue-draggable-next'
 import { ElMessage } from 'element-plus'
 export default {
     components: {

@@ -1,7 +1,6 @@
 import { ref, reactive } from 'vue'
 export default {
-    components: {
-    },
+    name: 'QueryForm',
     render() {
         return (
             <el-form class='h-query-form' ref={this.ref} model={this.model} {...this.setupFormAttrs} onKeyDown={e => this.onKeyDownchange(e)} onSubmit={event => event.preventDefault()} >
@@ -86,7 +85,7 @@ export default {
         ref: { type: String, default: 'hCustRef' },
         params: { type: Array, }
     },
-    setup(props) {
+    setup(props: any) {
         const timeValue = ref([]); // 时间vmodel
         const pickerOptions = reactive({}); // 时间option
         const arrowStatus = ref('down'); // 箭头状态    true  收起   false 展示
@@ -97,7 +96,7 @@ export default {
             ...props.formAttrs,
         }
         /* 处理回车事件 */
-        function onKeyDownchange(e) {
+        function onKeyDownchange(e: any) {
             /* 回车事件 */
             if (e.keyCode == 13) {
                 query();
@@ -120,7 +119,7 @@ export default {
         }
 
         /* 切换箭头状态 */
-        function changeArrowStatus(status) {
+        function changeArrowStatus(status: string) {
             arrowStatus.value = status;
         }
         return {

@@ -1,0 +1,103 @@
+.h-table {
+    .h-table-header-name {
+        th {
+            background-color: #f8f8f9;
+        }
+    }
+
+    .h-table-handle {
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: #f4f6f9;
+
+        .right-handle {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            .h-icon {
+                font-size: 20px;
+                margin: 0 10px;
+            }
+        }
+    }
+
+    .h-page {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+    }
+
+}
+
+/* 列设置 */
+.h-table-col-settings {
+    padding: 0 !important;
+
+    .h-table-col-settings__header {
+        padding: 5px 23px;
+        border-bottom: 1px solid #f0f0f0;
+
+    }
+
+    .h-table-col-settings__group {
+        margin: 10px 0;
+
+        .item {
+            margin: 5px 0;
+
+            i {
+                margin-left: 7px;
+                margin-right: 3px;
+            }
+        }
+    }
+}
+
+.h-query-form {
+
+    .h-handles {
+        .el-button+.el-button {
+            margin: 0 10px;
+        }
+    }
+}
+
+.h-drawer {
+    border-top: 1px solid #ebeef5;
+
+    .h-drawer-scrollbar {
+        height: 100%;
+        padding: 10px;
+    }
+
+    .h-drawer__main {}
+
+
+
+    .h-drawer__footer {
+        border-top: 1px solid #ebeef5;
+        padding: 10px 20px;
+        height: 60px;
+    }
+}
+
+
+/* 重置element 样式 */
+.el-drawer {
+    outline: none;
+}
+
+.el-drawer__header {
+
+    padding: 20px;
+    margin-bottom: 0px;
+
+    span {
+        outline: none;
+    }
+}
+
+.el-scrollbar__wrap {
+    overflow-x: hidden;
+}
