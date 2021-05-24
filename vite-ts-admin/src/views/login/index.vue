@@ -5,8 +5,8 @@
                 <h3 class="title">Login Form</h3>
             </div>
             <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
-                <el-form-item prop="username">
-                    <el-input ref="username" v-model="loginForm.username" placeholder="请输入用户名" type="text" tabindex="1" autocomplete="on" prefix-icon="el-icon-user" />
+                <el-form-item prop="account">
+                    <el-input ref="account" v-model="loginForm.account" placeholder="请输入账号" type="text" tabindex="1" autocomplete="on" prefix-icon="el-icon-user" />
                 </el-form-item>
 
                 <el-form-item prop="password">
@@ -34,87 +34,106 @@
     </div>
 </template>
 
-<script>
-export default {
-    name: 'Login',
+<script lang="tsx">
+import { defineComponent } from "vue";
+export default defineComponent({
+    name: "Login",
     data() {
         const validatePassword = (rule, value, callback) => {
             if (value.length < 6) {
-                callback(new Error('密码不能少于6位数字'))
+                callback(new Error("密码不能少于6位数字"));
             } else {
-                callback()
+                callback();
             }
-        }
+        };
         return {
             automaticLogin: true,
 
             loginForm: {
-                username: 'admin',
-                password: '123456'
+                account: "admin",
+                password: "123456"
             },
             loginRules: {
-                username: [{ required: true, trigger: 'blur', message: '请输入正确的用户名' }],
-                password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+                account: [
+                    {
+                        required: true,
+                        trigger: "blur",
+                        message: "请输入正确的用户名"
+                    }
+                ],
+                password: [
+                    {
+                        required: true,
+                        trigger: "blur",
+                        validator: validatePassword
+                    }
+                ]
             },
             capsTooltip: false,
             loading: false,
-            redirect: undefined,
-
-        }
+            redirect: undefined
+        };
     },
     watch: {
         $route: {
-            handler: function (route) {
-                const query = route.query
+            handler: function(route) {
+                const query = route.query;
                 if (query) {
-                    this.redirect = query.redirect
+                    this.redirect = query.redirect;
                 }
             },
             immediate: true
         }
     },
     mounted() {
-        if (this.loginForm.username === '') {
-            this.$refs.username.focus()
-        } else if (this.loginForm.password === '') {
-            this.$refs.password.focus()
+        if (this.loginForm.account === "") {
+            this.$refs.account.focus();
+        } else if (this.loginForm.password === "") {
+            this.$refs.password.focus();
         }
-
-        this.$http.post('/api/user/login', { account: 'admin', password: '123456' }).then(res => {
-            console.log(res);
-        })
     },
     methods: {
         checkCapslock({ shiftKey, key } = {}) {
             if (key && key.length === 1) {
-                if (shiftKey && (key >= 'a' && key <= 'z') || !shiftKey && (key >= 'A' && key <= 'Z')) {
-                    this.capsTooltip = true
+                if (
+                    (shiftKey && key >= "a" && key <= "z") ||
+                    (!shiftKey && key >= "A" && key <= "Z")
+                ) {
+                    this.capsTooltip = true;
                 } else {
-                    this.capsTooltip = false
+                    this.capsTooltip = false;
                 }
             }
-            if (key === 'CapsLock' && this.capsTooltip === true) {
-                this.capsTooltip = false
+            if (key === "CapsLock" && this.capsTooltip === true) {
+                this.capsTooltip = false;
             }
         },
         handleLogin() {
-            console.log('1');
-            this.$refs.loginForm.validate(valid => {
+            this.$refs.loginForm.validate(async valid => {
                 if (valid) {
-                    this.loading = true
-                    // this.$store.dispatch('user/login', this.loginForm).then(() => {
-                    this.$router.push({ path: this.redirect || '/dashboard' })
-                    //     this.loading = false
-                    // }).catch(() => {
-                    //     this.loading = false
-                    // })
+                    this.loading = true;
+
+                    const res = await this.$store.dispatch(
+                        "user/login",
+                        this.loginForm
+                    );
+                    const { code, message } = res;
+                    if (code === this.$code.SUCCESS) {
+                        this.$message.success("登录成功");
+                        this.$router.push({
+                            path: this.redirect || "/dashboard"
+                        });
+                    } else {
+                        this.$message.error(message);
+                    }
+                    this.loading = false;
                 } else {
-                    return false
+                    return false;
                 }
-            })
-        },
+            });
+        }
     }
-}
+});
 </script>
  
 <style lang="scss" scoped>
