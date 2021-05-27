@@ -20,6 +20,11 @@ async function bootstrap() {
     app.useGlobalFilters(new HttpExceptionFilter());
 
     /**
+     * 全局配置请求前缀
+     */
+    app.setGlobalPrefix('api');
+
+    /**
      * swagger  */
     const config = new DocumentBuilder()
         .setTitle('接口文档')

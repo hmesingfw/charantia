@@ -1,3 +1,5 @@
+import { ApiProperty } from "@nestjs/swagger";
+
 import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 @Index("idx_username", ["username"], { unique: true })
@@ -73,8 +75,14 @@ export class Member {
     })
     gender: number | null;
 
-    @Column("date", { name: "birthday", nullable: true, comment: "生日" })
-    birthday: string | null;
+
+    @Column("varchar", {
+        name: "date",
+        nullable: true,
+        comment: "生日",
+        length: 20,
+    })
+    date: string | null;
 
     @Column("varchar", {
         name: "city",

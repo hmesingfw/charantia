@@ -6,7 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ApiQuery, ApiBody, ApiTags, ApiResponse } from "@nestjs/swagger";
 
 @ApiTags('user - 用户模块')
-@Controller('api/user')
+@Controller('user')
 export class UserController {
     constructor(private readonly userService: UserService, private readonly jwtService: JwtService) { }
 
@@ -31,7 +31,7 @@ export class UserController {
             const { account, name, mobile, role } = userInfo;
 
             const token = this.jwtService.sign({ account, name, mobile, role });
-            return { data: { account, name, mobile, role, token } };
+            return { account, name, mobile, role, token };
         } else {
             return { message: '密码错误', code: 2001, data: '' }
         }
