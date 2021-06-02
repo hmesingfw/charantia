@@ -1,7 +1,7 @@
 <template>
-    <el-menu default-active="1-4-1" class="layout-menu" @open="handleOpen" @close="handleClose" :collapse="isCollapse" :router="true">
-        <h-menu :options="permission_routes"></h-menu>
-    </el-menu>
+    <!-- <el-menu :default-active="activeMenu" class="layout-menu" @open="handleOpen" @close="handleClose" :collapse="isCollapse" :router="true"> -->
+    <h-menu :options="permission_routes"></h-menu>
+    <!-- </el-menu> -->
 </template>
 
 <script>
@@ -11,19 +11,31 @@ export default {
     components: {
         HMenu
     },
+    // computed: {
+
+    //     activeMenu() {
+    //         /* 默认选中 */
+    //         const route = this.$route
+    //         const { meta, path } = route
+    //         if (meta.activeMenu) {
+    //             return meta.activeMenu
+    //         }
+    //         return path
+    //     },
+    // },
     data() {
         return {
-            isCollapse: false,
+            // isCollapse: false,
             permission_routes: constantRoutes,   // 菜单信息
         };
     },
     methods: {
-        handleOpen(key, keyPath) {
-            console.log(key, keyPath);
-        },
-        handleClose(key, keyPath) {
-            console.log(key, keyPath);
-        }
+        // handleOpen(key, keyPath) {
+        //     console.log(key, keyPath);
+        // },
+        // handleClose(key, keyPath) {
+        //     console.log(key, keyPath);
+        // }
     }
 }
 </script>

@@ -77,17 +77,17 @@ export class Member {
 
 
     @Column("varchar", {
-        name: "date",
+        name: "birthday",
         nullable: true,
         comment: "生日",
         length: 20,
     })
-    date: string | null;
+    birthday: string | null;
 
     @Column("varchar", {
         name: "city",
         nullable: true,
-        comment: "所做城市",
+        comment: "所在城市",
         length: 64,
     })
     city: string | null;

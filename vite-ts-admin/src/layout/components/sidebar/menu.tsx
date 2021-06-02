@@ -1,4 +1,5 @@
-import { defineComponent } from 'vue'
+import { defineComponent, ref, onBeforeMount } from 'vue'
+
 export default defineComponent({
     name: 'HMenu',
     props: {
@@ -7,7 +8,13 @@ export default defineComponent({
             required: true
         },
     },
-    setup() {
+    setup(props) {
+        const isCollapse = ref(false);
+
+        onBeforeMount(() => {
+            FormatOptions(props.options, '')
+        })
+
         function RenderMenu(menuTree: Array<any>) {
             const menuArr: Array<Object> = []
             menuTree.forEach(menu => {
@@ -57,7 +64,7 @@ export default defineComponent({
         }
 
         function RenderItemMenu(menu: any) {
-            const { path, meta } = menu;
+            const { path, meta, fullPath } = menu;
             // 3.0 插槽的写法
             const scopedSlots = {
                 title: () => <>
@@ -65,14 +72,54 @@ export default defineComponent({
                     <span>{meta.title}</span>
                 </>
             }
-            return <el-menu-item index={path} v-slots={scopedSlots} ></el-menu-item>
+            return <el-menu-item index={fullPath} v-slots={scopedSlots} >
+            </el-menu-item>
+        }
+
+        function HandleOpen(key: string, keyPath: string) {
+            console.log(key, keyPath);
+        }
+        function HandleClose(key: string, keyPath: string) {
+            console.log(key, keyPath);
+        }
+
+        /**
+         * 循环为router 添加fullpath, 主要为menu-item上的index属性
+         * @param options router list 对象
+         * @param parentPath 父级路径
+         */
+        function FormatOptions(options: any, parentPath: string) {
+            options.forEach((route: any) => {
+                const isFullPath = route.path.substring(0, 1) == '/'
+                route.fullPath = isFullPath ? route.path : parentPath + '/' + route.path
+                if (route.children) {
+                    FormatOptions(route.children, route.fullPath)
+                }
+            })
         }
         return {
-            RenderMenu, RenderItem, RenderSubMenu, RenderItemMenu
+            RenderMenu, RenderItem, RenderSubMenu, RenderItemMenu, isCollapse,
+            HandleOpen, HandleClose, FormatOptions
         }
     },
+    computed: {
+        activeMenu(): any {
+            /* 默认选中 */
+            const route = this.$route
+            const { meta, path } = route
+            if (meta.activeMenu) {
+                return meta.activeMenu
+            }
+            return path
+        },
+    },
+
 
     render() {
-        return this.RenderMenu(this.options);
+        return <el-menu default-active={this.activeMenu} class="layout-menu" collapse={this.isCollapse} on-open={this.HandleOpen} on-close={this.HandleClose} router={true} >
+            {this.RenderMenu(this.options)}
+        </el-menu>
+
     }
 })
+

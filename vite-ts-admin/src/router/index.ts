@@ -41,12 +41,26 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         meta: { title: '系统配置', icon: 'el-icon-setting', affix: true, },
         children: [
             {
-                path: '/table',
+                path: 'table',
                 component: () => import('@/views/sys/table.vue'),
                 meta: { title: '表格', icon: 'el-icon-setting', affix: true, }
             },
         ]
     },
+    {
+        path: '/member',
+        component: Layout,
+        name: 'Member',
+        meta: { title: '会员管理', icon: 'el-icon-setting', affix: true, },
+        children: [
+            {
+                path: 'info',
+                component: () => import('@/views/member/info/index.vue'),
+                meta: { title: '会员信息', icon: 'el-icon-setting', affix: true, }
+            },
+        ]
+    },
+
 
     // { path: '*', redirect: '/404', hidden: true }
 ]
