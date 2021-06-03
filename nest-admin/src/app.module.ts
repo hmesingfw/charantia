@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { Connection } from 'typeorm'
 
 import { LoggerMiddleware } from "./common/Middleware/logger.Middleware";
+import { DictModule } from './modules/sys/dict/dict.module';
 
 
 
@@ -15,6 +16,7 @@ import { LoggerMiddleware } from "./common/Middleware/logger.Middleware";
         UserModule,
         MemberModule,
         TypeOrmModule.forRoot(),
+        DictModule,
     ],
     controllers: [AppController],
     providers: [AppService],

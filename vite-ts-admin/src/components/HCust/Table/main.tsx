@@ -41,7 +41,7 @@ export default defineComponent({
         selectionChange(val: number) {
             this.$emit('selections', val);
         },
-        getTableRef() {
+        getTableRef(): any {
             return this.$refs.hCustTableRef;
         },
     },

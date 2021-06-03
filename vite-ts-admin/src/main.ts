@@ -3,6 +3,8 @@ import App from './App.vue'
 
 import ElementPlus from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
+import locale from 'element-plus/lib/locale/lang/zh-cn'
+
 
 import router from './router/index'
 import { createStore } from "./store/index";
@@ -16,7 +18,7 @@ import api from './config/api'
 import { Code } from './config/index'
 
 const app = createApp(App)
-app.use(ElementPlus)
+app.use(ElementPlus, { locale })
 app.use(router)
 app.use(createStore)
 

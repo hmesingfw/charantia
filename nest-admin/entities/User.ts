@@ -2,7 +2,7 @@ import { Column, Entity } from "typeorm";
 
 @Entity("user", { schema: "nest" })
 export class User {
-  @Column("varchar", { primary: true, name: "id", length: 13 })
+  @Column("bigint", { primary: true, name: "id" })
   id: string;
 
   @Column("varchar", { name: "account", length: 40 })
