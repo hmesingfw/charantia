@@ -2,9 +2,6 @@
     <div :ref="ref" class="h-table">
         <el-row class="h-table-handle" type="flex" justify="space-between">
             <div>
-                <el-button>
-                    <i class="el-icon-plus" /> 搜索
-                </el-button>
                 <slot name="add">
                     <el-button @click="EditInfo()">
                         <i class="el-icon-plus" />新增

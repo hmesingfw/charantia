@@ -45,6 +45,11 @@ export const constantRoutes: Array<RouteRecordRaw> = [
                 component: () => import('@/views/sys/table.vue'),
                 meta: { title: '表格', icon: 'el-icon-setting', affix: true, }
             },
+            {
+                path: 'dict',
+                component: () => import('@/views/sys/dict/index.vue'),
+                meta: { title: '数据字典', icon: 'el-icon-setting', affix: true, }
+            },
         ]
     },
     {
