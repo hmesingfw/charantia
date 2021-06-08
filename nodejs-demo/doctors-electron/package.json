@@ -10,7 +10,7 @@
     "build": {
         "appId": "com.app",
         "productName": "数据面板",
-        "directories": { 
+        "directories": {
             "output": "win-app"
         },
         "mac": {
@@ -31,7 +31,7 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
-        "electron": "^6.1.0",
+        "electron": ">=9.4.0",
         "electron-builder": "^21.2.0"
     }
 }

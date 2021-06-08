@@ -5,6 +5,17 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        title: {
+            type: String,
+            default: '提示'
+        },
+        attrs: {
+            type: Object,
+            default: () => ({
+                width: '30%',
+                'close-on-click-modal': false,
+            })
+        },
     },
     emits: { success: null, 'update:modelValue': null, },
     setup(props, { attrs, slots, emit }) {
@@ -19,11 +30,14 @@ export default defineComponent({
          * 确定-点击事件
          */
         function Success(): void {
-            emit('update:modelValue', false);
             emit('success')
         }
+        /** 关闭前回调 */
+        function BeforeClose() {
+            emit('update:modelValue', false);
+        }
 
-        return { Success, Esc }
+        return { Success, Esc, BeforeClose }
     },
     render() {
         const scopedSlots = {
@@ -33,9 +47,10 @@ export default defineComponent({
             </span>,
 
         }
-        return <el-dialog title="提示" model-value={this.value} width="30%" v-slots={scopedSlots}>
+        return <el-dialog title={this.title} model-value={this.value} {...this.attrs} v-slots={scopedSlots} before-close={this.BeforeClose}>
             {/* 好多的bug */}
             {h('div', {}, this.$slots.default())}
+            {/* <div>{ctx.slots.default && ctx.slots.default()}</div> */}
         </el-dialog>
     }
 })

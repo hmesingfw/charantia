@@ -9,14 +9,19 @@ export class DictService {
         @InjectRepository(Dict)
         private readonly dictRepository: Repository<Dict>
     ) { }
-    create(dict: Dict) {
-        return 'This action adds a new dict';
+
+    async create(dict: Dict) {
+        return await this.dictRepository.save(dict);
     }
 
-    async findAll() {
+    async findAll(params) {
+        /* 处理页数偏移 */
+        let skip = params.size * (params.page - 1);
+        // if (params.page > 1) skip--;
+
         const list = await this.dictRepository.find({
-            skip: 0,
-            take: 2
+            skip,
+            take: params.size
         });
         const total = await this.dictRepository.count();
         return { list, total }

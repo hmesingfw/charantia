@@ -13,14 +13,17 @@
         </h-drawer>
         <h-dialog v-model="dialogStatus" @success="infoSave">
             <el-form :model="info" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-                <el-form-item label="活动名称" prop="name">
-                    <el-input v-model="info.name"></el-input>
+                <el-form-item label="字典编码" prop="dictKey">
+                    <el-input v-model="info.dictKey" maxlength="32" show-word-limit></el-input>
                 </el-form-item>
-                <el-form-item label="活动区域" prop="region">
-                    <el-select v-model="info.region" placeholder="请选择活动区域">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
-                    </el-select>
+                <el-form-item label="字典名称" prop="dictLabel">
+                    <el-input v-model="info.dictLabel" maxlength="32" show-word-limit></el-input>
+                </el-form-item>
+                <el-form-item label="字典值" prop="dictValue">
+                    <el-input v-model="info.dictValue" maxlength="32" show-word-limit></el-input>
+                </el-form-item>
+                <el-form-item label="备注" prop="dictDesc">
+                    <el-input v-model="info.dictDesc" maxlength="32" show-word-limit></el-input>
                 </el-form-item>
             </el-form>
         </h-dialog>
@@ -35,6 +38,7 @@ export default defineComponent({
         return {
             multipleSelection: [], // 多选选中的值
             tableParams: [
+                { prop: "id", label: "id" },
                 { prop: "dictKey", label: "字典编码" },
                 { prop: "dictLabel", label: "字典标题" },
                 // { prop: "dict_value", label: "值", },
@@ -105,7 +109,29 @@ export default defineComponent({
             ],
             dialogStatus: false,
             info: {},
-            rules: {}
+            rules: {
+                dictKey: [
+                    {
+                        required: true,
+                        message: "请输入字典编码",
+                        trigger: "blur"
+                    }
+                ],
+                dictLabel: [
+                    {
+                        required: true,
+                        message: "请输入字典标题",
+                        trigger: "blur"
+                    }
+                ],
+                dictValue: [
+                    {
+                        required: true,
+                        message: "请输入字典值",
+                        trigger: "blur"
+                    }
+                ]
+            }
         };
     },
     watch: {
@@ -118,7 +144,15 @@ export default defineComponent({
             this.dialogStatus = true;
         },
         infoSave() {
-            console.log("info-save");
+            this.$refs.ruleForm.validate(async vali => {
+                if (vali) {
+                    const res = await this.$http.post(
+                        this.$api.sys.dict,
+                        this.info
+                    );
+                    console.log(res);
+                }
+            });
         },
         query() {
             this.$refs.tTableRef.query({ page: 1 });

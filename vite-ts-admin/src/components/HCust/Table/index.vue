@@ -46,15 +46,7 @@
         </el-row>
         <h-main v-if="tableStatus" ref="hCustTableRef" v-loading="tableLoading" :selection="selection" :data="tableData" :table-attrs="setupTableAttrs" :params="colSettings" @selections="Selection" />
         <div class="h-page">
-            <el-pagination
-                :current-page="pageData.page"
-                :page-sizes="page.sizes"
-                :page-size="pageData.size"
-                :layout="page.layout"
-                :total="pageData.total"
-                @size-change="PageSizeChange"
-                @current-change="PageCurrentChange"
-            />
+            <el-pagination :current-page="pageData.page" :page-sizes="page.sizes" :page-size="page.size" :layout="page.layout" :total="pageData.total" @size-change="PageSizeChange" @current-change="PageCurrentChange" />
         </div>
     </div>
 </template>
@@ -67,8 +59,8 @@ import { VueDraggableNext } from "vue-draggable-next";
 import { ElMessage } from "element-plus";
 
 interface ParentParams {
-    page: number;
-    size: number;
+    readonly page: number;
+    readonly size: number;
 }
 export default {
     components: {
@@ -110,6 +102,8 @@ export default {
             ...props.tableAttrs
         });
         onMounted(() => {
+            pageData.page = 1;
+            pageData.size = props.page.size;
             query();
             InitSettingsCol();
         });
@@ -117,17 +111,11 @@ export default {
          *  查询列表
          * parentParams 父组件查询传参
          */
-        async function query(
-            parentParams: ParentParams = { page: 1, size: 1 }
-        ) {
-            /* 传页码赋值 */
-            if (parentParams.page) pageData.page = parentParams.page;
-            if (parentParams.size) pageData.size = parentParams.size;
+        async function query() {
             /* 查询参数 */
             const params = {
                 page: pageData.page,
-                size: pageData.size,
-                ...parentParams
+                size: pageData.size
             };
             tableLoading.value = true;
             try {
