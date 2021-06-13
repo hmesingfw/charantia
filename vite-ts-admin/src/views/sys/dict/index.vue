@@ -72,6 +72,13 @@ export default defineComponent({
                             >
                                 打开弹框
                             </el-button>
+                            <el-button
+                                type="text"
+                                onClick={() => this.infoDel(row)}
+                                icon="el-icon-delete"
+                            >
+                                删除
+                            </el-button>
                         </>
                     )
                 }
@@ -140,19 +147,24 @@ export default defineComponent({
         }
     },
     methods: {
-        edit(info) {
+        edit(info = {}) {
+            this.info = this.$DeepCopy(info);
             this.dialogStatus = true;
         },
         infoSave() {
-            this.$refs.ruleForm.validate(async vali => {
+            this.$refs.ruleForm.validate(vali => {
                 if (vali) {
-                    const res = await this.$http.post(
-                        this.$api.sys.dict,
-                        this.info
-                    );
-                    console.log(res);
+                    this.$HttpSave(this.$api.sys.dict, this.info, () => {
+                        this.$refs.tSysDictRef.query();
+                        this.dialogStatus = false;
+                    });
                 }
             });
+        },
+        infoDel(row) {
+            this.$HttpDel(this.$api.sys.dict, row.id, () =>
+                this.$refs.tSysDictRef.query()
+            );
         },
         query() {
             this.$refs.tTableRef.query({ page: 1 });

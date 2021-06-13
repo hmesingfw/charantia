@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<style>
+    #app {
+        padding: 100px 20%;
+    }
+
+    .is-checked {
+        border-color: #409eff;
+        background: #409eff;
+    }
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+
+<body>
+    <div id="app">
+        <el-form :model="form">
+            <el-row :gutter="20">
+                <el-col v-for="(rootArr, i) in initPararms" :key="i" :span="24 / initPararms.length">
+                    <el-row v-for="(rowLen, row) in rootArr[1]" :key="row" type="flex">
+                        <el-col v-for="(colLen, col) in rootArr[0]" :span="24 / rootArr[0]" :key="`${i}-${row}-${col}`">
+                            <el-input v-model="form[`${i}-${row}-${col}`]"></el-input>
+                        </el-col>
+                </el-col>
+            </el-row>
+        </el-form>
+    </div>
+</body>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                initPararms: [
+                    [3, 4],
+                    [4, 5],
+                    [2, 3],
+                    [3, 4]
+                ],
+                form: {},
+
+                step1List: [],
+                step2List: [],
+                step3List: [],
+
+                setIntervalStatus: null,
+
+                maxRow: 0, // 最大行数
+            }
+        },
+        mounted() {
+            this.init(this.initPararms);
+        },
+        methods: {
+            init(list) {
+                this.setStep();
+                this.setAnimation();
+            },
+            /**   设置步骤 */
+            setStep() {
+                const maxRowArr = this.initPararms.reduce((max, cur) => {
+                    return max[1] >= cur[1] ? max : cur
+                })
+                this.maxRow = maxRowArr[1];
+                for (let row = 0; row < this.maxRow; row++) {
+                    for (let col = 0; col < this.initPararms.length; col++) {
+                        this.render(row, col, this.initPararms[col]);
+                    }
+                }
+            },
+            /**
+             * row 当前行
+             * col 当前列
+             * items 当前列有多少个座位
+             */
+            render(row, col, items) {
+                if (row < items[1]) {
+                    if (col == 0) {
+                        this.setShift(row, col, items[0]);
+                    } else if (col == this.initPararms.length - 1) {
+                        this.setPop(row, col, items[0]);
+                    } else {
+                        this.setMid(row, col, items[0]);
+                    }
+                }
+            },
+            setMid(row, col, maxCol) {
+                this.step1List.push(`${col}-${row}-0`);
+                this.step1List.push(`${col}-${row}-${maxCol - 1}`);
+                if (maxCol > 2) {
+                    for (let i = 1; i < maxCol - 1; i++) {
+                        this.step3List.push(`${col}-${row}-${i}`);
+                    }
+                }
+            },
+            setShift(row, col, maxCol) {
+                this.step2List.push(`${col}-${row}-0`);
+                if (maxCol > 2) {
+                    for (let i = 1; i < maxCol - 1; i++) {
+                        this.step3List.push(`${col}-${row}-${i}`);
+                    }
+                    this.step1List.push(`${col}-${row}-${maxCol-1}`);
+                } else {
+                    this.step1List.push(`${col}-${row}-1`);
+                }
+            },
+            setPop(row, col, maxCol) {
+                this.step1List.push(`${col}-${row}-0`);
+                if (maxCol > 2) {
+                    for (let i = 1; i < maxCol - 1; i++) {
+                        this.step3List.push(`${col}-${row}-${i}`);
+                    }
+                    this.step2List.push(`${col}-${row}-${maxCol-1}`);
+                } else {
+                    this.step2List.push(`${col}-${row}-1`);
+                }
+            },
+
+            setAnimation() {
+                const stepList = [...this.step1List, ...this.step2List, ...this.step3List];
+                let i = 0;
+                this.setIntervalStatus = setInterval(() => {
+                    if (stepList.length == 0) {
+                        window.clearInterval(this.setIntervalStatus)
+                    }
+                    const key = stepList.shift();
+                    key && this.$set(this.form, key, i++);
+                }, 200);
+            },
+        },
+    })
+</script>
+
+</html>

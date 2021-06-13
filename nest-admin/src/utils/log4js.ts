@@ -21,7 +21,6 @@ Log4js.configure(config);
 
 // 实例化
 const logger = Log4js.getLogger();
-
 export class Logger {
 
     static log(...args) {

@@ -16,6 +16,7 @@ import './styles/main.scss'
 import axios from './config/axios-config'
 import api from './config/api'
 import { Code } from './config/index'
+import utilsGlobal from './utils/global'
 
 const app = createApp(App)
 app.use(ElementPlus, { locale })
@@ -24,7 +25,9 @@ app.use(createStore)
 
 
 /** 引入组件 */
-HCust(app)
+HCust(app);
+/* 引入全局方法 */
+utilsGlobal(app);
 
 /**  全局配置 */
 app.config.globalProperties.$api = api;

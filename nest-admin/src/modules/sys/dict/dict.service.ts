@@ -27,15 +27,17 @@ export class DictService {
         return { list, total }
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} dict`;
+    async findOne(id: number) {
+        return await this.dictRepository.findOne(id);
     }
 
-    update(id: number, dict: Dict) {
-        return `This action updates a #${id} dict`;
+    async update(id: number, dict: Dict) {
+        const info = await this.findOne(id);
+        console.log(info)
+        return await this.dictRepository.save(dict);
     }
 
     remove(id: number) {
-        return `This action removes a #${id} dict`;
+        return this.dictRepository.delete(id);
     }
 }
