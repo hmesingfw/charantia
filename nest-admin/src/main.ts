@@ -6,7 +6,6 @@ import { TransformInterceptor } from './common/interceptor/transform.interceptor
 import { ErrorsInterceptor } from "./common/interceptor/exception.interceptor";
 import { HttpExceptionFilter } from "./common/Filter/http-exception.filter";
 
-import { Logger } from './utils/log4js'
 
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
@@ -27,7 +26,6 @@ async function bootstrap() {
      */
     app.setGlobalPrefix('api');
 
-    app.use(Logger);
 
     /**
      * swagger  */
@@ -39,7 +37,7 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('doc', app, document);
 
-    Logger.info('启动成功')
+
     await app.listen(3000);
 }
 bootstrap();

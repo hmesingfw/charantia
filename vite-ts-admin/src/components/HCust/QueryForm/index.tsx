@@ -1,15 +1,15 @@
-import { ref, reactive } from 'vue'
-export default {
+import { ref, reactive, defineComponent } from 'vue'
+export default defineComponent({
     name: 'QueryForm',
     render() {
         return (
-            <el-form class='h-query-form' ref={this.ref} model={this.model} {...this.setupFormAttrs} onKeyDown={e => this.onKeyDownchange(e)} onSubmit={event => event.preventDefault()} >
+            <el-form class='h-query-form' ref={this.ref} model={this.model} {...this.setupFormAttrs} onKeyDown={(e: any) => this.onKeyDownchange(e)} onSubmit={(event: any) => event.preventDefault()} >
                 <el-row type='flex' justify='space-between' >
 
                     {
-                        this.params.map((item, index) => {
+                        this.params.map((item: any, index: number) => {
                             /* 渲染组件 */
-                            let compoentContent = '';
+                            let compoentContent: any = '';
                             if (item.formatF) {
                                 /* 自定义组件，优先级 */
                                 compoentContent = item.formatF;
@@ -23,7 +23,7 @@ export default {
                                         const optList = item.option;
                                         compoentContent = <el-select vModel={this.model[item.prop]} placeholder='请选择' {...item.attrs} onChange={() => this.query()} style='width:100%'>
                                             {
-                                                optList.map(opt => {
+                                                optList.map((opt: any) => {
                                                     return <el-option label={opt.label} value={opt.value} {...opt.attrs}></el-option>
                                                 })
                                             }
@@ -83,7 +83,7 @@ export default {
             default: () => { }
         }, // 表单扩展对象
         ref: { type: String, default: 'hCustRef' },
-        params: { type: Array, }
+        params: { type: Array, default: () => [] }
     },
     setup(props: any) {
         const timeValue = ref([]); // 时间vmodel
@@ -134,4 +134,4 @@ export default {
         }
     },
 
-}
+})

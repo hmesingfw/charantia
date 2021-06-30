@@ -5,7 +5,7 @@ import { Dict } from "./entities/dict.entity";
 import { DictInfo } from "./dto/dict.dto";
 
 @ApiTags('dict - 系统数据字典')
-@Controller('dict')
+@Controller('sys/dict')
 export class DictController {
     constructor(private readonly dictService: DictService) { }
 

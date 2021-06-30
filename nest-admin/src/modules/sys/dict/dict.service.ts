@@ -11,17 +11,18 @@ export class DictService {
     ) { }
 
     async create(dict: Dict) {
-        return await this.dictRepository.save(dict);
+        return await this.dictRepository.insert(dict);
     }
 
     async findAll(params) {
         /* 处理页数偏移 */
-        let skip = params.size * (params.page - 1);
-        // if (params.page > 1) skip--;
-
-        const list = await this.dictRepository.find({
-            skip,
+        let page = {
+            skip: params.size * (params.page - 1),
             take: params.size
+        }
+        const list = await this.dictRepository.find({
+            order: { sort: "DESC" },
+            ...page,
         });
         const total = await this.dictRepository.count();
         return { list, total }

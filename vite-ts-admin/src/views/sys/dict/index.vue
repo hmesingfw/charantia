@@ -22,6 +22,9 @@
                 <el-form-item label="字典值" prop="dictValue">
                     <el-input v-model="info.dictValue" maxlength="32" show-word-limit></el-input>
                 </el-form-item>
+                <el-form-item label="排序" prop="sort">
+                    <el-input-number v-model="info.sort" :min="1" :max="999"></el-input-number>
+                </el-form-item>
                 <el-form-item label="备注" prop="dictDesc">
                     <el-input v-model="info.dictDesc" maxlength="32" show-word-limit></el-input>
                 </el-form-item>
@@ -36,6 +39,7 @@ export default defineComponent({
     props: {},
     data() {
         return {
+            value: 1,
             multipleSelection: [], // 多选选中的值
             tableParams: [
                 { prop: "id", label: "id" },
@@ -46,12 +50,17 @@ export default defineComponent({
                 {
                     prop: "isLock",
                     label: "内置字典",
-                    formatF: row => (row.is_lock == 1 ? "内置" : "非内置 ")
+                    formatF: row => (row.isLock == "1" ? "内置" : "非内置 ")
                 },
                 {
                     prop: "status",
                     label: "状态",
                     formatF: row => (row.is_lock == 1 ? "启用" : "禁用 ")
+                },
+                {
+                    prop: "sort",
+                    label: "排序",
+                    formatF: row => <h-sort v-model={[row.sort, "value"]} /> // TODO: ???/
                 },
                 {
                     prop: "handle",
@@ -147,7 +156,7 @@ export default defineComponent({
         }
     },
     methods: {
-        edit(info = {}) {
+        edit(info = { isLock: 0, sort: 1 }) {
             this.info = this.$DeepCopy(info);
             this.dialogStatus = true;
         },

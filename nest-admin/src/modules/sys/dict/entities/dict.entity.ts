@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
 @Entity("sys_dict", { schema: "nest" })
 export class Dict {
@@ -37,6 +37,12 @@ export class Dict {
     })
     dictDesc: string | null;
 
+    @Column("int", {
+        name: "sort",
+        comment: "排序",
+    })
+    sort: number | 0;
+
     @Column("char", {
         name: "is_lock",
         nullable: true,
@@ -53,14 +59,16 @@ export class Dict {
     })
     status: string | null;
 
-    @Column("datetime", { name: "create_time", nullable: true })
-    createTime: Date | null;
+
+    /** 请在mysql 字段上，默认值  设置成 CURRENT_TIMESTAMP */
+    @CreateDateColumn({ name: "create_time" })
+    createTime: Date;
 
     @Column("varchar", { name: "create_by", nullable: true, length: 32 })
     createBy: string | null;
 
-    @Column("datetime", { name: "update_time", nullable: true })
-    updateTime: Date | null;
+    @UpdateDateColumn({ name: "update_time", default: () => 'CURRENT_TIMESTAMP' })
+    updateTime: Date;
 
     @Column("varchar", { name: "update_by", nullable: true, length: 32 })
     updateBy: string | null;
