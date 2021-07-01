@@ -41,18 +41,20 @@ export function HttpDel(url: string, id: number, query: any) {
  * @param info 请求体
  * @param query 回调方法
  */
-export async function HttpSave(url: string, info: any, query: any) {
-    let res: Response;
-    if ('id' in info) {
-        res = await Http.patch(`${url}/${info.id}`, info);
-    } else {
-        res = await Http.post(`${url}`, info);
-    }
-    ElMessage({
-        message: res.message,
-        type: res.code == Code.SUCCESS ? "success" : "info"
-    });
-    query();
+export function HttpSave(url: string, info: any) {
+    return new Promise(async (resolve: any, reject: any) => {
+        let res: Response;
+        if ('id' in info) {
+            res = await Http.patch(`${url}/${info.id}`, info);
+        } else {
+            res = await Http.post(`${url}`, info);
+        }
+        ElMessage({
+            message: res.message,
+            type: res.code == Code.SUCCESS ? "success" : "info"
+        });
+        resolve(res)
+    })
 }
 
 

@@ -1,4 +1,5 @@
-import { defineComponent } from "vue";
+import { defineComponent, reactive, ref } from "vue";
+import { HttpSave } from "@/utils/global";
 export default defineComponent({
     name: 'HInputNumber',
 
@@ -8,26 +9,51 @@ export default defineComponent({
         }
         return <el-popconfirm title="确认操作" onConfirm={this.Confirm} v-slots={scopedSlots}></el-popconfirm>
     },
-    emits: ['update:value',],
+    emits: ['update:value', 'call'],
     props: {
         value: {
             type: Number,
+            required: true,
         },
-        attrs: {
+        id: {
+            type: [String, Number],
+            required: true,
+        },
+        url: {
+            type: String,
+            required: true,
+        },
+        params: {
             type: Object,
             default: () => ({
-                width: '30%',
-                'close-on-click-modal': false,
+                id: 'id',
+                value: 'sort'
             })
         },
     },
     setup(props, { attrs, slots, emit }) {
+        const { value, id, params, url } = props;
+        let selectValue = ref(value)
+
         function HandleChange(val: number) {
             emit('update:value', val);
+            selectValue.value = val;
         }
-        function Confirm() {
-            console.log(props.value)
+        async function Confirm() {
+            let data: any = {};
+            data[params.id] = id
+            data[params.value] = selectValue.value;
+            await HttpSave(url, data);
+            emit('call', data)
         }
-        return { HandleChange, Confirm }
+
+        function onKeyDownchange(e: any) {
+            console.log('11')
+            /* 回车事件 */
+            if (e.keyCode == 13) {
+                Confirm();
+            }
+        }
+        return { HandleChange, Confirm, onKeyDownchange }
     },
 })

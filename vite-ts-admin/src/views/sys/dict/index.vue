@@ -35,6 +35,7 @@
 
 <script lang="tsx">
 import { defineComponent } from "vue";
+import api from "@/config/api";
 export default defineComponent({
     props: {},
     data() {
@@ -60,7 +61,16 @@ export default defineComponent({
                 {
                     prop: "sort",
                     label: "排序",
-                    formatF: row => <h-sort v-model={[row.sort, "value"]} /> // TODO: ???/
+                    formatF: row => (
+                        <h-sort
+                            v-model={[row.sort, "value"]}
+                            id={row.id}
+                            url={this.$api.sys.dict}
+                            onCall={row => {
+                                this.query();
+                            }}
+                        />
+                    )
                 },
                 {
                     prop: "handle",
@@ -161,22 +171,19 @@ export default defineComponent({
             this.dialogStatus = true;
         },
         infoSave() {
-            this.$refs.ruleForm.validate(vali => {
+            this.$refs.ruleForm.validate(async vali => {
                 if (vali) {
-                    this.$HttpSave(this.$api.sys.dict, this.info, () => {
-                        this.$refs.tSysDictRef.query();
-                        this.dialogStatus = false;
-                    });
+                    await this.$HttpSave(this.$api.sys.dict, this.info);
+                    this.$refs.tSysDictRef.query();
+                    this.dialogStatus = false;
                 }
             });
         },
         infoDel(row) {
-            this.$HttpDel(this.$api.sys.dict, row.id, () =>
-                this.$refs.tSysDictRef.query()
-            );
+            this.$HttpDel(this.$api.sys.dict, row.id, () => this.query());
         },
         query() {
-            this.$refs.tTableRef.query({ page: 1 });
+            this.$refs.tSysDictRef.query();
         },
         openDrawer() {
             this.drawer = true;
