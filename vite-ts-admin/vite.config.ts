@@ -1,10 +1,12 @@
-const path = require('path')
+// @ts-ignore: Unreachable code error
+import path from 'path'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
 function resolve(dir) {
+    // @ts-ignore: Unreachable code error
     return path.resolve(__dirname, dir)
 }
 

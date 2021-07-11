@@ -6,6 +6,14 @@ export class Dict {
     id: string;
 
     @Column("varchar", {
+        name: "dict_module",
+        nullable: true,
+        comment: "字典模块",
+        length: 32,
+    })
+    dictModule: string | null;
+
+    @Column("varchar", {
         name: "dict_key",
         nullable: true,
         comment: "字典key",

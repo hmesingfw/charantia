@@ -71,17 +71,12 @@
         padding: 10px;
     }
 
-    .h-drawer__main {}
-
-
-
     .h-drawer__footer {
         border-top: 1px solid #ebeef5;
         padding: 10px 20px;
         height: 60px;
     }
 }
-
 
 /* 重置element 样式 */
 .el-drawer {
@@ -100,4 +95,50 @@
 
 .el-scrollbar__wrap {
     overflow-x: hidden;
+}
+
+
+
+/* 更改switch样式，开关样式 */
+.switch-style .el-switch__label {
+    position: absolute;
+    display: none;
+    color: #fff;
+}
+
+.switch-style .el-switch__label--left {
+    z-index: 1;
+    left: 20px;
+
+    span {
+        font-size: 12px;
+    }
+}
+
+.switch-style .el-switch__label--right {
+    z-index: 1;
+    left: 0px;
+
+    span {
+        font-size: 12px;
+    }
+}
+
+.switch-style .el-switch__label.is-active {
+    display: block;
+}
+
+.switch-style.el-switch .el-switch__core,
+.el-switch .el-switch__label {
+    width: 56px !important;
+}
+
+.h-table-edit {
+    .edit-sort {
+        cursor: pointer;
+    }
+
+    .el-form-item {
+        margin-bottom: 0;
+    }
 }

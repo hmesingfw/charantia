@@ -48,9 +48,20 @@ export default {
 
                 {
                     prop: 'status', label: '操作', width: 160,
-                    formatF: row => <div>
-                        <el-button type='text' on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon='el-icon-delete'>删除</el-button>
-                    </div>
+                    // formatF: row => <div>
+                    //     <el-button type='text' on-click={() => this.HandleDelete(this.apiUrl, row, this.query)} icon='el-icon-delete'>删除</el-button>
+                    // </div>,
+                    formatF: row => (
+                        <h-switch
+                            data={row}
+                            id={row.id}
+                            url={this.$api.sys.dict}
+                            inactive-text="武器"
+                            onCall={row => {
+                                this.query();
+                            }}
+                        />
+                    )
                 },],
             tableLoading: false,
             multipleSelection: [], // 多选选中的值

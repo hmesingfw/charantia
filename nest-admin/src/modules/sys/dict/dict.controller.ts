@@ -1,8 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    Patch,
+    Param,
+    Delete,
+    Query,
+} from '@nestjs/common';
 import { DictService } from './dict.service';
 import { ApiTags, ApiOperation, ApiBody } from '@nestjs/swagger';
-import { Dict } from "./entities/dict.entity";
-import { DictInfo } from "./dto/dict.dto";
+import { Dict } from './entities/dict.entity';
+import { DictInfo } from './dto/dict.dto';
 
 @ApiTags('dict - 系统数据字典')
 @Controller('sys/dict')
@@ -18,8 +27,7 @@ export class DictController {
 
     @ApiOperation({ summary: '数据字典列表' })
     @Get()
-    findAll(@Query() params, ) {
-
+    findAll(@Query() params) {
         return this.dictService.findAll(params);
     }
 

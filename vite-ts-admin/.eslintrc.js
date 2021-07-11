@@ -29,6 +29,7 @@ module.exports = {
         '@typescript-eslint/no-non-null-assertion': 'off',
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         'vue/valid-template-root': 'off',
+        'vue/no-v-model-argument': 'off',
         '@typescript-eslint/no-unused-vars': [
             'error',
             {

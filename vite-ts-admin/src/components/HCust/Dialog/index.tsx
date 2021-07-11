@@ -24,6 +24,7 @@ export default defineComponent({
          * 取消-点击事件
          */
         function Esc(): void {
+            console.log('1')
             emit('update:modelValue', false);
         }
         /**
@@ -49,7 +50,10 @@ export default defineComponent({
         }
         return <el-dialog title={this.title} model-value={this.value} {...this.attrs} v-slots={scopedSlots} before-close={this.BeforeClose}>
             {/* 好多的bug */}
-            {h('div', {}, this.$slots.default())}
+            {
+                // @ts-ignore: Unreachable code error
+                h('div', {}, this.$slots.default())
+            }
             {/* <div>{ctx.slots.default && ctx.slots.default()}</div> */}
         </el-dialog>
     }
