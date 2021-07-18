@@ -8,12 +8,18 @@ export default defineComponent({
     },
     render() {
         return <el-form model={this.form} ref="ruleForm" class="h-table-edit">
+            {this.handles && <el-row type="flex" class="handles"  >
+                <el-button type="primary" class="el-icon-plus" onClick={() => this.AddItem()}>添加</el-button>
+                <el-button type="danger" class="el-icon-delete" onClick={() => this.DelItem()}>删除</el-button>
+            </el-row>}
             <draggable list={this.form.data} draggable=".item-drag" animation="300" onEnd={this.ChangeSettingsCol()}>
-                <el-table data={this.form.data} row-class-name="item-drag" {...this.$attrs}>
+                <el-table data={this.tableData} row-class-name="item-drag" onSelectionChange={this.SelectionChange} {...this.$attrs}>
                     {this.selection && <el-table-column type="selection" width="42"></el-table-column>}
-                    <el-table-column width="32" class-name="item-drag">
-                        <i class="el-icon-sort edit-sort "></i>
-                    </el-table-column>
+                    {this.sort &&
+                        <el-table-column width="32" class-name="item-drag">
+                            <i class="el-icon-sort edit-sort "></i>
+                        </el-table-column>
+                    }
                     {
                         this.columnData?.map((item: any, index: number) => {
                             return <el-table-column label={item.label} {...item.colAttrs}  >
@@ -38,7 +44,9 @@ export default defineComponent({
     props: {
         tableData: { type: Array },
         columnData: { type: Array },
-        selection: { type: Boolean, default: false, }
+        selection: { type: Boolean, default: false, },
+        sort: { type: Boolean, default: false },
+        handles: { type: Boolean, default: true, }
     },
     setup(props, { attrs, slots, emit }) {
         const { tableData } = props;
@@ -83,11 +91,36 @@ export default defineComponent({
                         ...item.typeAttrs
                     }
                     return <el-input-number vModel={row[item.prop]} {...attr}></el-input-number>
+                case 'el-switch':
+                    attr = {
+                        'active-text': "启用", 'inactive-text': '禁用', class: "switch-style", 'active-value': 1, 'inactive-value': 0,
+                        ...item.typeAttrs
+                    }
+                    return <el-switch vModel={row[item.prop]} {...attr}></el-switch>
                 default:
                     return row[item.prop]
             }
         }
+        /**
+         * 添加行
+         */
+        function AddItem() {
+            tableData?.push({})
+        }
+        /**
+         * 删除行
+         */
+        function DelItem() {
 
-        return { form, rules, ChangeSettingsCol, GetItem, GetRules }
+        }
+
+        /**
+         * 
+         */
+        function SelectionChange(val: Array<any>) {
+            // tableData?.splice()
+        }
+
+        return { form, rules, ChangeSettingsCol, GetItem, GetRules, AddItem, DelItem, SelectionChange }
     },
 })
