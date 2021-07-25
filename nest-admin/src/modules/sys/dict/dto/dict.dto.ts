@@ -27,5 +27,5 @@ export class DictInfo {
         required: false,
         maxLength: 32
     })
-    readonly dictDesc: String;
+    readonly dictDesc: string;
 }

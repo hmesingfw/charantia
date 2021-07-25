@@ -17,7 +17,7 @@ export default defineComponent({
             })
         },
     },
-    emits: { success: null, 'update:modelValue': null, },
+    emits: ['success', 'update:modelValue'],
     setup(props, { attrs, slots, emit }) {
 
         /**

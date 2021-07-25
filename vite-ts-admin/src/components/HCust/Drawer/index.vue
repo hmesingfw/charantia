@@ -12,7 +12,7 @@
             <el-row type="flex" justify="end" class="h-drawer__footer">
                 <slot name="footer">
                     <el-button @click="handleClose">取 消</el-button>
-                    <el-button type="primary" :loading="loading">{{ loading ? '提交中 ...' : '确 定' }}</el-button>
+                    <el-button type="primary" :loading="loading" @click="Save">{{ loading ? '提交中 ...' : '确 定' }}</el-button>
                 </slot>
             </el-row>
         </div>
@@ -32,6 +32,7 @@ export default {
     methods: {
 
     },
+    emits: ['save', 'update:modelValue'],
     setup(props, { attrs, slots, emit }) {
         const loading = ref(false);
         const mainStyleHeight = ref(0);
@@ -42,16 +43,19 @@ export default {
         function handleClose() {
             emit('update:modelValue', false); // modelValue  默认绑定v-model
         }
+        function Save() {
+            emit('save', true)
+        }
 
         onMounted(() => {
             const clientHeight = document.documentElement.clientHeight; // 屏幕高度
             const titleHeight = !props.attrs ? 65 : 0; // 标题高度
             const footerHeight = 61; // 底部高度
-            const padding = 20; // padding高度
+            const padding = 80; // padding高度
             mainStyleHeight.value = (clientHeight - titleHeight - footerHeight - padding) + 'px';
         })
 
-        return { handleClose, setupAttrs, loading, mainStyleHeight }
+        return { handleClose, setupAttrs, loading, mainStyleHeight, Save }
     }
 }
 </script>

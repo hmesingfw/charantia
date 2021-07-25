@@ -4,12 +4,11 @@
             <h-query-form :model="queryModel" :params="queryParams" />
             <h-table ref="tSysDictRef" v-model:selection="multipleSelection" :url="$api.sys.dict" :params="tableParams" @edit="edit" />
         </el-card>
-        <h-drawer v-model="drawer" title="弹框" :attrs="{size:'800px'}">
-            <dict></dict>
-
-            <template #footer>
-                <el-button @click="drawer = false">取 消</el-button>
-            </template>
+        <h-drawer v-model="drawer" title="弹框" :attrs="{size:'1200px'}" @save="dictSave">
+            <div>
+                <el-alert title="消息提示的文案" type="info" :closable="false"></el-alert>
+                <h-table-edit :column-data="columnData" :table-data="tableData" :selection="true" />
+            </div>
         </h-drawer>
         <h-dialog v-model="dialogStatus" @success="infoSave">
             <el-form :model="info" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -37,17 +36,15 @@
 </template>
 
 <script lang="tsx">
-import { defineComponent } from "vue";
-import dict from "./dict.vue";
-import api from "@/config/api";
+import { defineComponent } from "vue"
+import api from "@/config/api"
+import Http from "@/utils/http"
 
 export default defineComponent({
-    props: {},
-    components: {
-        dict,
-    },
     data() {
         return {
+            http: new Http(api.sys.dict),
+
             value: 1,
             multipleSelection: [], // 多选选中的值
             tableParams: [
@@ -75,7 +72,7 @@ export default defineComponent({
                             active-value={1}
                             inactive-value={0}
                             onCall={() => {
-                                this.query();
+                                this.query()
                             }}
                         />
                     ),
@@ -89,7 +86,7 @@ export default defineComponent({
                             id={row.id}
                             url={api.sys.dict}
                             onCall={() => {
-                                this.query();
+                                this.query()
                             }}
                         />
                     ),
@@ -187,38 +184,72 @@ export default defineComponent({
                     },
                 ],
             },
-            http: new this.$Http(api.sys.dict),
-        };
+
+            columnData: [
+                {
+                    prop: "dictKey",
+                    label: "字典编码",
+                    type: "el-input",
+                    required: true,
+                },
+                {
+                    prop: "dictLabel",
+                    label: "字典标题",
+                    type: "el-input",
+                    required: true,
+                },
+                {
+                    prop: "sort",
+                    label: "排序",
+                    type: "el-input-number",
+                    required: true,
+                },
+                { prop: "status", label: "状态", type: "el-switch" },
+                { prop: "dictDesc", label: "备注", type: "el-input" },
+            ],
+            tableData: [{ dictKey: "", dictModule: "" }],
+            tempChildrenRow: {},
+        }
     },
     watch: {
         multipleSelection(val) {
-            console.log(val);
+            console.log(val)
         },
     },
 
     methods: {
         edit(info = { isLock: 0, sort: 1 }) {
-            this.info = this.$DeepCopy(info);
-            this.dialogStatus = true;
+            this.info = this.$DeepCopy(info)
+            this.dialogStatus = true
         },
         infoSave() {
-            this.$refs.ruleForm.validate(async (vali) => {
+            this.$refs.ruleForm.validate(async (vali: any) => {
                 if (vali) {
-                    await this.$HttpSave(this.$api.sys.dict, this.info);
-                    this.$refs.tSysDictRef.query();
-                    this.dialogStatus = false;
+                    await this.$HttpSave(this.$api.sys.dict, this.info)
+                    this.$refs.tSysDictRef.query()
+                    this.dialogStatus = false
                 }
-            });
+            })
         },
-        infoDel(row) {
-            this.http.Del(row.id, () => this.query());
+        infoDel(row: any) {
+            this.http.Del(row.id, () => this.query())
         },
         query() {
-            this.$refs.tSysDictRef.query();
+            this.$refs.tSysDictRef.query()
         },
-        openDrawer() {
-            this.drawer = true;
+        openDrawer(row: any) {
+            this.tempChildrenRow = row
+            this.drawer = true
+        },
+
+        /** 保存字典值 */
+        dictSave() {
+            this.$http.Save(
+                `${api.sys.dict}/${this.tempChildrenRow.id}`,
+                this.tableData
+            )
+            console.log(this.tableData)
         },
     },
-});
+})
 </script>

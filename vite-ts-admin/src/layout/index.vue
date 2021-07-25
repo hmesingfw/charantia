@@ -11,7 +11,7 @@
             <el-header class="header">
                 <header-main></header-main>
             </el-header>
-            <el-main>
+            <el-main style="padding:0">
                 <router-view />
             </el-main>
         </el-container>
@@ -21,11 +21,11 @@
 </template>
 
 <script lang="ts">
-import sidebar from "./components/sidebar/index.vue";
-import logo from "./components/logo/index.vue";
-import headerMain from "./components/header/index.vue";
-import settings from "./components/settings/index.vue";
-import { defineComponent } from "vue";
+import sidebar from "./components/sidebar/index.vue"
+import logo from "./components/logo/index.vue"
+import headerMain from "./components/header/index.vue"
+import settings from "./components/settings/index.vue"
+import { defineComponent } from "vue"
 
 export default defineComponent({
     name: "Layout",
@@ -33,9 +33,9 @@ export default defineComponent({
         sidebar,
         logo,
         headerMain,
-        settings
-    }
-});
+        settings,
+    },
+})
 </script>
 
 <style lang="scss" scoped>

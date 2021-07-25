@@ -14,9 +14,21 @@ export class DictService {
         return await this.dictRepository.insert(dict);
     }
 
+    async createChildren(id: number, dictList: Array<Dict>) {
+        Promise.all(
+            dictList.map(async (dict: Dict) => {
+                dict.parentId = id;
+                await this.dictRepository.insert(dict);
+            })
+        ).then(res => {
+            console.log(res)
+        })
+        return "保存成功"
+    }
+
     async findAll(params) {
         /* 处理页数偏移 */
-        let page = {
+        const page = {
             skip: params.size * (params.page - 1),
             take: params.size
         }

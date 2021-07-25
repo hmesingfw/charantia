@@ -16,7 +16,7 @@ import './styles/main.scss'
 import axios from './config/axios-config'
 import api from './config/api'
 import { Code } from './config/index'
-import utilsGlobal from './utils/global'
+import utilsGlobal from './utils'
 
 const app = createApp(App)
 app.use(ElementPlus, { locale, size: 'mini' })

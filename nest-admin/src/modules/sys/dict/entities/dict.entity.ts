@@ -5,6 +5,12 @@ export class Dict {
     @PrimaryGeneratedColumn({ type: "bigint", name: "id" })
     id: string;
 
+    @Column('bigint', {
+        name: 'parent_id',
+        comment: "父级ID",
+    })
+    parentId: number | 0;
+
     @Column("varchar", {
         name: "dict_module",
         nullable: true,

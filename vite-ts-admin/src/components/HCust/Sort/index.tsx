@@ -1,5 +1,5 @@
 import { defineComponent, reactive, ref } from "vue";
-import { HttpSave } from "@/utils/global";
+import { HttpSave } from "@/utils";
 export default defineComponent({
     name: 'HInputNumber',
 

@@ -54,6 +54,7 @@ export default defineComponent({
         const form = reactive({
             data: tableData
         });
+        const selectTableVal: any = ref([]); //  表格选中的值  
         // TODO: 排序功能暂时没有
         function ChangeSettingsCol() {
 
@@ -111,14 +112,16 @@ export default defineComponent({
          * 删除行
          */
         function DelItem() {
-
+            selectTableVal.value.forEach((info: any) => {
+                tableData?.splice(tableData?.findIndex(item => info === item), 1)
+            });
         }
 
         /**
          * 
          */
         function SelectionChange(val: Array<any>) {
-            // tableData?.splice()
+            selectTableVal.value = val;
         }
 
         return { form, rules, ChangeSettingsCol, GetItem, GetRules, AddItem, DelItem, SelectionChange }

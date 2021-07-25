@@ -25,6 +25,14 @@ export class DictController {
         return this.dictService.create(dict);
     }
 
+    @ApiOperation({ summary: '新增数据字典,保存子类' })
+    @ApiBody({ type: DictInfo })
+    @Post(':id')
+    children(@Param('id') id: number, @Body() dict: Array<Dict>) {
+        return this.dictService.createChildren(id, dict);
+    }
+
+
     @ApiOperation({ summary: '数据字典列表' })
     @Get()
     findAll(@Query() params) {
