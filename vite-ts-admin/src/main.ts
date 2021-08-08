@@ -10,10 +10,11 @@ import router from './router/index'
 import { createStore } from "./store/index";
 
 import HCust from '@/components/HCust/index'
+import './styles/element-variables.scss'
 import './styles/index.scss'
 import './styles/main.scss'
 
-import axios from './config/axios-config'
+import Http from "./utils/http";
 import api from './config/api'
 import { Code } from './config/index'
 import utilsGlobal from './utils'
@@ -31,6 +32,6 @@ utilsGlobal(app);
 
 /**  全局配置 */
 app.config.globalProperties.$api = api;
-app.config.globalProperties.$http = axios;
+app.config.globalProperties.$http = Http;
 app.config.globalProperties.$code = Code;
 app.mount('#app')

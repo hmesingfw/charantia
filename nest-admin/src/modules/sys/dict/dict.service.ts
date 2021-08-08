@@ -11,6 +11,7 @@ export class DictService {
     ) { }
 
     async create(dict: Dict) {
+        console.log(dict)
         return await this.dictRepository.insert(dict);
     }
 
@@ -18,7 +19,7 @@ export class DictService {
         Promise.all(
             dictList.map(async (dict: Dict) => {
                 dict.parentId = id;
-                await this.dictRepository.insert(dict);
+                await this.dictRepository.save(dict);
             })
         ).then(res => {
             console.log(res)
@@ -27,17 +28,26 @@ export class DictService {
     }
 
     async findAll(params) {
-        /* 处理页数偏移 */
-        const page = {
-            skip: params.size * (params.page - 1),
-            take: params.size
+        if (params.size && params.page) {
+            /* 处理页数偏移 */
+            const page = {
+                skip: params.size * (params.page - 1),
+                take: params.size
+            }
+            const list = await this.dictRepository.find({
+                order: { sort: "DESC" },
+                ...page,
+            });
+            const total = await this.dictRepository.count();
+            return { list, total }
+        } else {
+            console.log(params)
+            const data = {
+                where: params,
+                order: { 'sort': 'DESC' }
+            }  //  ??? 这里使用不可以
+            return this.dictRepository.find({ where: params, order: { sort: 'DESC' } })
         }
-        const list = await this.dictRepository.find({
-            order: { sort: "DESC" },
-            ...page,
-        });
-        const total = await this.dictRepository.count();
-        return { list, total }
     }
 
     async findOne(id: number) {

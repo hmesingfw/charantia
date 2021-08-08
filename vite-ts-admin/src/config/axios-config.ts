@@ -1,8 +1,9 @@
-import axios, { AxiosRequestConfig, AxiosError, AxiosResponse } from 'axios';
+import { Code } from '@/config/index';
+import axios, { AxiosRequestConfig, AxiosError, AxiosResponse, AxiosInstance } from 'axios';
 import { ElMessage } from 'element-plus';  // 这是我引入的antd的组件库,为了方便弹出吐司
 
 export class Interceptors {
-    public instance: any;
+    public instance: AxiosInstance;
 
     constructor() {
         // 创建axios实例
@@ -56,7 +57,7 @@ export class Interceptors {
                     }
                 }
 
-                if (res.status === 200) {
+                if ([Code.SUCCESS, Code.CREATED].includes(res.status)) {
                     return Promise.resolve(res.data);
                 } else {
                     this.errorHandle(res);
@@ -86,6 +87,7 @@ export class Interceptors {
      * @param res  响应回调,根据不同响应进行不同操作
      */
     private errorHandle(res: any) {
+
         // 状态码判断
         switch (res.status) {
             case 401:

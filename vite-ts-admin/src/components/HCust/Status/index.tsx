@@ -1,14 +1,12 @@
 import { defineComponent, ref } from "vue";
-import { HttpSave } from "@/utils";
+import Http from "@/utils/http";
 
 export default defineComponent({
-    name: 'HSwitch',
+    name: 'HStatus',
     render() {
-        if (true) {
-            return <el-switch vModel={this.status} class="switch-style" {...this.$attrs} active-color="#4fc08d" />
-        } else {
-            return 'zhi';
-        }
+        return <el-row class="h-status">
+            <span class="item">顶</span>
+        </el-row>
     },
     props: {
         data: {
@@ -33,13 +31,12 @@ export default defineComponent({
     },
     setup(props, { attrs, slots, emit }) {
         const { data, params, url, id } = props;
+        const http = new Http(url)
         const status = ref(true);
         async function Change() {
             let data: any = {};
             data[params.id] = id;
-            // data[params.value] = value;
-            await HttpSave(url, data);
-            // emit('call', data)
+            await http.Post(url, data);
         }
 
         return {

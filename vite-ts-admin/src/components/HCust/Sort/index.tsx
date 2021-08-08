@@ -1,19 +1,29 @@
 import { defineComponent, reactive, ref } from "vue";
-import { HttpSave } from "@/utils";
+import Http from "@/utils/http";
 export default defineComponent({
-    name: 'HInputNumber',
-
+    name: 'HStatus',
     render() {
         const scopedSlots = {
-            reference: () => <el-input-number model-value={this.value} min={1} max={99} size="mini" controls-position="right" onChange={this.HandleChange} />
+            reference: () => <el-input-number model-value={this.numberVal} min={1} max={99} size="mini" controls-position="right" onChange={this.HandleChange} />
         }
         return <el-popconfirm title="确认操作" onConfirm={this.Confirm} v-slots={scopedSlots}></el-popconfirm>
     },
-    emits: ['update:value', 'call'],
+    emits: ['update:modelValue', 'call'],
+    computed: {
+        numberVal: {
+            get(): number {
+                return this.value
+            },
+            set(value: number): void {
+                this.$emit('update:modelValue', value)
+            }
+        }
+    },
     props: {
         value: {
             type: Number,
             required: true,
+            default: 0
         },
         id: {
             type: [String, Number],
@@ -33,22 +43,22 @@ export default defineComponent({
     },
     setup(props, { attrs, slots, emit }) {
         const { value, id, params, url } = props;
+        const http = new Http(url);
         let selectValue = ref(value)
 
         function HandleChange(val: number) {
-            emit('update:value', val);
+            emit('update:modelValue', val);
             selectValue.value = val;
         }
         async function Confirm() {
             let data: any = {};
             data[params.id] = id
             data[params.value] = selectValue.value;
-            await HttpSave(url, data);
+            await http.Save(url, data);
             emit('call', data)
         }
 
         function onKeyDownchange(e: any) {
-            console.log('11')
             /* 回车事件 */
             if (e.keyCode == 13) {
                 Confirm();

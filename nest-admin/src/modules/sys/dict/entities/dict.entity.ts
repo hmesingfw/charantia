@@ -74,14 +74,15 @@ export class Dict {
     status: string | null;
 
 
-    /** 请在mysql 字段上，默认值  设置成 CURRENT_TIMESTAMP */
+
     @CreateDateColumn({ name: "create_time" })
     createTime: Date;
 
     @Column("varchar", { name: "create_by", nullable: true, length: 32 })
     createBy: string | null;
 
-    @UpdateDateColumn({ name: "update_time", default: () => 'CURRENT_TIMESTAMP' })
+    /** 请在mysql 字段上，默认值  设置成 CURRENT_TIMESTAMP */
+    @UpdateDateColumn({ name: "update_time" })
     updateTime: Date;
 
     @Column("varchar", { name: "update_by", nullable: true, length: 32 })

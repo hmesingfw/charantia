@@ -46,14 +46,22 @@
         </el-row>
         <h-main v-if="tableStatus" ref="hCustTableRef" v-loading="tableLoading" :selection="selection" :data="tableData" :table-attrs="setupTableAttrs" :params="colSettings" @selections="Selection" />
         <div class="h-page">
-            <el-pagination :current-page="pageData.page" :page-sizes="page.sizes" :page-size="page.size" :layout="page.layout" :total="pageData.total" @size-change="PageSizeChange" @current-change="PageCurrentChange" />
+            <el-pagination
+                :current-page="pageData.page"
+                :page-sizes="page.sizes"
+                :page-size="page.size"
+                :layout="page.layout"
+                :total="pageData.total"
+                @size-change="PageSizeChange"
+                @current-change="PageCurrentChange"
+            />
         </div>
     </div>
 </template>
 
 <script lang="tsx">
-import { ref, reactive, onMounted, nextTick } from "vue";
-import http from "@/config/axios-config";
+import { ref, reactive, onMounted, nextTick, defineComponent } from "vue";
+import Http, {responseInterface} from "@/utils/http";
 import hMain from "./main";
 import { VueDraggableNext } from "vue-draggable-next";
 import { ElMessage } from "element-plus";
@@ -62,14 +70,17 @@ interface ParentParams {
     readonly page: number;
     readonly size: number;
 }
-export default {
+export default defineComponent({
+    provide() {
+        return this;
+    },
     components: {
         hMain,
         draggable: VueDraggableNext
     },
     props: {
         // 请求地址
-        url: { type: String },
+        url: { type: String, default: "" },
         ref: { type: String, default: "hCustRef" },
         // 数据来源
         params: Array,
@@ -87,11 +98,13 @@ export default {
         }
     },
     setup(props, { attrs, slots, emit }) {
+        let { url } = props;
+        let  params:any[] = props.params as any[]
         const tableLoading = ref(false);
         const tableStatus = ref(true); // 表格if
         const tableData = ref([]); // 列表数据
         const pageData = reactive({ total: 0, page: 1, size: 10 }); // 分页参数
-        const colSettings = ref([]); // 列的设置参数
+        const colSettings = ref([] as any[]); // 列的设置参数
         const isIndeterminate = ref(false); // 列的设置参数,  用以表示 checkbox 的不确定状态，一般用于实现全选的效果
         const settingCheckAll = ref(true); // 列的设置参数, 多选状态
         /* 处理对象，加载初始化值 */
@@ -107,6 +120,7 @@ export default {
             query();
             InitSettingsCol();
         });
+        const http = new Http(url)
         /**
          *  查询列表
          * parentParams 父组件查询传参
@@ -119,7 +133,7 @@ export default {
             };
             tableLoading.value = true;
             try {
-                const res = await http.get(props.url, { params: params });
+                const res:any = await http.Get( params );
                 if (res.code == 200) {
                     const data = res.data;
                     tableData.value = data.list;
@@ -135,11 +149,11 @@ export default {
         }
 
         /* 操作分页 */
-        function PageSizeChange(val) {
+        function PageSizeChange(val:number) {
             pageData.size = val;
             query();
         }
-        function PageCurrentChange(val) {
+        function PageCurrentChange(val:number) {
             pageData.page = val;
             query();
         }
@@ -171,10 +185,10 @@ export default {
                 );
                 if (localSettings) {
                     const array = JSON.parse(localSettings);
-                    const retArray = array.map(item => {
-                        const data = props.params.filter(
-                            p => p.prop == item.prop
-                        );
+                    const retArray = array.map((item:any) => {
+                        const data = params.filter(
+                            (p:any) => p.prop == item.prop
+                        )
                         return {
                             ...data[0],
                             status: item.status
@@ -192,8 +206,8 @@ export default {
          *  默认列设置，赋值
          *  reset 是否重置  boolean
          */
-        function DefaultColSettings(reset) {
-            colSettings.value = props.params.map(item => {
+        function DefaultColSettings(reset:boolean) {
+            colSettings.value = params.map(item => {
                 return {
                     ...item,
                     status: true
@@ -205,12 +219,12 @@ export default {
         }
 
         /* 设置列参数方法 */
-        function ChangeSettingsCol(status) {
+        function ChangeSettingsCol(status:boolean) {
             isIndeterminate.value = colSettings.value.some(
-                item => item.status !== status
+                (item:any) => item.status !== status
             ); // indeterminate 属性用以表示 checkbox 的不确定状态
             settingCheckAll.value = colSettings.value.every(
-                item => item.status === true
+                (item:any) => item.status === true
             );
 
             try {
@@ -223,9 +237,9 @@ export default {
             TableReflash(500);
         }
         /* 列设置，全选操作 */
-        function ChangeColSettingAll(status) {
+        function ChangeColSettingAll(status:boolean) {
             isIndeterminate.value = false;
-            colSettings.value = props.params.map(item => {
+            colSettings.value = params.map(item => {
                 return {
                     ...item,
                     status: status
@@ -237,20 +251,20 @@ export default {
         /**
          * 编辑内容
          */
-        function EditInfo(info) {
+        function EditInfo(info:any) {
             emit("edit", info);
         }
         /**
          * 删除内容
          */
-        function DeleteInfo(list) {
+        function DeleteInfo(list:any) {
             emit("del", list);
         }
         /**
          *  多选
          */
-        function Selection(val) {
-            this.$emit("update:selection", val);
+        function Selection(val:any) {
+            emit("update:selection", val);
         }
         /* 获取分页信息 */
         emit("get-page", pageData);
@@ -281,5 +295,5 @@ export default {
             return this.$refs.hCustTableRef.getTableRef();
         }
     }
-};
+});
 </script>

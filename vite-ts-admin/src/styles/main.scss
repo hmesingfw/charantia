@@ -1,3 +1,5 @@
+@import './element-variables.scss';
+
 .h-table {
     .h-table-header-name {
         th {
@@ -145,5 +147,21 @@
 
     .el-form-item {
         margin-bottom: 0;
+    }
+}
+
+
+.h-status {
+    .item {
+        color: $--color-primary;
+        width: 21px;
+        height: 21px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+        border: 1px solid;
+        border-radius: 2px;
     }
 }

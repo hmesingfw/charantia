@@ -81,8 +81,5 @@ export function DeepCopy(obj: any) {
 
 
 export default (app: any) => {
-    app.config.globalProperties.$Http = Http;
-    app.config.globalProperties.$HttpDel = HttpDel;
-    app.config.globalProperties.$HttpSave = HttpSave;
     app.config.globalProperties.$DeepCopy = DeepCopy;
 }

@@ -1,8 +1,22 @@
+import { CodeInterface } from '@/config/index';
+import { ApiInstance } from "./config/api";
 import http from './utils/http'
-import { DeepCopy } from './utils/index'
-declare module 'vue/types/vue' {
-    interface VueConstructor {
-        $DeepCopy: DeepCopy,
+import { IMessage } from 'element-plus/lib/el-message/src/types';
+import { ActionContext } from 'vuex';
+
+
+
+
+// 对vue进行类型补充说明
+declare module '@vue/runtime-core' {
+    interface ComponentCustomProperties {
+        $DeepCopy: Function,
+        $api: ApiInstance,
         $http: http,
+        $refs: any,
+        $code: CodeInterface
+        $message: IMessage,
+        $store: ActionContext<any, any>
     }
 }
+

@@ -10,18 +10,18 @@
                 <h-table-edit :column-data="columnData" :table-data="tableData" :selection="true" />
             </div>
         </h-drawer>
-        <h-dialog v-model="dialogStatus" @success="infoSave">
+        <h-dialog v-model="dialogStatus" @success="infoSave" :title="info.id? '编辑': '新增'">
             <el-form :model="info" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 <el-form-item label="所属模块" prop="dictModule">
                     <el-input v-model="info.dictModule" maxlength="32" show-word-limit></el-input>
                 </el-form-item>
-                <el-form-item label="字典编码" prop="dictKey">
+                <el-form-item label="编码" prop="dictKey">
                     <el-input v-model="info.dictKey" maxlength="32" show-word-limit></el-input>
                 </el-form-item>
-                <el-form-item label="字典名称" prop="dictLabel">
+                <el-form-item label="名称" prop="dictLabel">
                     <el-input v-model="info.dictLabel" maxlength="32" show-word-limit></el-input>
                 </el-form-item>
-                <el-form-item label="字典值" prop="dictValue">
+                <el-form-item label="值" prop="dictValue">
                     <el-input v-model="info.dictValue" maxlength="32" show-word-limit></el-input>
                 </el-form-item>
                 <el-form-item label="排序" prop="sort">
@@ -36,9 +36,9 @@
 </template>
 
 <script lang="tsx">
-import { defineComponent } from "vue"
-import api from "@/config/api"
-import Http from "@/utils/http"
+import { defineComponent } from "vue";
+import api from "@/config/api";
+import Http from "@/utils/http";
 
 export default defineComponent({
     data() {
@@ -51,42 +51,32 @@ export default defineComponent({
                 { prop: "selection" },
                 { prop: "id", label: "id" },
                 { prop: "dictModule", label: "所属模块" },
-                { prop: "dictKey", label: "字典编码" },
-                { prop: "dictLabel", label: "字典标题" },
+                { prop: "dictKey", label: "编码" },
+                { prop: "dictLabel", label: "标题" },
                 { prop: "dictDesc", label: "备注" },
                 {
                     prop: "isLock",
-                    label: "内置字典",
-                    formatF: (row) => (row.isLock == "1" ? "内置" : "非内置 "),
+                    label: "内置",
+                    formatF: (row: any) =>
+                        row.isLock == "1" ? "内置" : "非内置 ",
                 },
                 {
                     prop: "status",
                     label: "状态",
-                    formatF: (row) => (
-                        <h-switch
-                            data={row}
-                            id={row.id}
-                            url={api.sys.dict}
-                            inactive-text="禁用"
-                            active-text="启用"
-                            active-value={1}
-                            inactive-value={0}
-                            onCall={() => {
-                                this.query()
-                            }}
-                        />
+                    formatF: (row: any) => (
+                        <h-status id={row.id} url={api.sys.dict} />
                     ),
                 },
                 {
                     prop: "sort",
                     label: "排序",
-                    formatF: (row) => (
+                    formatF: (row: any) => (
                         <h-sort
                             v-model={[row.sort, "value"]}
                             id={row.id}
                             url={api.sys.dict}
                             onCall={() => {
-                                this.query()
+                                this.query();
                             }}
                         />
                     ),
@@ -94,7 +84,7 @@ export default defineComponent({
                 {
                     prop: "handle",
                     label: "操作",
-                    formatF: (row) => (
+                    formatF: (row: any) => (
                         <>
                             <el-button
                                 type="text"
@@ -165,21 +155,14 @@ export default defineComponent({
                 dictKey: [
                     {
                         required: true,
-                        message: "请输入字典编码",
+                        message: "请输入编码",
                         trigger: "blur",
                     },
                 ],
                 dictLabel: [
                     {
                         required: true,
-                        message: "请输入字典标题",
-                        trigger: "blur",
-                    },
-                ],
-                dictValue: [
-                    {
-                        required: true,
-                        message: "请输入字典值",
+                        message: "请输入标题",
                         trigger: "blur",
                     },
                 ],
@@ -187,14 +170,14 @@ export default defineComponent({
 
             columnData: [
                 {
-                    prop: "dictKey",
-                    label: "字典编码",
+                    prop: "dictLabel",
+                    label: "标题",
                     type: "el-input",
                     required: true,
                 },
                 {
-                    prop: "dictLabel",
-                    label: "字典标题",
+                    prop: "dictValue",
+                    label: "值",
                     type: "el-input",
                     required: true,
                 },
@@ -207,49 +190,66 @@ export default defineComponent({
                 { prop: "status", label: "状态", type: "el-switch" },
                 { prop: "dictDesc", label: "备注", type: "el-input" },
             ],
-            tableData: [{ dictKey: "", dictModule: "" }],
-            tempChildrenRow: {},
-        }
+            tableData: [{ dictLabel: "", dictKey: "", dictModule: "" }],
+            tempChildrenRow: {
+                id: "",
+            },
+        };
     },
     watch: {
         multipleSelection(val) {
-            console.log(val)
+            console.log(val);
         },
     },
 
     methods: {
         edit(info = { isLock: 0, sort: 1 }) {
-            this.info = this.$DeepCopy(info)
-            this.dialogStatus = true
+            this.info = this.$DeepCopy(info);
+            this.dialogStatus = true;
         },
         infoSave() {
             this.$refs.ruleForm.validate(async (vali: any) => {
                 if (vali) {
-                    await this.$HttpSave(this.$api.sys.dict, this.info)
-                    this.$refs.tSysDictRef.query()
-                    this.dialogStatus = false
+                    if ("id" in this.info) {
+                        await this.http.Patch(this.$api.sys.dict, this.info);
+                    } else {
+                        await this.http.Post(this.$api.sys.dict, this.info);
+                    }
+                    this.$refs.tSysDictRef.query();
+                    this.dialogStatus = false;
                 }
-            })
+            });
         },
         infoDel(row: any) {
-            this.http.Del(row.id, () => this.query())
+            this.http.Del(row.id, () => this.query());
         },
         query() {
-            this.$refs.tSysDictRef.query()
+            this.$refs.tSysDictRef.query({ parentId: 0 });
         },
-        openDrawer(row: any) {
-            this.tempChildrenRow = row
-            this.drawer = true
+        async openDrawer(row: any) {
+            const params = {
+                parentId: row.id,
+            };
+            try {
+                const res: any = await this.http.Get(params);
+                const { data } = res;
+                this.tableData = data;
+            } catch (error) {
+                this.$message.error("系统错误：" + error.message);
+            }
+
+            this.tempChildrenRow = row;
+            this.drawer = true;
         },
 
         /** 保存字典值 */
         dictSave() {
-            this.$http.Save(
+            this.http.Post(
                 `${api.sys.dict}/${this.tempChildrenRow.id}`,
                 this.tableData
-            )
-            console.log(this.tableData)
+            );
+            this.drawer = false;
         },
     },
-})
+});
 </script>
